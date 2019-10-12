@@ -27,6 +27,7 @@
         <module>./perfect-redis</module>
         <module>./perfect-excel</module>
         <module>./perfect-framework</module>
+        <module>./perfect-mq</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -41,15 +42,13 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <project.build.jdk>${java.version}</project.build.jdk>
-        <project.build.springbootversion>2.1.7.RELEASE</project.build.springbootversion>
+        <project.build.springbootversion>2.1.9.RELEASE</project.build.springbootversion>
         <spring.social.version>1.1.6.RELEASE</spring.social.version>
         <poi.version>4.1.0</poi.version>
         <fastjson.version>1.2.62</fastjson.version>
         <mybatis-plus.version>3.2.0</mybatis-plus.version>
         <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
-        <mybatis.version>3.5.0</mybatis.version>
         <mybatis-spring-boot-starter.version>2.1.0</mybatis-spring-boot-starter.version>
-
         </properties>
 
     <dependencyManagement>
@@ -67,7 +66,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-validation</artifactId>
-                <version>2.1.4.RELEASE</version>
+                <version>${project.build.springbootversion}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -111,6 +110,12 @@
                 <artifactId>spring-boot-starter-data-mongodb</artifactId>
                 <version>${project.build.springbootversion}</version>
             </dependency>
+            <!-- rabbitmq -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${project.build.springbootversion}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.kafka</groupId>
                 <artifactId>spring-kafka</artifactId>
@@ -121,7 +126,6 @@
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis-spring-boot-starter.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
