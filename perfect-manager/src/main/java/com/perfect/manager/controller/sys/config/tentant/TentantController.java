@@ -15,15 +15,15 @@ import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
 import com.perfect.framework.base.controller.v1.BaseController;
-import com.perfect.mq.rabbitmq.config.MQEnum;
+import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -96,7 +96,12 @@ public class TentantController extends BaseController {
         IPage<STentantVo> entity = service.selectPage(searchCondition);
 
         // rabbitmq
-        rabbitTemplate.convertAndSend(MQEnum.MQ_OPER_LOG.getCode(), JSON.toJSONString("测试"));
+        rabbitTemplate.convertAndSend(
+            MQEnum.MQ_OPER_LOG.getExchange(),
+            MQEnum.MQ_OPER_LOG.getRouting_key(),
+            JSON.toJSONString("测试"),
+            new CorrelationData("11")
+        );
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 

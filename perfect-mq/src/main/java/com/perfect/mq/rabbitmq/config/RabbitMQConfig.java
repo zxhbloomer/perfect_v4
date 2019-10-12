@@ -1,8 +1,7 @@
 package com.perfect.mq.rabbitmq.config;
 
+import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import org.springframework.amqp.core.AcknowledgeMode;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -13,9 +12,6 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.amqp.core.Queue;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Author：
@@ -48,7 +44,7 @@ public class RabbitMQConfig {
      * @param rabbitAdmin
      */
     private void initQueue(RabbitAdmin rabbitAdmin) {
-        rabbitAdmin.declareQueue(new Queue(MQEnum.MQ_OPER_LOG.getCode(),true));
+        rabbitAdmin.declareQueue(new Queue(MQEnum.MQ_OPER_LOG.getQueueCode(),true));
     }
 
 }
