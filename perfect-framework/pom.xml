@@ -76,22 +76,18 @@
         <dependency>
             <groupId>com.perfect</groupId>
             <artifactId>perfect-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.perfect</groupId>
             <artifactId>perfect-bean</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.perfect</groupId>
             <artifactId>perfect-excel</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.perfect</groupId>
             <artifactId>perfect-core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!-- lombok -->
         <dependency>
@@ -103,10 +99,6 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 

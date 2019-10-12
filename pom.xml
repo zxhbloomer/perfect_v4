@@ -36,6 +36,7 @@
     </parent>
 
     <properties>
+        <perfect.version>0.0.1-SNAPSHOT</perfect.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -44,7 +45,6 @@
         <spring.social.version>1.1.6.RELEASE</spring.social.version>
         <poi.version>4.1.0</poi.version>
         <fastjson.version>1.2.62</fastjson.version>
-        <druid.version>1.1.20</druid.version>
         <mybatis-plus.version>3.2.0</mybatis-plus.version>
         <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
         <mybatis.version>3.5.0</mybatis.version>
@@ -156,16 +156,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid</artifactId>
-                <version>${druid.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
@@ -365,7 +355,62 @@
                 <artifactId>jxl</artifactId>
                 <version>2.6.12</version>
             </dependency>
-
+            <!-- prefect 模块 -->
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-bean</artifactId>
+                <version>${perfect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-common</artifactId>
+                <version>${perfect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-core</artifactId>
+                <version>${perfect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-excel</artifactId>
+                <version>${perfect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-framework</artifactId>
+                <version>${perfect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-manager</artifactId>
+                <version>${perfect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-managerStarter</artifactId>
+                <version>${perfect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-mongo</artifactId>
+                <version>${perfect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-quartz</artifactId>
+                <version>${perfect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-redis</artifactId>
+                <version>${perfect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-security</artifactId>
+                <version>${perfect.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>

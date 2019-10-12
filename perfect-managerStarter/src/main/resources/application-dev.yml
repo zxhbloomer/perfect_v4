@@ -7,7 +7,17 @@ server:
       cookie:
         name: PERFECT_SESSION
       timeout: 1800
-
+  tomcat:
+    max-connections: 10000
+    accept-count: 1000
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    # tomcat最大线程数，默认为200
+    max-threads: 800
+    # Tomcat启动初始化的线程数，默认值25
+    min-spare-threads: 30
+    remote-ip-header: x-forwarded-for
+    protocol_header: x-forwarded-proto
 
 #-----------------------spring 设置---------------------------
 spring:
