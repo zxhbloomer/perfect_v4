@@ -1,6 +1,5 @@
 /**
- * 所属产品: 互联网供应链金融平台
- * 版权信息: © XXX金服
+ *
  */
 package com.perfect.mq.rabbitmq.config;
 
@@ -8,8 +7,7 @@ package com.perfect.mq.rabbitmq.config;
  *
  */
 public enum MQEnum {
-	MQ_OPER_LOG(Constants.MQ_OPER_LOG, "平台操作日志")
-	;
+	MQ_OPER_LOG(Constants.MQ_OPER_LOG, "平台操作日志");
 
 	private String code;
 	private String name;
