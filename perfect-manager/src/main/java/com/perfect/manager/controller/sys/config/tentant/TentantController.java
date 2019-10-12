@@ -1,5 +1,6 @@
 package com.perfect.manager.controller.sys.config.tentant;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.entity.sys.config.tenant.STentantEntity;
 import com.perfect.bean.pojo.result.JsonResult;
@@ -14,9 +15,11 @@ import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
 import com.perfect.framework.base.controller.v1.BaseController;
+import com.perfect.mq.rabbitmq.config.MQEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +40,7 @@ public class TentantController extends BaseController {
     private ITentantService service;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private RabbitTemplate rabbitTemplate;
 
     @SysLog("根据查询条件，获取租户信息")
     @ApiOperation("获取租户树数据")
@@ -72,8 +75,8 @@ public class TentantController extends BaseController {
 //        return ResponseEntity.ok().body(ResultUtil.OK(rtnVo));
 //    }
 
-    @SysLog("根据参数id，获取系统参数信息")
-    @ApiOperation("根据参数id，获取系统参数信息")
+    @SysLog("根据参数id，获取租户信息")
+    @ApiOperation("根据参数id，获取租户信息")
     @PostMapping("{ id }")
     @ResponseBody
     public ResponseEntity<JsonResult<STentantEntity>> info(@RequestParam("id") String id) {
@@ -84,18 +87,21 @@ public class TentantController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("根据查询条件，获取系统参数信息")
-    @ApiOperation("根据参数id，获取系统参数信息")
+    @SysLog("根据查询条件，获取租户信息")
+    @ApiOperation("根据参数id，获取租户信息")
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<IPage<STentantVo>>> list(@RequestBody(required = false)
         STentantVo searchCondition) throws IllegalAccessException, InstantiationException {
         IPage<STentantVo> entity = service.selectPage(searchCondition);
+
+        // rabbitmq
+        rabbitTemplate.convertAndSend(MQEnum.MQ_OPER_LOG.getCode(), JSON.toJSONString("测试"));
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("系统参数数据更新保存")
-    @ApiOperation("根据参数id，获取系统参数信息")
+    @SysLog("租户数据更新保存")
+    @ApiOperation("租户数据更新保存")
     @PostMapping("/save")
     @ResponseBody
     @RepeatSubmit
@@ -108,8 +114,8 @@ public class TentantController extends BaseController {
         }
     }
 
-    @SysLog("系统参数数据新增保存")
-    @ApiOperation("根据参数id，获取系统参数信息")
+    @SysLog("租户数据新增保存")
+    @ApiOperation("租户数据新增保存")
     @PostMapping("/insert")
     @ResponseBody
     @RepeatSubmit
@@ -123,19 +129,19 @@ public class TentantController extends BaseController {
         }
     }
 
-//    @SysLog("系统参数数据导出")
-//    @ApiOperation("根据选择的数据，系统参数数据导出")
+//    @SysLog("租户数据导出")
+//    @ApiOperation("根据选择的数据，租户数据导出")
 //    @PostMapping("/export_all")
 //    public void exportAll(@RequestBody(required = false) STentantTreeVo searchCondition, HttpServletResponse response)
 //        throws IllegalAccessException, InstantiationException, IOException {
 //        List<STentantTreeVo> searchResult = service.select(searchCondition);
 //        List<SConfigDataExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SConfigDataExportVo.class);
 //        ExcelUtil<SConfigDataExportVo> util = new ExcelUtil<>(SConfigDataExportVo.class);
-//        util.exportExcel("系统参数数据导出", "系统参数数据", rtnList, response);
+//        util.exportExcel("租户数据导出", "租户数据", rtnList, response);
 //    }
 //
-//    @SysLog("系统参数数据导出")
-//    @ApiOperation("根据选择的数据，系统参数数据导出")
+//    @SysLog("租户数据导出")
+//    @ApiOperation("根据选择的数据，租户数据导出")
 //    @PostMapping("/export_selection")
 //    public void exportSelection(@RequestBody(required = false) List<STentantTreeVo> searchConditionList,
 //        HttpServletResponse response)
@@ -143,6 +149,6 @@ public class TentantController extends BaseController {
 //        List<STentantTreeVo> searchResult = service.selectIdsIn(searchConditionList);
 //        List<SResourceExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SConfigDataExportVo.class);
 //        ExcelUtil<SResourceExportVo> util = new ExcelUtil<>(SResourceExportVo.class);
-//        util.exportExcel("系统参数数据导出", "系统参数数据", rtnList, response);
+//        util.exportExcel("租户数据导出", "租户数据", rtnList, response);
 //    }
 }
