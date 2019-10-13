@@ -25,7 +25,7 @@ import java.util.Date;
  */
 @Slf4j
 public abstract class AbstractQuartzJob implements Job {
-` `
+
     /**
      * 线程本地变量
      */
