@@ -2,6 +2,7 @@ package com.perfect.quartz.util;
 
 import com.perfect.bean.entity.quartz.JJobMasterEntity;
 import com.perfect.common.constant.PerfectConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +12,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author MrBird
  */
+@Slf4j
 public class ScheduleUtils {
-
-    private static Logger log = LoggerFactory.getLogger(ScheduleUtils.class);
 
     protected ScheduleUtils() {
 
