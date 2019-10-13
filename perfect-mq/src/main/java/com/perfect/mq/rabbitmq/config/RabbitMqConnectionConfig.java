@@ -20,7 +20,7 @@ import org.springframework.amqp.core.Queue;
  */
 @Configuration
 @EnableRabbit
-public class RabbitMQConfig {
+public class RabbitMqConnectionConfig {
 
     @Bean
     public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
