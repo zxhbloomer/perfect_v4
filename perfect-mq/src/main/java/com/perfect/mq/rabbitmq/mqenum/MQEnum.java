@@ -69,5 +69,18 @@ public enum MQEnum {
 			public static final String exchange = "perfect-log-exchange";
 			public static final String routing_key = "perfect-log.#";
 		}
+
+		/**
+		 * 任务类
+		 *
+		 * @author zxh
+		 * @date 2019年 10月12日 23:34:54
+		 */
+		public class task {
+			public static final String queueCode = "perfect-task";
+			public static final String name = "平台任务类";
+			public static final String exchange = "perfect-task-exchange";
+			public static final String routing_key = "perfect-task.#";
+		}
 	}
 }

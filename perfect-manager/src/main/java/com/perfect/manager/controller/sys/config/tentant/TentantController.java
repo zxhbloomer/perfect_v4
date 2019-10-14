@@ -16,6 +16,7 @@ import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
+import com.perfect.mq.rabbitmq.producer.MQProducer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class TentantController extends BaseController {
     private ITentantService service;
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private MQProducer mqproducer;
 
     @SysLog("根据查询条件，获取租户信息")
     @ApiOperation("获取租户树数据")
@@ -96,12 +97,7 @@ public class TentantController extends BaseController {
         IPage<STentantVo> entity = service.selectPage(searchCondition);
 
         // rabbitmq
-        rabbitTemplate.convertAndSend(
-            MQEnum.MQ_OPER_LOG.getExchange(),
-            MQEnum.MQ_OPER_LOG.getRouting_key(),
-            JSON.toJSONString("测试"),
-            new CorrelationData("11")
-        );
+        mqproducer.send("测试", String.class, MQEnum.MQ_OPER_LOG);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
