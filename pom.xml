@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <name>perfect</name>
-    <description>prefect frame work</description>
+    <description>prefect parent</description>
     <!--管理所有的模块-->
     <modules>
         <module>./perfect-bean</module>
@@ -32,7 +32,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.7.RELEASE</version>
+        <version>2.1.9.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
