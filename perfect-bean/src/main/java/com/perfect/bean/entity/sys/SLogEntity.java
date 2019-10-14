@@ -1,9 +1,6 @@
 package com.perfect.bean.entity.sys;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.perfect.bean.entity.base.entity.v1.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -76,7 +73,7 @@ public class SLogEntity extends BaseEntity<SLogEntity> implements Serializable {
     @TableField("ip")
     private String ip;
 
-    @TableField("c_time")
+    @TableField(value="c_time", fill = FieldFill.INSERT)
     private LocalDateTime c_time;
 
 

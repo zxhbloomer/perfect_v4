@@ -1,27 +1,30 @@
 package com.perfect.bean.entity.quartz;
 
-import com.baomidou.mybatisplus.annotation.*;
-import com.perfect.bean.entity.base.entity.v1.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.TableField;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 任务主表
+ * 定时任务调度日志表
  * </p>
  *
  * @author zxh
- * @since 2019-07-13
+ * @since 2019-10-14
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("j_job_master")
-public class JJobMasterEntity extends BaseEntity<JJobMasterEntity> implements Serializable {
+@Accessors(chain = true)
+@TableName("s_job_log")
+public class SJobLogEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5865456934996150751L;
 
     /**
      * 任务ID
@@ -34,6 +37,12 @@ public class JJobMasterEntity extends BaseEntity<JJobMasterEntity> implements Se
      */
     @TableField("job_name")
     private String job_name;
+
+    /**
+     * 任务组名
+     */
+    @TableField("job_group")
+    private String job_group;
 
     /**
      * 任务编号
@@ -81,7 +90,7 @@ public class JJobMasterEntity extends BaseEntity<JJobMasterEntity> implements Se
      * 是否是已经删除
 
      */
-    @TableField(value = "isdel", fill = FieldFill.INSERT)
+    @TableField("isdel")
     private Boolean isdel;
 
     /**
@@ -93,8 +102,8 @@ public class JJobMasterEntity extends BaseEntity<JJobMasterEntity> implements Se
     /**
      * 下次运行时间
      */
-    @TableField("run_time")
-    private LocalDateTime runTime;
+    @TableField("next_run_time")
+    private LocalDateTime next_run_time;
 
     /**
      * 上次运行时间
@@ -120,16 +129,31 @@ public class JJobMasterEntity extends BaseEntity<JJobMasterEntity> implements Se
     @TableField("run_times")
     private Integer run_times;
 
-    @TableField(value="c_id", fill = FieldFill.INSERT)
+    @TableField("status")
+    private Boolean status;
+
+    /**
+     * 异常信息
+     */
+    @TableField("error")
+    private String error;
+
+    /**
+     * 耗时（毫秒）
+     */
+    @TableField("cost")
+    private Long cost;
+
+    @TableField("c_id")
     private Long c_id;
 
-    @TableField(value="c_time", fill = FieldFill.INSERT)
+    @TableField("c_time")
     private LocalDateTime c_time;
 
-    @TableField(value="u_id", fill = FieldFill.INSERT_UPDATE)
+    @TableField("u_id")
     private Long u_id;
 
-    @TableField(value="u_time", fill = FieldFill.INSERT_UPDATE)
+    @TableField("u_time")
     private LocalDateTime u_time;
 
 

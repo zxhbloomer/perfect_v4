@@ -1,6 +1,8 @@
 package com.perfect.common.utils.bean;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,9 @@ import java.util.List;
  * @author zxh
  */
 public class BeanUtilsSupport {
+
+	/** Spring应用上下文环境 */
+	private static ConfigurableListableBeanFactory beanFactory;
 
 	/**
 	 * 复制POJO对象的内容至同等的POJO中
@@ -160,5 +165,17 @@ public class BeanUtilsSupport {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 获取类型为requiredType的对象
+	 *
+	 * @param clz
+	 * @return
+	 * @throws org.springframework.beans.BeansException
+	 */
+	public static <T> T getBean(Class<T> clz) throws BeansException {
+		T result = (T)beanFactory.getBean(clz);
+		return result;
 	}
 }

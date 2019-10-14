@@ -1,27 +1,32 @@
 package com.perfect.bean.entity.quartz;
 
 import com.baomidou.mybatisplus.annotation.*;
+
+import java.time.LocalDateTime;
+import java.io.Serializable;
+
 import com.perfect.bean.entity.base.entity.v1.BaseEntity;
+import com.perfect.bean.entity.sys.SLogEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 任务执行日志表
+ * 任务主表
  * </p>
  *
  * @author zxh
- * @since 2019-07-13
+ * @since 2019-10-14
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("j_job_log")
-public class JJobLogEntity extends BaseEntity<JJobLogEntity> implements Serializable {
+@Accessors(chain = true)
+@TableName("s_job")
+public class SJobEntity extends BaseEntity<SJobEntity> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -1825371696489602370L;
+
 
     /**
      * 任务ID
@@ -34,6 +39,12 @@ public class JJobLogEntity extends BaseEntity<JJobLogEntity> implements Serializ
      */
     @TableField("job_name")
     private String job_name;
+
+    /**
+     * 任务组名
+     */
+    @TableField("job_group")
+    private String job_group;
 
     /**
      * 任务编号
@@ -78,10 +89,22 @@ public class JJobLogEntity extends BaseEntity<JJobLogEntity> implements Serializ
     private String cron_expression;
 
     /**
+     * 计划策略：0=默认,1=立即触发执行,2=触发一次执行,3=不触发立即执行
+     */
+    @TableField("misfire_policy")
+    private String misfire_policy;
+
+    /**
+     * 是否并发执行（0允许 1禁止）
+     */
+    @TableField("concurrent")
+    private Boolean concurrent;
+
+    /**
      * 是否是已经删除
 
      */
-    @TableField(value = "isdel", fill = FieldFill.INSERT)
+    @TableField("isdel")
     private Boolean isdel;
 
     /**
@@ -128,12 +151,6 @@ public class JJobLogEntity extends BaseEntity<JJobLogEntity> implements Serializ
      */
     @TableField("error")
     private String error;
-
-    /**
-     * 耗时（毫秒）
-     */
-    @TableField("cost")
-    private Long cost;
 
     @TableField(value="c_id", fill = FieldFill.INSERT)
     private Long c_id;

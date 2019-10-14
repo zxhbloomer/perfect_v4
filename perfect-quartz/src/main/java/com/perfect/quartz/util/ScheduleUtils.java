@@ -1,163 +1,104 @@
 package com.perfect.quartz.util;
 
-import com.perfect.bean.entity.quartz.JJobMasterEntity;
-import com.perfect.common.constant.PerfectConstant;
-import lombok.extern.slf4j.Slf4j;
-import org.quartz.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.perfect.bean.entity.quartz.SJobEntity;
+import com.perfect.common.constant.ScheduleConstants;
+import com.perfect.common.exception.job.TaskException;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.CronTrigger;
+import org.quartz.Job;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.TriggerBuilder;
+import org.quartz.TriggerKey;
 
 /**
  * 定时任务工具类
  *
- * @author MrBird
+ * @author ruoyi
  */
-@Slf4j
 public class ScheduleUtils {
-
-    protected ScheduleUtils() {
-
-    }
-
-    private static final String JOB_NAME = "TASK_";
-
     /**
-     * 获取触发器key
+     * 得到quartz任务类
+     *
+     * @param sysJob 执行计划
+     * @return 具体执行任务类
      */
-    private static TriggerKey getTriggerKey(Long jobId) {
-        return TriggerKey.triggerKey(JOB_NAME + jobId);
+    private static Class<? extends Job> getQuartzJobClass(SJobEntity sysJob) {
+        boolean isConcurrent = "0".equals(sysJob.getConcurrent());
+        return isConcurrent ? QuartzJobExecution.class : QuartzDisallowConcurrentExecution.class;
     }
 
     /**
-     * 获取jobKey
+     * 构建任务触发对象
      */
-    private static JobKey getJobKey(Long jobId) {
-        return JobKey.jobKey(JOB_NAME + jobId);
+    public static TriggerKey getTriggerKey(Long jobId, String jobGroup) {
+        return TriggerKey.triggerKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
     }
 
     /**
-     * 获取表达式触发器
+     * 构建任务键对象
      */
-    public static CronTrigger getCronTrigger(Scheduler scheduler, Long jobId) {
-        try {
-            return (CronTrigger) scheduler.getTrigger(getTriggerKey(jobId));
-        } catch (SchedulerException e) {
-            log.error("获取Cron表达式失败", e);
-        }
-        return null;
+    public static JobKey getJobKey(Long jobId, String jobGroup) {
+        return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
     }
 
     /**
      * 创建定时任务
      */
-    public static void createScheduleJob(Scheduler scheduler, JJobMasterEntity scheduleJob) {
-        try {
-            // 构建job信息
-            JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(getJobKey(scheduleJob.getId()))
-                    .build();
+    public static void createScheduleJob(Scheduler scheduler, SJobEntity job) throws SchedulerException, TaskException {
+        Class<? extends Job> jobClass = getQuartzJobClass(job);
+        // 构建job信息
+        Long jobId = job.getId();
+        String jobGroup = job.getJob_group();
+        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(getJobKey(jobId, jobGroup)).build();
 
-            // 表达式调度构建器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron_expression())
-                    .withMisfireHandlingInstructionDoNothing();
+        // 表达式调度构建器
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCron_expression());
+        cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
 
-            // 按新的cronExpression表达式构建一个新的trigger
-            CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(scheduleJob.getId()))
-                    .withSchedule(scheduleBuilder).build();
+        // 按新的cronExpression表达式构建一个新的trigger
+        CronTrigger trigger =
+            TriggerBuilder.newTrigger().withIdentity(getTriggerKey(jobId, jobGroup)).withSchedule(cronScheduleBuilder)
+                .build();
 
-            // 放入参数，运行时的方法可以获取
-            jobDetail.getJobDataMap().put(PerfectConstant.JOB_PARAM_KEY, scheduleJob);
+        // 放入参数，运行时的方法可以获取
+        jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
 
-            scheduler.scheduleJob(jobDetail, trigger);
+        // 判断是否存在
+        if (scheduler.checkExists(getJobKey(jobId, jobGroup))) {
+            // 防止创建时存在数据问题 先移除，然后在执行创建操作
+            scheduler.deleteJob(getJobKey(jobId, jobGroup));
+        }
 
-            // 暂停任务判断，“true：激活，false暂停”
-            if (!scheduleJob.getIs_effected()){
-                pauseJob(scheduler, scheduleJob.getId());
-            }
+        scheduler.scheduleJob(jobDetail, trigger);
 
-        } catch (SchedulerException e) {
-            log.error("创建定时任务失败", e);
+        // 暂停任务
+        if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue())) {
+            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
         }
     }
 
     /**
-     * 更新定时任务
+     * 设置定时任务策略
      */
-    public static void updateScheduleJob(Scheduler scheduler, JJobMasterEntity scheduleJob) {
-        try {
-            TriggerKey triggerKey = getTriggerKey(scheduleJob.getId());
-
-            // 表达式调度构建器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron_expression())
-                    .withMisfireHandlingInstructionDoNothing();
-
-            CronTrigger trigger = getCronTrigger(scheduler, scheduleJob.getId());
-
-            if (trigger == null) {
-                throw new SchedulerException("获取Cron表达式失败");
-            } else {
-                // 按新的cronExpression表达式重新构建trigger
-                trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
-                // 参数
-                trigger.getJobDataMap().put(PerfectConstant.JOB_PARAM_KEY, scheduleJob);
-            }
-
-            scheduler.rescheduleJob(triggerKey, trigger);
-
-            // 暂停任务判断，“true：激活，false暂停”
-            if (!scheduleJob.getIs_effected()){
-                pauseJob(scheduler, scheduleJob.getId());
-            }
-
-        } catch (SchedulerException e) {
-            log.error("更新定时任务失败", e);
-        }
-    }
-
-    /**
-     * 立即执行任务
-     */
-    public static void run(Scheduler scheduler, JJobMasterEntity scheduleJob) {
-        try {
-            // 参数
-            JobDataMap dataMap = new JobDataMap();
-            dataMap.put(PerfectConstant.JOB_PARAM_KEY, scheduleJob);
-
-            scheduler.triggerJob(getJobKey(scheduleJob.getId()), dataMap);
-        } catch (SchedulerException e) {
-            log.error("执行定时任务失败", e);
-        }
-    }
-
-    /**
-     * 暂停任务
-     */
-    public static void pauseJob(Scheduler scheduler, Long jobId) {
-        try {
-            scheduler.pauseJob(getJobKey(jobId));
-        } catch (SchedulerException e) {
-            log.error("暂停定时任务失败", e);
-        }
-    }
-
-    /**
-     * 恢复任务
-     */
-    public static void resumeJob(Scheduler scheduler, Long jobId) {
-        try {
-            scheduler.resumeJob(getJobKey(jobId));
-        } catch (SchedulerException e) {
-            log.error("恢复定时任务失败", e);
-        }
-    }
-
-    /**
-     * 删除定时任务
-     */
-    public static void deleteScheduleJob(Scheduler scheduler, Long jobId) {
-        try {
-            scheduler.deleteJob(getJobKey(jobId));
-        } catch (SchedulerException e) {
-            log.error("删除定时任务失败", e);
+    public static CronScheduleBuilder handleCronScheduleMisfirePolicy(SJobEntity job, CronScheduleBuilder cb)
+        throws TaskException {
+        switch (job.getMisfire_policy()) {
+            case ScheduleConstants.MISFIRE_DEFAULT:
+                return cb;
+            case ScheduleConstants.MISFIRE_IGNORE_MISFIRES:
+                return cb.withMisfireHandlingInstructionIgnoreMisfires();
+            case ScheduleConstants.MISFIRE_FIRE_AND_PROCEED:
+                return cb.withMisfireHandlingInstructionFireAndProceed();
+            case ScheduleConstants.MISFIRE_DO_NOTHING:
+                return cb.withMisfireHandlingInstructionDoNothing();
+            default:
+                throw new TaskException(
+                    "The task misfire policy '" + job.getMisfire_policy() + "' cannot be used in cron schedule tasks",
+                    TaskException.Code.CONFIG_ERROR);
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.perfect.core.service.quartz;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.perfect.bean.entity.quartz.JJobLogEntity;
+import com.perfect.bean.entity.quartz.SJobEntity;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.perfect.bean.entity.quartz.JJobLogEntity;
  * @author jobob
  * @since 2019-07-04
  */
-public interface IJJobLogService extends IService<JJobLogEntity> {
+public interface ISJobService extends IService<SJobEntity> {
 
 }

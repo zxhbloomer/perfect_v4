@@ -1,7 +1,7 @@
 package com.perfect.core.mapper.quartz;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.perfect.bean.entity.quartz.JJobLogEntity;
+import com.perfect.bean.entity.quartz.SJobLogEntity;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @since 2019-07-04
  */
 @Repository
-public interface JJobLogMapper extends BaseMapper<JJobLogEntity> {
+public interface SJobLogMapper extends BaseMapper<SJobLogEntity> {
 
 }
