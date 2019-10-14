@@ -30,6 +30,36 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    /**
+     * 发送mq，有callback
+     * @param o
+     * @param clazz
+     * @param mqenum
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void send(Object o, Class clazz, MQEnum mqenum，Object callBackClassName, Object callBackPara) {
+        Map<Class, Object> map = new ConcurrentHashMap<>();
+        map.put(clazz, o);
+
+        String jsonString = JSON.toJSONString(map);
+        String messAgeId = UUID.randomUUID().toString().replace("-", "");
+        // 封装消息
+        Message message =
+            MessageBuilder.withBody(jsonString.getBytes()).setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                .setContentEncoding("utf-8").setMessageId(messAgeId).build();
+        // 构建回调返回的数据（消息id）
+        this.rabbitTemplate.setMandatory(true);
+        this.rabbitTemplate.setConfirmCallback(this);
+        CorrelationData correlationData = new CorrelationData(jsonString);
+        rabbitTemplate.convertAndSend(mqenum.getExchange(), mqenum.getRouting_key(), message, correlationData);
+    }
+
+    /**
+     * 发送mq，没有callback
+     * @param o
+     * @param clazz
+     * @param mqenum
+     */
     @Transactional(rollbackFor = Exception.class)
     public void send(Object o, Class clazz, MQEnum mqenum) {
         Map<Class, Object> map = new ConcurrentHashMap<>();
@@ -46,10 +76,15 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
         this.rabbitTemplate.setConfirmCallback(this);
         CorrelationData correlationData = new CorrelationData(jsonString);
         rabbitTemplate.convertAndSend(mqenum.getExchange(), mqenum.getRouting_key(), message, correlationData);
-
     }
 
-    // 生产消息确认机制 生产者往服务器端发送消息的时候，采用应答机制
+    /**
+     * 生产消息确认机制 生产者往服务器端发送消息的时候，采用应答机制
+     *
+     * @param correlationData
+     * @param ack
+     * @param cause
+     */
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         String jsonString = correlationData.getId();
