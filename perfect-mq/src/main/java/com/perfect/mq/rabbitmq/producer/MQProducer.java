@@ -2,6 +2,7 @@ package com.perfect.mq.rabbitmq.producer;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.perfect.bean.pojo.reflection.ReflectionPojo;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -37,7 +38,7 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
      * @param mqenum
      */
     @Transactional(rollbackFor = Exception.class)
-    public void send(Object o, Class clazz, MQEnum mqenum，Object callBackClassName, Object callBackPara) {
+    public void send(Object o, Class clazz, MQEnum mqenum, ReflectionPojo callbackPojo) {
         Map<Class, Object> map = new ConcurrentHashMap<>();
         map.put(clazz, o);
 
@@ -69,8 +70,10 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
         String messAgeId = UUID.randomUUID().toString().replace("-", "");
         // 封装消息
         Message message =
-            MessageBuilder.withBody(jsonString.getBytes()).setContentType(MessageProperties.CONTENT_TYPE_JSON)
-                .setContentEncoding("utf-8").setMessageId(messAgeId).build();
+            MessageBuilder.withBody(jsonString.getBytes())
+                .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                .setContentEncoding("utf-8")
+                .setMessageId(messAgeId).build();
         // 构建回调返回的数据（消息id）
         this.rabbitTemplate.setMandatory(true);
         this.rabbitTemplate.setConfirmCallback(this);
