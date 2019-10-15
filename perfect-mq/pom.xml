@@ -31,6 +31,10 @@
             <optional>true</optional>
         </dependency>
         <!-- perfect -->
+        <dependency>
+            <groupId>com.perfect</groupId>
+            <artifactId>perfect-bean</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
