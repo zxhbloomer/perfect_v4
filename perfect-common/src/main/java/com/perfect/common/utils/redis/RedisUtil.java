@@ -1,10 +1,10 @@
 package com.perfect.common.utils.redis;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import redis.clients.jedis.Jedis;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,20 +16,11 @@ import java.util.concurrent.TimeUnit;
  * @author
  * @date 2019年8月9日
  */
+@Component
 public class RedisUtil {
 
+    @Autowired
 	private RedisTemplate<String, Object> redisTemplate;
-
-	public RedisUtil(RedisTemplate<String, Object> redisTemplate) {
-		this.redisTemplate = redisTemplate;
-	}
-	
-	private static final String LOCK_SUCCESS = "OK";
-    private static final String SET_IF_NOT_EXIST = "NX";//NX -- Only set the key if it does not already exist. XX -- Only set the keyif it already exist
-    private static final String SET_WITH_EXPIRE_TIME = "PX";//EX = seconds; PX = milliseconds
-    private static final Long RELEASE_SUCCESS = 1L;
-    private static final Integer EXPIRE_TIME = 6000;//锁的过期时间(毫秒)
-    private static final Integer SPIN_SLEEP_TIME = 60;//自旋每次等待时间(毫秒)
 
 	/**
 	 * 设置key-value失效时间，字符串类型key
@@ -564,7 +555,7 @@ public class RedisUtil {
 	 * @param requestId 建锁请求标识(解铃还须系铃人)
 	 * @return 是否获取成功
 	 * boolean
-	 */
+
 	public boolean getDistributedSpinLock(String lockKey, String requestId) {
 		boolean status = false;
 		int spinCnt = (EXPIRE_TIME+SPIN_SLEEP_TIME)/SPIN_SLEEP_TIME;//自旋次数
@@ -582,7 +573,7 @@ public class RedisUtil {
 		}
         return status;
 	}
-	
+     */
 	/**
 	 * 获取分布式互斥锁<br>
 	 * 这是一种原始的方法，参考：https://blog.csdn.net/u013219624/article/details/83314484<br>
@@ -591,7 +582,7 @@ public class RedisUtil {
 	 * @param requestId 建锁请求标识(解铃还须系铃人)
 	 * @return 是否获取成功
 	 * boolean
-	 */
+
 	public boolean getDistributedMutexLock(String lockKey, String requestId) {
 		String result = jedis.set(lockKey, requestId, SET_IF_NOT_EXIST, SET_WITH_EXPIRE_TIME, EXPIRE_TIME);
 		if (result != null && LOCK_SUCCESS.equals(result)) {
@@ -599,7 +590,7 @@ public class RedisUtil {
 		}
 		return false;
 	}
-	
+     */
 	/**
 	 * 释放分布式锁:
 	 * 获取锁对应的value值，检查是否与requestId相等，如果相等则删除锁（解锁）
@@ -608,7 +599,7 @@ public class RedisUtil {
 	 * @param requestId 请求标识(解铃还须系铃人)
 	 * @return 是否释放成功
 	 * boolean
-	 */
+
 	public boolean releaseDistributedLock(String lockKey, String requestId) {
 		String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
 		Object result = jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(requestId));
@@ -617,5 +608,5 @@ public class RedisUtil {
 		}
 		return false;
 	}
-
+     */
 }

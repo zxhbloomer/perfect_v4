@@ -1,67 +1,143 @@
 package com.perfect.common.utils.redis;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式锁工具类
- * https://github.com/lgliugeng/CloudTest/blob/da23a14bec44792abfc61daa526b64ca0b0faf2f/cloud/cloudTest/src/main/java/com/liugeng/cloud/common/util/RedisLockUtil.java
+ * https://github.com/852675742/hrv/blob/33d55b49eb367cea99d72d8b1ed654a19eb54129/hrserver/src/main/java/org/sang/config/RedisLockTool.java
+ * @author zxh
  */
 @Component
-public class RedisLockUtil {
+public final class RedisLockUtil {
+
+    private static final Long SUCCESS = 1L;
+    public static final String LOCK_SCRIPT_STR = "if redis.call('set',KEYS[1],ARGV[1],'EX',ARGV[2],'NX') then return 1 else return 0 end";
+    public static final String UNLOCK_SCRIPT_STR = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+
+    //default value
+    public static final Integer DEFAULT_EXPIRE_SECOND = 60;
+    public static final Long DEFAULT_LOOP_TIMES = 10L;
+    public static final Long DEFAULT_SLEEP_INTERVAL = 500L;
+    public static final String PACKAGE_NAME_SPLIT_STR = "\\.";
+    public static final String CLASS_AND_METHOD_CONCAT_STR = "->";
+
+    private static RedisTemplate redisTemplate;
 
     @Autowired
-    private RedisTemplate<String,Long> redisTemplate;
-
-    /**
-     * 方法说明   获取分布式锁
-     * @方法名    tryGetDistributedLock
-     * @参数      [key, value]
-     * @返回值    boolean
-     * @异常
-     * @创建时间  2019/10/11 10:51
-     * @创建人    liugeng
-     */
-    public boolean tryLock(String key,Long value){
-        // redis不存在则表示无竞争，设置key值
-        if (redisTemplate.opsForValue().setIfAbsent(key,value)){
-            return true;
-        }
-        // 存在key表示有竞争，获取key的值
-        Long curVal = redisTemplate.opsForValue().get(key);
-        // 超时了才可抢占key
-        if (null != curVal && curVal < System.currentTimeMillis()){
-            // 先setkey的值获取到锁
-            Long oldVal = redisTemplate.opsForValue().getAndSet(key,value);
-            // 相等的值表示来自同客户端
-            if (oldVal != null && oldVal.equals(curVal)){
-                return true;
-            }
-        }
-        // 如果是可重入，需在此判断未超时进行累加，并在解锁的时候进行累减
-        return false;
+    public void RedisLockUtil(RedisTemplate redisTemplate) {
+        RedisLockUtil.redisTemplate = redisTemplate;
     }
 
     /**
-     * 方法说明   释放分布式锁
-     * @方法名    unLock
-     * @参数      [key, value]
-     * @返回值    boolean
-     * @异常
-     * @创建时间  2019/10/11 10:52
-     * @创建人    liugeng
+     * 得到分布式锁
+     * 默认key：调用者类名
+     *
+     * @return
+     * @throws InterruptedException
      */
-    public boolean unLock(String key,Long value){
-        // 获取key的值
-        Long oldVal = redisTemplate.opsForValue().get(key);
-        // 将key的值与传入的对象值比较
-        if (null != oldVal && oldVal.equals(value)){
-            // 保持一致的对象值才能删除key释放锁
-            return redisTemplate.opsForValue().getOperations().delete(key);
+    public static boolean tryGetDistributedLock() {
+        String callerKey = getCurrentThreadCaller();
+        String requestId = String.valueOf(Thread.currentThread().getId());
+        return tryGetDistributedLock(callerKey, requestId);
+    }
+
+    /**
+     * @param lockKey   锁名称
+     * @param requestId 随机请求id
+     * @return
+     * @throws InterruptedException
+     */
+    public static boolean tryGetDistributedLock(String lockKey, String requestId) {
+        return tryGetDistributedLock(lockKey, requestId, DEFAULT_EXPIRE_SECOND);
+    }
+
+    /**
+     * @param lockKey      key
+     * @param requestId    随机请求id
+     * @param expireSecond 超时秒
+     * @return
+     * @throws InterruptedException
+     */
+    public static boolean tryGetDistributedLock(String lockKey, String requestId, Integer expireSecond) {
+        return tryGetDistributedLock(lockKey, requestId, expireSecond, DEFAULT_LOOP_TIMES, DEFAULT_SLEEP_INTERVAL);
+    }
+
+
+    /**
+     * 加锁
+     *
+     * @param lockKey       key
+     * @param requestId     随机请求id
+     * @param expireSecond  超时秒
+     * @param loopTimes     循环次数
+     * @param sleepInterval 等待间隔（毫秒）
+     * @return
+     */
+    public static boolean tryGetDistributedLock(String lockKey, String requestId, Integer expireSecond, Long loopTimes, Long sleepInterval) {
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(LOCK_SCRIPT_STR, Long.class);
+        while (loopTimes-- >= 0) {
+            Object result = redisTemplate.execute(redisScript, Lists.newArrayList(lockKey), requestId, String.valueOf(expireSecond));
+            if (SUCCESS.equals(result)) {
+                return true;
+            }
+            try {
+                TimeUnit.MILLISECONDS.sleep(sleepInterval);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            continue;
         }
         return false;
+    }
+
+
+    /**
+     * 释放锁
+     *
+     * @return
+     */
+    public static boolean releaseDistributedLock() {
+        String callerKey = getCurrentThreadCaller();
+        String requestId = String.valueOf(Thread.currentThread().getId());
+        return releaseDistributedLock(callerKey, requestId);
+    }
+
+    /**
+     * 释放锁
+     *
+     * @param lockKey   key
+     * @param requestId 加锁的请求id
+     * @return
+     */
+    public static boolean releaseDistributedLock(String lockKey, String requestId) {
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(UNLOCK_SCRIPT_STR, Long.class);
+        Object result = redisTemplate.execute(redisScript, Collections.singletonList(lockKey), requestId);
+        if (SUCCESS.equals(result)) {
+            return true;
+        }
+        return false;
+    }
+
+    private static String getSimpleClassName(String className) {
+        String[] splits = className.split(PACKAGE_NAME_SPLIT_STR);
+        return splits[splits.length - 1];
+    }
+
+    /**
+     * Get caller
+     *
+     * @return
+     */
+    private static String getCurrentThreadCaller() {
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        return getSimpleClassName(stackTraceElement.getClassName()) + CLASS_AND_METHOD_CONCAT_STR + stackTraceElement.getMethodName();
     }
 }
