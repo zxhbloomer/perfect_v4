@@ -1,6 +1,5 @@
 package com.perfect.bean.pojo.reflection;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,7 +13,8 @@ import java.io.Serializable;
  * @Version: 1.0
  */
 @Data
-public class ReflectionPojo implements Serializable {
+@Builder
+public class CallInfoReflectionPojo implements Serializable {
 
     private static final long serialVersionUID = -2922324307942065265L;
 
@@ -31,10 +31,10 @@ public class ReflectionPojo implements Serializable {
     /**
      * 参数类型名："audit.entity.entityTest.TestListBean"
      */
-    private String parameterClass;
+    private String parameterBeanClass;
 
     /**
      * 参数数据:'[{"x1":"setData","x2":88888888,"x3":true,"x4":[{"x1":"setSubList1","x2":55555555,"x3":true,"x4":[{"x1":"TestSubSubListBean1","x2":111111,"x3":true},{"x1":"TestSubSubListBean2","x2":222222,"x3":true}]},{"x1":"setSubList2","x2":333333,"x3":true,"x4":[{"x1":"TestSubSubListBean1","x2":111111,"x3":true},{"x1":"TestSubSubListBean2","x2":222222,"x3":true}]}]},{"x1":"setData","x2":7777777,"x3":true,"x4":[{"x1":"setSubList1","x2":55555555,"x3":true,"x4":[{"x1":"TestSubSubListBean1","x2":111111,"x3":true},{"x1":"TestSubSubListBean2","x2":222222,"x3":true}]},{"x1":"setSubList2","x2":333333,"x3":true,"x4":[{"x1":"TestSubSubListBean1","x2":111111,"x3":true},{"x1":"TestSubSubListBean2","x2":222222,"x3":true}]}]}]'
      */
-    private String parameter;
+    private String parameterJson;
 }

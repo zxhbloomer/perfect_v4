@@ -2,7 +2,12 @@ package com.perfect.mq.rabbitmq.producer;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.perfect.bean.pojo.reflection.ReflectionPojo;
+import com.perfect.bean.pojo.mqsender.MqMessagePojo;
+import com.perfect.bean.pojo.mqsender.MqSenderPojo;
+import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
+import com.perfect.common.enumconfig.MqSenderEnum;
+import com.perfect.common.utils.UuidUtil;
+import com.perfect.common.utils.redis.RedisUtil;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -36,20 +41,53 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
      *
      */
 
-
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public void send(MqSenderPojo mqSenderPojo, MQEnum mqenum) {
+        String messageDataJson = JSON.toJSONString(mqSenderPojo);
+
+        /**
+         * 保存mqSenderPojo到redis，key为mqSenderPojo.getKey()
+         */
+        redisUtil.
+
+        /**
+         * 封装消息
+         */
+        Message message =
+            MessageBuilder.withBody(messageDataJson.getBytes()).setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                .setContentEncoding("utf-8").setMessageId(mqSenderPojo.getKey()).build();
+        /**
+         * 确认消息是否到达broker服务器
+         */
+        this.rabbitTemplate.setMandatory(true);
+        /**
+         * 回调
+         */
+        if(null != mqSenderPojo.getCallBackInfo()){
+            this.rabbitTemplate.setConfirmCallback(this);
+        }
+        CorrelationData correlationData = new CorrelationData(mqSenderPojo.getKey());
+        rabbitTemplate.convertAndSend(mqenum.getExchange(), mqenum.getRouting_key(), message, correlationData);
+    }
+
     /**
      * 发送mq，有callback
-     * @param o
+     * @param messageInfo
      * @param clazz
      * @param mqenum
      */
     @Transactional(rollbackFor = Exception.class)
-    public void send(Object o, Class clazz, MQEnum mqenum, ReflectionPojo callbackPojo) {
+    @Deprecated
+    public void send(Object messageInfo, Class clazz, MQEnum mqenum) {
         Map<Class, Object> map = new ConcurrentHashMap<>();
-        map.put(clazz, o);
+        map.put(clazz, messageInfo);
 
         String jsonString = JSON.toJSONString(map);
         String messAgeId = UUID.randomUUID().toString().replace("-", "");
@@ -57,32 +95,6 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
         Message message =
             MessageBuilder.withBody(jsonString.getBytes()).setContentType(MessageProperties.CONTENT_TYPE_JSON)
                 .setContentEncoding("utf-8").setMessageId(messAgeId).build();
-        // 构建回调返回的数据（消息id）
-        this.rabbitTemplate.setMandatory(true);
-        this.rabbitTemplate.setConfirmCallback(this);
-        CorrelationData correlationData = new CorrelationData(jsonString);
-        rabbitTemplate.convertAndSend(mqenum.getExchange(), mqenum.getRouting_key(), message, correlationData);
-    }
-
-    /**
-     * 发送mq，没有callback
-     * @param o
-     * @param clazz
-     * @param mqenum
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void send(Object o, Class clazz, MQEnum mqenum) {
-        Map<Class, Object> map = new ConcurrentHashMap<>();
-        map.put(clazz, o);
-
-        String jsonString = JSON.toJSONString(map);
-        String messAgeId = UUID.randomUUID().toString().replace("-", "");
-        // 封装消息
-        Message message =
-            MessageBuilder.withBody(jsonString.getBytes())
-                .setContentType(MessageProperties.CONTENT_TYPE_JSON)
-                .setContentEncoding("utf-8")
-                .setMessageId(messAgeId).build();
         // 构建回调返回的数据（消息id）
         this.rabbitTemplate.setMandatory(true);
         this.rabbitTemplate.setConfirmCallback(this);
@@ -108,7 +120,6 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
             JSONObject jsonObject = JSONObject.parseObject(jsonString);
             log.error("------使用MQ消息确认：传送失败----");
             log.error("------传送失败：" + jsonObject);
-
         }
     }
 }

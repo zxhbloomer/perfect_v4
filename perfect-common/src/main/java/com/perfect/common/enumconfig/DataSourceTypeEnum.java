@@ -8,12 +8,12 @@ package com.perfect.common.enumconfig;
 public enum DataSourceTypeEnum
 {
     /**
-     * 主库
+     * db1
      */
     db1,
 
     /**
-     * 从库
+     * db2
      */
     db2
 }

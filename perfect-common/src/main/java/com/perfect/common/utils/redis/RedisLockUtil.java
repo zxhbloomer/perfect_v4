@@ -12,7 +12,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式锁工具类
- * https://github.com/852675742/hrv/blob/33d55b49eb367cea99d72d8b1ed654a19eb54129/hrserver/src/main/java/org/sang/config/RedisLockTool.java
+ *
+ * 调用：boolean result = RedisLockTool.tryGetDistributedLock();
+ *      boolean result = RedisLockTool.releaseDistributedLock();
+ *
  * @author zxh
  */
 @Component

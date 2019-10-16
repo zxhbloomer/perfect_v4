@@ -253,16 +253,6 @@ public final class CommonUtil {
     }
 
     /**
-     * 随机生成UUID
-     */
-    public static String uuid32Generator() {
-
-        UUID uuid = UUID.randomUUID();
-        String uuidStr = uuid.toString().replace("-", "");
-        return uuidStr;
-    }
-
-    /**
      * 简单判断是否为手机号
      *
      * @param phoneNo 手机号

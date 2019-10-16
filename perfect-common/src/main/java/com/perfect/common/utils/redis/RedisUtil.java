@@ -11,8 +11,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * reids工具类：redisTemplate和jedis是从RedisConfig中装配进来的<br>
- * 其中如果不用自定义redis分布式锁，Jedis可以删除不用
+ * reids工具类
  * @author
  * @date 2019年8月9日
  */

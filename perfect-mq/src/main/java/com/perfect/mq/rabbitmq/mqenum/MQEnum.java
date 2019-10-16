@@ -4,7 +4,7 @@
 package com.perfect.mq.rabbitmq.mqenum;
 
 /**
- *
+ * mq重要配置
  */
 public enum MQEnum {
 	MQ_OPER_LOG(MqInfo.Log.queueCode,

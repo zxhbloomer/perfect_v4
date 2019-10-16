@@ -1,8 +1,6 @@
 package com.perfect.framework.utils.reflection;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.perfect.bean.pojo.reflection.ReflectionPojo;
+import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
 import com.perfect.framework.utils.spring.SpringContextsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ReflectionUtils;
@@ -73,14 +71,14 @@ public class ReflectionUtil {
      * @param reflectionPojo
      * @return
      */
-    public static boolean invoke(ReflectionPojo reflectionPojo) {
+    public static boolean invoke(CallInfoReflectionPojo reflectionPojo) {
         if(reflectionPojo == null){
             return false;
         }
         return ReflectionUtil.invoke(reflectionPojo.getClassName(),
                                 reflectionPojo.getFunctionName(),
-                                reflectionPojo.getParameterClass(),
-                                reflectionPojo.getParameter());
+                                reflectionPojo.getParameterBeanClass(),
+                                reflectionPojo.getParameterJson());
     }
 
 

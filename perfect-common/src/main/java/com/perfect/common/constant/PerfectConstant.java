@@ -66,4 +66,10 @@ public class PerfectConstant {
      */
     public static final String JOB_PARAM_KEY = "JOB_PARAM_KEY";
 
+    /**
+     * redis前缀
+     */
+    public class REDIS_PREFIX {
+
+    }
 }
