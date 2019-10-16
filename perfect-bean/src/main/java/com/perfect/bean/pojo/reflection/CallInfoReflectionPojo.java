@@ -2,6 +2,7 @@ package com.perfect.bean.pojo.reflection;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Tolerate;
 
 import java.io.Serializable;
 
@@ -17,6 +18,9 @@ import java.io.Serializable;
 public class CallInfoReflectionPojo implements Serializable {
 
     private static final long serialVersionUID = -2922324307942065265L;
+
+    @Tolerate
+    CallInfoReflectionPojo(){}
 
     /**
      * 类名:"audit.service.DegreeFunctionTest"

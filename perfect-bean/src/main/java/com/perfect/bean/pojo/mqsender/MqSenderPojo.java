@@ -3,6 +3,9 @@ package com.perfect.bean.pojo.mqsender;
 import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Tolerate;
+
+import java.io.Serializable;
 
 /**
  * @ClassName: MqSenderPojo
@@ -13,7 +16,12 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class MqSenderPojo {
+public class MqSenderPojo implements Serializable {
+
+    private static final long serialVersionUID = 1145461000719110996L;
+
+    @Tolerate
+    MqSenderPojo(){}
 
     /**
      * 消息队列主键

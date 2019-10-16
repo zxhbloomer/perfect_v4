@@ -201,14 +201,14 @@ public class TentantController extends BaseController implements TentantMqCallba
         return mqSenderPojo;
     }
 
-    /**
-     * 实现回调类
-     * @param parameterClass
-     * @param parameter
-     */
     @Override
-    public void mqCallBackTestFunction(String parameterClass, String parameter) {
-        log.debug("xx");
+    public void mqCallBackTestFunction(String parameterClass , String parameter) {
+        log.debug("111");
+    }
+
+    @Override
+    public void mqCallBackTestFunction(List<String> callbackBean) {
+        log.debug("222");
     }
 
 

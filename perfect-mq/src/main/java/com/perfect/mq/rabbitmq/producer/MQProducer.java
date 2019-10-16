@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.perfect.bean.pojo.mqsender.MqMessagePojo;
 import com.perfect.bean.pojo.mqsender.MqSenderPojo;
 import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
+import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.enumconfig.MqSenderEnum;
 import com.perfect.common.utils.UuidUtil;
 import com.perfect.common.utils.redis.RedisUtil;
@@ -55,7 +56,7 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
         /**
          * 保存mqSenderPojo到redis，key为mqSenderPojo.getKey()
          */
-        redisUtil.
+        redisUtil.putToMap(PerfectConstant.REDIS_PREFIX.MQ_CONSUME_FAILT_PREFIX, mqSenderPojo.getKey(), messageDataJson);
 
         /**
          * 封装消息
@@ -113,13 +114,19 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         String jsonString = correlationData.getId();
         System.out.println("消息id:" + correlationData.getId());
-        if (ack) {
-            log.info("------使用MQ消息确认机制确保消息一定要投递到MQ中成功----");
-            return;
-        } else {
-            JSONObject jsonObject = JSONObject.parseObject(jsonString);
-            log.error("------使用MQ消息确认：传送失败----");
-            log.error("------传送失败：" + jsonObject);
+        if(correlationData != null) {
+            // 处理返回
+            if (ack) {
+                log.info("------使用MQ消息确认：消息发送成功----");
+                // 处理回调
+                Object redisRtn = redisUtil.getFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
+                // 删除redis
+                redisUtil.removeFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
+            } else {
+                log.error("------使用MQ消息确认：传送失败----");
+                Object redisRtn = redisUtil.getFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
+                redisUtil.putToMap(PerfectConstant.REDIS_PREFIX.MQ_CONSUME_FAILT_PREFIX, correlationData.getId(), redisRtn);
+            }
         }
     }
 }

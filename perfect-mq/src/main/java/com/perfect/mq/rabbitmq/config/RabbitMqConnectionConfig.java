@@ -44,7 +44,7 @@ public class RabbitMqConnectionConfig {
      * @param rabbitAdmin
      */
     private void initQueue(RabbitAdmin rabbitAdmin) {
-        rabbitAdmin.declareQueue(new Queue(MQEnum.MQ_OPER_LOG.getQueueCode(),true));
+//        rabbitAdmin.declareQueue(new Queue(MQEnum.MQ_OPER_LOG.getQueueCode(),true));
     }
 
 }

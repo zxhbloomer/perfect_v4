@@ -2,6 +2,9 @@ package com.perfect.bean.pojo.mqsender;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Tolerate;
+
+import java.io.Serializable;
 
 /**
  * @ClassName: MqMessagePojo
@@ -12,7 +15,12 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class MqMessagePojo {
+public class MqMessagePojo implements Serializable {
+
+    private static final long serialVersionUID = 7703914218244201636L;
+
+    @Tolerate
+    MqMessagePojo(){}
 
     /**
      * messagebean类

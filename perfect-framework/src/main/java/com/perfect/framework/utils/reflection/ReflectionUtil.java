@@ -1,11 +1,15 @@
 package com.perfect.framework.utils.reflection;
 
+import com.alibaba.fastjson.JSONObject;
+import com.perfect.bean.pojo.mqsender.MqSenderPojo;
 import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
 import com.perfect.framework.utils.spring.SpringContextsUtil;
+import org.joor.Reflect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 import static org.joor.Reflect.on;
 
@@ -67,18 +71,69 @@ public class ReflectionUtil {
     }
 
     /**
+     *
+     * @param className
+     * @param functionName
+     * @param arg
+     * @return
+     */
+    public static boolean invoke(String className, String functionName, Object arg) {
+        if (className == null || "".equals(className.trim())) {
+            return false;
+        }
+        if (functionName == null || "".equals(functionName.trim())) {
+            return false;
+        }
+
+        // 返回值
+        // 执行方法
+        Object rtn = on(className).create().call(functionName, arg);
+        return true;
+    }
+
+    /**
      * 传对象
      * @param reflectionPojo
      * @return
      */
-    public static boolean invoke(CallInfoReflectionPojo reflectionPojo) {
+    public static boolean invokeByString(CallInfoReflectionPojo reflectionPojo) {
         if(reflectionPojo == null){
             return false;
         }
+
         return ReflectionUtil.invoke(reflectionPojo.getClassName(),
                                 reflectionPojo.getFunctionName(),
                                 reflectionPojo.getParameterBeanClass(),
                                 reflectionPojo.getParameterJson());
+    }
+
+    /**
+     * 传对象
+     * @param reflectionPojo
+     * @return
+     */
+    public static boolean invokeByObject(CallInfoReflectionPojo reflectionPojo) {
+        if(reflectionPojo == null){
+            return false;
+        }
+
+        Object arg = ReflectionUtil.getClassBean(reflectionPojo.getParameterBeanClass(), reflectionPojo.getParameterJson());
+
+        return ReflectionUtil.invoke(reflectionPojo.getClassName(),
+            reflectionPojo.getFunctionName(),
+            arg);
+    }
+
+    /**
+     * 获取类型，包含数据
+     * @param type
+     * @param jsonData
+     * @return
+     */
+    public static Object getClassBean(String type, String jsonData){
+        Object obClass = on(type).create();
+        Object obObject = JSONObject.parseObject(jsonData, ((Reflect)obClass).type());
+        return obObject;
     }
 
 
