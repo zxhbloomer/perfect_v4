@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.entity.sys.config.tenant.STentantEntity;
 import com.perfect.bean.pojo.mqsender.MqMessagePojo;
 import com.perfect.bean.pojo.mqsender.MqSenderPojo;
+import com.perfect.bean.pojo.mqsender.builder.MqSenderPojoBuilder;
 import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
@@ -21,6 +22,7 @@ import com.perfect.common.utils.UuidUtil;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import com.perfect.mq.rabbitmq.callback.manager.config.tentant.TentantMqCallbackInterface;
+import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import com.perfect.mq.rabbitmq.producer.MQProducer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -120,10 +122,14 @@ public class TentantController extends BaseController implements TentantMqCallba
     @PostMapping("/save")
     @ResponseBody
     @RepeatSubmit
-    public ResponseEntity<JsonResult<STentantEntity>> save(@RequestBody(required = false) STentantEntity bean) {
+    public ResponseEntity<JsonResult<STentantVo>> save(@RequestBody(required = false) STentantEntity bean) {
 
         if(service.update(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"更新成功"));
+            // 获取更新后的数据
+            STentantVo vo = service.selectByid(bean.getId());
+            // 调用mq
+            mqSendAfterDataSave(vo);
+            return ResponseEntity.ok().body(ResultUtil.OK(vo,"更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
@@ -138,7 +144,11 @@ public class TentantController extends BaseController implements TentantMqCallba
         // 默认启用
         bean.setIsenable(true);
         if(service.insert(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
+            // 获取更新后的数据
+            STentantVo vo = service.selectByid(bean.getId());
+            // 调用mq
+            mqSendAfterDataSave(vo);
+            return ResponseEntity.ok().body(ResultUtil.OK(vo,"插入成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
         }
@@ -167,46 +177,32 @@ public class TentantController extends BaseController implements TentantMqCallba
 //        util.exportExcel("租户数据导出", "租户数据", rtnList, response);
 //    }
 
-    /**
-     * 构筑mq的bean
-     * @param messageData
-     * @param callBackClasz
-     * @param functionName
-     * @param callBackPara
-     * @return
-     */
-    private MqSenderPojo buildMqSenderPojo(Object messageData, String callBackClasz, String functionName, Object callBackPara){
-        MqSenderPojo mqSenderPojo = MqSenderPojo.builder()
-                                .mqMessagePojo(
-                                    MqMessagePojo.builder()
-                                        .messageBeanClass(messageData.getClass().getName())
-                                        .parameterJson(JSON.toJSONString(messageData))
-                                        .build()
-                                )
-                                .key(UuidUtil.randomUUID())
-                                .type(MqSenderEnum.CALL_BACK_MQ.getCode().toString())
-                                .name(MqSenderEnum.CALL_BACK_MQ.getName())
-                                .callBackInfo(
-                                    CallInfoReflectionPojo.builder()
-                                        .className(callBackClasz)
-                                        .functionName(functionName)
-                                        .parameterBeanClass(callBackPara.getClass().getName())
-                                        .parameterJson(JSON.toJSONString(callBackPara))
-                                        .build()
-                                )
-                                .build();
-        return mqSenderPojo;
-    }
-
     @Override
     public void mqCallBackTestFunction(String parameterClass , String parameter) {
-        log.debug("111");
+        log.debug("testmq");
     }
 
     @Override
     public void mqCallBackTestFunction(List<String> callbackBean) {
-        log.debug("222");
+        log.debug("testmq");
     }
 
+    /**
+     * 保存完毕后，调用mq，触发定时任务
+     *
+     * 规则：获取完整的数据进行判断后触发
+     *
+     */
+    private void mqSendAfterDataSave(STentantVo data){
+        // 初始化要发生mq的bean
+        MqSenderPojo mqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(data, MqSenderEnum.NORMAL_MQ);
+        mqproducer.send(mqSenderPojo, MQEnum.MQ_TASK_Tentant);
+    }
+
+    private void resetAllMq(List<STentantVo> dataList){
+        for (STentantVo vo : dataList){
+            mqSendAfterDataSave(vo);
+        }
+    }
 
 }
