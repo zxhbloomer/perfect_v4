@@ -47,7 +47,8 @@ public class ReflectionUtil {
 
 
     /**
-     * 以下为非spring版本
+     * 字符串反射方式,进行调用
+     *
      * @param className              类名                   "audit.service.DegreeFunctionTest"
      * @param functionName           函数名                 "saveDo"
      * @param parameterClass         参数类型名              "audit.entity.entityTest.TestListBean"
@@ -71,6 +72,7 @@ public class ReflectionUtil {
     }
 
     /**
+     * 调用class下的方法
      *
      * @param className
      * @param functionName
@@ -92,7 +94,8 @@ public class ReflectionUtil {
     }
 
     /**
-     * 传对象
+     * 通过调用参数bean进行调用，按字符串反射方式
+     *
      * @param reflectionPojo
      * @return
      */
@@ -108,7 +111,8 @@ public class ReflectionUtil {
     }
 
     /**
-     * 传对象
+     * 通过调用参数bean进行调用，按字符串反射参数对象后调用
+     *
      * @param reflectionPojo
      * @return
      */
@@ -125,7 +129,7 @@ public class ReflectionUtil {
     }
 
     /**
-     * 获取类型，包含数据
+     * 获取参数类型，包含数据，反射
      * @param type
      * @param jsonData
      * @return
@@ -135,31 +139,4 @@ public class ReflectionUtil {
         Object obObject = JSONObject.parseObject(jsonData, ((Reflect)obClass).type());
         return obObject;
     }
-
-
-//
-//    /**
-//     * 保存的function
-//     * @param parameterClass
-//     * @param parameter
-//     * @return
-//     * @throws ClassNotFoundException
-//     */
-//    public String saveDo(String parameterClass , String parameter) throws ClassNotFoundException {
-//        String rtn = "调用成功saveDo";
-//        // 参数初始化
-//        Class clazz = null;
-//        try {
-//            clazz = Class.forName(parameterClass);
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//            System.out.println(e);
-//            throw e;
-//        }
-//        List<TestListBean> paramaterList = JSON.parseArray(parameter ,clazz);
-//        JSON.parse(parameter);
-//        JSONArray.parse(parameter);
-//        System.out.println(rtn);
-//        return  rtn;
-//    }
 }

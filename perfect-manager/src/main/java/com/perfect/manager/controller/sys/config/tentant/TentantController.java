@@ -18,11 +18,9 @@ import com.perfect.common.enumconfig.MqSenderEnum;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.UuidUtil;
-import com.perfect.common.utils.reflect.ReflectionUtils;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import com.perfect.mq.rabbitmq.callback.manager.config.tentant.TentantMqCallbackInterface;
-import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import com.perfect.mq.rabbitmq.producer.MQProducer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,10 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author zhangxh
@@ -48,6 +43,9 @@ public class TentantController extends BaseController implements TentantMqCallba
     @Autowired
     private ITentantService service;
 
+    /**
+     * todo：调用消息队列，消息队列调用定时任务
+     */
     @Autowired
     private MQProducer mqproducer;
 
@@ -104,14 +102,14 @@ public class TentantController extends BaseController implements TentantMqCallba
         STentantVo searchCondition) throws IllegalAccessException, InstantiationException {
         IPage<STentantVo> entity = service.selectPage(searchCondition);
 
-        // rabbitmq
-        Map<String, String> testMap_MessageData = new ConcurrentHashMap<>();
-        testMap_MessageData.put("11", "test11");
-        testMap_MessageData.put("22", "test22");
-        List<String> callbackBean = new ArrayList<>();
-        callbackBean.add("123");
-        callbackBean.add("234");
-        mqproducer.send(buildMqSenderPojo(testMap_MessageData, this.getClass().getName(), "mqCallBackTestFunction", callbackBean), MQEnum.MQ_OPER_LOG);
+//        // rabbitmq send test
+//        Map<String, String> testMap_MessageData = new ConcurrentHashMap<>();
+//        testMap_MessageData.put("11", "test11");
+//        testMap_MessageData.put("22", "test22");
+//        List<String> callbackBean = new ArrayList<>();
+//        callbackBean.add("123");
+//        callbackBean.add("234");
+//        mqproducer.send(buildMqSenderPojo(testMap_MessageData, this.getClass().getName(), "mqCallBackTestFunction", callbackBean), MQEnum.MQ_OPER_LOG);
 
 //        mqproducer.send("测试", String.class, MQEnum.MQ_OPER_LOG);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
@@ -188,7 +186,6 @@ public class TentantController extends BaseController implements TentantMqCallba
                                 .key(UuidUtil.randomUUID())
                                 .type(MqSenderEnum.CALL_BACK_MQ.getCode().toString())
                                 .name(MqSenderEnum.CALL_BACK_MQ.getName())
-                                .status(String.valueOf(1))
                                 .callBackInfo(
                                     CallInfoReflectionPojo.builder()
                                         .className(callBackClasz)

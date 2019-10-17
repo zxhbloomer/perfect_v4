@@ -72,5 +72,6 @@ public class PerfectConstant {
     public class REDIS_PREFIX {
         public static final String MQ_SEND_PREFIX = "PERFECT_MQ";// mq发送消息暂存到redis的prefix
         public static final String MQ_CONSUME_FAILT_PREFIX = "PERFECT_MQ_CONSUME_FAILT_PREFIX";
+        public static final String MQ_CONSUME_RETURN_PREFIX = "PERFECT_MQ_CONSUME_RETURN_PREFIX";
     }
 }

@@ -9,6 +9,7 @@ import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.enumconfig.MqSenderEnum;
 import com.perfect.common.utils.UuidUtil;
 import com.perfect.common.utils.redis.RedisUtil;
+import com.perfect.common.utils.string.convert.Convert;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 @Slf4j
-public class MQProducer implements RabbitTemplate.ConfirmCallback {
+public class MQProducer implements RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
 
     /**
      * todo:考虑数据放到redis中，然后需要回调则考虑回调，没有就没有
@@ -48,7 +50,11 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
     @Autowired
     private RedisUtil redisUtil;
 
-
+    /**
+     * 消息发送
+     * @param mqSenderPojo
+     * @param mqenum
+     */
     @Transactional(rollbackFor = Exception.class)
     public void send(MqSenderPojo mqSenderPojo, MQEnum mqenum) {
         String messageDataJson = JSON.toJSONString(mqSenderPojo);
@@ -118,15 +124,36 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback {
             // 处理返回
             if (ack) {
                 log.info("------使用MQ消息确认：消息发送成功----");
-                // 处理回调
-                Object redisRtn = redisUtil.getFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
+//                Object redisRtn = redisUtil.getFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
                 // 删除redis
                 redisUtil.removeFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
             } else {
                 log.error("------使用MQ消息确认：传送失败----");
                 Object redisRtn = redisUtil.getFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
                 redisUtil.putToMap(PerfectConstant.REDIS_PREFIX.MQ_CONSUME_FAILT_PREFIX, correlationData.getId(), redisRtn);
+                redisUtil.removeFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
             }
         }
+    }
+
+    /**
+     * 消息退回，存放到redis中
+     * @param message
+     * @param replyCode
+     * @param replyText
+     * @param exchange
+     * @param routingKey
+     */
+    @Override
+    public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+        String messageData = Convert.str(message.getBody(), (Charset)null);
+        MqSenderPojo mqSenderPojo = JSONObject.parseObject(messageData, MqSenderPojo.class);
+
+        Object redisRtn = redisUtil.getFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, mqSenderPojo.getKey());
+        redisUtil.putToMap(PerfectConstant.REDIS_PREFIX.MQ_CONSUME_RETURN_PREFIX, mqSenderPojo.getKey(), redisRtn);
+        redisUtil.removeFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, mqSenderPojo.getKey());
+        System.out.println("消息被退回");
+        System.out.println("被退回的消息是 :" + messageData);
+        System.out.println("被退回的消息编码是 :" + replyCode);
     }
 }

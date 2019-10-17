@@ -32,13 +32,12 @@ public class MqSenderPojo implements Serializable {
      * 类型
      */
     private String type;
-
     private String name;
 
     /**
      * 状态：-1（失败），0（成功）,1（已发送）
      */
-    private String status;
+//    private String status;
 
     /**
      * 消息体

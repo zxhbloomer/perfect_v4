@@ -63,6 +63,19 @@ public enum MQEnum {
 		 * @author zxh
 		 * @date 2019年 10月12日 23:34:54
 		 */
+		public class Tentant {
+			public static final String queueCode = "perfect-tentant";
+			public static final String name = "平台操作日志";
+			public static final String exchange = "perfect-tentant-exchange";
+			public static final String routing_key = "perfect-tentant.#";
+		}
+
+		/**
+		 * 日志类
+		 *
+		 * @author zxh
+		 * @date 2019年 10月12日 23:34:54
+		 */
 		public class Log {
 			public static final String queueCode = "perfect-log";
 			public static final String name = "平台操作日志";
@@ -71,7 +84,7 @@ public enum MQEnum {
 		}
 
 		/**
-		 * 任务类
+		 * 平台任务类
 		 *
 		 * @author zxh
 		 * @date 2019年 10月12日 23:34:54
