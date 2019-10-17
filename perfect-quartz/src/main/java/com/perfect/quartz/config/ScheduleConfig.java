@@ -12,8 +12,11 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
  *
  * @author Administrator
  */
-@Configuration public class ScheduleConfig {
-    @Bean public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource) {
+@Configuration
+public class ScheduleConfig {
+
+    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource) {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
         factory.setDataSource(dataSource);
 

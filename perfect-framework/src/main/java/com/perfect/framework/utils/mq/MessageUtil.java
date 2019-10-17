@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 
 /**
  * @ClassName: MessageUtil
- * @Description: TODO
+ * @Description: 消息工具类
  * @Author: zxh
  * @date: 2019/10/17
  * @Version: 1.0
