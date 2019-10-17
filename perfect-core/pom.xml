@@ -85,10 +85,19 @@
                 <groupId>com.github.jsqlparser</groupId>
                 <artifactId>jsqlparser</artifactId>
             </dependency>
+            <!-- quartz -->
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+            </dependency>
             <!-- perfect -->
             <dependency>
                 <groupId>com.perfect</groupId>
                 <artifactId>perfect-common</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.perfect</groupId>
+                <artifactId>perfect-quartz</artifactId>
             </dependency>
         </dependencies>
 

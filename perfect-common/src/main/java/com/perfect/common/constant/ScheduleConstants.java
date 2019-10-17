@@ -29,22 +29,24 @@ public interface ScheduleConstants
         /**
          * 正常
          */
-        NORMAL("0"),
+        NORMAL(true),
         /**
-         * 暂停
+         * 停止
          */
-        PAUSE("1");
+        PAUSE(false);
 
-        private String value;
 
-        private Status(String value)
+        private boolean value;
+
+        private Status(boolean value)
         {
             this.value = value;
         }
 
-        public String getValue()
+        public boolean getValue()
         {
             return value;
         }
+
     }
 }
