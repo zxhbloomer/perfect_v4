@@ -20,6 +20,7 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +50,7 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback, RabbitTemplat
      */
 
     @Autowired
+    @Qualifier("perfect_RabbitTemplate")
     private RabbitTemplate rabbitTemplate;
 
     @Autowired

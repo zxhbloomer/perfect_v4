@@ -34,7 +34,7 @@ public class RabbitMqConnectionConfig {
         return factory;
     }
 
-    @Bean
+    @Bean("perfect_RabbitTemplate")
     public RabbitTemplate rabbitTemplate(CachingConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         return rabbitTemplate;
