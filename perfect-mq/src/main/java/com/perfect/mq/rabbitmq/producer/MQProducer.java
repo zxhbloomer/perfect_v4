@@ -2,6 +2,7 @@ package com.perfect.mq.rabbitmq.producer;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.perfect.bean.entity.log.mq.SLogMqEntity;
 import com.perfect.bean.pojo.mqsender.MqMessagePojo;
 import com.perfect.bean.pojo.mqsender.MqSenderPojo;
 import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
@@ -10,6 +11,7 @@ import com.perfect.common.enumconfig.MqSenderEnum;
 import com.perfect.common.utils.UuidUtil;
 import com.perfect.common.utils.redis.RedisUtil;
 import com.perfect.common.utils.string.convert.Convert;
+import com.perfect.core.service.log.mq.ISLogMqService;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -36,9 +38,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class MQProducer implements RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
 
+    @Autowired
+    ISLogMqService service;
+
     /**
-     * todo:考虑数据放到redis中，然后需要回调则考虑回调，没有就没有
-     * https://github.com/notMyPen/spring-cloud-clover/blob/126d26bdc0da8a51de68774897ee859dd67a3c31/clover-business-starter/src/main/java/rrx/cnuo/cncommon/utils/MqSendTool.java
+     * 考虑数据放到redis中，然后需要回调则考虑回调，没有就没有
      *
      * CorrelationData的id，使用redis的key
      *
@@ -60,6 +64,11 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback, RabbitTemplat
         String messageDataJson = JSON.toJSONString(mqSenderPojo);
 
         /**
+         * 数据库保存
+         */
+        insertToDbService(mqSenderPojo, mqenum, messageDataJson);
+
+        /**
          * 保存mqSenderPojo到redis，key为mqSenderPojo.getKey()
          */
         redisUtil.putToMap(PerfectConstant.REDIS_PREFIX.MQ_CONSUME_FAILT_PREFIX, mqSenderPojo.getKey(), messageDataJson);
@@ -74,6 +83,7 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback, RabbitTemplat
          * 确认消息是否到达broker服务器
          */
         this.rabbitTemplate.setMandatory(true);
+
         /**
          * 回调
          */
@@ -81,31 +91,6 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback, RabbitTemplat
             this.rabbitTemplate.setConfirmCallback(this);
         }
         CorrelationData correlationData = new CorrelationData(mqSenderPojo.getKey());
-        rabbitTemplate.convertAndSend(mqenum.getExchange(), mqenum.getRouting_key(), message, correlationData);
-    }
-
-    /**
-     * 发送mq，有callback
-     * @param messageInfo
-     * @param clazz
-     * @param mqenum
-     */
-    @Transactional(rollbackFor = Exception.class)
-    @Deprecated
-    public void send(Object messageInfo, Class clazz, MQEnum mqenum) {
-        Map<Class, Object> map = new ConcurrentHashMap<>();
-        map.put(clazz, messageInfo);
-
-        String jsonString = JSON.toJSONString(map);
-        String messAgeId = UUID.randomUUID().toString().replace("-", "");
-        // 封装消息
-        Message message =
-            MessageBuilder.withBody(jsonString.getBytes()).setContentType(MessageProperties.CONTENT_TYPE_JSON)
-                .setContentEncoding("utf-8").setMessageId(messAgeId).build();
-        // 构建回调返回的数据（消息id）
-        this.rabbitTemplate.setMandatory(true);
-        this.rabbitTemplate.setConfirmCallback(this);
-        CorrelationData correlationData = new CorrelationData(jsonString);
         rabbitTemplate.convertAndSend(mqenum.getExchange(), mqenum.getRouting_key(), message, correlationData);
     }
 
@@ -155,5 +140,33 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback, RabbitTemplat
         System.out.println("消息被退回");
         System.out.println("被退回的消息是 :" + messageData);
         System.out.println("被退回的消息编码是 :" + replyCode);
+    }
+
+    /**
+     * 建立消息队列entity_bean
+     * @param mqSenderPojo
+     */
+    private SLogMqEntity buildEntityBean(MqSenderPojo mqSenderPojo, MQEnum mqenum, String data){
+        SLogMqEntity sLogMqEntity = new SLogMqEntity();
+        sLogMqEntity.setCode(mqSenderPojo.getType());
+        sLogMqEntity.setName(mqSenderPojo.getName());
+        sLogMqEntity.setExchange(mqenum.getExchange());
+        sLogMqEntity.setRouting_key(mqenum.getRouting_key());
+        sLogMqEntity.setMq_data(data);
+        sLogMqEntity.setConstruct_id(mqSenderPojo.getKey());
+        sLogMqEntity.setProducer_status(true);
+        sLogMqEntity.setConsumer_status(false);
+        return sLogMqEntity;
+    }
+
+    /**
+     * 执行保存操作
+     * @param mqSenderPojo
+     * @param mqenum
+     * @param data
+     */
+    private void insertToDbService (MqSenderPojo mqSenderPojo, MQEnum mqenum, String data) {
+        SLogMqEntity sLogMqEntity = buildEntityBean(mqSenderPojo, mqenum, data);
+        service.insert(sLogMqEntity);
     }
 }

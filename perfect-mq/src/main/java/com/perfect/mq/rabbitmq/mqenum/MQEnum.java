@@ -96,7 +96,7 @@ public enum MQEnum {
 		 */
 		public class TentantTask {
 			public static final String queueCode = "perfect-task-tentant";
-			public static final String name = "平台操作日志";
+			public static final String name = "租户任务消息队列";
 			public static final String exchange = "perfect-task-tentant-exchange";
 			public static final String routing_key = "perfect-task-tentant.#";
 		}

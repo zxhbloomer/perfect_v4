@@ -8,17 +8,16 @@ import com.perfect.bean.entity.sys.config.dict.SDictTypeEntity;
 import com.perfect.bean.vo.quartz.SJobVo;
 import com.perfect.common.constant.ScheduleConstants;
 import com.perfect.common.exception.job.TaskException;
+import com.perfect.common.utils.quartz.CronUtil;
 import com.perfect.common.utils.string.convert.Convert;
 import com.perfect.core.mapper.quartz.SJobMapper;
 import com.perfect.core.service.quartz.ISJobService;
 import com.perfect.core.utils.mybatis.PageUtil;
-import com.perfect.quartz.util.CronUtils;
-import com.perfect.quartz.util.ScheduleUtils;
-import org.quartz.JobDataMap;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +33,6 @@ import java.util.List;
  * @since 2019-07-04
  */
 @Service public class SJobServiceImpl extends ServiceImpl<SJobMapper, SJobEntity> implements ISJobService {
-
-    @Autowired
-    private Scheduler scheduler;
 
     @Autowired
     private SJobMapper jobMapper;
@@ -92,9 +88,9 @@ import java.util.List;
         String jobGroup = job.getJob_group();
         job.setIs_effected(ScheduleConstants.Status.PAUSE.getValue());
         int rows = jobMapper.updateById(job);
-        if (rows > 0) {
-            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-        }
+//        if (rows > 0) {
+//            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+//        }
         return rows;
     }
 
@@ -110,9 +106,9 @@ import java.util.List;
         String jobGroup = job.getJob_group();
         job.setIs_effected(ScheduleConstants.Status.NORMAL.getValue());
         int rows = jobMapper.updateById(job);
-        if (rows > 0) {
-            scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-        }
+//        if (rows > 0) {
+//            scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+//        }
         return rows;
     }
 
@@ -129,9 +125,9 @@ import java.util.List;
         job.setIs_effected(ScheduleConstants.Status.PAUSE.getValue());
         job.setIsdel(true);
         int rows = jobMapper.updateById(job);
-        if (rows > 0) {
-            scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-        }
+//        if (rows > 0) {
+//            scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+//        }
         return rows;
     }
 
@@ -181,9 +177,9 @@ import java.util.List;
         String jobGroup = job.getJob_group();
         SJobEntity properties = selectJobById(job.getId());
         // 参数
-        JobDataMap dataMap = new JobDataMap();
-        dataMap.put(ScheduleConstants.TASK_PROPERTIES, properties);
-        scheduler.triggerJob(ScheduleUtils.getJobKey(jobId, jobGroup), dataMap);
+//        JobDataMap dataMap = new JobDataMap();
+//        dataMap.put(ScheduleConstants.TASK_PROPERTIES, properties);
+//        scheduler.triggerJob(ScheduleUtils.getJobKey(jobId, jobGroup), dataMap);
     }
 
     /**
@@ -196,9 +192,9 @@ import java.util.List;
     public int insertJob(SJobEntity job) throws SchedulerException, TaskException {
         job.setIs_effected(ScheduleConstants.Status.PAUSE.getValue());
         int rows = jobMapper.insert(job);
-        if (rows > 0) {
-            ScheduleUtils.createScheduleJob(scheduler, job);
-        }
+//        if (rows > 0) {
+//            ScheduleUtils.createScheduleJob(scheduler, job);
+//        }
         return rows;
     }
 
@@ -227,12 +223,12 @@ import java.util.List;
     public void updateSchedulerJob(SJobEntity job, String jobGroup) throws SchedulerException, TaskException {
         Long jobId = job.getId();
         // 判断是否存在
-        JobKey jobKey = ScheduleUtils.getJobKey(jobId, jobGroup);
-        if (scheduler.checkExists(jobKey)) {
-            // 防止创建时存在数据问题 先移除，然后在执行创建操作
-            scheduler.deleteJob(jobKey);
-        }
-        ScheduleUtils.createScheduleJob(scheduler, job);
+//        JobKey jobKey = ScheduleUtils.getJobKey(jobId, jobGroup);
+//        if (scheduler.checkExists(jobKey)) {
+//            // 防止创建时存在数据问题 先移除，然后在执行创建操作
+//            scheduler.deleteJob(jobKey);
+//        }
+//        ScheduleUtils.createScheduleJob(scheduler, job);
     }
 
     /**
@@ -243,7 +239,7 @@ import java.util.List;
      */
     @Override
     public boolean checkCronExpressionIsValid(String cronExpression) {
-        return CronUtils.isValid(cronExpression);
+        return CronUtil.isValid(cronExpression);
     }
 
 }

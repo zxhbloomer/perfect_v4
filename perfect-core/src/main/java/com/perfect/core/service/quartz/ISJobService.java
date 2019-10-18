@@ -7,8 +7,6 @@ import com.perfect.bean.vo.quartz.SJobVo;
 import com.perfect.common.exception.job.TaskException;
 import org.quartz.SchedulerException;
 
-import java.util.List;
-
 /**
  * <p>
  *  服务类

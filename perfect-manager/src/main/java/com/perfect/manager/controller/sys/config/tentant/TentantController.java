@@ -103,17 +103,6 @@ public class TentantController extends BaseController implements TentantMqCallba
     public ResponseEntity<JsonResult<IPage<STentantVo>>> list(@RequestBody(required = false)
         STentantVo searchCondition) throws IllegalAccessException, InstantiationException {
         IPage<STentantVo> entity = service.selectPage(searchCondition);
-
-//        // rabbitmq send test
-//        Map<String, String> testMap_MessageData = new ConcurrentHashMap<>();
-//        testMap_MessageData.put("11", "test11");
-//        testMap_MessageData.put("22", "test22");
-//        List<String> callbackBean = new ArrayList<>();
-//        callbackBean.add("123");
-//        callbackBean.add("234");
-//        mqproducer.send(buildMqSenderPojo(testMap_MessageData, this.getClass().getName(), "mqCallBackTestFunction", callbackBean), MQEnum.MQ_OPER_LOG);
-
-//        mqproducer.send("测试", String.class, MQEnum.MQ_OPER_LOG);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
