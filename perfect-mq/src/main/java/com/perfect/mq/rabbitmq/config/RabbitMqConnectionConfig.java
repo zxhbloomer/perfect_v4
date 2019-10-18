@@ -19,8 +19,9 @@ import org.springframework.amqp.core.Queue;
  * @Description: 当生产者 使用的Jackson2JsonMessageConverter 序列化 必须配置该类 消费者才可以反序列化
  * @Date：Created
  */
-@Configuration
-@EnableRabbit
+//@Configuration
+//@EnableRabbit
+@Deprecated
 public class RabbitMqConnectionConfig {
 
     @Bean

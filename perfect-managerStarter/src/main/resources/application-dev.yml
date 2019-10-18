@@ -47,6 +47,15 @@ spring:
         max-concurrency: 10
         ## 限流
         prefetch: 1
+    custom:
+      producer:
+        has-open: false
+        default-exchange: perfect-default-exchange
+        default-queue: perfect-default-queue
+        default-routing-key: perfect-default-routing-key
+      consumer:
+        has-open: false
+        default-queue: test_queue
   profiles:
     # 数据库设置
     active: druid
