@@ -73,7 +73,7 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback, RabbitTemplat
         /**
          * 保存mqSenderPojo到redis，key为mqSenderPojo.getKey()
          */
-        redisUtil.putToMap(PerfectConstant.REDIS_PREFIX.MQ_CONSUME_FAILT_PREFIX, mqSenderPojo.getKey(), messageDataJson);
+        redisUtil.putToMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, mqSenderPojo.getKey(), messageDataJson);
 
         /**
          * 封装消息
