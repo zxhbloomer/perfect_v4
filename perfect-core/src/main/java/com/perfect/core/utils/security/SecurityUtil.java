@@ -34,7 +34,11 @@ public class SecurityUtil {
      * @return
      */
     public static long getLoginUserId(){
-        return SecurityUtil.getLoginUserEntity().getId();
+        if(SecurityUtil.getAuthentication() == null){
+            return -1;
+        } else {
+            return SecurityUtil.getLoginUserEntity().getId();
+        }
     }
 
     /**

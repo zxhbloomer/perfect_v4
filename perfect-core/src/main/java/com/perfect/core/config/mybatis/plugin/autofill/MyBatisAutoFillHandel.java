@@ -26,8 +26,8 @@ public class MyBatisAutoFillHandel implements MetaObjectHandler {
         this.setFieldValByName("u_time", LocalDateTime.now(), metaObject);
         this.setFieldValByName("dbversion", 0, metaObject);
 
-        this.setFieldValByName("c_id", SecurityUtil.getLoginUserId(), metaObject);
-        this.setFieldValByName("u_id", SecurityUtil.getLoginUserId(), metaObject);
+        this.setFieldValByName("c_id", SecurityUtil.getLoginUserId() < 0 ? null : SecurityUtil.getLoginUserId(), metaObject);
+        this.setFieldValByName("u_id", SecurityUtil.getLoginUserId() < 0 ? null : SecurityUtil.getLoginUserId(), metaObject);
         // 默认未删除
         this.setFieldValByName("isdel", false, metaObject);
         // 默认未启用
@@ -47,7 +47,7 @@ public class MyBatisAutoFillHandel implements MetaObjectHandler {
 //        Object dbversion = this.getFieldValByName("dbversion", metaObject);
 
         this.setFieldValByName("u_time", LocalDateTime.now(), metaObject);
-        this.setFieldValByName("u_id", SecurityUtil.getLoginUserId(), metaObject);
+        this.setFieldValByName("u_id", SecurityUtil.getLoginUserId() < 0 ? null : SecurityUtil.getLoginUserId(), metaObject);
 //        this.setFieldValByName("dbversion", Integer.valueOf(dbversion.toString()) + 1, metaObject);
 
 
