@@ -52,7 +52,7 @@ spring:
         has-open: false
         default-exchange: perfect-default-exchange
         default-queue: perfect-default-queue
-        default-routing-key: perfect-default-routing-key
+        default-routing-key: perfect-default-routing-key.#
       consumer:
         has-open: false
         default-queue: test_queue

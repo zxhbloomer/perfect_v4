@@ -18,12 +18,11 @@ import com.perfect.common.annotation.SysLog;
 import com.perfect.common.enumconfig.MqSenderEnum;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
-import com.perfect.common.utils.UuidUtil;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import com.perfect.mq.rabbitmq.callback.manager.config.tentant.TentantMqCallbackInterface;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
-import com.perfect.mq.rabbitmq.producer.MQProducer;
+import com.perfect.mq.rabbitmq.producer.PerfectMqProducer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +48,7 @@ public class TentantController extends BaseController implements TentantMqCallba
      * todo：调用消息队列，消息队列调用定时任务
      */
     @Autowired
-    private MQProducer mqproducer;
+    private PerfectMqProducer mqproducer;
 
     @SysLog("根据查询条件，获取租户信息")
     @ApiOperation("获取租户树数据")

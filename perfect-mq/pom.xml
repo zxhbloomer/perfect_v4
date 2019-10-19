@@ -30,6 +30,11 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- jooq反射模块 -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>joor-java-8</artifactId>
+        </dependency>
         <!-- perfect 模块-->
         <dependency>
             <groupId>com.perfect</groupId>

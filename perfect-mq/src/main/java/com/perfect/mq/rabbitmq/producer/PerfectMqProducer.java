@@ -1,16 +1,10 @@
 package com.perfect.mq.rabbitmq.producer;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.perfect.bean.entity.log.mq.SLogMqEntity;
-import com.perfect.bean.pojo.mqsender.MqMessagePojo;
 import com.perfect.bean.pojo.mqsender.MqSenderPojo;
-import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
 import com.perfect.common.constant.PerfectConstant;
-import com.perfect.common.enumconfig.MqSenderEnum;
-import com.perfect.common.utils.UuidUtil;
 import com.perfect.common.utils.redis.RedisUtil;
-import com.perfect.common.utils.string.convert.Convert;
 import com.perfect.core.service.log.mq.ISLogMqService;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +18,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.Charset;
-
 /**
  * 生产者
  *
@@ -34,7 +26,7 @@ import java.nio.charset.Charset;
  */
 @Component
 @Slf4j
-public class MQProducer implements RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
+public class PerfectMqProducer {
 
     @Autowired
     ISLogMqService service;
@@ -65,7 +57,7 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback, RabbitTemplat
         /**
          * 数据库保存
          */
-//        insertToDbService(mqSenderPojo, mqenum, messageDataJson);
+        insertToDbService(mqSenderPojo, mqenum, messageDataJson);
 
         /**
          * 保存mqSenderPojo到redis，key为mqSenderPojo.getKey()
@@ -86,60 +78,9 @@ public class MQProducer implements RabbitTemplate.ConfirmCallback, RabbitTemplat
         /**
          * 回调
          */
-        if(null != mqSenderPojo.getCallBackInfo()){
-            this.rabbitTemplate.setConfirmCallback(this);
-        }
         CorrelationData correlationData = new CorrelationData(mqSenderPojo.getKey());
         rabbitTemplate.setExchange(mqenum.getExchange());
         rabbitTemplate.convertAndSend(mqenum.getExchange(), mqenum.getRouting_key(), message, correlationData);
-    }
-
-    /**
-     * 生产消息确认机制 生产者往服务器端发送消息的时候，采用应答机制
-     *
-     * @param correlationData
-     * @param ack
-     * @param cause
-     */
-    @Override
-    public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-        String jsonString = correlationData.getId();
-        System.out.println("消息id:" + correlationData.getId());
-        if(correlationData != null) {
-            // 处理返回
-            if (ack) {
-                log.info("------使用MQ消息确认：消息发送成功----");
-//                Object redisRtn = redisUtil.getFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
-                // 删除redis
-                redisUtil.removeFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
-            } else {
-                log.error("------使用MQ消息确认：传送失败----");
-                Object redisRtn = redisUtil.getFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
-                redisUtil.putToMap(PerfectConstant.REDIS_PREFIX.MQ_CONSUME_FAILT_PREFIX, correlationData.getId(), redisRtn);
-                redisUtil.removeFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, correlationData.getId());
-            }
-        }
-    }
-
-    /**
-     * 消息退回，存放到redis中
-     * @param message
-     * @param replyCode
-     * @param replyText
-     * @param exchange
-     * @param routingKey
-     */
-    @Override
-    public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
-        String messageData = Convert.str(message.getBody(), (Charset)null);
-        MqSenderPojo mqSenderPojo = JSONObject.parseObject(messageData, MqSenderPojo.class);
-
-        Object redisRtn = redisUtil.getFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, mqSenderPojo.getKey());
-        redisUtil.putToMap(PerfectConstant.REDIS_PREFIX.MQ_CONSUME_RETURN_PREFIX, mqSenderPojo.getKey(), redisRtn);
-        redisUtil.removeFromMap(PerfectConstant.REDIS_PREFIX.MQ_SEND_PREFIX, mqSenderPojo.getKey());
-        System.out.println("消息被退回");
-        System.out.println("被退回的消息是 :" + messageData);
-        System.out.println("被退回的消息编码是 :" + replyCode);
     }
 
     /**

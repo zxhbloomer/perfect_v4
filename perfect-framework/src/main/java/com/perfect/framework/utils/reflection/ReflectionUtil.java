@@ -1,7 +1,6 @@
 package com.perfect.framework.utils.reflection;
 
 import com.alibaba.fastjson.JSONObject;
-import com.perfect.bean.pojo.mqsender.MqSenderPojo;
 import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
 import com.perfect.framework.utils.spring.SpringContextsUtil;
 import org.joor.Reflect;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 
 import static org.joor.Reflect.on;
 
@@ -23,8 +21,7 @@ import static org.joor.Reflect.on;
 public class ReflectionUtil {
 
     /**
-     * todo:考虑数据放到redis中，然后需要回调则考虑回调，没有就没有
-     * https://github.com/notMyPen/spring-cloud-clover/blob/126d26bdc0da8a51de68774897ee859dd67a3c31/clover-business-starter/src/main/java/rrx/cnuo/cncommon/utils/MqSendTool.java
+     * 考虑数据放到redis中，然后需要回调则考虑回调，没有就没有
      */
 
     /**
