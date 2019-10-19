@@ -48,11 +48,13 @@ spring:
         ## 限流
         prefetch: 1
     custom:
+      # 生产者
       producer:
-        has-open: false
+        has-open: true
         default-exchange: perfect-default-exchange
         default-queue: perfect-default-queue
         default-routing-key: perfect-default-routing-key.#
+      # 消费者
       consumer:
         has-open: false
         default-queue: test_queue

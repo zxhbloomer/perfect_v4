@@ -3,16 +3,10 @@ package com.perfect.mq.rabbitmq.producer.callback;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.utils.redis.RedisUtil;
 import com.perfect.core.service.log.mq.ISLogMqService;
-import com.perfect.mq.rabbitmq.callback.config.DefaultConfirmCallback;
 import com.perfect.mq.rabbitmq.callback.config.IConfirmCallback;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

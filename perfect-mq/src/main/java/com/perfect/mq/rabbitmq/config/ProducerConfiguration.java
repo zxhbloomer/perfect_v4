@@ -6,22 +6,20 @@ import com.perfect.mq.rabbitmq.listener.IConnectionListener;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import com.perfect.mq.rabbitmq.properties.MQProperties;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static org.joor.Reflect.on;
-
 /**
- * MQ配置
+ * MQ配置：生产者
  *
  */
+@ConditionalOnProperty(prefix = "spring.rabbitmq.custom.producer", name = "has-open", havingValue = "true")
 @Configuration
-@EnableRabbit
 public class ProducerConfiguration {
 
     @Autowired
@@ -32,18 +30,6 @@ public class ProducerConfiguration {
                                     IConnectionListener iConnectionListener) {
         connectionFactory.addConnectionListener(iConnectionListener);
         return new RabbitAdmin(connectionFactory);
-    }
-
-    @Bean("perfect_RabbitTemplate")
-    public RabbitTemplate rabbitTemplate(CachingConnectionFactory connectionFactory,
-                                        IConfirmCallback iConfirmCallback,
-                                        IReutrnedCallback iReutrnedCallback) {
-        RabbitTemplate amqpTemplate = new RabbitTemplate();
-        amqpTemplate.setConnectionFactory(connectionFactory);
-        amqpTemplate.setConfirmCallback(iConfirmCallback);
-        amqpTemplate.setReturnCallback(iReutrnedCallback);
-        amqpTemplate.setMandatory(true);
-        return amqpTemplate;
     }
 
     @Bean

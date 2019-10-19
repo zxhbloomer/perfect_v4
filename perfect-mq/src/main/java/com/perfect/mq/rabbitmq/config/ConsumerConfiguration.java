@@ -6,12 +6,14 @@ import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * MQ客户端配置
  */
+@ConditionalOnProperty(prefix = "spring.rabbitmq.custom.consumer", name = "has-open", havingValue = "true")
 @Configuration
 public class ConsumerConfiguration {
 
