@@ -47,6 +47,7 @@ spring:
         max-concurrency: 10
         ## 限流
         prefetch: 1
+    # 自定义
     custom:
       # 生产者
       producer:
