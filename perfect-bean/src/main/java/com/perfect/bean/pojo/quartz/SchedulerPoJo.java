@@ -32,7 +32,7 @@ public class SchedulerPoJo implements Serializable {
     /**
      * 任务key:uuid
      */
-    private Long key;
+    private String key;
 
     /**
      * 任务名称
@@ -60,14 +60,14 @@ public class SchedulerPoJo implements Serializable {
     private String job_simple_name;
 
     /**
-     * 表达式
+     * cron表达式
      */
     private String cron_expression;
 
     /**
      * 计划策略：0=默认,1=立即触发执行,2=触发一次执行,3=不触发立即执行
      */
-    private String misfire_policy;
+    private int misfire_policy;
 
     /**
      * 是否并发执行（0允许 1禁止）
@@ -93,12 +93,12 @@ public class SchedulerPoJo implements Serializable {
     /**
      * 重复执行次数
      */
-    private int repeat_count;
+    private Integer repeat_count;
 
     /**
-     * 重复执行次数
+     * 重复执行次数，执行时间隔间
      */
-    private int repeat_interval;
+    private Integer repeat_interval;
 
     /**
      * 运行次数
