@@ -1,4 +1,4 @@
-package com.perfect.quartz.scheduler;
+package com.perfect.quartz.scheduler.common;
 
 import com.perfect.quartz.config.QuartzJobManager;
 import org.apache.commons.collections.MapUtils;
@@ -9,6 +9,9 @@ import org.quartz.*;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.quartz.impl.triggers.SimpleTriggerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -22,13 +25,16 @@ import java.util.UUID;
  * @date: 2019/10/17
  * @Version: 1.0
  */
+@Component
 public class SchedulerService {
 
     private static final String NULLSTRING = null;
     private static final Date NULLDATE = null;
 
     @Autowired
+    @Qualifier("perfectScheduler")
     private Scheduler scheduler;
+
     @Autowired
     private JobDetail jobDetail;
 
