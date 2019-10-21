@@ -1,5 +1,6 @@
 package com.perfect.bean.pojo.quartz;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Data;
@@ -30,11 +31,6 @@ public class SchedulerPoJo implements Serializable {
     private Long id;
 
     /**
-     * 任务key:uuid
-     */
-    private String key;
-
-    /**
      * 任务名称
      */
     private String job_name;
@@ -58,6 +54,24 @@ public class SchedulerPoJo implements Serializable {
      * 任务简称
      */
     private String job_simple_name;
+
+    /**
+     * Bean名称
+     */
+    @TableField("bean_name")
+    private String bean_name;
+
+    /**
+     * 方法名称
+     */
+    @TableField("method_name")
+    private String method_name;
+
+    /**
+     * 参数
+     */
+    @TableField("params")
+    private String params;
 
     /**
      * cron表达式

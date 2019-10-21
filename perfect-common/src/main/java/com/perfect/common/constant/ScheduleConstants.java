@@ -3,7 +3,7 @@ package com.perfect.common.constant;
 /**
  * 任务调度通用常量
  * 
- * @author ruoyi
+ * @author
  */
 public interface ScheduleConstants
 {

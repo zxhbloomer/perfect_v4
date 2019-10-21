@@ -7,9 +7,11 @@ import java.io.Serializable;
 
 import com.perfect.bean.entity.base.entity.v1.BaseEntity;
 import com.perfect.bean.entity.sys.SLogEntity;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import lombok.experimental.Tolerate;
 
 /**
  * <p>
@@ -20,13 +22,14 @@ import lombok.experimental.Accessors;
  * @since 2019-10-14
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 @TableName("s_job")
+@Builder
 public class SJobEntity extends BaseEntity<SJobEntity> implements Serializable {
 
     private static final long serialVersionUID = -1825371696489602370L;
 
+    @Tolerate
+    public SJobEntity(){}
 
     /**
      * 任务ID
@@ -47,10 +50,16 @@ public class SJobEntity extends BaseEntity<SJobEntity> implements Serializable {
     private String job_group;
 
     /**
-     * 任务编号
+     * 关联编号
      */
     @TableField("job_serial_code")
     private String job_serial_code;
+
+    /**
+     * 关联表名字
+     */
+    @TableField("job_serial_type")
+    private String job_serial_type;
 
     /**
      * 任务描述
@@ -101,11 +110,16 @@ public class SJobEntity extends BaseEntity<SJobEntity> implements Serializable {
     private Boolean concurrent;
 
     /**
-     * 是否是已经删除
-
+     * 判断是否是cron表达式，还是simpletrigger
      */
-    @TableField("isdel")
-    private Boolean isdel;
+    @TableField("is_cron")
+    private Boolean is_cron;
+
+    /**
+     * 是否是已经删除
+     */
+    @TableField("is_del")
+    private Boolean is_del;
 
     /**
      * 是否有效

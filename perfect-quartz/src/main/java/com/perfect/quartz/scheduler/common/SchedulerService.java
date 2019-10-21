@@ -1,5 +1,6 @@
 package com.perfect.quartz.scheduler.common;
 
+import com.perfect.common.constant.ScheduleConstants;
 import com.perfect.quartz.config.QuartzJobManager;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,7 @@ import java.util.UUID;
  * @date: 2019/10/17
  * @Version: 1.0
  */
+@Deprecated
 @Component
 public class SchedulerService {
 
@@ -511,4 +513,10 @@ public class SchedulerService {
         return date != null && date.after(new Date());
     }
 
+    /**
+     * 构建任务键对象
+     */
+    public JobKey getJobKey(Long jobId, String jobGroup) {
+        return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
+    }
 }

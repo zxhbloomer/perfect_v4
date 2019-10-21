@@ -123,7 +123,7 @@ import java.util.List;
         Long jobId = job.getId();
         String jobGroup = job.getJob_group();
         job.setIs_effected(ScheduleConstants.Status.PAUSE.getValue());
-        job.setIsdel(true);
+        job.setIs_del(true);
         int rows = jobMapper.updateById(job);
 //        if (rows > 0) {
 //            scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
