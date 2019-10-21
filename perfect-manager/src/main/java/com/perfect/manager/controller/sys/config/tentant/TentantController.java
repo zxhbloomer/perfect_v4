@@ -102,7 +102,7 @@ public class TentantController extends BaseController implements TentantMqCallba
     public ResponseEntity<JsonResult<IPage<STentantVo>>> list(@RequestBody(required = false)
         STentantVo searchCondition) throws IllegalAccessException, InstantiationException {
         IPage<STentantVo> entity = service.selectPage(searchCondition);
-        return ResponseEntity.ok().body(ResultUtil.OK(entity));
+            return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
     @SysLog("租户数据更新保存")

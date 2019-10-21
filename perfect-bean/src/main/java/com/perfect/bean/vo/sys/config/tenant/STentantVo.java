@@ -65,6 +65,8 @@ public class STentantVo implements Serializable {
      */
     private LocalDateTime disable_time;
 
+    private LocalDateTime[] enable_time_range;
+
     /**
      * 是否冻结
      */
