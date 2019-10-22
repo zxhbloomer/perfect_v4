@@ -1,12 +1,10 @@
 package com.perfect.manager.controller.sys.config.tentant;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.perfect.bean.entity.quartz.SJobEntity;
 import com.perfect.bean.entity.sys.config.tenant.STentantEntity;
-import com.perfect.bean.pojo.mqsender.MqMessagePojo;
 import com.perfect.bean.pojo.mqsender.MqSenderPojo;
 import com.perfect.bean.pojo.mqsender.builder.MqSenderPojoBuilder;
-import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
@@ -18,11 +16,14 @@ import com.perfect.common.annotation.SysLog;
 import com.perfect.common.enumconfig.MqSenderEnum;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
+import com.perfect.core.service.quartz.ISJobService;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import com.perfect.mq.rabbitmq.callback.manager.config.tentant.TentantMqCallbackInterface;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import com.perfect.mq.rabbitmq.producer.PerfectMqProducer;
+import com.perfect.quartz.quartzenum.QuartzEnum;
+import com.perfect.quartz.scheduler.task.builder.sys.config.tenant.TentantTaskBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +45,11 @@ public class TentantController extends BaseController implements TentantMqCallba
     @Autowired
     private ITentantService service;
 
+    @Autowired
+    private ISJobService jobService;
+
     /**
-     * todo：调用消息队列，消息队列调用定时任务
+     * 调用消息队列，消息队列调用定时任务
      */
     @Autowired
     private PerfectMqProducer mqproducer;
@@ -182,9 +186,21 @@ public class TentantController extends BaseController implements TentantMqCallba
      *
      */
     private void mqSendAfterDataSave(STentantVo data){
+        // 启用的task
+        SJobEntity enableJobEntity = jobService.selectJobBySerialId(data.getId(), QuartzEnum.TASK_TENTANT_ENABLE.getJob_serial_type());
+        SJobEntity enableBean = TentantTaskBuilder.builderEnableBean(data, enableJobEntity);
         // 初始化要发生mq的bean
-        MqSenderPojo mqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(data, MqSenderEnum.NORMAL_MQ);
-        mqproducer.send(mqSenderPojo, MQEnum.MQ_TASK_Tentant);
+        MqSenderPojo enableMqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(enableBean, MqSenderEnum.NORMAL_MQ);
+
+        // 禁用的task
+        SJobEntity disableJobEntity = jobService.selectJobBySerialId(data.getId(), QuartzEnum.TASK_TENTANT_DISABLE.getJob_serial_type());
+        SJobEntity disableBean = TentantTaskBuilder.builderDisableBean(data, disableJobEntity);
+        // 初始化要发生mq的bean
+        MqSenderPojo disableMqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(disableBean, MqSenderEnum.NORMAL_MQ);
+        // 启动一个开始的任务
+        mqproducer.send(enableMqSenderPojo, MQEnum.MQ_TASK_Tentant);
+        // 启动一个结束的任务
+        mqproducer.send(disableMqSenderPojo, MQEnum.MQ_TASK_Tentant);
     }
 
     private void resetAllMq(List<STentantVo> dataList){

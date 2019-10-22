@@ -7,10 +7,6 @@ package com.perfect.mq.rabbitmq.mqenum;
  * mq重要配置
  */
 public enum MQEnum {
-	MQ_OPER_LOG(MqInfo.Log.queueCode,
-				MqInfo.Log.name,
-				MqInfo.Log.exchange,
-				MqInfo.Log.routing_key),
 	MQ_TASK_Tentant(MqInfo.TentantTask.queueCode,
 		MqInfo.TentantTask.name,
 		MqInfo.TentantTask.exchange,
@@ -61,19 +57,6 @@ public enum MQEnum {
 	}
 
 	public static class MqInfo {
-
-		/**
-		 * 日志类
-		 *
-		 * @author zxh
-		 * @date 2019年 10月12日 23:34:54
-		 */
-		public class Log {
-			public static final String queueCode = "perfect-log";
-			public static final String name = "平台操作日志";
-			public static final String exchange = "perfect-log-exchange";
-			public static final String routing_key = "perfect-log.#";
-		}
 
 		/**
 		 * 平台任务类，需要在quartz中实现

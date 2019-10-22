@@ -4,9 +4,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.quartz.SJobEntity;
+import com.perfect.bean.entity.sys.config.config.SConfigEntity;
+import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
 import com.perfect.bean.entity.sys.config.dict.SDictTypeEntity;
+import com.perfect.bean.pojo.result.CheckResult;
+import com.perfect.bean.pojo.result.InsertResult;
+import com.perfect.bean.pojo.result.UpdateResult;
+import com.perfect.bean.result.utils.v1.InsertResultUtil;
+import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.quartz.SJobVo;
 import com.perfect.common.constant.ScheduleConstants;
+import com.perfect.common.exception.BusinessException;
 import com.perfect.common.exception.job.TaskException;
 import com.perfect.common.utils.quartz.CronUtil;
 import com.perfect.common.utils.string.convert.Convert;
@@ -45,7 +53,7 @@ import java.util.List;
     public void init() throws SchedulerException, TaskException {
         List<SJobEntity> jobList = jobMapper.selectJobAll();
         for (SJobEntity job : jobList) {
-            updateSchedulerJob(job, job.getJob_group());
+            updateSchedulerJob(job, job.getJob_group_code());
         }
     }
 
@@ -85,7 +93,7 @@ import java.util.List;
     @Transactional(rollbackFor = Exception.class)
     public int pauseJob(SJobEntity job) throws SchedulerException {
         Long jobId = job.getId();
-        String jobGroup = job.getJob_group();
+        String jobGroup = job.getJob_group_code();
         job.setIs_effected(ScheduleConstants.Status.PAUSE.getValue());
         int rows = jobMapper.updateById(job);
 //        if (rows > 0) {
@@ -103,7 +111,7 @@ import java.util.List;
     @Transactional(rollbackFor = Exception.class)
     public int resumeJob(SJobEntity job) throws SchedulerException {
         Long jobId = job.getId();
-        String jobGroup = job.getJob_group();
+        String jobGroup = job.getJob_group_code();
         job.setIs_effected(ScheduleConstants.Status.NORMAL.getValue());
         int rows = jobMapper.updateById(job);
 //        if (rows > 0) {
@@ -121,7 +129,7 @@ import java.util.List;
     @Transactional(rollbackFor = Exception.class)
     public int deleteJob(SJobEntity job) throws SchedulerException {
         Long jobId = job.getId();
-        String jobGroup = job.getJob_group();
+        String jobGroup = job.getJob_group_code();
         job.setIs_effected(ScheduleConstants.Status.PAUSE.getValue());
         job.setIs_del(true);
         int rows = jobMapper.updateById(job);
@@ -174,7 +182,7 @@ import java.util.List;
     @Transactional(rollbackFor = Exception.class)
     public void run(SJobEntity job) throws SchedulerException {
         Long jobId = job.getId();
-        String jobGroup = job.getJob_group();
+        String jobGroup = job.getJob_group_code();
         SJobEntity properties = selectJobById(job.getId());
         // 参数
 //        JobDataMap dataMap = new JobDataMap();
@@ -209,7 +217,7 @@ import java.util.List;
         SJobEntity properties = selectJobById(job.getId());
         int rows = jobMapper.updateById(job);
         if (rows > 0) {
-            updateSchedulerJob(job, properties.getJob_group());
+            updateSchedulerJob(job, properties.getJob_group_code());
         }
         return rows;
     }
@@ -242,4 +250,41 @@ import java.util.List;
         return CronUtil.isValid(cronExpression);
     }
 
+    /**
+     * 查询调度任务
+     *
+     * @param serialId 编号
+     * @param serialType 类型
+     * @return 调度任务对象信息
+     */
+    @Override
+    public SJobEntity selectJobBySerialId(Long serialId, String serialType) {
+        return jobMapper.selectJobBySerialId(serialId, serialType);
+    }
+
+    /**
+     * 插入一条记录（选择字段，策略插入）
+     *
+     * @param entity 实体对象
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public InsertResult<Integer> insert(SJobEntity entity) {
+        // 插入逻辑保存
+        return InsertResultUtil.OK(jobMapper.insert(entity));
+    }
+
+    /**
+     * 更新一条记录（选择字段，策略更新）
+     *
+     * @param entity 实体对象
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public UpdateResult<Integer> update(SJobEntity entity) {
+        // 更新逻辑保存
+        return UpdateResultUtil.OK(jobMapper.updateById(entity));
+    }
 }

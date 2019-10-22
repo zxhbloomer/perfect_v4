@@ -45,7 +45,7 @@ public class SJobVo implements Serializable {
     /**
      * 任务编号
      */
-    private String job_serial_code;
+    private String job_serial_id;
 
     /**
      * 任务描述
@@ -107,16 +107,6 @@ public class SJobVo implements Serializable {
      * 上次运行时间
      */
     private LocalDateTime last_run_time;
-
-    /**
-     * 起始有效时间
-     */
-    private LocalDateTime begin_date;
-
-    /**
-     * 结束有效时间
-     */
-    private LocalDateTime end_date;
 
     /**
      * 运行次数

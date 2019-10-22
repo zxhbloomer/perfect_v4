@@ -3,6 +3,10 @@ package com.perfect.core.service.quartz;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfect.bean.entity.quartz.SJobEntity;
+import com.perfect.bean.entity.sys.config.config.SConfigEntity;
+import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
+import com.perfect.bean.pojo.result.InsertResult;
+import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.quartz.SJobVo;
 import com.perfect.common.exception.job.TaskException;
 import org.quartz.SchedulerException;
@@ -104,4 +108,27 @@ public interface ISJobService extends IService<SJobEntity> {
      * @return 结果
      */
     public boolean checkCronExpressionIsValid(String cronExpression);
+
+    /**
+     * 查询调度任务
+     *
+     * @param serialId 编号
+     * @param serialType 类型
+     * @return 调度任务对象信息
+     */
+    public SJobEntity selectJobBySerialId(Long serialId, String serialType);
+
+    /**
+     * 插入一条记录（选择字段，策略插入）
+     * @param entity 实体对象
+     * @return
+     */
+    InsertResult<Integer> insert(SJobEntity entity);
+
+    /**
+     * 更新一条记录（选择字段，策略更新）
+     * @param entity 实体对象
+     * @return
+     */
+    UpdateResult<Integer> update(SJobEntity entity);
 }

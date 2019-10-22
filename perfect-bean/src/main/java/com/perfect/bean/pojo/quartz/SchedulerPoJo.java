@@ -43,7 +43,7 @@ public class SchedulerPoJo implements Serializable {
     /**
      * 任务编号
      */
-    private String job_serial_code;
+    private String job_serial_id;
 
     /**
      * 任务描述
@@ -92,17 +92,6 @@ public class SchedulerPoJo implements Serializable {
      * 判断是否是cron表达式，还是simpletrigger
      */
     private Boolean isCron;
-
-
-    /**
-     * 起始有效时间
-     */
-    private LocalDateTime begin_date;
-
-    /**
-     * 结束有效时间
-     */
-    private LocalDateTime end_date;
 
     /**
      * 重复执行次数

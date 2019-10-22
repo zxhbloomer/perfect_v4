@@ -10,20 +10,25 @@ import lombok.Setter;
  * mq重要配置
  */
 public enum QuartzEnum {
-	TASK_TENTANT(QuartzInfo.TentantTask.job_code,
-				QuartzInfo.TentantTask.job_name,
-				QuartzInfo.TentantTask.job_group_code,
-				QuartzInfo.TentantTask.job_group_name,
-				QuartzInfo.TentantTask.job_desc,
-				QuartzInfo.TentantTask.job_simple_name),
+	TASK_TENTANT_ENABLE(
+						QuartzInfo.TentantEnableTask.job_name,
+						QuartzInfo.TentantEnableTask.job_group_code,
+						QuartzInfo.TentantEnableTask.job_group_name,
+						QuartzInfo.TentantEnableTask.job_desc,
+						QuartzInfo.TentantEnableTask.job_simple_name,
+						QuartzInfo.TentantEnableTask.job_serial_type
+						),
+
+	TASK_TENTANT_DISABLE(
+						QuartzInfo.TentantDisableTask.job_name,
+						QuartzInfo.TentantDisableTask.job_group_code,
+						QuartzInfo.TentantDisableTask.job_group_name,
+						QuartzInfo.TentantDisableTask.job_desc,
+						QuartzInfo.TentantDisableTask.job_simple_name,
+						QuartzInfo.TentantDisableTask.job_serial_type
+						),
 	;
 
-//	@Getter @Setter
-//	private String key;
-//	@Getter @Setter
-//	private String name;
-	@Getter @Setter
-	private String job_code;
 	@Getter @Setter
 	private String job_name;
 	@Getter @Setter
@@ -34,40 +39,57 @@ public enum QuartzEnum {
 	private String job_desc;
 	@Getter @Setter
 	private String job_simple_name;
+	@Getter @Setter
+	private String job_serial_type;
 
 	/**
 	 *
-	 * @param job_code
 	 * @param job_name
 	 * @param job_group_code
 	 * @param job_group_name
 	 * @param job_desc
 	 * @param job_simple_name
+	 * @param job_serial_type
 	 */
-	private QuartzEnum(String job_code, String job_name, String job_group_code, String job_group_name, String job_desc, String job_simple_name) {
-		this.job_code = job_code;
+	private QuartzEnum(String job_name, String job_group_code, String job_group_name, String job_desc, String job_simple_name, String job_serial_type) {
 		this.job_name = job_name;
 		this.job_group_code = job_group_code;
 		this.job_group_name = job_group_name;
 		this.job_desc = job_desc;
 		this.job_simple_name = job_simple_name;
+		this.job_serial_type = job_serial_type;
 	}
 
 	public static class QuartzInfo {
 
 		/**
-		 * 租户任务
+		 * 租户任务：启用
 		 *
 		 * @author zxh
 		 * @date 2019年 10月12日 23:34:54
 		 */
-		public class TentantTask {
-			public static final String job_code = "task-tentant";
-			public static final String job_name = "租户任务";
-			public static final String job_group_code = "task-group-tentant";
-			public static final String job_group_name = "租户任务消息队列";
-			public static final String job_desc = "租户任务";
-			public static final String job_simple_name = "租户任务";
+		public class TentantEnableTask {
+			public static final String job_name = "租户定时任务：启用租户任务";
+			public static final String job_group_code = "perfect_task_tentant";
+			public static final String job_group_name = "租户定时任务";
+			public static final String job_desc = "系统自动生产该项任务:租户定时任务，启用任务";
+			public static final String job_simple_name = "租户启用任务";
+			public static final String job_serial_type = "s_job_enable_task";
+		}
+
+		/**
+		 * 租户任务：禁用，关闭
+		 *
+		 * @author zxh
+		 * @date 2019年 10月12日 23:34:54
+		 */
+		public class TentantDisableTask {
+			public static final String job_name = "租户定时任务：停止启用租户任务";
+			public static final String job_group_code = "perfect_task_tentant";
+			public static final String job_group_name = "租户定时任务";
+			public static final String job_desc = "系统自动生产该项任务:租户定时任务，停止启用租户";
+			public static final String job_simple_name = "租户停止任务";
+			public static final String job_serial_type = "s_job_disable_task";
 		}
 	}
 }

@@ -44,16 +44,22 @@ public class SJobEntity extends BaseEntity<SJobEntity> implements Serializable {
     private String job_name;
 
     /**
-     * 任务组名
+     * 任务组编号
      */
-    @TableField("job_group")
-    private String job_group;
+    @TableField("job_group_code")
+    private String job_group_code;
+
+    /**
+     * 任务组名称
+     */
+    @TableField("job_group_name")
+    private String job_group_name;
 
     /**
      * 关联编号
      */
-    @TableField("job_serial_code")
-    private String job_serial_code;
+    @TableField("job_serial_id")
+    private Long job_serial_id;
 
     /**
      * 关联表名字
@@ -158,10 +164,10 @@ public class SJobEntity extends BaseEntity<SJobEntity> implements Serializable {
     private Integer run_times;
 
     /**
-     * 异常信息
+     * 执行情况
      */
-    @TableField("error")
-    private String error;
+    @TableField("msg")
+    private String msg;
 
     @TableField(value="c_id", fill = FieldFill.INSERT)
     private Long c_id;

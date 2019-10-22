@@ -1,16 +1,13 @@
 package com.perfect.mq.rabbitmq.config;
 
-import com.perfect.mq.rabbitmq.callback.config.IConfirmCallback;
-import com.perfect.mq.rabbitmq.callback.config.IReutrnedCallback;
-import com.perfect.mq.rabbitmq.listener.IConnectionListener;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import com.perfect.mq.rabbitmq.properties.MQProperties;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
  *
  */
 @ConditionalOnProperty(prefix = "spring.rabbitmq.custom.producer", name = "has-open", havingValue = "true")
+@EnableConfigurationProperties(MQProperties.class)
 @Configuration
 public class ProducerConfiguration {
 
@@ -26,9 +24,7 @@ public class ProducerConfiguration {
     private MQProperties mqProperties;
 
     @Bean
-    public RabbitAdmin rabbitAdmin(CachingConnectionFactory connectionFactory,
-                                    IConnectionListener iConnectionListener) {
-        connectionFactory.addConnectionListener(iConnectionListener);
+    public RabbitAdmin rabbitAdmin(CachingConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
     }
 
@@ -55,7 +51,6 @@ public class ProducerConfiguration {
          * 初始化项目中使用的mq
          */
         binding(rabbitAdmin, MQEnum.MQ_TASK_Tentant);
-        binding(rabbitAdmin, MQEnum.MQ_OPER_LOG);
         return binding;
     }
 

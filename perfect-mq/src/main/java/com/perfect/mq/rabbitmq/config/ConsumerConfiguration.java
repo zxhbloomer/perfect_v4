@@ -1,11 +1,11 @@
 package com.perfect.mq.rabbitmq.config;
 
-import com.perfect.mq.rabbitmq.listener.IChannelAwareMessageListener;
-import com.perfect.mq.rabbitmq.properties.MQProperties;
 import org.springframework.amqp.core.AcknowledgeMode;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,17 +17,24 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ConsumerConfiguration {
 
-    @Autowired
-    private MQProperties mqProperties;
+//    @Bean
+//    public SimpleMessageListenerContainer listenerContainer(ConnectionFactory connectionFactory,
+//                                        IChannelAwareMessageListener iChannelAwareMessageListener) {
+//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+//        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+//        container.setConnectionFactory(connectionFactory);
+//        container.setQueueNames(mqProperties.getConsumer().getDefaultQueue());
+//        container.setMessageListener(iChannelAwareMessageListener);
+//        return container;
+//    }
 
     @Bean
-    public SimpleMessageListenerContainer listenerContainer(ConnectionFactory connectionFactory,
-                                        IChannelAwareMessageListener iChannelAwareMessageListener) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
-        container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(mqProperties.getConsumer().getDefaultQueue());
-        container.setMessageListener(iChannelAwareMessageListener);
-        return container;
+    public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory(CachingConnectionFactory connectionFactory) {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(new Jackson2JsonMessageConverter());
+        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
+        return factory;
     }
 }

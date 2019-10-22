@@ -47,8 +47,8 @@ public class SJobLogEntity implements Serializable {
     /**
      * 任务编号
      */
-    @TableField("job_serial_code")
-    private String job_serial_code;
+    @TableField("job_serial_id")
+    private String job_serial_id;
 
     /**
      * 任务描述

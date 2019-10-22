@@ -26,8 +26,9 @@ public interface SJobMapper extends BaseMapper<SJobEntity> {
     String common_column = "  "
         + "      t.id,                         "
         + "      t.job_name,                   "
-        + "      t.job_group,                  "
-        + "      t.job_serial_code,            "
+        + "      t.job_group_code,                  "
+        + "      t.job_group_name,                  "
+        + "      t.job_serial_id,            "
         + "      t.job_serial_type,            "
         + "      t.job_desc,                   "
         + "      t.job_simple_name,            "
@@ -79,5 +80,15 @@ public interface SJobMapper extends BaseMapper<SJobEntity> {
         + "   where true         "
         + "    and (t.job_id = #{p1} or #{p1} is null) "
         + "                      ")
-    SJobEntity selectJobById(Long id);
+    SJobEntity selectJobById(@Param("p1") Long id);
+
+    @Select("                    "
+        + "  select              "
+        + common_column
+        + "    from s_job t      "
+        + "   where true         "
+        + "    and t.job_serial_id = #{p1} "
+        + "    and t.job_serial_type = #{p2} "
+        + "                      ")
+    SJobEntity selectJobBySerialId(@Param("p1") Long id, @Param("p2") String serialType);
 }

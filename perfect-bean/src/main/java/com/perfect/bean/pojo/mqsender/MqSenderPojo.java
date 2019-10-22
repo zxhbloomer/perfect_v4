@@ -21,7 +21,7 @@ public class MqSenderPojo implements Serializable {
     private static final long serialVersionUID = 1145461000719110996L;
 
     @Tolerate
-    MqSenderPojo(){}
+    public MqSenderPojo(){}
 
     /**
      * 消息队列主键

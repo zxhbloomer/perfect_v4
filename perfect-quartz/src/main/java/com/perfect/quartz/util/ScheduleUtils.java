@@ -3,6 +3,8 @@ package com.perfect.quartz.util;
 import com.perfect.bean.entity.quartz.SJobEntity;
 import com.perfect.common.constant.ScheduleConstants;
 import com.perfect.common.exception.job.TaskException;
+import com.perfect.common.utils.LocalDateTimeUtils;
+import com.perfect.common.utils.string.convert.Convert;
 import org.quartz.*;
 
 /**
@@ -43,14 +45,17 @@ public class ScheduleUtils {
         Class<? extends Job> jobClass = getQuartzJobClass(job);
         // 构建job信息
         Long jobId = job.getId();
-        String jobGroup = job.getJob_group();
+        String jobGroup = job.getJob_group_code();
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(getJobKey(jobId, jobGroup)).build();
         // 设置一个用于触发的时间
         SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
         simpleScheduleBuilder = handleSimpleScheduleMisfirePolicy(simpleScheduleBuilder);
-
         // 新的Simpletrigger
-        SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(jobId, jobGroup)).withSchedule(simpleScheduleBuilder)
+        SimpleTrigger trigger = TriggerBuilder
+            .newTrigger()
+            .withIdentity(getTriggerKey(jobId, jobGroup))
+            .withSchedule(simpleScheduleBuilder)
+            .startAt(LocalDateTimeUtils.convertLDTToDate(job.getNext_run_time()))
             .build();
 
         // 放入参数，运行时的方法可以获取
@@ -65,7 +70,7 @@ public class ScheduleUtils {
         scheduler.scheduleJob(jobDetail, trigger);
 
         // 暂停任务
-        if (job.getIs_effected() == ScheduleConstants.Status.PAUSE.getValue()) {
+        if (job.getIs_effected() != null && job.getIs_effected() == ScheduleConstants.Status.PAUSE.getValue()) {
             scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
         }
     }
@@ -77,7 +82,7 @@ public class ScheduleUtils {
         Class<? extends Job> jobClass = getQuartzJobClass(job);
         // 构建job信息
         Long jobId = job.getId();
-        String jobGroup = job.getJob_group();
+        String jobGroup = job.getJob_group_code();
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(getJobKey(jobId, jobGroup)).build();
 
         // 表达式调度构建器
