@@ -13,6 +13,16 @@ import org.quartz.*;
  * @author ruoyi
  */
 public class ScheduleUtils {
+    /**
+     * 得到quartz任务类
+     *
+     * @param sysJob 执行计划
+     * @return 具体执行任务类
+     */
+    private static Class<? extends Job> getQuartzJobClass(SJobEntity sysJob) {
+        boolean isConcurrent = "0".equals(sysJob.getConcurrent());
+        return isConcurrent ? QuartzJobExecution.class : QuartzDisallowConcurrentExecution.class;
+    }
 
     /**
      * 构建任务触发对象
@@ -31,7 +41,8 @@ public class ScheduleUtils {
     /**
      * 创建定时任务:SimpleTrigger
      */
-    public static void createScheduleJobSimpleTrigger(Scheduler scheduler, SJobEntity job, Class<? extends Job> jobClass) throws SchedulerException, TaskException {
+    public static void createScheduleJobSimpleTrigger(Scheduler scheduler, SJobEntity job) throws SchedulerException, TaskException {
+        Class<? extends Job> jobClass = getQuartzJobClass(job);
         // 构建job信息
         Long jobId = job.getId();
         String jobGroup = job.getJob_group_code();
@@ -67,7 +78,8 @@ public class ScheduleUtils {
     /**
      * 创建定时任务:Cron表达式
      */
-    public static void createScheduleJobCron(Scheduler scheduler, SJobEntity job, Class<? extends Job> jobClass) throws SchedulerException, TaskException {
+    public static void createScheduleJobCron(Scheduler scheduler, SJobEntity job) throws SchedulerException, TaskException {
+        Class<? extends Job> jobClass = getQuartzJobClass(job);
         // 构建job信息
         Long jobId = job.getId();
         String jobGroup = job.getJob_group_code();

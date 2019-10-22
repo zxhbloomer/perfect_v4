@@ -9,6 +9,7 @@ import org.quartz.JobExecutionContext;
  *
  * @author
  */
+@Deprecated
 @DisallowConcurrentExecution
 public class QuartzDisallowConcurrentExecution extends AbstractQuartzJob {
     @Override protected void doExecute(JobExecutionContext context, SJobEntity sysJob) throws Exception {

@@ -15,6 +15,7 @@ import java.util.Map;
  *
  * @author ruoyi
  */
+@Deprecated
 public class JobInvokeUtil {
     /**
      * 执行方法

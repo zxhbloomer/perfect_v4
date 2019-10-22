@@ -9,6 +9,7 @@ import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.service.quartz.ISJobLogService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -23,6 +24,7 @@ import java.time.ZoneOffset;
  * @author
  */
 @Slf4j
+@DisallowConcurrentExecution
 public abstract class AbstractQuartzJob implements Job {
 
     /**
@@ -30,7 +32,8 @@ public abstract class AbstractQuartzJob implements Job {
      */
     private static ThreadLocal<LocalDateTime> threadLocal = new ThreadLocal<>();
 
-    @Override public void execute(JobExecutionContext context) throws JobExecutionException {
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
         SJobEntity sysJob = new SJobEntity();
         BeanUtilsSupport.copyProperties(context.getMergedJobDataMap().get(ScheduleConstants.TASK_PROPERTIES), sysJob);
         try {

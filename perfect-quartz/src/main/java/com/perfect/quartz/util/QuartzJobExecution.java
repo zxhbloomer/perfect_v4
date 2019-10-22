@@ -9,6 +9,7 @@ import org.quartz.JobExecutionContext;
  * @author
  *
  */
+@Deprecated
 public class QuartzJobExecution extends AbstractQuartzJob {
     @Override protected void doExecute(JobExecutionContext context, SJobEntity sysJob) throws Exception {
         JobInvokeUtil.invokeMethod(sysJob);
