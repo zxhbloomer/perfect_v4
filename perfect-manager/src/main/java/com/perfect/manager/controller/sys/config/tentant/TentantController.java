@@ -120,7 +120,7 @@ public class TentantController extends BaseController implements TentantMqCallba
             // 获取更新后的数据
             STentantVo vo = service.selectByid(bean.getId());
             // 调用mq
-            mqSendAfterDataSave(vo);
+//            mqSendAfterDataSave(vo);
             return ResponseEntity.ok().body(ResultUtil.OK(vo,"更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
