@@ -70,16 +70,16 @@ public class TentantTaskBuilder {
      * @return
      */
     public static SJobEntity builderEnableBean(STentantVo data, SJobEntity entity){
-        SJobEntity rtnBean;
+        SJobEntity rtnBean = new SJobEntity();
         if (entity == null){
             // 构筑新bean
             rtnBean = TentantTaskBuilder.builderNewEnableBean(data);
         } else {
-            rtnBean = (SJobEntity)BeanUtilsSupport.copyProperties(entity ,SJobEntity.class);
+            BeanUtilsSupport.copyProperties(entity, rtnBean);
             rtnBean.setBean_name(STentantVo.class.getName());
             rtnBean.setParams(JSON.toJSONString(data));
             // 下次运行时间：重要启动时间
-            rtnBean.setNext_run_time(data.getDisable_time());
+            rtnBean.setNext_run_time(data.getEnable_time());
             rtnBean = entity;
         }
         // 上次运行时间

@@ -191,14 +191,14 @@ public class TentantController extends BaseController implements TentantMqCallba
         SJobEntity enableBean = TentantTaskBuilder.builderEnableBean(data, enableJobEntity);
         // 初始化要发生mq的bean
         MqSenderPojo enableMqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(enableBean, MqSenderEnum.NORMAL_MQ);
+        // 启动一个开始的任务
+        mqproducer.send(enableMqSenderPojo, MQEnum.MQ_TASK_Tentant);
 
         // 禁用的task
         SJobEntity disableJobEntity = jobService.selectJobBySerialId(data.getId(), QuartzEnum.TASK_TENTANT_DISABLE.getJob_serial_type());
         SJobEntity disableBean = TentantTaskBuilder.builderDisableBean(data, disableJobEntity);
         // 初始化要发生mq的bean
         MqSenderPojo disableMqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(disableBean, MqSenderEnum.NORMAL_MQ);
-        // 启动一个开始的任务
-        mqproducer.send(enableMqSenderPojo, MQEnum.MQ_TASK_Tentant);
         // 启动一个结束的任务
         mqproducer.send(disableMqSenderPojo, MQEnum.MQ_TASK_Tentant);
     }
