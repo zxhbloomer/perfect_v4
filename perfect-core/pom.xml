@@ -82,11 +82,6 @@
                 <groupId>com.github.jsqlparser</groupId>
                 <artifactId>jsqlparser</artifactId>
             </dependency>
-            <!-- quartz -->
-            <dependency>
-                <groupId>org.quartz-scheduler</groupId>
-                <artifactId>quartz</artifactId>
-            </dependency>
             <!-- perfect 模块-->
             <dependency>
                 <groupId>com.perfect</groupId>

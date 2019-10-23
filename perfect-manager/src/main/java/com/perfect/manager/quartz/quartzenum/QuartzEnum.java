@@ -1,7 +1,4 @@
-/**
- *
- */
-package com.perfect.quartz.quartzenum;
+package com.perfect.manager.quartz.quartzenum;
 
 import lombok.Getter;
 import lombok.Setter;

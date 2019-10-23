@@ -19,11 +19,11 @@ import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.core.service.quartz.ISJobService;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
 import com.perfect.framework.base.controller.v1.BaseController;
+import com.perfect.manager.quartz.builder.sys.config.tentant.TentantTaskBuilder;
+import com.perfect.manager.quartz.quartzenum.QuartzEnum;
 import com.perfect.mq.rabbitmq.callback.manager.config.tentant.TentantMqCallbackInterface;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import com.perfect.mq.rabbitmq.producer.PerfectMqProducer;
-import com.perfect.quartz.quartzenum.QuartzEnum;
-import com.perfect.quartz.scheduler.task.builder.sys.config.tenant.TentantTaskBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -120,7 +120,7 @@ public class TentantController extends BaseController implements TentantMqCallba
             // 获取更新后的数据
             STentantVo vo = service.selectByid(bean.getId());
             // 调用mq
-//            mqSendAfterDataSave(vo);
+            mqSendAfterDataSave(vo);
             return ResponseEntity.ok().body(ResultUtil.OK(vo,"更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");

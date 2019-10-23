@@ -7,6 +7,8 @@ import javax.sql.DataSource;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.ApplicationContext;
@@ -61,18 +63,6 @@ public class ScheduleConfig {
         factory.setAutoStartup(true);
 
         return factory;
-    }
-
-    /**
-     * 配置持久化
-     * @return
-     */
-    @Bean
-    public JobDetailFactoryBean getJobDetail() {
-        JobDetailFactoryBean jobDetai = new JobDetailFactoryBean();
-        jobDetai.setJobClass(DetailQuartzJobBean.class);
-        jobDetai.setDurability(true);
-        return jobDetai;
     }
 
     /**

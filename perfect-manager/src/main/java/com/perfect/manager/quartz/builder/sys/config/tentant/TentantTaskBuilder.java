@@ -1,15 +1,10 @@
-package com.perfect.quartz.scheduler.task.builder.sys.config.tenant;
+package com.perfect.manager.quartz.builder.sys.config.tentant;
 
 import com.alibaba.fastjson.JSON;
 import com.perfect.bean.entity.quartz.SJobEntity;
-import com.perfect.bean.pojo.quartz.SchedulerPoJo;
 import com.perfect.bean.vo.sys.config.tenant.STentantVo;
-import com.perfect.common.utils.UuidUtil;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
-import com.perfect.quartz.quartzenum.QuartzEnum;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
-
-import java.time.LocalDateTime;
+import com.perfect.manager.quartz.quartzenum.QuartzEnum;
 
 /**
  * 配置租户定时任务启动类

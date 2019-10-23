@@ -81,10 +81,6 @@
             <groupId>com.perfect</groupId>
             <artifactId>perfect-mq</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.perfect</groupId>
-            <artifactId>perfect-quartz</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
