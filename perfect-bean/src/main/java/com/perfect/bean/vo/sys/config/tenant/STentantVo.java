@@ -53,7 +53,7 @@ public class STentantVo implements Serializable {
      */
     private String simple_name;
 
-    private Boolean isenable;
+    private Boolean is_enable;
 
     /**
      * 生效日期
@@ -70,12 +70,12 @@ public class STentantVo implements Serializable {
     /**
      * 是否冻结
      */
-    private Boolean isfreeze;
+    private Boolean is_freeze;
 
     /**
      * 是否叶子节点
      */
-    private Boolean isleaf;
+    private Boolean is_leaf;
 
     /**
      * 级次
@@ -90,7 +90,7 @@ public class STentantVo implements Serializable {
     /**
      * 是否删除
      */
-    private Boolean isdel;
+    private Boolean is_del;
 
     private Long c_id;
 

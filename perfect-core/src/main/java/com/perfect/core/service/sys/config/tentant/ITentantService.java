@@ -90,4 +90,18 @@ public interface ITentantService extends IService<STentantEntity> {
      * @return
      */
      List<STentantTreeVo> getChildren(Long id, String name);
+
+    /**
+     * 启用
+     * @param entity
+     * @return
+     */
+     UpdateResult<Integer> enableUpdate(STentantEntity entity);
+
+    /**
+     * 禁用
+     * @param entity
+     * @return
+     */
+    UpdateResult<Integer> disableUpdate(STentantEntity entity);
 }

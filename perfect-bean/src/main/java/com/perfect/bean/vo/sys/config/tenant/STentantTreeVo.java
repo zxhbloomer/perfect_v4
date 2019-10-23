@@ -21,7 +21,7 @@ public class STentantTreeVo extends TreeNode implements Serializable {
      */
     private String code;
 
-    private Boolean isenable;
+    private Boolean is_enable;
 
     /**
      * 生效日期
@@ -36,12 +36,12 @@ public class STentantTreeVo extends TreeNode implements Serializable {
     /**
      * 是否冻结
      */
-    private Boolean isfreeze;
+    private Boolean is_freeze;
 
     /**
      * 是否叶子节点
      */
-    private Boolean isleaf;
+    private Boolean is_leaf;
 
     /**
      * 描述

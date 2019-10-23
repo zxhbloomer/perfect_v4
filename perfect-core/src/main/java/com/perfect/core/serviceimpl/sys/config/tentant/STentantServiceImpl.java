@@ -107,8 +107,8 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
 
         // 初始化值
-        entity.setIsenable(false);
-        entity.setIsfreeze(false);
+        entity.setIs_enable(false);
+        entity.setIs_freeze(false);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -222,4 +222,33 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
         List<STentantTreeVo> list = mapper.getTreeList(id, name);
         return null;
     }
+
+    /**
+     * 启用
+     *
+     * @param entity 实体对象
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public UpdateResult<Integer> enableUpdate(STentantEntity entity) {
+        entity.setIs_enable(true);
+        // 更新逻辑保存
+        return UpdateResultUtil.OK(mapper.updateById(entity));
+    }
+
+    /**
+     * 禁用
+     *
+     * @param entity 实体对象
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public UpdateResult<Integer> disableUpdate(STentantEntity entity) {
+        entity.setIs_enable(false);
+        // 更新逻辑保存
+        return UpdateResultUtil.OK(mapper.updateById(entity));
+    }
+
 }

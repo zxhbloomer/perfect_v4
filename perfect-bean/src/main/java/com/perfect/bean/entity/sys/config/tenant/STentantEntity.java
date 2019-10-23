@@ -54,8 +54,8 @@ public class STentantEntity implements Serializable {
     @TableField("simple_name")
     private String simple_name;
 
-    @TableField("isenable")
-    private Boolean isenable;
+    @TableField("is_enable")
+    private Boolean is_enable;
 
     /**
      * 生效日期
@@ -72,14 +72,14 @@ public class STentantEntity implements Serializable {
     /**
      * 是否冻结
      */
-    @TableField("isfreeze")
-    private Boolean isfreeze;
+    @TableField("is_freeze")
+    private Boolean is_freeze;
 
     /**
      * 是否叶子节点
      */
-    @TableField("isleaf")
-    private Boolean isleaf;
+    @TableField("is_leaf")
+    private Boolean is_leaf;
 
     /**
      * 级次
@@ -104,8 +104,8 @@ public class STentantEntity implements Serializable {
     /**
      * 是否删除
      */
-    @TableField(value = "isdel", fill = FieldFill.INSERT)
-    private Boolean isdel;
+    @TableField(value = "is_del", fill = FieldFill.INSERT)
+    private Boolean is_del;
 
     @TableField(value="c_id", fill = FieldFill.INSERT)
     private Long c_id;

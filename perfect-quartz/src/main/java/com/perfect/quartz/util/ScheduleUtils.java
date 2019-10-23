@@ -1,10 +1,11 @@
 package com.perfect.quartz.util;
 
 import com.perfect.bean.entity.quartz.SJobEntity;
+import com.perfect.common.annotation.SysLog;
 import com.perfect.common.constant.ScheduleConstants;
 import com.perfect.common.exception.job.TaskException;
 import com.perfect.common.utils.LocalDateTimeUtils;
-import com.perfect.common.utils.string.convert.Convert;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 
 /**
@@ -12,6 +13,7 @@ import org.quartz.*;
  *
  * @author ruoyi
  */
+@Slf4j
 public class ScheduleUtils {
 
     /**
@@ -31,7 +33,9 @@ public class ScheduleUtils {
     /**
      * 创建定时任务:SimpleTrigger
      */
+    @SysLog("创建定时任务SimpleTrigger")
     public static void createScheduleJobSimpleTrigger(Scheduler scheduler, SJobEntity job, Class<? extends Job> jobClass) throws SchedulerException, TaskException {
+        log.debug("创建定时任务开始SimpleTrigger");
         // 构建job信息
         Long jobId = job.getId();
         String jobGroup = job.getJob_group_code();
@@ -52,22 +56,30 @@ public class ScheduleUtils {
 
         // 判断是否存在
         if (scheduler.checkExists(getJobKey(jobId, jobGroup))) {
+            log.debug("定时任务已存在，进行删除--jobname:" + job.getJob_name());
             // 防止创建时存在数据问题 先移除，然后在执行创建操作
             scheduler.deleteJob(getJobKey(jobId, jobGroup));
+            log.debug("定时任务已存在，删除成功--jobname:" + job.getJob_name());
         }
 
+        log.debug("创建定时任务：启动--jobname:" + job.getJob_name());
         scheduler.scheduleJob(jobDetail, trigger);
+        log.debug("创建定时任务：成功--jobname:" + job.getJob_name());
 
         // 暂停任务
         if (job.getIs_effected() != null && job.getIs_effected() == ScheduleConstants.Status.PAUSE.getValue()) {
+            log.debug("定时任务，需要进行暂停：开始--jobname:" + job.getJob_name());
             scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+            log.debug("定时任务，需要进行暂停：成功--jobname:" + job.getJob_name());
         }
     }
 
     /**
      * 创建定时任务:Cron表达式
      */
+    @SysLog("创建定时任务CroTrigger")
     public static void createScheduleJobCron(Scheduler scheduler, SJobEntity job, Class<? extends Job> jobClass) throws SchedulerException, TaskException {
+        log.debug("创建定时任务开始CronTrigger");
         // 构建job信息
         Long jobId = job.getId();
         String jobGroup = job.getJob_group_code();
@@ -87,15 +99,20 @@ public class ScheduleUtils {
 
         // 判断是否存在
         if (scheduler.checkExists(getJobKey(jobId, jobGroup))) {
+            log.debug("定时任务已存在，进行删除--jobname:" + job.getJob_name());
             // 防止创建时存在数据问题 先移除，然后在执行创建操作
             scheduler.deleteJob(getJobKey(jobId, jobGroup));
+            log.debug("定时任务已存在，删除成功--jobname:" + job.getJob_name());
         }
-
+        log.debug("创建定时任务：启动--jobname:" + job.getJob_name());
         scheduler.scheduleJob(jobDetail, trigger);
+        log.debug("创建定时任务：成功--jobname:" + job.getJob_name());
 
         // 暂停任务
         if (job.getIs_effected() == ScheduleConstants.Status.PAUSE.getValue()) {
+            log.debug("定时任务，需要进行暂停：开始");
             scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+            log.debug("定时任务，需要进行暂停：成功");
         }
     }
 

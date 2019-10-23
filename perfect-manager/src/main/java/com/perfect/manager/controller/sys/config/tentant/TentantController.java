@@ -134,7 +134,7 @@ public class TentantController extends BaseController implements TentantMqCallba
     @RepeatSubmit
     public ResponseEntity<JsonResult<STentantVo>> insert(@RequestBody(required = false) STentantEntity bean) {
         // 默认启用
-        bean.setIsenable(true);
+        bean.setIs_enable(true);
         if(service.insert(bean).isSuccess()){
             // 获取更新后的数据
             STentantVo vo = service.selectByid(bean.getId());
@@ -192,7 +192,7 @@ public class TentantController extends BaseController implements TentantMqCallba
         // 初始化要发生mq的bean
         MqSenderPojo enableMqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(enableBean, MqSenderEnum.NORMAL_MQ);
         // 启动一个开始的任务
-        mqproducer.send(enableMqSenderPojo, MQEnum.MQ_TASK_Tentant);
+        mqproducer.send(enableMqSenderPojo, MQEnum.MQ_TASK_Tentant_ENABLE);
 
         // 禁用的task
         SJobEntity disableJobEntity = jobService.selectJobBySerialId(data.getId(), QuartzEnum.TASK_TENTANT_DISABLE.getJob_serial_type());
@@ -200,7 +200,7 @@ public class TentantController extends BaseController implements TentantMqCallba
         // 初始化要发生mq的bean
         MqSenderPojo disableMqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(disableBean, MqSenderEnum.NORMAL_MQ);
         // 启动一个结束的任务
-        mqproducer.send(disableMqSenderPojo, MQEnum.MQ_TASK_Tentant);
+        mqproducer.send(disableMqSenderPojo, MQEnum.MQ_TASK_Tentant_Disable);
     }
 
     private void resetAllMq(List<STentantVo> dataList){
