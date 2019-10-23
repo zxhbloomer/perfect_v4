@@ -68,10 +68,15 @@ public class ScheduleUtils {
 
         // 暂停任务
         if (job.getIs_effected() != null && job.getIs_effected() == ScheduleConstants.Status.PAUSE.getValue()) {
-            log.debug("定时任务，需要进行暂停：开始--jobname:" + job.getJob_name());
+            log.debug("定时任务，进行暂停：开始--jobname:" + job.getJob_name());
             scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-            log.debug("定时任务，需要进行暂停：成功--jobname:" + job.getJob_name());
+            log.debug("定时任务，进行暂停：成功--jobname:" + job.getJob_name());
+        } else {
+            log.debug("定时任务，暂停恢复：开始--jobname:" + job.getJob_name());
+            scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+            log.debug("定时任务，暂停恢复：结束--jobname:" + job.getJob_name());
         }
+
     }
 
     /**
@@ -113,6 +118,10 @@ public class ScheduleUtils {
             log.debug("定时任务，需要进行暂停：开始");
             scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
             log.debug("定时任务，需要进行暂停：成功");
+        } else {
+            log.debug("定时任务，暂停恢复：开始--jobname:" + job.getJob_name());
+            scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+            log.debug("定时任务，暂停恢复：结束--jobname:" + job.getJob_name());
         }
     }
 

@@ -92,10 +92,7 @@ public class TentantController extends BaseController implements TentantMqCallba
     @PostMapping("{ id }")
     @ResponseBody
     public ResponseEntity<JsonResult<STentantEntity>> info(@RequestParam("id") String id) {
-
         STentantEntity entity = service.getById(id);
-
-//        ResponseEntity<OAuth2AccessToken
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 

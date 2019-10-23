@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -112,6 +113,14 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
+        // 启用时间小于系统时间，则自动启用
+        if(entity.getEnable_time().isBefore(LocalDateTime.now())){
+            entity.setIs_enable(true);
+        }
+        // 禁用时间小于系统时间，则自动禁用
+        if(entity.getDisable_time().isBefore(LocalDateTime.now())){
+            entity.setIs_enable(false);
+        }
         // 插入逻辑保存
         return InsertResultUtil.OK(mapper.insert(entity));
     }
@@ -129,6 +138,14 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
         CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
+        }
+        // 启用时间小于系统时间，则自动启用
+        if(entity.getEnable_time().isBefore(LocalDateTime.now())){
+            entity.setIs_enable(true);
+        }
+        // 禁用时间小于系统时间，则自动禁用
+        if(entity.getDisable_time().isBefore(LocalDateTime.now())){
+            entity.setIs_enable(false);
         }
         // 更新逻辑保存
         return UpdateResultUtil.OK(mapper.updateById(entity));
