@@ -14,13 +14,13 @@ import com.perfect.bean.vo.sys.config.tenant.STentantVo;
 import com.perfect.common.annotation.RepeatSubmit;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.common.enumconfig.MqSenderEnum;
+import com.perfect.common.enumconfig.quartz.QuartzEnum;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.core.service.quartz.ISJobService;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import com.perfect.manager.quartz.builder.sys.config.tentant.TentantTaskBuilder;
-import com.perfect.manager.quartz.quartzenum.QuartzEnum;
 import com.perfect.mq.rabbitmq.callback.manager.config.tentant.TentantMqCallbackInterface;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import com.perfect.mq.rabbitmq.producer.PerfectMqProducer;
@@ -187,7 +187,7 @@ public class TentantController extends BaseController implements TentantMqCallba
         SJobEntity enableJobEntity = jobService.selectJobBySerialId(data.getId(), QuartzEnum.TASK_TENTANT_ENABLE.getJob_serial_type());
         SJobEntity enableBean = TentantTaskBuilder.builderEnableBean(data, enableJobEntity);
         // 初始化要发生mq的bean
-        MqSenderPojo enableMqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(enableBean, MqSenderEnum.NORMAL_MQ);
+        MqSenderPojo enableMqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(enableBean, MqSenderEnum.NORMAL_MQ, QuartzEnum.TASK_TENTANT_ENABLE.getJob_name());
         // 启动一个开始的任务
         mqproducer.send(enableMqSenderPojo, MQEnum.MQ_TASK_Tentant_ENABLE);
 
@@ -195,7 +195,7 @@ public class TentantController extends BaseController implements TentantMqCallba
         SJobEntity disableJobEntity = jobService.selectJobBySerialId(data.getId(), QuartzEnum.TASK_TENTANT_DISABLE.getJob_serial_type());
         SJobEntity disableBean = TentantTaskBuilder.builderDisableBean(data, disableJobEntity);
         // 初始化要发生mq的bean
-        MqSenderPojo disableMqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(disableBean, MqSenderEnum.NORMAL_MQ);
+        MqSenderPojo disableMqSenderPojo = MqSenderPojoBuilder.buildMqSenderPojo(disableBean, MqSenderEnum.NORMAL_MQ, QuartzEnum.TASK_TENTANT_DISABLE.getJob_name());
         // 启动一个结束的任务
         mqproducer.send(disableMqSenderPojo, MQEnum.MQ_TASK_Tentant_Disable);
     }

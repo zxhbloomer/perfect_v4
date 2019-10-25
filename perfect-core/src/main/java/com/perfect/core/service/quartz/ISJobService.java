@@ -131,5 +131,4 @@ public interface ISJobService extends IService<SJobEntity> {
      * @return
      */
     UpdateResult<Integer> update(SJobEntity entity);
-
 }

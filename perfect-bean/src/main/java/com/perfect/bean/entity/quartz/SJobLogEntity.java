@@ -1,10 +1,8 @@
 package com.perfect.bean.entity.quartz;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,7 +22,7 @@ import lombok.experimental.Accessors;
 @TableName("s_job_log")
 public class SJobLogEntity implements Serializable {
 
-    private static final long serialVersionUID = 5865456934996150751L;
+    private static final long serialVersionUID = 3687772139151833885L;
 
     /**
      * 任务ID
@@ -33,22 +31,40 @@ public class SJobLogEntity implements Serializable {
     private Long id;
 
     /**
+     * 任务主键
+     */
+    @TableId(value = "job_id")
+    private Long job_id;
+
+    /**
      * 任务名称
      */
     @TableField("job_name")
     private String job_name;
 
     /**
-     * 任务组名
+     * 任务组编号
      */
-    @TableField("job_group")
-    private String job_group;
+    @TableField("job_group_code")
+    private String job_group_code;
 
     /**
-     * 任务编号
+     * 任务组名称
+     */
+    @TableField("job_group_name")
+    private String job_group_name;
+
+    /**
+     * 关联编号
      */
     @TableField("job_serial_id")
-    private String job_serial_id;
+    private Long job_serial_id;
+
+    /**
+     * 关联表名字
+     */
+    @TableField("job_serial_type")
+    private String job_serial_type;
 
     /**
      * 任务描述
@@ -87,11 +103,28 @@ public class SJobLogEntity implements Serializable {
     private String cron_expression;
 
     /**
-     * 是否是已经删除
-
+     * 计划策略：0=默认,1=立即触发执行,2=触发一次执行,3=不触发立即执行
      */
-    @TableField("isdel")
-    private Boolean isdel;
+    @TableField("misfire_policy")
+    private String misfire_policy;
+
+    /**
+     * 是否并发执行（0允许 1禁止）
+     */
+    @TableField("concurrent")
+    private Boolean concurrent;
+
+    /**
+     * 判断是否是cron表达式，还是simpletrigger
+     */
+    @TableField("is_cron")
+    private Boolean is_cron;
+
+    /**
+     * 是否是已经删除
+     */
+    @TableField("is_del")
+    private Boolean is_del;
 
     /**
      * 是否有效
@@ -129,32 +162,21 @@ public class SJobLogEntity implements Serializable {
     @TableField("run_times")
     private Integer run_times;
 
-    @TableField("status")
-    private Boolean status;
-
     /**
-     * 异常信息
+     * 执行情况
      */
-    @TableField("error")
-    private String error;
+    @TableField("msg")
+    private String msg;
 
-    /**
-     * 耗时（毫秒）
-     */
-    @TableField("cost")
-    private Long cost;
-
-    @TableField("c_id")
+    @TableField(value="c_id")
     private Long c_id;
 
-    @TableField("c_time")
+    @TableField(value="c_time")
     private LocalDateTime c_time;
 
-    @TableField("u_id")
+    @TableField(value="u_id")
     private Long u_id;
 
-    @TableField("u_time")
+    @TableField(value="u_time")
     private LocalDateTime u_time;
-
-
 }

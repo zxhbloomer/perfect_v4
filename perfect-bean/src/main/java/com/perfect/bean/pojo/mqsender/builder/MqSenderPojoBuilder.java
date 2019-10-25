@@ -5,6 +5,7 @@ import com.perfect.bean.pojo.mqsender.MqMessagePojo;
 import com.perfect.bean.pojo.mqsender.MqSenderPojo;
 import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
 import com.perfect.common.enumconfig.MqSenderEnum;
+import com.perfect.common.enumconfig.quartz.QuartzEnum;
 import com.perfect.common.utils.UuidUtil;
 
 /**
@@ -21,7 +22,7 @@ public class MqSenderPojoBuilder {
      * @param messageData
      * @return
      */
-    public static MqSenderPojo buildMqSenderPojo(Object messageData, MqSenderEnum mqSenderEnum){
+    public static MqSenderPojo buildMqSenderPojo(Object messageData, MqSenderEnum mqSenderEnum, String job_name){
         MqSenderPojo mqSenderPojo = MqSenderPojo.builder()
             .mqMessagePojo(
                 MqMessagePojo.builder()
@@ -33,6 +34,7 @@ public class MqSenderPojoBuilder {
             .type(mqSenderEnum.getCode().toString())
             .name(mqSenderEnum.getName())
             .callBackInfo(null)
+            .job_name(job_name)
             .build();
         return mqSenderPojo;
     }

@@ -2,6 +2,7 @@ package com.perfect.core.service.sys.config.tentant;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.perfect.bean.entity.quartz.SJobEntity;
 import com.perfect.bean.entity.sys.config.tenant.STentantEntity;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
@@ -104,4 +105,18 @@ public interface ITentantService extends IService<STentantEntity> {
      * @return
      */
     UpdateResult<Integer> disableUpdate(STentantEntity entity);
+
+    /**
+     * 启用
+     * @param entity
+     * @return
+     */
+    boolean enableProcess(STentantEntity entity);
+
+    /**
+     * 禁用
+     * @param entity
+     * @return
+     */
+    boolean disableProcess(STentantEntity entity);
 }

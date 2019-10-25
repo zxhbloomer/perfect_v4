@@ -3,6 +3,8 @@ package com.perfect.core.serviceimpl.sys.config.tentant;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.perfect.bean.entity.quartz.SJobEntity;
+import com.perfect.bean.entity.quartz.SJobLogEntity;
 import com.perfect.bean.entity.sys.config.tenant.STentantEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
@@ -12,7 +14,11 @@ import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
 import com.perfect.bean.vo.sys.config.tenant.STentantVo;
+import com.perfect.common.enumconfig.quartz.QuartzEnum;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.utils.bean.BeanUtilsSupport;
+import com.perfect.core.mapper.quartz.SJobLogMapper;
+import com.perfect.core.mapper.quartz.SJobMapper;
 import com.perfect.core.mapper.sys.config.tentant.STentantMapper;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
 import com.perfect.core.utils.mybatis.PageUtil;
@@ -36,6 +42,11 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
 
     @Autowired
     private STentantMapper mapper;
+
+    @Autowired
+    private SJobMapper jobMapper;
+    @Autowired
+    private SJobLogMapper jobLogMapper;
 
     /**
      * 获取数据，树结构
@@ -266,6 +277,65 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
         entity.setIs_enable(false);
         // 更新逻辑保存
         return UpdateResultUtil.OK(mapper.updateById(entity));
+    }
+
+
+    /**
+     * 启用
+     * @param entity
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean enableProcess(STentantEntity entity){
+        boolean rtn = false;
+        // 1、获取相应的job enable bean
+        SJobEntity enableJobEntity = jobMapper.selectJobBySerialId(entity.getId(), QuartzEnum.TASK_TENTANT_ENABLE.getJob_serial_type());
+        enableJobEntity.setLast_run_time(LocalDateTime.now());
+        enableJobEntity.setRun_times(enableJobEntity.getRun_times() + 1);
+        enableJobEntity.setMsg(QuartzEnum.TASK_TENTANT_ENABLE.getOk_msg());
+        // 2、更新租户bean
+        entity.setIs_enable(true);
+        mapper.updateById(entity);
+        // 3、更新job
+        jobMapper.updateById(enableJobEntity);
+        // 4、更新job日志
+        SJobLogEntity sJobLogEntity = new SJobLogEntity();
+        BeanUtilsSupport.copyProperties(enableJobEntity, sJobLogEntity);
+        sJobLogEntity.setJob_id(enableJobEntity.getId());
+        jobLogMapper.insert(sJobLogEntity);
+
+        rtn = true;
+        return rtn;
+    }
+
+    /**
+     * 禁用
+     * @param entity
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean disableProcess(STentantEntity entity){
+        boolean rtn = false;
+        // 1、获取相应的job enable bean
+        SJobEntity disableJobEntity = jobMapper.selectJobBySerialId(entity.getId(), QuartzEnum.TASK_TENTANT_DISABLE.getJob_serial_type());
+        disableJobEntity.setLast_run_time(LocalDateTime.now());
+        disableJobEntity.setRun_times(disableJobEntity.getRun_times() + 1);
+        disableJobEntity.setMsg(QuartzEnum.TASK_TENTANT_ENABLE.getOk_msg());
+        // 2、更新租户bean
+        entity.setIs_enable(true);
+        mapper.updateById(entity);
+        // 3、更新job
+        jobMapper.updateById(disableJobEntity);
+        // 4、更新job日志
+        SJobLogEntity sJobLogEntity = new SJobLogEntity();
+        BeanUtilsSupport.copyProperties(disableJobEntity, sJobLogEntity);
+        sJobLogEntity.setJob_id(disableJobEntity.getId());
+        jobLogMapper.insert(sJobLogEntity);
+
+        rtn = true;
+        return rtn;
     }
 
 }

@@ -3,8 +3,8 @@ package com.perfect.manager.quartz.builder.sys.config.tentant;
 import com.alibaba.fastjson.JSON;
 import com.perfect.bean.entity.quartz.SJobEntity;
 import com.perfect.bean.vo.sys.config.tenant.STentantVo;
+import com.perfect.common.enumconfig.quartz.QuartzEnum;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
-import com.perfect.manager.quartz.quartzenum.QuartzEnum;
 
 /**
  * 配置租户定时任务启动类
@@ -20,16 +20,16 @@ public class TentantTaskBuilder {
      * @return
      */
     public static SJobEntity builderDisableBean(STentantVo data, SJobEntity entity){
-        SJobEntity rtnBean;
+        SJobEntity rtnBean = new SJobEntity();
         if (entity == null){
             // 构筑新bean
             rtnBean = TentantTaskBuilder.builderNewDisableBean(data);
         } else {
-            entity.setBean_name(STentantVo.class.getName());
-            entity.setParams(JSON.toJSONString(data));
+            BeanUtilsSupport.copyProperties(entity, rtnBean);
+            rtnBean.setBean_name(STentantVo.class.getName());
+            rtnBean.setParams(JSON.toJSONString(data));
             // 下次运行时间：重要启动时间
-            entity.setNext_run_time(data.getDisable_time());
-            rtnBean = entity;
+            rtnBean.setNext_run_time(data.getDisable_time());
         }
         // 上次运行时间
         return rtnBean;
@@ -75,7 +75,6 @@ public class TentantTaskBuilder {
             rtnBean.setParams(JSON.toJSONString(data));
             // 下次运行时间：重要启动时间
             rtnBean.setNext_run_time(data.getEnable_time());
-            rtnBean = entity;
         }
         // 上次运行时间
         return rtnBean;
