@@ -10,7 +10,7 @@ public interface ScheduleConstants
     public static final String TASK_CLASS_NAME = "TASK_CLASS_NAME";
 
     /** 执行目标key */
-    public static final String TASK_PROPERTIES = "TASK_PROPERTIES";
+    public static final String TASK_PROPERTIES = "TASK_PROPERTIES_JOB_ENTITY";
 
     /** 默认 */
     public static final String MISFIRE_DEFAULT = "0";

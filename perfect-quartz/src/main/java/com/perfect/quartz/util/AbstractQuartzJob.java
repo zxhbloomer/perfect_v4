@@ -59,7 +59,7 @@ public abstract class AbstractQuartzJob implements Job {
     }
 
     /**
-     * 执行后
+     * 执行后，更新日志
      *
      */
     protected void after(JobExecutionContext context, SJobEntity sysJob, Exception e) {
@@ -68,19 +68,7 @@ public abstract class AbstractQuartzJob implements Job {
 
         final SJobLogEntity sysJobLog = new SJobLogEntity();
         BeanUtilsSupport.copyProperties(sysJob, sysJobLog);
-        sysJobLog.setBegin_date(startTime);
-        sysJobLog.setEnd_date(LocalDateTime.now());
-
-        long runMs = sysJobLog.getEnd_date().toEpochSecond(ZoneOffset.of("+8")) - sysJobLog.getBegin_date().toEpochSecond(ZoneOffset.of("+8"));
-        sysJobLog.setCost(runMs);
-        if (e != null) {
-            sysJobLog.setStatus(false);
-            String errorMsg = StringUtil.substring(ExceptionUtil.getException(e), 0, 2000);
-            sysJobLog.setError(errorMsg);
-        } else {
-            sysJobLog.setStatus(true);
-        }
-
+        sysJobLog.setJob_id(sysJob.getId());
         // 写入数据库当中
         BeanUtilsSupport.getBean(ISJobLogService.class).addJobLog(sysJobLog);
     }

@@ -299,11 +299,11 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
         mapper.updateById(entity);
         // 3、更新job
         jobMapper.updateById(enableJobEntity);
-        // 4、更新job日志
-        SJobLogEntity sJobLogEntity = new SJobLogEntity();
-        BeanUtilsSupport.copyProperties(enableJobEntity, sJobLogEntity);
-        sJobLogEntity.setJob_id(enableJobEntity.getId());
-        jobLogMapper.insert(sJobLogEntity);
+//        // 4、更新job日志
+//        SJobLogEntity sJobLogEntity = new SJobLogEntity();
+//        BeanUtilsSupport.copyProperties(enableJobEntity, sJobLogEntity);
+//        sJobLogEntity.setJob_id(enableJobEntity.getId());
+//        jobLogMapper.insert(sJobLogEntity);
 
         rtn = true;
         return rtn;
@@ -328,11 +328,11 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
         mapper.updateById(entity);
         // 3、更新job
         jobMapper.updateById(disableJobEntity);
-        // 4、更新job日志
-        SJobLogEntity sJobLogEntity = new SJobLogEntity();
-        BeanUtilsSupport.copyProperties(disableJobEntity, sJobLogEntity);
-        sJobLogEntity.setJob_id(disableJobEntity.getId());
-        jobLogMapper.insert(sJobLogEntity);
+//        // 4、更新job日志
+//        SJobLogEntity sJobLogEntity = new SJobLogEntity();
+//        BeanUtilsSupport.copyProperties(disableJobEntity, sJobLogEntity);
+//        sJobLogEntity.setJob_id(disableJobEntity.getId());
+//        jobLogMapper.insert(sJobLogEntity);
 
         rtn = true;
         return rtn;

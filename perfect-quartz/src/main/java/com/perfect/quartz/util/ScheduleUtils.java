@@ -8,6 +8,8 @@ import com.perfect.common.utils.LocalDateTimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 
+import java.time.LocalDateTime;
+
 /**
  * 定时任务工具类
  *
@@ -34,7 +36,7 @@ public class ScheduleUtils {
      * 创建定时任务:SimpleTrigger
      */
     @SysLog("创建定时任务SimpleTrigger")
-    public static void createScheduleJobSimpleTrigger(Scheduler scheduler, SJobEntity job, Class<? extends Job> jobClass) throws SchedulerException, TaskException {
+    public static boolean createScheduleJobSimpleTrigger(Scheduler scheduler, SJobEntity job, Class<? extends Job> jobClass) throws SchedulerException, TaskException {
         log.debug("创建定时任务开始SimpleTrigger");
         // 构建job信息
         Long jobId = job.getId();
@@ -44,12 +46,22 @@ public class ScheduleUtils {
         SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
         simpleScheduleBuilder = handleSimpleScheduleMisfirePolicy(simpleScheduleBuilder);
         // 新的Simpletrigger
-        SimpleTrigger trigger = TriggerBuilder
-            .newTrigger()
-            .withIdentity(getTriggerKey(jobId, jobGroup))
-            .withSchedule(simpleScheduleBuilder)
-            .startAt(LocalDateTimeUtils.convertLDTToDate(job.getNext_run_time()))
-            .build();
+        SimpleTrigger trigger ;
+        if (job.getNext_run_time().isBefore(LocalDateTime.now())) {
+            trigger = TriggerBuilder
+                .newTrigger()
+                .withIdentity(getTriggerKey(jobId, jobGroup))
+                .withSchedule(simpleScheduleBuilder)
+                .startNow()
+                .build();
+        } else {
+            trigger = TriggerBuilder
+                .newTrigger()
+                .withIdentity(getTriggerKey(jobId, jobGroup))
+                .withSchedule(simpleScheduleBuilder)
+                .startAt(LocalDateTimeUtils.convertLDTToDate(job.getNext_run_time()))
+                .build();
+        }
 
         // 放入参数，运行时的方法可以获取
         jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
@@ -76,14 +88,18 @@ public class ScheduleUtils {
             scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
             log.debug("定时任务，暂停恢复：结束--jobname:" + job.getJob_name());
         }
-
+        if (scheduler.checkExists(getJobKey(jobId, jobGroup))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
      * 创建定时任务:Cron表达式
      */
     @SysLog("创建定时任务CroTrigger")
-    public static void createScheduleJobCron(Scheduler scheduler, SJobEntity job, Class<? extends Job> jobClass) throws SchedulerException, TaskException {
+    public static boolean createScheduleJobCron(Scheduler scheduler, SJobEntity job, Class<? extends Job> jobClass) throws SchedulerException, TaskException {
         log.debug("创建定时任务开始CronTrigger");
         // 构建job信息
         Long jobId = job.getId();
@@ -122,6 +138,11 @@ public class ScheduleUtils {
             log.debug("定时任务，暂停恢复：开始--jobname:" + job.getJob_name());
             scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
             log.debug("定时任务，暂停恢复：结束--jobname:" + job.getJob_name());
+        }
+        if (scheduler.checkExists(getJobKey(jobId, jobGroup))) {
+            return true;
+        } else {
+            return false;
         }
     }
 
