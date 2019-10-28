@@ -2,7 +2,9 @@ package com.perfect.common.utils.bean;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +13,16 @@ import java.util.List;
  *  封装调用Spring的BeanUtils进行bean的复制操作
  * @author zxh
  */
-public class BeanUtilsSupport {
+@Component
+public class BeanUtilsSupport implements BeanFactoryPostProcessor {
 
 	/** Spring应用上下文环境 */
 	private static ConfigurableListableBeanFactory beanFactory;
+
+	@Override
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+		BeanUtilsSupport.beanFactory = beanFactory;
+	}
 
 	/**
 	 * 复制POJO对象的内容至同等的POJO中

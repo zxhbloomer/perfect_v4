@@ -292,7 +292,7 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
         // 1、获取相应的job enable bean
         SJobEntity enableJobEntity = jobMapper.selectJobBySerialId(entity.getId(), QuartzEnum.TASK_TENTANT_ENABLE.getJob_serial_type());
         enableJobEntity.setLast_run_time(LocalDateTime.now());
-        enableJobEntity.setRun_times(enableJobEntity.getRun_times() + 1);
+        enableJobEntity.setRun_times(enableJobEntity.getRun_times() == null ? 0 : enableJobEntity.getRun_times() + 1);
         enableJobEntity.setMsg(QuartzEnum.TASK_TENTANT_ENABLE.getOk_msg());
         // 2、更新租户bean
         entity.setIs_enable(true);
@@ -321,7 +321,7 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
         // 1、获取相应的job enable bean
         SJobEntity disableJobEntity = jobMapper.selectJobBySerialId(entity.getId(), QuartzEnum.TASK_TENTANT_DISABLE.getJob_serial_type());
         disableJobEntity.setLast_run_time(LocalDateTime.now());
-        disableJobEntity.setRun_times(disableJobEntity.getRun_times() + 1);
+        disableJobEntity.setRun_times(disableJobEntity.getRun_times() == null ? 0 : disableJobEntity.getRun_times() + 1);
         disableJobEntity.setMsg(QuartzEnum.TASK_TENTANT_ENABLE.getOk_msg());
         // 2、更新租户bean
         entity.setIs_enable(true);
