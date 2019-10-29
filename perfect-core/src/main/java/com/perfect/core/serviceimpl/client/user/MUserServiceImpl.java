@@ -62,7 +62,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUserEntity> impl
                 user.getId(),
                 username,
                 user.getPwd(),
-                AuthorityUtils.createAuthorityList(permissions.toArray(new String[]{})))
+                AuthorityUtils.createAuthorityList(permissions.toArray(new String[]{})))   // 加载权限的关键部分
                 .setUser(user);
     }
 

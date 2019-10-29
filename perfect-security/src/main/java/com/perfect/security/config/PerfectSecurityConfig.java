@@ -28,6 +28,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -51,14 +52,19 @@ import java.util.Map;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class PerfectSecurityConfig extends WebSecurityConfigurerAdapter {
-    // 登录成功处理器
+
+    /**
+     * 登录成功处理器
+     */
     @Autowired
     private PerfectAuthenticationSucessHandler perfectAuthenticationSucessHandler;
 
     @Autowired
     private IMUserService userDetailService;
 
-    // 登录失败处理器
+    /**
+     * 登录失败处理器
+     */
     @Autowired
     private PerfectAuthenticationFailureHandler perfectAuthenticationFailureHandler;
 
@@ -72,7 +78,21 @@ public class PerfectSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
-    // spring security自带的密码加密工具类
+    /**
+     * 权限前缀
+     * @return
+     */
+    @Bean
+    GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        // Remove the ROLE_ prefix
+        return new GrantedAuthorityDefaults("");
+    }
+
+
+    /**
+     * spring security自带的密码加密工具类
+     * @return
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -103,7 +123,6 @@ public class PerfectSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         String[] anonResourcesUrl = StringUtils.splitByWholeSeparatorPreserveAllTokens(
             perfectSecurityProperties.getAnonResourcesUrl(),",");
 
@@ -118,50 +137,85 @@ public class PerfectSecurityConfig extends WebSecurityConfigurerAdapter {
         smsCodeFilter.setSessionRegistry(sessionRegistry());
         smsCodeFilter.afterPropertiesSet();
 
-        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler()) // 权限不足处理器
+        http.exceptionHandling()
+            /** 权限不足处理器 */
+            .accessDeniedHandler(accessDeniedHandler())
              .and()
                 .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
-                .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class) // 短信验证码校验
-                .addFilterBefore(imageCodeFilter, UsernamePasswordAuthenticationFilter.class) // 添加图形证码校验过滤器
-                .formLogin() // 表单方式
-                .loginPage(perfectSecurityProperties.getLoginUrl()) // 未认证跳转 URL
+                /** 短信验证码校验 */
+                .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                /** 添加图形证码校验过滤器 */
+                .addFilterBefore(imageCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                /** 表单方式 */
+                .formLogin()
+                /** 未认证跳转 URL */
+                .loginPage(perfectSecurityProperties.getLoginUrl())
                     .usernameParameter("username").passwordParameter("password")
-                .loginProcessingUrl(perfectSecurityProperties.getCode().getImage().getLoginProcessingUrl()) // 处理登录认证 URL
-                .successHandler(perfectAuthenticationSucessHandler) // 处理登录成功
-                .failureHandler(perfectAuthenticationFailureHandler) // 处理登录失败
+                /** 处理登录认证 URL */
+                .loginProcessingUrl(perfectSecurityProperties.getCode().getImage().getLoginProcessingUrl())
+                /** 处理登录成功 */
+                .successHandler(perfectAuthenticationSucessHandler)
+                /** 处理登录失败 */
+                .failureHandler(perfectAuthenticationFailureHandler)
             .and()
-                .rememberMe() // 添加记住我功能
-                .tokenRepository(persistentTokenRepository()) // 配置 token 持久化仓库
-                .tokenValiditySeconds(perfectSecurityProperties.getRememberMeTimeout()) // rememberMe 过期时间，单为秒
-                .userDetailsService(userDetailService) // 处理自动登录逻辑
+                /** 添加记住我功能 */
+                .rememberMe()
+                /** 配置 token 持久化仓库 */
+                .tokenRepository(persistentTokenRepository())
+                /** rememberMe 过期时间，单为秒 */
+                .tokenValiditySeconds(perfectSecurityProperties.getRememberMeTimeout())
+                /** 处理自动登录逻辑 */
+                .userDetailsService(userDetailService)
             .and()
-                .sessionManagement() // 配置 session管理器
-                .invalidSessionStrategy(invalidSessionStrategy()) // 处理 session失效
-                .maximumSessions(perfectSecurityProperties.getMAX_SESSIONS()) // 最大并发登录数量
-                .expiredSessionStrategy(new PerfectExpiredSessionStrategy()) // 处理并发登录被踢出
-                .sessionRegistry(sessionRegistry()) // 配置 session注册中心
+                /** 配置 session管理器 */
+                .sessionManagement()
+                /** 处理 session失效 */
+                .invalidSessionStrategy(invalidSessionStrategy())
+                /** 最大并发登录数量 */
+                .maximumSessions(perfectSecurityProperties.getMAX_SESSIONS())
+                /** 处理并发登录被踢出 */
+                .expiredSessionStrategy(new PerfectExpiredSessionStrategy())
+                /** 配置 session注册中心 */
+                .sessionRegistry(sessionRegistry())
             .and()
             .and()
-                .logout() // 配置登出
-                .addLogoutHandler(logoutHandler()) // 配置登出处理器
-//                .logoutUrl(perfectSecurityProperties.getLogoutUrl()) // 处理登出 url
-//                .logoutSuccessUrl("/") // 登出后跳转到 /
-                .deleteCookies("JSESSIONID") // 删除 JSESSIONID
+                /** 配置登出 */
+                .logout()
+                /** 配置登出处理器 */
+                .addLogoutHandler(logoutHandler())
+                /** 处理登出 url */
+//                .logoutUrl(perfectSecurityProperties.getLogoutUrl())
+                /** 登出后跳转到 */
+//                .logoutSuccessUrl("/")
+                /** 删除 JSESSIONID */
+                .deleteCookies("JSESSIONID")
             .and()
-                .authorizeRequests() // 授权配置
-                .antMatchers(anonResourcesUrl).permitAll() // 免认证静态资源路径
+                /** 授权配置 */
+                .authorizeRequests()
+                /** 免认证静态资源路径 */
+                .antMatchers(anonResourcesUrl).permitAll()
                 .antMatchers(
-                        perfectSecurityProperties.getLoginUrl(), // 登录路径
-                        PerfectConstant.FEBS_REGIST_URL, // 用户注册 url
-                        perfectSecurityProperties.getCode().getImage().getCreateUrl(), // 创建图片验证码路径
-                        perfectSecurityProperties.getCode().getSms().getCreateUrl() // 创建短信验证码路径
-                ).permitAll() // 配置免认证路径
-                .anyRequest()  // 所有请求
-                .authenticated() // 都需要认证
+                        /** 登录路径 */
+                        perfectSecurityProperties.getLoginUrl(),
+                        /** 用户注册 url */
+                        PerfectConstant.FEBS_REGIST_URL,
+                        /** 创建图片验证码路径 */
+                        perfectSecurityProperties.getCode().getImage().getCreateUrl(),
+                        /** 创建短信验证码路径 */
+                        perfectSecurityProperties.getCode().getSms().getCreateUrl()
+
+                )
+                /** 配置免认证路径 */
+                .permitAll()
+                /** 所有请求 */
+                .anyRequest()
+                /** 都需要认证 */
+                .authenticated()
             .and()
                 .csrf().disable()
-                .apply(perfectSmsCodeAuthenticationSecurityConfig) // 添加短信验证码认证流程
-        ; // social 配置
+                /** 添加短信验证码认证流程 */
+                .apply(perfectSmsCodeAuthenticationSecurityConfig)
+        ;
     }
 
 
