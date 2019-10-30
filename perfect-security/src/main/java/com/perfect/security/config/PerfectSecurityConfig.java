@@ -98,16 +98,16 @@ public class PerfectSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * 默认的登录用户
-     * @param auth
-     * @throws Exception
-     */
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-            .withUser("admin").password("1q2w3e4r").roles("ADMIN");
-    }
+//    /**
+//     * 默认的登录用户
+//     * @param auth
+//     * @throws Exception
+//     */
+//    @Autowired
+//    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//            .withUser("admin").password("123456").roles("ADMIN");
+//    }
 
     /**
      * 处理 rememberMe 自动登录认证
@@ -140,7 +140,7 @@ public class PerfectSecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling()
             /** 权限不足处理器 */
             .accessDeniedHandler(accessDeniedHandler())
-             .and()
+            .and()
                 .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
                 /** 短信验证码校验 */
                 .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
@@ -150,7 +150,7 @@ public class PerfectSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 /** 未认证跳转 URL */
                 .loginPage(perfectSecurityProperties.getLoginUrl())
-                    .usernameParameter("username").passwordParameter("password")
+                .usernameParameter("username").passwordParameter("password")
                 /** 处理登录认证 URL */
                 .loginProcessingUrl(perfectSecurityProperties.getCode().getImage().getLoginProcessingUrl())
                 /** 处理登录成功 */
@@ -184,9 +184,9 @@ public class PerfectSecurityConfig extends WebSecurityConfigurerAdapter {
                 /** 配置登出处理器 */
                 .addLogoutHandler(logoutHandler())
                 /** 处理登出 url */
-//                .logoutUrl(perfectSecurityProperties.getLogoutUrl())
+                //                .logoutUrl(perfectSecurityProperties.getLogoutUrl())
                 /** 登出后跳转到 */
-//                .logoutSuccessUrl("/")
+                //                .logoutSuccessUrl("/")
                 /** 删除 JSESSIONID */
                 .deleteCookies("JSESSIONID")
             .and()
@@ -195,14 +195,14 @@ public class PerfectSecurityConfig extends WebSecurityConfigurerAdapter {
                 /** 免认证静态资源路径 */
                 .antMatchers(anonResourcesUrl).permitAll()
                 .antMatchers(
-                        /** 登录路径 */
-                        perfectSecurityProperties.getLoginUrl(),
-                        /** 用户注册 url */
-                        PerfectConstant.FEBS_REGIST_URL,
-                        /** 创建图片验证码路径 */
-                        perfectSecurityProperties.getCode().getImage().getCreateUrl(),
-                        /** 创建短信验证码路径 */
-                        perfectSecurityProperties.getCode().getSms().getCreateUrl()
+                    /** 登录路径 */
+                    perfectSecurityProperties.getLoginUrl(),
+                    /** 用户注册 url */
+                    PerfectConstant.FEBS_REGIST_URL,
+                    /** 创建图片验证码路径 */
+                    perfectSecurityProperties.getCode().getImage().getCreateUrl(),
+                    /** 创建短信验证码路径 */
+                    perfectSecurityProperties.getCode().getSms().getCreateUrl()
 
                 )
                 /** 配置免认证路径 */

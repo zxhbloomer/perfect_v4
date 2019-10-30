@@ -23,14 +23,11 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @TableField("login_name")
-    private String loginName;
+    private String login_name;
 
     /**
      * 用户实名
@@ -67,91 +64,92 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
      * 是否是已经删除
 
      */
-    @TableField(value = "isdel", fill = FieldFill.INSERT)
-    private Boolean isdel;
+    @TableField("is_del")
+    private Boolean is_del;
 
     /**
      * 是否锁定
 
      */
-    @TableField("islock")
-    private Boolean islock;
+    @TableField("is_lock")
+    private Boolean is_lock;
 
     /**
-     * 是否禁用 1:false-未启用,0:true-已启用
+     * 是否禁用
+
      */
-    @TableField("isenable")
-    private Boolean isenable;
+    @TableField("is_enable")
+    private Boolean is_enable;
 
     /**
      * 生效时间
 
      */
     @TableField("effective_date")
-    private LocalDateTime effectiveDate;
+    private LocalDateTime effective_date;
 
     /**
      * 失效时间
 
      */
     @TableField("invalidation_date")
-    private LocalDateTime invalidationDate;
+    private LocalDateTime invalidation_date;
 
     /**
      * 登录错误次数
 
      */
     @TableField("err_count")
-    private Integer errCount;
+    private Integer err_count;
 
     /**
      * 所属用户组
-用户组织范围
-包含下级组织的组织范围
+     用户组织范围
+     包含下级组织的组织范围
 
      */
     @TableField("group_id")
-    private String groupId;
+    private String group_id;
 
     @TableField("staff_id")
-    private Long staffId;
+    private Long staff_id;
 
     /**
      * 密码生效日期
 
      */
     @TableField("pwd_effective_date")
-    private LocalDateTime pwdEffectiveDate;
+    private LocalDateTime pwd_effective_date;
 
     /**
      * 用户锁定时间
      */
     @TableField("locked_time")
-    private LocalDateTime lockedTime;
+    private LocalDateTime locked_time;
 
     /**
      * 是否为业务管理员
      */
     @TableField("is_biz_admin")
-    private Boolean isBizAdmin;
+    private Boolean is_biz_admin;
 
     /**
      * 是否修改过密码
      */
     @TableField("is_changed_pwd")
-    private Boolean isChangedPwd;
+    private Boolean is_changed_pwd;
 
     /**
      * 传统认证方式=0,智能钥匙认证=1,动态密码锁=2,指纹认证方式=3
      */
     @TableField("login_author_way")
-    private Boolean loginAuthorWay;
+    private Boolean login_author_way;
 
     /**
      * 历史密码
      */
     @TableField("pwd_his_pwd")
-    private String pwdHisPwd;
+    private String pwd_his_pwd;
 
     @TableField("email")
     private String email;
@@ -160,19 +158,19 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
      * 家庭电话
      */
     @TableField("home_telno")
-    private String homeTelno;
+    private String home_telno;
 
     /**
      * 办公室电话
      */
     @TableField("office_telno")
-    private String officeTelno;
+    private String office_telno;
 
     /**
      * 手机号码
      */
     @TableField("cell_telno")
-    private String cellTelno;
+    private String cell_telno;
 
     /**
      * 租户代码
@@ -202,7 +200,7 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
      * 最后登陆时间
      */
     @TableField("last_login_date")
-    private LocalDateTime lastLoginDate;
+    private LocalDateTime last_login_date;
 
     @TableField(value="c_id", fill = FieldFill.INSERT)
     private Long c_id;
