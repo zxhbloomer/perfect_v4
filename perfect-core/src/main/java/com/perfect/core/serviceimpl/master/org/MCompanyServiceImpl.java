@@ -3,17 +3,18 @@ package com.perfect.core.serviceimpl.master.org;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.perfect.bean.entity.master.org.MGroupEntity;
-import com.perfect.bean.entity.sys.config.config.SConfigEntity;
+import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
-import com.perfect.bean.vo.master.org.MGroupVo;
+import com.perfect.bean.vo.master.org.MCompanyVo;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.core.mapper.master.org.MCompanyMapper;
 import com.perfect.core.mapper.master.org.MGroupMapper;
+import com.perfect.core.service.master.org.IMCompanyService;
 import com.perfect.core.service.master.org.IMGroupService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +25,17 @@ import java.util.List;
 
 /**
  * <p>
- *  集团主表 服务实现类
+ * 公司主表 服务实现类
  * </p>
  *
  * @author zxh
  * @since 2019-08-23
  */
 @Service
-public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> implements IMGroupService {
+public class MCompanyServiceImpl extends ServiceImpl<MCompanyMapper, MCompanyEntity> implements IMCompanyService {
 
     @Autowired
-    private MGroupMapper mapper;
+    private MCompanyMapper mapper;
 
     /**
      * 获取列表，页面查询
@@ -45,10 +46,10 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      * @throws IllegalAccessException
      */
     @Override
-    public IPage<MGroupEntity> selectPage(MGroupVo searchCondition)
+    public IPage<MCompanyEntity> selectPage(MCompanyVo searchCondition)
         throws InstantiationException, IllegalAccessException {
         // 分页条件
-        Page<MGroupEntity> pageCondition =
+        Page<MCompanyEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
         // 通过page进行排序
         PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
@@ -64,9 +65,9 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      * @throws IllegalAccessException
      */
     @Override
-    public List<MGroupEntity> select(MGroupVo searchCondition) {
+    public List<MCompanyEntity> select(MCompanyVo searchCondition) {
         // 查询 数据
-        List<MGroupEntity> list = mapper.select(searchCondition);
+        List<MCompanyEntity> list = mapper.select(searchCondition);
         return list;
     }
 
@@ -79,9 +80,9 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      * @throws IllegalAccessException
      */
     @Override
-    public List<MGroupEntity> selectIdsIn(List<MGroupVo> searchCondition) {
+    public List<MCompanyEntity> selectIdsIn(List<MCompanyVo> searchCondition) {
         // 查询 数据
-        List<MGroupEntity> list = mapper.selectIdsIn(searchCondition);
+        List<MCompanyEntity> list = mapper.selectIdsIn(searchCondition);
         return list;
     }
 
@@ -92,8 +93,8 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void deleteByIdsIn(List<MGroupVo> searchCondition) {
-        List<MGroupEntity> list = mapper.selectIdsIn(searchCondition);
+    public void deleteByIdsIn(List<MCompanyVo> searchCondition) {
+        List<MCompanyEntity> list = mapper.selectIdsIn(searchCondition);
         list.forEach(
             bean -> {
                 bean.setIs_del(!bean.getIs_del());
@@ -109,7 +110,7 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<Integer> insert(MGroupEntity entity) {
+    public InsertResult<Integer> insert(MCompanyEntity entity) {
         // 插入前check
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -127,7 +128,7 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public UpdateResult<Integer> update(MGroupEntity entity) {
+    public UpdateResult<Integer> update(MCompanyEntity entity) {
         // 更新前check
         CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -143,9 +144,9 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      * @param code
      * @return
      */
-    public List<MGroupEntity> selectByCode(String code, Long equal_id, Long not_equal_id) {
+    public List<MCompanyEntity> selectByCode(String code, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MGroupEntity> list = mapper.selectByCode(code, equal_id, not_equal_id);
+        List<MCompanyEntity> list = mapper.selectByCode(code, equal_id, not_equal_id);
         return list;
     }
 
@@ -155,9 +156,9 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      * @param name
      * @return
      */
-    public List<MGroupEntity> selectByName(String name, Long equal_id, Long not_equal_id) {
+    public List<MCompanyEntity> selectByName(String name, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MGroupEntity> list = mapper.selectByName(name, equal_id, not_equal_id);
+        List<MCompanyEntity> list = mapper.selectByName(name, equal_id, not_equal_id);
         return list;
     }
 
@@ -167,9 +168,9 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      * @param name
      * @return
      */
-    public List<MGroupEntity> selectBySimpleName(String name, Long equal_id, Long not_equal_id) {
+    public List<MCompanyEntity> selectBySimpleName(String name, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MGroupEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id);
+        List<MCompanyEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id);
         return list;
     }
 
@@ -177,13 +178,13 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      * check逻辑
      * @return
      */
-    public CheckResult checkLogic(MGroupEntity entity, String moduleType){
+    public CheckResult checkLogic(MCompanyEntity entity, String moduleType){
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
                 // 新增场合，不能重复
-                List<MGroupEntity> codeList_insertCheck = selectByCode(entity.getCode(), null, null);
-                List<MGroupEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
-                List<MGroupEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
+                List<MCompanyEntity> codeList_insertCheck = selectByCode(entity.getCode(), null, null);
+                List<MCompanyEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
+                List<MCompanyEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
                 if (codeList_insertCheck.size() >= 1) {
                     return CheckResultUtil.NG("新增保存出错：集团编号出现重复", entity.getCode());
                 }
@@ -196,9 +197,9 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
                 // 更新场合，不能重复设置
-                List<MGroupEntity> codeList_updCheck = selectByCode(entity.getCode(), null, entity.getId());
-                List<MGroupEntity> nameList_updCheck = selectByName(entity.getName(), null, entity.getId());
-                List<MGroupEntity> simple_name_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
+                List<MCompanyEntity> codeList_updCheck = selectByCode(entity.getCode(), null, entity.getId());
+                List<MCompanyEntity> nameList_updCheck = selectByName(entity.getName(), null, entity.getId());
+                List<MCompanyEntity> simple_name_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
 
                 if (codeList_updCheck.size() >= 1) {
                     return CheckResultUtil.NG("更新保存出错：集团编号出现重复", entity.getCode());

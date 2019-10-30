@@ -4,9 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
+import com.perfect.bean.vo.master.org.MGroupExportVo;
 import com.perfect.bean.vo.master.org.MGroupVo;
-import com.perfect.bean.vo.sys.config.dict.SDictTypeExportVo;
-import com.perfect.bean.vo.sys.config.resource.SResourceExportVo;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
@@ -82,8 +81,8 @@ public class MasterGroupController extends BaseController {
     public void exportAll(@RequestBody(required = false) MGroupVo searchCondition, HttpServletResponse response)
         throws IllegalAccessException, InstantiationException, IOException {
         List<MGroupEntity> searchResult = service.select(searchCondition);
-        List<SDictTypeExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SDictTypeExportVo.class);
-        ExcelUtil<SDictTypeExportVo> util = new ExcelUtil<>(SDictTypeExportVo.class);
+        List<MGroupExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MGroupExportVo.class);
+        ExcelUtil<MGroupExportVo> util = new ExcelUtil<>(MGroupExportVo.class);
         util.exportExcel("集团主表数据导出", "集团主表数据", rtnList, response);
     }
 
@@ -94,8 +93,8 @@ public class MasterGroupController extends BaseController {
         HttpServletResponse response)
         throws IllegalAccessException, InstantiationException, IOException {
         List<MGroupEntity> searchResult = service.selectIdsIn(searchConditionList);
-        List<SResourceExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SDictTypeExportVo.class);
-        ExcelUtil<SResourceExportVo> util = new ExcelUtil<>(SResourceExportVo.class);
+        List<MGroupExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MGroupExportVo.class);
+        ExcelUtil<MGroupExportVo> util = new ExcelUtil<>(MGroupExportVo.class);
         util.exportExcel("集团主表数据导出", "集团主表数据", rtnList, response);
     }
 
