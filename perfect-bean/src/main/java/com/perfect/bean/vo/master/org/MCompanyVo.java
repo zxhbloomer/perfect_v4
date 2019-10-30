@@ -36,12 +36,12 @@ public class MCompanyVo implements Serializable {
     private String code;
 
     /**
-     * 单位全称
+     * 企业全称
      */
     private String name;
 
     /**
-     * 简称
+     * 企业简称
      */
     private String simple_name;
 

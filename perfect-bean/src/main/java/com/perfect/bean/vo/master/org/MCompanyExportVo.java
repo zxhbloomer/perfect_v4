@@ -38,15 +38,15 @@ public class MCompanyExportVo implements Serializable {
     private String code;
 
     /**
-     * 单位全称
+     * 企业全称
      */
-    @Excel(name = "公司全称")
+    @Excel(name = "企业全称")
     private String name;
 
     /**
-     * 公司简称
+     * 企业简称
      */
-    @Excel(name = "公司简称")
+    @Excel(name = "企业简称")
     private String simple_name;
 
     @TableField("address_id")

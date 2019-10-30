@@ -37,13 +37,13 @@ public class MCompanyEntity implements Serializable {
     private String code;
 
     /**
-     * 单位全称
+     * 企业全称
      */
     @TableField("name")
     private String name;
 
     /**
-     * 简称
+     * 企业简称
      */
     @TableField("simple_name")
     private String simple_name;
