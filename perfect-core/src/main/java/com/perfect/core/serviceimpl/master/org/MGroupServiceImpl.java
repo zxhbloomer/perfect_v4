@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.master.org.MGroupEntity;
+import com.perfect.bean.entity.sys.config.config.SConfigEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
@@ -122,11 +123,12 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
     @Override
     public InsertResult<Integer> insert(MGroupEntity entity) {
         // 插入前check
-        CheckResult cr = checkLogic(entity.getCode());
+        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
         // 插入逻辑保存
+        entity.setIs_del(false);
         return InsertResultUtil.OK(mapper.insert(entity));
     }
 
@@ -139,7 +141,7 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
     @Override
     public UpdateResult<Integer> update(MGroupEntity entity) {
         // 更新前check
-        CheckResult cr = checkLogic(entity.getCode());
+        CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -153,10 +155,33 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      * @param code
      * @return
      */
-    @Override
-    public List<MGroupEntity> selectByCode(String code) {
+    public List<MGroupEntity> selectByCode(String code, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MGroupEntity> list = mapper.selectByCode(code);
+        List<MGroupEntity> list = mapper.selectByCode(code, equal_id, not_equal_id);
+        return list;
+    }
+
+    /**
+     * 获取列表，查询所有数据
+     *
+     * @param name
+     * @return
+     */
+    public List<MGroupEntity> selectByName(String name, Long equal_id, Long not_equal_id) {
+        // 查询 数据
+        List<MGroupEntity> list = mapper.selectByName(name, equal_id, not_equal_id);
+        return list;
+    }
+
+    /**
+     * 获取列表，查询所有数据
+     *
+     * @param name
+     * @return
+     */
+    public List<MGroupEntity> selectBySimpleName(String name, Long equal_id, Long not_equal_id) {
+        // 查询 数据
+        List<MGroupEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id);
         return list;
     }
 
@@ -164,13 +189,41 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      * check逻辑
      * @return
      */
-    public CheckResult checkLogic(String _code){
-        // code查重
-        List<MGroupEntity> list = selectByCode(_code);
-        if(list.size() > 1){
-            return CheckResultUtil.NG("集团编码出现重复", list);
-        }
+    public CheckResult checkLogic(MGroupEntity entity, String moduleType){
+        switch (moduleType) {
+            case CheckResult.INSERT_CHECK_TYPE:
+                // 新增场合，不能重复
+                List<MGroupEntity> codeList_insertCheck = selectByCode(entity.getCode(), null, null);
+                List<MGroupEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
+                List<MGroupEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
+                if (codeList_insertCheck.size() >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：集团编号出现重复", entity.getCode());
+                }
+                if (nameList_insertCheck.size() >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：集团全称出现重复", entity.getName());
+                }
+                if (simple_name_insertCheck.size() >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：集团简称称出现重复", entity.getSimple_name());
+                }
+                break;
+            case CheckResult.UPDATE_CHECK_TYPE:
+                // 更新场合，不能重复设置
+                List<MGroupEntity> codeList_updCheck = selectByCode(entity.getCode(), null, entity.getId());
+                List<MGroupEntity> nameList_updCheck = selectByName(entity.getName(), null, entity.getId());
+                List<MGroupEntity> simple_name_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
 
+                if (codeList_updCheck.size() >= 1) {
+                    return CheckResultUtil.NG("更新保存出错：集团编号出现重复", entity.getCode());
+                }
+                if (nameList_updCheck.size() >= 1) {
+                    return CheckResultUtil.NG("更新保存出错：集团全称出现重复", entity.getName());
+                }
+                if (simple_name_updCheck.size() >= 1) {
+                    return CheckResultUtil.NG("更新保存出错：集团简称称出现重复", entity.getSimple_name());
+                }
+                break;
+            default:
+        }
         return CheckResultUtil.OK();
     }
 }

@@ -58,10 +58,4 @@ public interface IMGroupService extends IService<MGroupEntity> {
      * @return
      */
     UpdateResult<Integer> update(MGroupEntity entity);
-
-    /**
-     * 通过code查询
-     *
-     */
-    List<MGroupEntity> selectByCode(String code);
 }

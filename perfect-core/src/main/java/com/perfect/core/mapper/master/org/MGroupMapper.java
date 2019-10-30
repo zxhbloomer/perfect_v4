@@ -76,7 +76,42 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + " select t.* "
         + "   from m_group t "
         + "  where true "
-        + "    and t.code =  #{p1}"
+        + "    and t.code =  #{p1}   "
+        + "    and (t.id  =  #{p2} or #{p2} is null)   "
+        + "    and (t.id  <> #{p3} or #{p3} is null)   "
+        + "    and t.is_del =  0   "
         + "      ")
-    List<MGroupEntity> selectByCode(@Param("p1") String code);
+    List<MGroupEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
+
+    /**
+     * 按条件获取所有数据，没有分页
+     * @param name
+     * @return
+     */
+    @Select("    "
+        + " select t.* "
+        + "   from m_group t "
+        + "  where true "
+        + "    and t.name =  #{p1}   "
+        + "    and (t.id  =  #{p2} or #{p2} is null)   "
+        + "    and (t.id  <> #{p3} or #{p3} is null)   "
+        + "    and t.is_del =  0   "
+        + "      ")
+    List<MGroupEntity> selectByName(@Param("p1") String name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
+
+    /**
+     * 按条件获取所有数据，没有分页
+     * @param name
+     * @return
+     */
+    @Select("    "
+        + " select t.* "
+        + "   from m_group t "
+        + "  where true "
+        + "    and t.simple_name =  #{p1}   "
+        + "    and (t.id  =  #{p2} or #{p2} is null)   "
+        + "    and (t.id  <> #{p3} or #{p3} is null)   "
+        + "    and t.is_del =  0   "
+        + "      ")
+    List<MGroupEntity> selectBySimpleName(@Param("p1") String name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
 }

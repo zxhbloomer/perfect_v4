@@ -30,7 +30,7 @@ import java.util.List;
  * @author zhangxh
  */
 @RestController
-@RequestMapping(value = "/api/v1/mgroup")
+@RequestMapping(value = "/api/v1/org")
 @Slf4j
 @Api("集团主表相关")
 public class MasterGroupController extends BaseController {
@@ -41,21 +41,9 @@ public class MasterGroupController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据参数id，获取集团主表信息")
-    @ApiOperation("根据参数id，获取集团主表信息")
-    @PostMapping("{ id }")
-    @ResponseBody
-    public ResponseEntity<JsonResult<MGroupEntity>> info(@RequestParam("id") String id) {
-
-        MGroupEntity entity = service.getById(id);
-
-//        ResponseEntity<OAuth2AccessToken
-        return ResponseEntity.ok().body(ResultUtil.OK(entity));
-    }
-
     @SysLog("根据查询条件，获取集团主表信息")
     @ApiOperation("根据参数id，获取集团主表信息")
-    @PostMapping("/list")
+    @PostMapping("/group/list")
     @ResponseBody
     public ResponseEntity<JsonResult<IPage<MGroupEntity>>> list(@RequestBody(required = false)
         MGroupVo searchCondition) throws IllegalAccessException, InstantiationException {
@@ -65,7 +53,7 @@ public class MasterGroupController extends BaseController {
 
     @SysLog("集团主表数据更新保存")
     @ApiOperation("根据参数id，获取集团主表信息")
-    @PostMapping("/save")
+    @PostMapping("/group/save")
     @ResponseBody
     public ResponseEntity<JsonResult<MGroupEntity>> save(@RequestBody(required = false) MGroupEntity bean) {
 
@@ -78,7 +66,7 @@ public class MasterGroupController extends BaseController {
 
     @SysLog("集团主表数据新增保存")
     @ApiOperation("根据参数id，获取集团主表信息")
-    @PostMapping("/insert")
+    @PostMapping("/group/insert")
     @ResponseBody
     public ResponseEntity<JsonResult<MGroupEntity>> insert(@RequestBody(required = false) MGroupEntity bean) {
         if(service.insert(bean).isSuccess()){
@@ -90,7 +78,7 @@ public class MasterGroupController extends BaseController {
 
     @SysLog("集团主表数据导出")
     @ApiOperation("根据选择的数据，集团主表数据导出")
-    @PostMapping("/export_all")
+    @PostMapping("/group/export_all")
     public void exportAll(@RequestBody(required = false) MGroupVo searchCondition, HttpServletResponse response)
         throws IllegalAccessException, InstantiationException, IOException {
         List<MGroupEntity> searchResult = service.select(searchCondition);
@@ -101,7 +89,7 @@ public class MasterGroupController extends BaseController {
 
     @SysLog("集团主表数据导出")
     @ApiOperation("根据选择的数据，集团主表数据导出")
-    @PostMapping("/export_selection")
+    @PostMapping("/group/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MGroupVo> searchConditionList,
         HttpServletResponse response)
         throws IllegalAccessException, InstantiationException, IOException {
@@ -113,7 +101,7 @@ public class MasterGroupController extends BaseController {
 
     @SysLog("集团主表数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
-    @PostMapping("/delete")
+    @PostMapping("/group/delete")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false) List<MGroupVo> searchConditionList) {
         service.deleteByIdsIn(searchConditionList);
