@@ -56,8 +56,8 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "         m_company AS t1                                             "
         + "         LEFT JOIN m_address AS t2 ON t1.address_id = t2.id          "
         + "  where true "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-        + "    and (t.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
+        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
+        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
         + "      ")
     IPage<MCompanyEntity> selectPage(Page page, @Param("p1") MCompanyVo searchCondition);
 
@@ -95,8 +95,8 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "         m_company AS t1                                             "
         + "         LEFT JOIN m_address AS t2 ON t1.address_id = t2.id          "
         + "  where true "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-        + "    and (t.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
+        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
+        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
         + "      ")
     List<MCompanyEntity> select(@Param("p1") MCompanyVo searchCondition);
 

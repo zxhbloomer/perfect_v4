@@ -42,7 +42,7 @@ public class MasterCompanyController extends BaseController {
 
     @SysLog("根据查询条件，获取公司主表信息")
     @ApiOperation("根据参数id，获取公司主表信息")
-    @PostMapping("/group/list")
+    @PostMapping("/company/list")
     @ResponseBody
     public ResponseEntity<JsonResult<IPage<MCompanyEntity>>> list(@RequestBody(required = false)
         MCompanyVo searchCondition) throws IllegalAccessException, InstantiationException {
@@ -52,7 +52,7 @@ public class MasterCompanyController extends BaseController {
 
     @SysLog("公司主表数据更新保存")
     @ApiOperation("根据参数id，获取公司主表信息")
-    @PostMapping("/group/save")
+    @PostMapping("/company/save")
     @ResponseBody
     public ResponseEntity<JsonResult<MCompanyEntity>> save(@RequestBody(required = false) MCompanyEntity bean) {
 
@@ -65,7 +65,7 @@ public class MasterCompanyController extends BaseController {
 
     @SysLog("公司主表数据新增保存")
     @ApiOperation("根据参数id，获取公司主表信息")
-    @PostMapping("/group/insert")
+    @PostMapping("/company/insert")
     @ResponseBody
     public ResponseEntity<JsonResult<MCompanyEntity>> insert(@RequestBody(required = false) MCompanyEntity bean) {
         if(service.insert(bean).isSuccess()){
@@ -77,7 +77,7 @@ public class MasterCompanyController extends BaseController {
 
     @SysLog("公司主表数据导出")
     @ApiOperation("根据选择的数据，公司主表数据导出")
-    @PostMapping("/group/export_all")
+    @PostMapping("/company/export_all")
     public void exportAll(@RequestBody(required = false) MCompanyVo searchCondition, HttpServletResponse response)
         throws IllegalAccessException, InstantiationException, IOException {
         List<MCompanyEntity> searchResult = service.select(searchCondition);
@@ -88,7 +88,7 @@ public class MasterCompanyController extends BaseController {
 
     @SysLog("公司主表数据导出")
     @ApiOperation("根据选择的数据，公司主表数据导出")
-    @PostMapping("/group/export_selection")
+    @PostMapping("/company/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MCompanyVo> searchConditionList,
         HttpServletResponse response)
         throws IllegalAccessException, InstantiationException, IOException {
@@ -100,7 +100,7 @@ public class MasterCompanyController extends BaseController {
 
     @SysLog("公司主表数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
-    @PostMapping("/group/delete")
+    @PostMapping("/company/delete")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false) List<MCompanyVo> searchConditionList) {
         service.deleteByIdsIn(searchConditionList);
