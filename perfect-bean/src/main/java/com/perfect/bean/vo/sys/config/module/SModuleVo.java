@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.sys.config.module;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import lombok.Data;
@@ -53,6 +54,31 @@ public class SModuleVo implements Serializable {
     private Long template_id;
 
     /**
+     * 请求地址
+     */
+    private String path;
+
+    /**
+     * 路由名，需要唯一，很重要，且需要vue这里手工录入
+     */
+    private String route_name;
+
+    /**
+     * 菜单名
+     */
+    private String meta_title;
+
+    /**
+     * 菜单名
+     */
+    private String meta_icon;
+
+    /**
+     * 模块
+     */
+    private String component;
+
+    /**
      * 描述
      */
     private String descr;
@@ -60,7 +86,7 @@ public class SModuleVo implements Serializable {
     /**
      * 是否删除
      */
-    private Boolean isdel;
+    private Boolean is_del;
 
     /**
      * 资源类型

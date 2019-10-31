@@ -75,4 +75,12 @@ public class CommonComponentServiceImpl extends ServiceImpl<CommonComponentMappe
         return mapper.getSelectDictDataNormal(PerfectDictConstant.SYS_DELETE_MAP);
     }
 
+    /**
+     * 下拉选项卡：按参数查询
+     * @return
+     */
+    @Override
+    public List<NameAndValueVo> selectComponent(NameAndValueVo condition) {
+        return mapper.getSelectDictDataNormal(condition.getPara());
+    }
 }

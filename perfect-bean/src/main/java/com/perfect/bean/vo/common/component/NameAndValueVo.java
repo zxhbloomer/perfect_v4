@@ -28,4 +28,9 @@ public class NameAndValueVo implements Serializable {
 
     private String dict_type_code;
     private Long dict_data_id;
+
+    /**
+     * 查询参数
+     */
+    private String para;
 }

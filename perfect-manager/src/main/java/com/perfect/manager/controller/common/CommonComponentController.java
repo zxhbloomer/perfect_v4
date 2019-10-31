@@ -46,4 +46,12 @@ public class CommonComponentController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(service.selectComponentDeleteMapNormal()));
     }
 
+    @SysLog("共通模块数据下载，下拉选项，按传入参数来获取下拉选项")
+    @ApiOperation("共通模块数据下载，下拉选项，按传入参数来获取下拉选项")
+    @PostMapping("/select/bypara/list")
+    @ResponseBody
+    public ResponseEntity<JsonResult<List<NameAndValueVo>>> getListbypara(HttpServletResponse response ,@RequestBody NameAndValueVo condition) throws IOException {
+        return ResponseEntity.ok().body(ResultUtil.OK(service.selectComponent(condition)));
+    }
+
 }

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 模块：页面、task等
+ * 模块：目录、菜单、页面
  * </p>
  *
  * @author zxh
@@ -35,7 +35,7 @@ public class SModuleEntity extends BaseEntity<SModuleEntity> implements Serializ
     private String code;
 
     /**
-     * 类型
+     * 类型：（m目录 c菜单 p页面）
      */
     @TableField("type")
     private String type;
@@ -59,10 +59,40 @@ public class SModuleEntity extends BaseEntity<SModuleEntity> implements Serializ
     private Long template_id;
 
     /**
+     * 请求地址
+     */
+    @TableField("path")
+    private String path;
+
+    /**
+     * 路由名，需要唯一，很重要，且需要vue这里手工录入
+     */
+    @TableField("route_name")
+    private String route_name;
+
+    /**
+     * 菜单名
+     */
+    @TableField("meta_title")
+    private String meta_title;
+
+    /**
+     * 菜单名
+     */
+    @TableField("meta_icon")
+    private String meta_icon;
+
+    /**
+     * 模块
+     */
+    @TableField("component")
+    private String component;
+
+    /**
      * 是否删除
      */
-    @TableField("isdel")
-    private Boolean isdel;
+    @TableField("is_del")
+    private Boolean is_del;
 
     @TableField(value="c_id", fill = FieldFill.INSERT)
     private Long c_id;

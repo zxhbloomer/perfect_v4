@@ -110,7 +110,7 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
     public void deleteByIdsIn(List<SModuleVo> searchCondition) {
         List<SModuleEntity> list = mapper.selectIdsIn(searchCondition);
         list.forEach(bean -> {
-            bean.setIsdel(!bean.getIsdel());
+            bean.setIs_del(!bean.getIs_del());
         });
         saveOrUpdateBatch(list, 500);
     }

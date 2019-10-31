@@ -33,4 +33,10 @@ public interface ICommonComponentService extends IService<NameAndValueVo> {
      * @return
      */
     List<NameAndValueVo> selectComponentDeleteMapOnlyUsedData();
+
+    /**
+     * 下拉选项卡：按参数查询
+     * @return
+     */
+    List<NameAndValueVo> selectComponent(NameAndValueVo condition);
 }
