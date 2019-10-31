@@ -42,7 +42,7 @@ public class SDictTypeVo extends UploadFileResultPojo implements Serializable {
     /**
      * 是否删除
      */
-    private Boolean isdel;
+    private Boolean is_del;
 
     /**
      * 租户代码

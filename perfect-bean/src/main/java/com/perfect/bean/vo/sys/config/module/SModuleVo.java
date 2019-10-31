@@ -37,6 +37,7 @@ public class SModuleVo implements Serializable {
      * 模块类型
      */
     private String type;
+    private String type_name;
 
     /**
      * 模块类型选择，页面上

@@ -52,20 +52,8 @@ public class SDictTypeEntity extends BaseEntity<SDictTypeEntity> implements Seri
     /**
      * 是否删除
      */
-    @TableField(value = "isdel", fill = FieldFill.INSERT)
-    private Boolean isdel;
-
-    /**
-     * 租户代码
-     */
-    @TableField("corp_code")
-    private String corp_code;
-
-    /**
-     * 租户名称
-     */
-    @TableField("corp_name")
-    private String corp_name;
+    @TableField(value = "is_del", fill = FieldFill.INSERT)
+    private Boolean is_del;
 
     @TableField(value="c_id", fill = FieldFill.INSERT)
     private Long c_id;

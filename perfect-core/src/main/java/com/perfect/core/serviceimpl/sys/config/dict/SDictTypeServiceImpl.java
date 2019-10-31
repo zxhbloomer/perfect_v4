@@ -106,7 +106,7 @@ public class SDictTypeServiceImpl extends ServiceImpl<SDictTypeMapper, SDictType
         List<SDictTypeEntity> list = mapper.selectIdsIn(searchCondition);
         list.forEach(
             bean -> {
-                bean.setIsdel(!bean.getIsdel());
+                bean.setIs_del(!bean.getIs_del());
             }
         );
         saveOrUpdateBatch(list, 500);

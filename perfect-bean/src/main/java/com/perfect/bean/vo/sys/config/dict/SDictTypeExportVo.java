@@ -34,6 +34,6 @@ public class SDictTypeExportVo implements Serializable {
     private String descr;
 
     @Excel(name = "是否删除")
-    private String isdel;
+    private String is_del;
 
 }

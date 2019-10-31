@@ -123,7 +123,7 @@ public class SDictDataServiceImpl extends ServiceImpl<SDictDataMapper, SDictData
     public void deleteByIdsIn(List<SDictDataVo> searchCondition) {
         List<SDictDataVo> list = mapper.selectIdsIn(searchCondition);
         list.forEach(bean -> {
-            bean.setIsdel(!bean.getIsdel());
+            bean.setIs_del(!bean.getIs_del());
         });
         List<SDictDataEntity> entityList = BeanUtilsSupport.copyProperties(list, SDictDataEntity.class);
         super.saveOrUpdateBatch(entityList, 500);

@@ -61,8 +61,8 @@ public class SDictDataEntity extends BaseEntity<SDictDataEntity> implements Seri
     /**
      * 是否删除
      */
-    @TableField(value = "isdel", fill = FieldFill.INSERT)
-    private Boolean isdel;
+    @TableField(value = "is_del", fill = FieldFill.INSERT)
+    private Boolean is_del;
 
     @TableField(value="c_id", fill = FieldFill.INSERT)
     private Long c_id;

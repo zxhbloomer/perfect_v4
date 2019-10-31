@@ -33,8 +33,8 @@ public interface CommonComponentMapper extends BaseMapper<NameAndValueVo> {
         + "    FROM                                                              "
         + "       s_dict_type t1                                                 "
         + "       INNER JOIN s_dict_data t2 ON t1.id = t2.dict_type_id           "
-        + "       AND t1.isdel = 0                                               "
-        + "       AND t2.isdel = 0                                               "
+        + "       AND t1.is_del = 0                                               "
+        + "       AND t2.is_del = 0                                               "
         + "       and t1.code = #{p1}                                             "
         + "     order by t2.sort    "
         + "      ")

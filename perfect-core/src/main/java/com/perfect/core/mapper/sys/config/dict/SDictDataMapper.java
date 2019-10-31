@@ -30,7 +30,7 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
         + "       t1.label,                                                         "
         + "       t1.dict_value ,                                                   "
         + "       t1.descr,                                                         "
-        + "       t1.isdel,                                                         "
+        + "       t1.is_del,                                                         "
         + "       t1.c_id,                                                          "
         + "       t1.c_time,                                                        "
         + "       t1.u_id,                                                          "
@@ -39,7 +39,7 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
         + "       t2.name  dictTypeName ,                                          "
         + "       t2.code  dictTypeCode,                                          "
         + "       t2.descr dict_type_descr,                                         "
-        + "       t2.isdel dictTypeIsdel,                                          "
+        + "       t2.is_del dictTypeIsdel,                                          "
         + "       t3.max_sort,                                                      "
         + "       t3.min_sort                                                     "
         + "  FROM                                                                   "
@@ -69,7 +69,7 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
         + "  where true "
         + "    and (t2.code like CONCAT ('%',#{p1.dictTypeCode,jdbcType=VARCHAR},'%') or #{p1.dictTypeCode,jdbcType=VARCHAR} is null) "
         + "    and (t2.name like CONCAT ('%',#{p1.dictTypeName,jdbcType=VARCHAR},'%') or #{p1.dictTypeName,jdbcType=VARCHAR} is null) "
-        + "    and (t2.isdel =#{p1.isdel,jdbcType=VARCHAR} or #{p1.isdel,jdbcType=VARCHAR} is null) "
+        + "    and (t2.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
         + "      ")
     IPage<SDictDataVo> selectPage(Page page, @Param("p1") SDictDataVo searchCondition );
 
@@ -83,7 +83,7 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
         + "  where true "
         + "    and (t2.code like CONCAT ('%',#{p1.dictTypeCode,jdbcType=VARCHAR},'%') or #{p1.dictTypeCode,jdbcType=VARCHAR} is null) "
         + "    and (t2.name like CONCAT ('%',#{p1.dictTypeName,jdbcType=VARCHAR},'%') or #{p1.dictTypeName,jdbcType=VARCHAR} is null) "
-        + "    and (t2.isdel =#{p1.isdel,jdbcType=VARCHAR} or #{p1.isdel,jdbcType=VARCHAR} is null) "
+        + "    and (t2.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
         + "      ")
     List<SDictDataVo> select(@Param("p1") SDictDataVo searchCondition );
 
