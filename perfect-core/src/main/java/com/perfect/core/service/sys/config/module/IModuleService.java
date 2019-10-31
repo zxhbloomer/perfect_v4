@@ -70,18 +70,6 @@ public interface IModuleService extends IService<SModuleEntity> {
     SModuleVo selectByid(Long id);
 
     /**
-     * 通过code查询
-     *
-     */
-    List<SModuleEntity> selectByCode(String code);
-
-    /**
-     * 通过名称查询
-     *
-     */
-    List<SModuleEntity> selectByName(String name);
-
-    /**
      * 根据模块名称查询资源文件找到json进行转换成excel导出
      * @param code
      * @return

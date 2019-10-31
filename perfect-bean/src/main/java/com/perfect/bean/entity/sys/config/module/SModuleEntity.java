@@ -89,6 +89,12 @@ public class SModuleEntity extends BaseEntity<SModuleEntity> implements Serializ
     private String component;
 
     /**
+     * 附在导航栏不可关闭
+     */
+    @TableField("affix")
+    private Boolean affix;
+
+    /**
      * 是否删除
      */
     @TableField("is_del")

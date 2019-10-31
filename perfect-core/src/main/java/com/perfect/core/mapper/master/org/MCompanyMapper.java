@@ -129,8 +129,7 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
         + "    and t.is_del =  0   "
         + "      ")
-    List<MCompanyEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id,
-        @Param("p3") Long not_equal_id);
+    List<MCompanyEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
 
     /**
      * 按条件获取所有数据，没有分页

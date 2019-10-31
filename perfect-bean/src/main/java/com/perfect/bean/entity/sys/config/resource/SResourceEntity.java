@@ -79,8 +79,8 @@ public class SResourceEntity extends BaseEntity<SResourceEntity> implements Seri
     /**
      * 是否删除
      */
-    @TableField(value = "isdel", fill = FieldFill.INSERT)
-    private Boolean isdel;
+    @TableField(value = "is_del", fill = FieldFill.INSERT)
+    private Boolean is_del;
 
     /**
      * 租户代码

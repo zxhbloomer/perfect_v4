@@ -12,6 +12,7 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.config.module.SModuleVo;
+import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.sys.config.module.SModuleMapper;
 import com.perfect.core.service.sys.config.module.IModuleService;
@@ -169,10 +170,9 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
      * @param code
      * @return
      */
-    @Override
-    public List<SModuleEntity> selectByCode(String code) {
+    public List<SModuleEntity> selectByCode(String code, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<SModuleEntity> list = mapper.selectByCode(code);
+        List<SModuleEntity> list = mapper.selectByCode(code, equal_id, not_equal_id);
         return list;
     }
 
@@ -182,10 +182,27 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
      * @param name
      * @return
      */
-    @Override
-    public List<SModuleEntity> selectByName(String name) {
+    public List<SModuleEntity> selectByName(String name, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<SModuleEntity> list = mapper.selectByName(name);
+        List<SModuleEntity> list = mapper.selectByName(name, equal_id, not_equal_id);
+        return list;
+    }
+
+    /**
+     * 查询by 请求地址，返回结果
+     */
+    public List<SModuleEntity> selectByPath(String path, Long equal_id, Long not_equal_id) {
+        // 查询 数据
+        List<SModuleEntity> list = mapper.selectByPath(path, equal_id, not_equal_id);
+        return list;
+    }
+
+    /**
+     * 查询by 请求地址，返回结果
+     */
+    public List<SModuleEntity> selectByRoute_name(String route_name, Long equal_id, Long not_equal_id) {
+        // 查询 数据
+        List<SModuleEntity> list = mapper.selectByRoute_name(route_name, equal_id, not_equal_id);
         return list;
     }
 
@@ -195,30 +212,41 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
      * @return
      */
     public CheckResult checkLogic(SModuleEntity entity, String moduleType) {
-        List<SModuleEntity> listCode = selectByCode(entity.getCode());
-        List<SModuleEntity> listName = selectByName(entity.getName());
-
         switch(moduleType){
             case CheckResult.INSERT_CHECK_TYPE :
+                List<SModuleEntity> listCode_insertCheck = selectByCode(entity.getCode(), null, null);
+                List<SModuleEntity> listName_insertCheck = selectByName(entity.getName(), null, null);
                 // 新增场合，不能重复
-                if (listCode.size() >= 1) {
+                if (listCode_insertCheck.size() >= 1) {
                     // 模块编号不能重复
-                    return CheckResultUtil.NG("新增保存出错：模块编号出现重复", listCode);
+                    return CheckResultUtil.NG("新增保存出错：模块编号出现重复", listCode_insertCheck);
                 }
-                if (listName.size() >= 1) {
+                if (listName_insertCheck.size() >= 1) {
                     // 模块名称不能重复
-                    return CheckResultUtil.NG("新增保存出错：模块名称出现重复", listName);
+                    return CheckResultUtil.NG("新增保存出错：模块名称出现重复", listName_insertCheck);
+                }
+                if(PerfectDictConstant.SYS_MODULE_TYPE_MENU.equals(entity.getType())
+                        || PerfectDictConstant.SYS_MODULE_TYPE_CONTENTS.equals(entity.getType()) ){
+                    List<SModuleEntity> path_insertCheck = selectByPath(entity.getPath(), null, null);
+                    List<SModuleEntity> route_name_insertCheck = selectByRoute_name(entity.getRoute_name(), null, null);
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE :
+                List<SModuleEntity> listCode_updCheck = selectByCode(entity.getCode(), null, entity.getId());
+                List<SModuleEntity> listName_updCheckk = selectByName(entity.getName(), null, entity.getId());
                 // 更新场合，不能重复设置
-                if (listCode.size() >= 2) {
+                if (listCode_updCheck.size() >= 1) {
                     // 模块编号不能重复
-                    return CheckResultUtil.NG("更新保存出错：模块编号出现重复", listCode);
+                    return CheckResultUtil.NG("更新保存出错：模块编号出现重复", listCode_updCheck);
                 }
-                if (listName.size() >= 2) {
+                if (listName_updCheckk.size() >= 1) {
                     // 模块名称不能重复
-                    return CheckResultUtil.NG("更新保存出错：模块名称出现重复", listName);
+                    return CheckResultUtil.NG("更新保存出错：模块名称出现重复", listName_updCheckk);
+                }
+                if(PerfectDictConstant.SYS_MODULE_TYPE_MENU.equals(entity.getType())
+                    || PerfectDictConstant.SYS_MODULE_TYPE_CONTENTS.equals(entity.getType()) ){
+                    List<SModuleEntity> path_insertCheck = selectByPath(entity.getPath(), null, entity.getId());
+                    List<SModuleEntity> route_name_insertCheck = selectByRoute_name(entity.getRoute_name(), null, entity.getId());
                 }
                 break;
             default :

@@ -160,9 +160,12 @@ public interface SModuleMapper extends BaseMapper<SModuleEntity> {
         + " select t.* "
         + "   from s_module t "
         + "  where true "
-        + "    and t.code =  #{p1}"
+        + "    and t.code =  #{p1}   "
+        + "    and (t.id  =  #{p2} or #{p2} is null)   "
+        + "    and (t.id  <> #{p3} or #{p3} is null)   "
+        + "    and t.is_del =  0   "
         + "      ")
-    List<SModuleEntity> selectByCode(@Param("p1") String code);
+    List<SModuleEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -173,9 +176,32 @@ public interface SModuleMapper extends BaseMapper<SModuleEntity> {
         + " select t.* "
         + "   from s_module t "
         + "  where true "
-        + "    and t.name =  #{p1}"
+        + "    and t.name =  #{p1}  "
+        + "    and (t.id  =  #{p2} or #{p2} is null)   "
+        + "    and (t.id  <> #{p3} or #{p3} is null)   "
+        + "    and t.is_del =  0   "
         + "      ")
-    List<SModuleEntity> selectByName(@Param("p1") String name);
+    List<SModuleEntity> selectByName(@Param("p1") String name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
+
+    @Select("    "
+        + " select t.* "
+        + "   from s_module t "
+        + "  where true "
+        + "    and t.path =  #{p1}  "
+        + "    and (t.id  =  #{p2} or #{p2} is null)   "
+        + "    and (t.id  <> #{p3} or #{p3} is null)   "
+        + "      ")
+    List<SModuleEntity> selectByPath(@Param("p1") String path, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
+
+    @Select("    "
+        + " select t.* "
+        + "   from s_module t "
+        + "  where true "
+        + "    and t.route_name =  #{p1}  "
+        + "    and (t.id  =  #{p2} or #{p2} is null)   "
+        + "    and (t.id  <> #{p3} or #{p3} is null)   "
+        + "      ")
+    List<SModuleEntity> selectByRoute_name(@Param("p1") String route_name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
 
     /**
      * 参照资源信息

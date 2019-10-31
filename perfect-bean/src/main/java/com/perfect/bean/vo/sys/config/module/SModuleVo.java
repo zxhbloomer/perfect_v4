@@ -79,6 +79,11 @@ public class SModuleVo implements Serializable {
     private String component;
 
     /**
+     * 附在导航栏不可关闭
+     */
+    private Boolean affix;
+
+    /**
      * 描述
      */
     private String descr;

@@ -39,7 +39,7 @@ public interface SResourceMapper extends BaseMapper<SResourceEntity> {
         + "         #{item}  "
         + "        </foreach>"
         + "   </if>"
-        + "    and (t.isdel =#{p1.isdel,jdbcType=VARCHAR} or #{p1.isdel,jdbcType=VARCHAR} is null) "
+        + "    and (t.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
         + "  </script>") IPage<SResourceEntity> selectPage(Page page, @Param("p1") SResourceVo searchCondition );
 
     /**
@@ -58,7 +58,7 @@ public interface SResourceMapper extends BaseMapper<SResourceEntity> {
         + "         #{item}  "
         + "        </foreach>"
         + "   </if>"
-        + "    and (t.isdel =#{p1.isdel,jdbcType=VARCHAR} or #{p1.isdel,jdbcType=VARCHAR} is null) "
+        + "    and (t.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
         + "  </script>")
     List<SResourceEntity> select(@Param("p1") SResourceVo searchCondition );
 
