@@ -63,7 +63,7 @@ public class CommonComponentServiceImpl extends ServiceImpl<CommonComponentMappe
      */
     @Override
     public List<NameAndValueVo> selectComponentDeleteMapNormal() {
-        return mapper.getSelectDictDataNormal(PerfectDictConstant.SYS_DELETE_MAP);
+        return mapper.getSelectDictDataNormal(PerfectDictConstant.DICT_SYS_DELETE_MAP);
     }
 
     /**
@@ -72,7 +72,7 @@ public class CommonComponentServiceImpl extends ServiceImpl<CommonComponentMappe
      */
     @Override
     public List<NameAndValueVo> selectComponentDeleteMapOnlyUsedData() {
-        return mapper.getSelectDictDataNormal(PerfectDictConstant.SYS_DELETE_MAP);
+        return mapper.getSelectDictDataNormal(PerfectDictConstant.DICT_SYS_DELETE_MAP);
     }
 
     /**

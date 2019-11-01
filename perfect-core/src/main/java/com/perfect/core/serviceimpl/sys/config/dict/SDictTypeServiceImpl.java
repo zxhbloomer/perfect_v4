@@ -125,6 +125,7 @@ public class SDictTypeServiceImpl extends ServiceImpl<SDictTypeMapper, SDictType
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
+        entity.setIs_del(false);
         // 插入逻辑保存
         return InsertResultUtil.OK(mapper.insert(entity));
     }

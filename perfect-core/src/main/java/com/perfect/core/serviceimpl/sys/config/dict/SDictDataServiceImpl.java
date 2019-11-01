@@ -151,6 +151,7 @@ public class SDictDataServiceImpl extends ServiceImpl<SDictDataMapper, SDictData
         } else {
             entity.setSort(data.getSort());
         }
+        entity.setIs_del(false);
         // 插入逻辑保存
         return InsertResultUtil.OK(mapper.insert(entity));
     }
