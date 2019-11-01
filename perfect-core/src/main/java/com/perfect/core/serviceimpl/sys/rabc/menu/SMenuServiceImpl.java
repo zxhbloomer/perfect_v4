@@ -8,6 +8,8 @@ import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
+import com.perfect.bean.utils.common.tree.TreeUtil;
+import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.sys.rabc.menu.SMenuMapper;
@@ -41,10 +43,11 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
      * @throws IllegalAccessException
      */
     @Override
-    public List<SMenuEntity> select(SMenuVo searchCondition) {
+    public List<SMenuVo> select(SMenuVo searchCondition) {
         // 查询 数据
-        List<SMenuEntity> list = mapper.select(searchCondition);
-        return list;
+        List<SMenuVo> list = mapper.select(searchCondition);
+        List<SMenuVo> rtnList = TreeUtil.getTreeList(list);
+        return rtnList;
     }
 
     /**

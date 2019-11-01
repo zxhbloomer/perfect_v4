@@ -34,31 +34,31 @@ public class TreeUtil {
         ListIterator<Map.Entry<Integer, List<T>>> lt =
             new ArrayList<Map.Entry<Integer, List<T>>>(differentLevelData.entrySet())
                 .listIterator(differentLevelData.size());
-       while(lt.hasPrevious()) {
-           Map.Entry<Integer, List<T>> entry=lt.previous();
-           int level = entry.getKey();
-           List<T> beans = entry.getValue();
-           for (T bean: beans) {
-               if(bean.getParentid() == null) {
-                   rtnList.add(bean);
-                   continue;
-               } else {
-                   // 1：获取父亲节点，设置子节点数据
-                   int parentLevel = level - 1;
-                   List<T> parentList = differentLevelData.get(parentLevel);
-                   T parentBean = getParentLevelData(parentList, bean.getParentid());
-                   List<T> childrenList = new ArrayList<>();
-                   childrenList.add(bean);
-                   if(parentBean.getChildren() == null){
-                       parentBean.setChildren(childrenList);
-                   } else {
-                       parentBean.getChildren().addAll(childrenList);
-                   }
-                   // 2：设置父节点发生错误，2json时发生递归
-//                   bean.setParent(parentBean);
-               }
-           }
-       }
+        while (lt.hasPrevious()) {
+            Map.Entry<Integer, List<T>> entry = lt.previous();
+            int level = entry.getKey();
+            List<T> beans = entry.getValue();
+            for (T bean : beans) {
+                if (bean.getParent_id() == null) {
+                    rtnList.add(bean);
+                    continue;
+                } else {
+                    // 1：获取父亲节点，设置子节点数据
+                    int parentLevel = level - 1;
+                    List<T> parentList = differentLevelData.get(parentLevel);
+                    T parentBean = getParentLevelData(parentList, bean.getParent_id());
+                    List<T> childrenList = new ArrayList<>();
+                    childrenList.add(bean);
+                    if (parentBean.getChildren() == null) {
+                        parentBean.setChildren(childrenList);
+                    } else {
+                        parentBean.getChildren().addAll(childrenList);
+                    }
+                    // 2：设置父节点发生错误，2json时发生递归
+                    // bean.setParent(parentBean);
+                }
+            }
+        }
 
         /**
          *
@@ -68,6 +68,7 @@ public class TreeUtil {
 
     /**
      * 查找父节点的bean，并返回
+     * 
      * @param beans
      * @param parentid
      * @param <T>

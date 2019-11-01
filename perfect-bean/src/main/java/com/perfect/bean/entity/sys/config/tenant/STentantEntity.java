@@ -27,8 +27,8 @@ public class STentantEntity implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField("parentid")
-    private Long parentid;
+    @TableField("parent_id")
+    private Long parent_id;
 
     /**
      * 系统编码

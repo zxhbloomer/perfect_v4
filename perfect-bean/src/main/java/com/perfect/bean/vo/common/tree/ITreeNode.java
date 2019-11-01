@@ -56,5 +56,5 @@ public interface ITreeNode<T extends ITreeNode> {
      * 获取父id
      * @return
      */
-    Long getParentid();
+    Long getParent_id();
 }

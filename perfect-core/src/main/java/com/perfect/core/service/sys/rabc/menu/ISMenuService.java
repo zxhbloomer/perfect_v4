@@ -21,7 +21,7 @@ public interface ISMenuService extends IService<SMenuEntity> {
     /**
      * 获取所有数据
      */
-    List<SMenuEntity> select(SMenuVo searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SMenuVo> select(SMenuVo searchCondition) throws InstantiationException, IllegalAccessException;
 
     /**
      * 获取所选id的数据

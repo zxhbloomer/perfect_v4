@@ -30,7 +30,7 @@ public class STentantVo implements Serializable {
     /**
      * 父节点
      */
-    private Long parentid;
+    private Long parent_id;
     private String parent_name;
 
     /**

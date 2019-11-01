@@ -38,8 +38,8 @@ public class SysMenuController extends BaseController {
     @ApiOperation("根据参数id，获取菜单主表信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<List<SMenuEntity>>> list(@RequestBody(required = false) SMenuVo searchCondition) throws IllegalAccessException, InstantiationException {
-        List<SMenuEntity> entity = service.select(searchCondition);
+    public ResponseEntity<JsonResult<List<SMenuVo>>> list(@RequestBody(required = false) SMenuVo searchCondition) throws IllegalAccessException, InstantiationException {
+        List<SMenuVo> entity = service.select(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 

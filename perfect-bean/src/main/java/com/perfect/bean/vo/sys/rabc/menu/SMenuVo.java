@@ -1,11 +1,9 @@
 package com.perfect.bean.vo.sys.rabc.menu;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.perfect.bean.vo.common.component.TreeNode;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -21,7 +19,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "菜单信息", description = "菜单信息")
-public class SMenuVo implements Serializable {
+public class SMenuVo extends TreeNode implements Serializable {
 
     private static final long serialVersionUID = -8144262156342458120L;
 
@@ -37,15 +35,13 @@ public class SMenuVo implements Serializable {
      */
     private Long parent_id;
 
-    /**
-     * 排序
-     */
-    private Integer sort;
+    private String depth_name;
 
     /**
      * 菜单类型（M目录 C菜单 F按钮）
      */
     private String type;
+    private String type_name;
 
     /**
      * 菜单状态（0显示 1隐藏）

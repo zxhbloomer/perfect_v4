@@ -19,19 +19,62 @@ import java.util.List;
  */
 @Repository
 public interface SMenuMapper extends BaseMapper<SMenuEntity> {
+
+    String commonTreeGrid = "    "
+            + "                                                                 "
+            + "      with recursive tab1  as (                                  "
+            + "     select t0.id,                                               "
+            + "            t0.parent_id,                                        "
+            + "            1 level,                                             "
+            + "            t0.name,                                             "
+            + "            t0.name  as depth_name                               "
+            + "       from s_menu t0                                            "
+            + "      where t0.parent_id is null                                 "
+            + "      union all                                                  "
+            + "      select t2.id,                                              "
+            + "             t2.parent_id,                                       "
+            + "             t1.level + 1 as level,                              "
+            + "             t2.name,                                            "
+            + "             CONCAT( t1.name,'>',t2.name)  depth_name            "
+            + "        from s_menu t2,                                          "
+            + "             tab1 t1                                             "
+            + "       where t2.parent_id = t1.id                                "
+            + "       )                                                         "
+            + "	  select t1.id,                                                 "
+            + "			 t1.name,                                                 "
+            + "             t1.parent_id,                                          "
+            + "             t1.level,                                              "
+            + "             t1.depth_name,                                         "
+            + "             t2.type,                                               "
+            + "             t3.label as type_name,                                 "
+            + "             t2.visible,                                            "
+            + "             t2.perms,                                              "
+            + "             t2.path,                                               "
+            + "             t2.route_name,                                         "
+            + "             t2.meta_title,                                         "
+            + "             t2.meta_icon,                                          "
+            + "             t2.component,                                          "
+            + "             t2.affix,                                              "
+            + "             t2.descr                                               "
+            + "         from tab1 t1                                               "
+            + "   inner join s_menu t2                                             "
+            + "		   on t1.id = t2.id                                            "
+            + "   left join v_dict_info t3                                        "
+            + "		   on t3.code = 'module_type' and t3.dict_value = t2.type       "
+            + "                                                                    ";
+
     /**
      * 按条件获取所有数据，没有分页
      * @param searchCondition
      * @return
      */
     @Select("    "
-        + " select t.* "
-        + "   from s_menu t "
+        + commonTreeGrid
         + "  where true "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-        + "    and (t.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null) "
+        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
+        + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null) "
         + "      ")
-    List<SMenuEntity> select(@Param("p1") SMenuVo searchCondition);
+    List<SMenuVo> select(@Param("p1") SMenuVo searchCondition);
 
     /**
      * 没有分页，按id筛选条件
