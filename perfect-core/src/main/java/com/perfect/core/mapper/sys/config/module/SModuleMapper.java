@@ -123,6 +123,7 @@ public interface SModuleMapper extends BaseMapper<SModuleEntity> {
         + "         t1.id,                                                  "
         + "         t1.code,                                                "
         + "         t1.type,                                                "
+        + "         t3.label as type_name,                                                "
         + "         t1.name,                                                "
         + "         t1.template_id,                                         "
         + "         t1.path,                                                "
@@ -138,7 +139,7 @@ public interface SModuleMapper extends BaseMapper<SModuleEntity> {
         + "         t1.u_time,                                              "
         + "         t1.dbversion,                                           "
         + "         t2.type AS template_type,                               "
-        + "         t2.NAME AS template_name,                               "
+        + "         t2.name AS template_name,                               "
         + "         t2.uri AS template_uri,                                 "
         + "         t2.base AS template_base,                               "
         + "         t2.file_size AS template_size,                               "
@@ -148,7 +149,8 @@ public interface SModuleMapper extends BaseMapper<SModuleEntity> {
         + "         t2.is_del AS template_isdel                              "
         + "     FROM                                                        "
         + "         s_module AS t1                                          "
-        + "         left join s_resource as t2 on t1.template_id = t2.id    "
+        + "         LEFT JOIN s_resource AS t2 ON t1.template_id = t2.id    "
+        + "         LEFT JOIN v_dict_info AS t3 ON t3.code = 'module_type' and t3.dict_value = t1.type    "
         + "  where t1.id =  #{p1}"
         + "        ")
     SModuleVo selectId(@Param("p1") Long id);

@@ -130,8 +130,9 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
+        SModuleEntity cleanUpEntity = cleanUpBean(entity);
         // 插入逻辑保存
-        return InsertResultUtil.OK(mapper.insert(entity));
+        return InsertResultUtil.OK(mapper.insert(cleanUpEntity));
     }
 
     /**
@@ -148,8 +149,9 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
+        SModuleEntity cleanUpEntity = cleanUpBean(entity);
         // 更新逻辑保存
-        return UpdateResultUtil.OK(mapper.updateById(entity));
+        return UpdateResultUtil.OK(mapper.updateById(cleanUpEntity));
     }
 
     /**
@@ -204,6 +206,36 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
         // 查询 数据
         List<SModuleEntity> list = mapper.selectByRoute_name(route_name, equal_id, not_equal_id);
         return list;
+    }
+
+    /**
+     * bean整理，按type
+     *
+     * @return
+     */
+    public SModuleEntity cleanUpBean(SModuleEntity entity) {
+        switch(entity.getType()){
+            case PerfectDictConstant.SYS_MODULE_TYPE_PAGE :
+                // 页面
+                entity.setPath(null);
+                entity.setRoute_name(null);
+                entity.setMeta_title(null);
+                entity.setMeta_icon(null);
+                entity.setComponent(null);
+                entity.setAffix(null);
+                break;
+            case PerfectDictConstant.SYS_MODULE_TYPE_MENU :
+                // 菜单
+                entity.setTemplate_id(null);
+                break;
+            default :
+                // 目录
+                entity.setTemplate_id(null);
+                entity.setComponent(null);
+                break;
+        }
+
+        return entity;
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.perfect.excel.bean.importconfig.template.test;
 
-import com.perfect.bean.entity.sys.rabc.SRoleEntity;
+import com.perfect.bean.entity.sys.rabc.role.SRoleEntity;
 import org.apache.commons.beanutils.BeanUtils;
 import java.lang.reflect.InvocationTargetException;
 
