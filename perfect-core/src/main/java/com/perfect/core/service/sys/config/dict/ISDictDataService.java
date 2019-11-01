@@ -68,18 +68,6 @@ public interface ISDictDataService extends IService<SDictDataEntity> {
     UpdateResult<Integer> update(SDictDataEntity entity);
 
     /**
-     * 通过dict_value查询
-     *
-     */
-    List<SDictDataEntity> selectByDictValue(String dict_value, Long dict_type_id);
-
-    /**
-     * 通过label查询
-     *
-     */
-    List<SDictDataEntity> selectByLabel(String label, Long dict_type_id);
-
-    /**
      * sort保存
      *
      */

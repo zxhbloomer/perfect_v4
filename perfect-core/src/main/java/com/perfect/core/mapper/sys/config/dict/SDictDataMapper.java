@@ -110,10 +110,13 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
         + " select t.* "
         + "   from s_dict_data t "
         + "  where true "
-        + "    and t.dict_value =  #{p1}"
-        + "    and t.dict_type_id =  #{p2}"
+        + "    and t.dict_value =  #{p1}  "
+        + "    and t.dict_type_id =  #{p2}  "
+        + "    and (t.id  =  #{p3} or #{p2} is null)   "
+        + "    and (t.id  <> #{p4} or #{p3} is null)   "
+        + "    and t.is_del =  0   "
         + "      ")
-    List<SDictDataEntity> selectByDictValue(@Param("p1") String dict_value, @Param("p2") Long dict_type_id);
+    List<SDictDataEntity> selectByDictValue(@Param("p1") String dict_value, @Param("p2") Long dict_type_id, @Param("p3") Long equal_id, @Param("p4") Long not_equal_id);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -124,10 +127,13 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
         + " select t.* "
         + "   from s_dict_data t "
         + "  where true "
-        + "    and t.label =  #{p1}"
-        + "    and t.dict_type_id =  #{p2}"
+        + "    and t.label =  #{p1}                    "
+        + "    and t.dict_type_id =  #{p2}             "
+        + "    and (t.id  =  #{p3} or #{p2} is null)   "
+        + "    and (t.id  <> #{p4} or #{p3} is null)   "
+        + "    and t.is_del =  0   "
         + "      ")
-    List<SDictDataEntity> selectByLabel(@Param("p1") String label, @Param("p2") Long dict_type_id);
+    List<SDictDataEntity> selectByLabel(@Param("p1") String label, @Param("p2") Long dict_type_id, @Param("p3") Long equal_id, @Param("p4") Long not_equal_id);
 
     /**
      * 按条件获取所有数据，没有分页

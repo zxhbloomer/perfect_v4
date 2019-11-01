@@ -3,6 +3,7 @@ package com.perfect.core.serviceimpl.sys.config.dict;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
 import com.perfect.bean.entity.sys.config.dict.SDictTypeEntity;
 import com.perfect.bean.pojo.result.CheckResult;
@@ -139,8 +140,7 @@ public class SDictDataServiceImpl extends ServiceImpl<SDictDataMapper, SDictData
     @Override
     public InsertResult<Integer> insert(SDictDataEntity entity) {
         // 插入前check
-        CheckResult cr = checkLogic(entity.getDict_value(), entity.getLabel(), CheckResult.INSERT_CHECK_TYPE,
-            entity.getDict_type_id());
+        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -165,8 +165,7 @@ public class SDictDataServiceImpl extends ServiceImpl<SDictDataMapper, SDictData
     @Override
     public UpdateResult<Integer> update(SDictDataEntity entity) {
         // 更新前check
-        CheckResult cr = checkLogic(entity.getDict_value(), entity.getLabel(), CheckResult.UPDATE_CHECK_TYPE,
-            entity.getDict_type_id());
+        CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -180,10 +179,9 @@ public class SDictDataServiceImpl extends ServiceImpl<SDictDataMapper, SDictData
      * @param dict_value
      * @return
      */
-    @Override
-    public List<SDictDataEntity> selectByDictValue(String dict_value, Long dict_type_id) {
+    public List<SDictDataEntity> selectByDictValue(String dict_value, Long dict_type_id, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<SDictDataEntity> list = mapper.selectByDictValue(dict_value, dict_type_id);
+        List<SDictDataEntity> list = mapper.selectByDictValue(dict_value, dict_type_id, equal_id, not_equal_id);
         return list;
     }
 
@@ -193,10 +191,9 @@ public class SDictDataServiceImpl extends ServiceImpl<SDictDataMapper, SDictData
      * @param label
      * @return
      */
-    @Override
-    public List<SDictDataEntity> selectByLabel(String label, Long dict_type_id) {
+    public List<SDictDataEntity> selectByLabel(String label, Long dict_type_id, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<SDictDataEntity> list = mapper.selectByLabel(label, dict_type_id);
+        List<SDictDataEntity> list = mapper.selectByLabel(label, dict_type_id, equal_id, not_equal_id);
         return list;
     }
 
@@ -205,31 +202,32 @@ public class SDictDataServiceImpl extends ServiceImpl<SDictDataMapper, SDictData
      * 
      * @return
      */
-    public CheckResult checkLogic(String dict_value, String label, String moduleType, Long dict_type_id) {
-        List<SDictDataEntity> listDictValue = selectByDictValue(dict_value, dict_type_id);
-        List<SDictDataEntity> listLable = selectByLabel(label, dict_type_id);
-
+    public CheckResult checkLogic(SDictDataEntity entity, String moduleType) {
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
+                List<SDictDataEntity> listDictValue_insertCheck = selectByDictValue(entity.getDict_value(), entity.getDict_type_id(), null, null);
+                List<SDictDataEntity> listLable_insertCheck = selectByLabel(entity.getLabel(), entity.getDict_type_id(), null, null);
                 // 新增场合，不能重复
-                if (listDictValue.size() >= 1) {
+                if (listDictValue_insertCheck.size() >= 1) {
                     // 模块编号不能重复
-                    return CheckResultUtil.NG("新增保存出错：字典键值出现重复", dict_value);
+                    return CheckResultUtil.NG("新增保存出错：字典键值出现重复", listDictValue_insertCheck);
                 }
-                if (listLable.size() >= 1) {
+                if (listLable_insertCheck.size() >= 1) {
                     // 模块名称不能重复
-                    return CheckResultUtil.NG("新增保存出错：字典标签出现重复", label);
+                    return CheckResultUtil.NG("新增保存出错：字典标签出现重复", listLable_insertCheck);
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
+                List<SDictDataEntity> listDictValue_updCheck = selectByDictValue(entity.getDict_value(), entity.getDict_type_id(), null, entity.getId());
+                List<SDictDataEntity> listLable_updCheck = selectByLabel(entity.getLabel(), entity.getDict_type_id(), null, entity.getId());
                 // 更新场合，不能重复设置
-                if (listDictValue.size() >= 2) {
+                if (listDictValue_updCheck.size() >= 1) {
                     // 模块编号不能重复
-                    return CheckResultUtil.NG("更新保存出错：字典键值出现重复", dict_value);
+                    return CheckResultUtil.NG("更新保存出错：字典键值出现重复", listDictValue_updCheck);
                 }
-                if (listLable.size() >= 2) {
+                if (listLable_updCheck.size() >= 1) {
                     // 模块名称不能重复
-                    return CheckResultUtil.NG("更新保存出错：字典标签出现重复", label);
+                    return CheckResultUtil.NG("更新保存出错：字典标签出现重复", listLable_updCheck);
                 }
                 break;
             default:
