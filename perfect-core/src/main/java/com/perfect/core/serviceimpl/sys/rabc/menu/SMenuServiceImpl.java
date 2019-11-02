@@ -51,6 +51,22 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
     }
 
     /**
+     * 级联：获取列表，查询所有数据
+     *
+     * @param searchCondition
+     * @return
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
+    @Override
+    public List<SMenuVo> getCascaderList(SMenuVo searchCondition) {
+        // 查询 数据
+        List<SMenuVo> list = mapper.getCascaderList(searchCondition);
+        List<SMenuVo> rtnList = TreeUtil.getTreeList(list);
+        return rtnList;
+    }
+
+    /**
      * 获取列表，根据id查询所有数据
      *
      * @param searchCondition

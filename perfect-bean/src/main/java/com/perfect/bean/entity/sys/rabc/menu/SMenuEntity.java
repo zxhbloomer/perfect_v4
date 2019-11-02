@@ -28,6 +28,18 @@ public class SMenuEntity implements Serializable {
     private Long id;
 
     /**
+     * 菜单组编号
+     */
+    @TableField("menu_group_code")
+    private String menu_group_code;
+
+    /**
+     * 菜单组名称
+     */
+    @TableField("menu_group_name")
+    private String menu_group_name;
+
+    /**
      * 菜单名称
      */
     @TableField("name")

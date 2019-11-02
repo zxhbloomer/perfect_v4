@@ -27,7 +27,7 @@ import com.perfect.core.utils.mybatis.PageUtil;
 
 /**
  * <p>
- * 资源表 服务实现类
+ * 模块表 服务实现类
  * </p>
  *
  * @author zxh

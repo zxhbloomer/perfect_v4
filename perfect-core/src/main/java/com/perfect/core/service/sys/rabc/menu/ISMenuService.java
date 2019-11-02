@@ -24,6 +24,11 @@ public interface ISMenuService extends IService<SMenuEntity> {
     List<SMenuVo> select(SMenuVo searchCondition) throws InstantiationException, IllegalAccessException;
 
     /**
+     * 获取所有数据：级联
+     */
+    List<SMenuVo> getCascaderList(SMenuVo searchCondition) throws InstantiationException, IllegalAccessException;
+
+    /**
      * 获取所选id的数据
      */
     List<SMenuEntity> selectIdsIn(List<SMenuVo> searchCondition) throws InstantiationException, IllegalAccessException;

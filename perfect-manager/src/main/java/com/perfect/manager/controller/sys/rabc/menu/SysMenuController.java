@@ -3,6 +3,9 @@ package com.perfect.manager.controller.sys.rabc.menu;
 import com.perfect.bean.entity.sys.rabc.menu.SMenuEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
+import com.perfect.bean.utils.common.tree.TreeUtil;
+import com.perfect.bean.vo.sys.config.config.SConfigVo;
+import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.common.exception.InsertErrorException;
@@ -41,6 +44,15 @@ public class SysMenuController extends BaseController {
     public ResponseEntity<JsonResult<List<SMenuVo>>> list(@RequestBody(required = false) SMenuVo searchCondition) throws IllegalAccessException, InstantiationException {
         List<SMenuVo> entity = service.select(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
+    }
+
+    @SysLog("根据查询条件，获取租户信息")
+    @ApiOperation("获取级联数据")
+    @PostMapping("/cascader/list")
+    @ResponseBody
+    public ResponseEntity<JsonResult<List<SMenuVo>>> cascaderList(@RequestBody(required = false) SMenuVo searchCondition) throws IllegalAccessException, InstantiationException {
+        List<SMenuVo> vo = service.getCascaderList(searchCondition);
+        return ResponseEntity.ok().body(ResultUtil.OK(vo,true));
     }
 
     @SysLog("集团主表数据更新保存")

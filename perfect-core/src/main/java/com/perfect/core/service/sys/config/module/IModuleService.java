@@ -13,7 +13,7 @@ import com.perfect.bean.vo.sys.config.module.SModuleVo;
 
 /**
  * <p>
- * 资源表 服务类
+ * 模块表 服务类
  * </p>
  *
  * @author zxh

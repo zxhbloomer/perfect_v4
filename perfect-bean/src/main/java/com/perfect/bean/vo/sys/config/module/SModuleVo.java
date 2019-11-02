@@ -80,6 +80,11 @@ public class SModuleVo implements Serializable {
     private String component;
 
     /**
+     * 权限标识
+     */
+    private String perms;
+
+    /**
      * 附在导航栏不可关闭
      */
     private Boolean affix;

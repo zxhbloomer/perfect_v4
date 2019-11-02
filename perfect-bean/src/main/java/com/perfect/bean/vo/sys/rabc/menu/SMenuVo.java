@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.sys.rabc.menu;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.perfect.bean.vo.common.component.TreeNode;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -26,6 +27,18 @@ public class SMenuVo extends TreeNode implements Serializable {
     private Long id;
 
     /**
+     * 菜单组编号
+     */
+    @TableField("menu_group_code")
+    private String menu_group_code;
+
+    /**
+     * 菜单组名称
+     */
+    @TableField("menu_group_name")
+    private String menu_group_name;
+
+    /**
      * 菜单名称
      */
     private String name;
@@ -42,6 +55,12 @@ public class SMenuVo extends TreeNode implements Serializable {
      */
     private String type;
     private String type_name;
+
+    /**
+     * 级联
+     */
+    private Long value;
+    private String label;
 
     /**
      * 菜单状态（0显示 1隐藏）

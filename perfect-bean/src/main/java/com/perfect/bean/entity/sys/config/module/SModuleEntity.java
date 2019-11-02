@@ -95,6 +95,12 @@ public class SModuleEntity extends BaseEntity<SModuleEntity> implements Serializ
     private Boolean affix;
 
     /**
+     * 权限标识
+     */
+    @TableField("perms")
+    private String perms;
+
+    /**
      * 是否删除
      */
     @TableField("is_del")

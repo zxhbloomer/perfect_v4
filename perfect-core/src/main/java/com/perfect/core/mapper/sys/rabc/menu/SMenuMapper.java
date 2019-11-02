@@ -41,7 +41,9 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "       where t2.parent_id = t1.id                                "
             + "       )                                                         "
             + "	  select t1.id,                                                 "
+            + "			 t1.id as value,                                          "  // 级联value
             + "			 t1.name,                                                 "
+            + "			 t1.name as label,                                         " // 级联label
             + "             t1.parent_id,                                          "
             + "             t1.level,                                              "
             + "             t1.depth_name,                                         "
@@ -75,6 +77,19 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
         + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null) "
         + "      ")
     List<SMenuVo> select(@Param("p1") SMenuVo searchCondition);
+
+    /**
+     * 级联,按条件获取所有数据，没有分页
+     * @param searchCondition
+     * @return
+     */
+    @Select("    "
+            + commonTreeGrid
+            + "  where true "
+            + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
+            + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null) "
+            + "      ")
+    List<SMenuVo> getCascaderList(@Param("p1") SMenuVo searchCondition);
 
     /**
      * 没有分页，按id筛选条件
