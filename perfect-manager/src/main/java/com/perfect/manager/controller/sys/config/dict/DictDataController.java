@@ -166,6 +166,5 @@ public class DictDataController extends BaseController {
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
-
     }
 }

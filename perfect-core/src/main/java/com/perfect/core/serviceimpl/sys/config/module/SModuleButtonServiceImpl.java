@@ -1,7 +1,14 @@
 package com.perfect.core.serviceimpl.sys.config.module;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
+import com.perfect.bean.pojo.result.DeleteResult;
+import com.perfect.bean.result.utils.v1.DeleteResultUtil;
+import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
+import com.perfect.common.exception.UpdateErrorException;
+import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.service.sys.config.module.IModuleButtonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,8 +102,13 @@ public class SModuleButtonServiceImpl extends ServiceImpl<SModuleButtonMapper, S
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void deleteByIdsIn(List<SModuleButtonVo> searchCondition) {
-        // todo：物理删除逻辑
+    public DeleteResult<Integer> realDeleteByIdsIn(List<SModuleButtonVo> searchCondition) {
+        List<Long> idList = new ArrayList<>();
+        searchCondition.forEach(bean -> {
+            idList.add(bean.getId());
+        });
+        int result=mapper.deleteBatchIds(idList);
+        return DeleteResultUtil.OK(result);
     }
 
     /**
@@ -112,6 +124,13 @@ public class SModuleButtonServiceImpl extends ServiceImpl<SModuleButtonMapper, S
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
+        }
+        // 设置：字典键值和字典排序
+        SModuleButtonEntity data = mapper.getSortNum(entity.getParent_id());
+        if (null == data) {
+            entity.setSort(0);
+        } else {
+            entity.setSort(data.getSort());
         }
         // 插入逻辑保存
         return InsertResultUtil.OK(mapper.insert(entity));
@@ -153,39 +172,9 @@ public class SModuleButtonServiceImpl extends ServiceImpl<SModuleButtonMapper, S
      * @param code
      * @return
      */
-    public List<SModuleButtonEntity> selectByCode(String code, Long equal_id, Long not_equal_id) {
+    public List<SModuleButtonEntity> selectByCode(Long parent_id, Long equal_id, Long not_equal_id, String code ) {
         // 查询 数据
-        List<SModuleButtonEntity> list = mapper.selectByCode(code, equal_id, not_equal_id);
-        return list;
-    }
-
-    /**
-     * 查询by 名称，返回结果
-     *
-     * @param name
-     * @return
-     */
-    public List<SModuleButtonEntity> selectByName(String name, Long equal_id, Long not_equal_id) {
-        // 查询 数据
-        List<SModuleButtonEntity> list = mapper.selectByName(name, equal_id, not_equal_id);
-        return list;
-    }
-
-    /**
-     * 查询by 请求地址，返回结果
-     */
-    public List<SModuleButtonEntity> selectByPath(String path, Long equal_id, Long not_equal_id) {
-        // 查询 数据
-        List<SModuleButtonEntity> list = mapper.selectByPath(path, equal_id, not_equal_id);
-        return list;
-    }
-
-    /**
-     * 查询by 请求地址，返回结果
-     */
-    public List<SModuleButtonEntity> selectByRoute_name(String route_name, Long equal_id, Long not_equal_id) {
-        // 查询 数据
-        List<SModuleButtonEntity> list = mapper.selectByRoute_name(route_name, equal_id, not_equal_id);
+        List<SModuleButtonEntity> list = mapper.selectByCode(parent_id, equal_id, not_equal_id, code);
         return list;
     }
 
@@ -197,30 +186,20 @@ public class SModuleButtonServiceImpl extends ServiceImpl<SModuleButtonMapper, S
     public CheckResult checkLogic(SModuleButtonEntity entity, String moduleType) {
         switch(moduleType){
             case CheckResult.INSERT_CHECK_TYPE :
-                List<SModuleButtonEntity> listCode_insertCheck = selectByCode(entity.getCode(), null, null);
-                List<SModuleButtonEntity> listName_insertCheck = selectByName(entity.getName(), null, null);
+                List<SModuleButtonEntity> listCode_insertCheck = selectByCode(entity.getParent_id(), null, null, entity.getCode());
                 // 新增场合，不能重复
                 if (listCode_insertCheck.size() >= 1) {
-                    // 模块编号不能重复
-                    return CheckResultUtil.NG("新增保存出错：模块编号出现重复", listCode_insertCheck);
-                }
-                if (listName_insertCheck.size() >= 1) {
-                    // 模块名称不能重复
-                    return CheckResultUtil.NG("新增保存出错：模块名称出现重复", listName_insertCheck);
+                    // 按钮编号不能重复
+                    return CheckResultUtil.NG("新增保存出错：按钮编号出现重复", listCode_insertCheck);
                 }
 
                 break;
             case CheckResult.UPDATE_CHECK_TYPE :
-                List<SModuleButtonEntity> listCode_updCheck = selectByCode(entity.getCode(), null, entity.getId());
-                List<SModuleButtonEntity> listName_updCheckk = selectByName(entity.getName(), null, entity.getId());
+                List<SModuleButtonEntity> listCode_updCheck = selectByCode(entity.getParent_id(), null, entity.getId(), entity.getCode());
                 // 更新场合，不能重复设置
                 if (listCode_updCheck.size() >= 1) {
                     // 模块编号不能重复
                     return CheckResultUtil.NG("更新保存出错：模块编号出现重复", listCode_updCheck);
-                }
-                if (listName_updCheckk.size() >= 1) {
-                    // 模块名称不能重复
-                    return CheckResultUtil.NG("更新保存出错：模块名称出现重复", listName_updCheckk);
                 }
                 break;
             default :
@@ -228,6 +207,29 @@ public class SModuleButtonServiceImpl extends ServiceImpl<SModuleButtonMapper, S
         }
 
         return CheckResultUtil.OK();
+    }
+
+    /**
+     * sort保存
+     *
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public UpdateResult<List<SModuleButtonVo>> saveList(List<SModuleButtonVo> data) {
+        List<SModuleButtonVo> resultList = new ArrayList<>();
+        // 乐观锁 dbversion
+        for(SModuleButtonVo bean:data){
+            // 复制到新的entity
+            SModuleButtonEntity entity = (SModuleButtonEntity) BeanUtilsSupport.copyProperties(bean, SModuleButtonEntity.class);
+            UpdateResult updateResult = this.update(entity);
+            if(updateResult.isSuccess()){
+                SModuleButtonVo searchData = this.selectByid(bean.getId());
+                resultList.add(searchData);
+            } else {
+                throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
+            }
+        }
+        return UpdateResultUtil.OK(resultList);
     }
 
 }

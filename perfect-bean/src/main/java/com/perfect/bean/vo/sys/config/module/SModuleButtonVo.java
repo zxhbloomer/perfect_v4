@@ -49,6 +49,11 @@ public class SModuleButtonVo implements Serializable {
      * 排序
      */
     private Integer sort;
+    /**
+     * 排序的最大最小值
+     */
+    private int max_sort;
+    private int min_sort;
 
     /**
      * 权限标识

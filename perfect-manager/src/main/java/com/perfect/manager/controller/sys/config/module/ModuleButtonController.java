@@ -1,6 +1,8 @@
 package com.perfect.manager.controller.sys.config.module;
 
 import com.perfect.bean.entity.sys.config.module.SModuleButtonEntity;
+import com.perfect.bean.pojo.result.UpdateResult;
+import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
 import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
 import com.perfect.core.service.sys.config.module.IModuleButtonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +53,10 @@ public class ModuleButtonController extends BaseController {
     @ApiOperation("根据参数id，获取模块按钮表信息")
     @PostMapping("/save")
     @ResponseBody
-    public ResponseEntity<JsonResult<SModuleButtonEntity>> save(@RequestBody(required = false) SModuleButtonEntity bean) {
+    public ResponseEntity<JsonResult<SModuleButtonVo>> save(@RequestBody(required = false) SModuleButtonEntity bean) {
 
         if(service.update(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"更新成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
@@ -62,23 +64,35 @@ public class ModuleButtonController extends BaseController {
 
     @SysLog("模块按钮表数据新增保存")
     @ApiOperation("根据参数id，获取模块按钮表信息")
-    @PostMapping("/group/insert")
+    @PostMapping("/insert")
     @ResponseBody
-    public ResponseEntity<JsonResult<SModuleButtonEntity>> insert(@RequestBody(required = false) SModuleButtonEntity bean) {
+    public ResponseEntity<JsonResult<SModuleButtonVo>> insert(@RequestBody(required = false) SModuleButtonEntity bean) {
         if(service.insert(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"插入成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
         }
     }
 
-
-    @SysLog("模块按钮表数据逻辑删除复原")
-    @ApiOperation("根据参数id，逻辑删除复原数据")
+    @SysLog("模块按钮表数据逻辑物理删除，部分数据")
+    @ApiOperation("根据参数id，逻辑删除数据")
     @PostMapping("/delete")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false) List<SModuleButtonVo> searchConditionList) {
-        service.deleteByIdsIn(searchConditionList);
+        service.realDeleteByIdsIn(searchConditionList);
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
+    }
+
+    @SysLog("模块按钮表排序后保存")
+    @ApiOperation("list数据的保存")
+        @PostMapping("/save_list")
+    @ResponseBody
+    public ResponseEntity<JsonResult<List<SModuleButtonVo>>> saveList(@RequestBody(required = false) List<SModuleButtonVo> beanList) {
+        UpdateResult<List<SModuleButtonVo>> result = service.saveList(beanList);
+        if(result.isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(result.getData(),"更新成功"));
+        } else {
+            throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
+        }
     }
 }
