@@ -32,6 +32,7 @@ public class SModuleVo implements Serializable {
      * 模块编号
      */
     private String code;
+    private Integer rowcount;
 
     /**
      * 模块类型

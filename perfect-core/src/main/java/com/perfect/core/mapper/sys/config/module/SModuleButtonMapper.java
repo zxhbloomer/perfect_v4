@@ -57,13 +57,14 @@ public interface SModuleButtonMapper extends BaseMapper<SModuleButtonEntity> {
         + "  		SELECT                                                      "
         + "  			count(1) - 1 AS max_sort,                               "
         + "  			0 AS min_sort,                                          "
-        + "  			subt1.parent_id                                    "
-        + "  		FROM                                                      "
-        + "  			s_module_button subt1                                     "
-        + "  		GROUP BY                                                  "
-        + "  			subt1.parent_id                                    "
-        + "  	) t3 ON t1.parent_id = t3.parent_id                     "
+        + "  			subt1.parent_id                                         "
+        + "  		FROM                                                        "
+        + "  			s_module_button subt1                                   "
+        + "  		GROUP BY                                                    "
+        + "  			subt1.parent_id                                         "
+        + "  	) t3 ON t1.parent_id = t3.parent_id                             "
         + "  where true "
+        + "    and (t2.code like CONCAT ('%',#{p1.module_code,jdbcType=VARCHAR},'%') or #{p1.module_code,jdbcType=VARCHAR} is null) "
         + "    and (t2.name like CONCAT ('%',#{p1.module_name,jdbcType=VARCHAR},'%') or #{p1.module_name,jdbcType=VARCHAR} is null) "
         + "             ")
     IPage<SModuleButtonVo> selectPage(Page<SModuleButtonVo> page, @Param("p1") SModuleButtonVo searchCondition);
@@ -106,6 +107,7 @@ public interface SModuleButtonMapper extends BaseMapper<SModuleButtonEntity> {
         + "  			subt1.parent_id                                    "
         + "  	) t3 ON t1.parent_id = t3.parent_id                     "
         + "  where true "
+        + "    and (t2.code like CONCAT ('%',#{p1.module_code,jdbcType=VARCHAR},'%') or #{p1.module_code,jdbcType=VARCHAR} is null) "
         + "    and (t2.name like CONCAT ('%',#{p1.module_name,jdbcType=VARCHAR},'%') or #{p1.module_name,jdbcType=VARCHAR} is null) "
         + "            ")
     List<SModuleButtonVo> select(@Param("p1") SModuleButtonVo searchCondition);
