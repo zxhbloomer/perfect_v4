@@ -28,16 +28,10 @@ public class SMenuEntity implements Serializable {
     private Long id;
 
     /**
-     * 菜单组编号
+     * 菜单编号
      */
-    @TableField("menu_group_code")
-    private String menu_group_code;
-
-    /**
-     * 菜单组名称
-     */
-    @TableField("menu_group_name")
-    private String menu_group_name;
+    @TableField("code")
+    private String code;
 
     /**
      * 菜单名称
@@ -74,6 +68,12 @@ public class SMenuEntity implements Serializable {
      */
     @TableField("perms")
     private String perms;
+
+    /**
+     * 模块id
+     */
+    @TableField("module_id")
+    private String module_id;
 
     /**
      * 请求地址

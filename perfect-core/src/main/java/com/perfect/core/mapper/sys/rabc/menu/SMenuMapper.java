@@ -2,6 +2,7 @@ package com.perfect.core.mapper.sys.rabc.menu;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.perfect.bean.entity.sys.rabc.menu.SMenuEntity;
+import com.perfect.bean.vo.sys.config.module.SModuleVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -27,7 +28,8 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "            t0.parent_id,                                        "
             + "            1 level,                                             "
             + "            t0.name,                                             "
-            + "            t0.name  as depth_name                               "
+            + "            t0.name  as depth_name,                              "
+            + "            t0.id depth_id                                       "
             + "       from s_menu t0                                            "
             + "      where t0.parent_id is null                                 "
             + "      union all                                                  "
@@ -35,7 +37,8 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "             t2.parent_id,                                       "
             + "             t1.level + 1 as level,                              "
             + "             t2.name,                                            "
-            + "             CONCAT( t1.name,'>',t2.name)  depth_name            "
+            + "             CONCAT( t1.name,'>',t2.name)  depth_name,           "
+            + "             CONCAT( t1.id,',',t2.id)  depth_id                  "
             + "        from s_menu t2,                                          "
             + "             tab1 t1                                             "
             + "       where t2.parent_id = t1.id                                "
@@ -47,6 +50,8 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "             t1.parent_id,                                          "
             + "             t1.level,                                              "
             + "             t1.depth_name,                                         "
+            + "             t1.depth_id,                                           "
+            + "             t2.code,                                               "
             + "             t2.type,                                               "
             + "             t3.label as type_name,                                 "
             + "             t2.visible,                                            "
@@ -61,8 +66,8 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "         from tab1 t1                                               "
             + "   inner join s_menu t2                                             "
             + "		   on t1.id = t2.id                                            "
-            + "   left join v_dict_info t3                                        "
-            + "		   on t3.code = 'module_type' and t3.dict_value = t2.type       "
+            + "   left join v_dict_info t3                                         "
+            + "		   on t3.code = 'module_type' and t3.dict_value = t2.type      "
             + "                                                                    ";
 
     /**
@@ -77,6 +82,20 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
         + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null) "
         + "      ")
     List<SMenuVo> select(@Param("p1") SMenuVo searchCondition);
+
+    /**
+     *
+     * 根据id获取数据
+     *
+     * @param id
+     * @return
+     */
+    @Select("    "
+            + commonTreeGrid
+            + "  where true "
+            + "    and t2.id =#{p1} "
+            + "      ")
+    SMenuVo selectId(@Param("p1") Long id);
 
     /**
      * 级联,按条件获取所有数据，没有分页
@@ -156,4 +175,5 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
         + "      ")
     List<SMenuEntity> selectBySimpleName(@Param("p1") String name, @Param("p2") Long equal_id,
         @Param("p3") Long not_equal_id);
+
 }

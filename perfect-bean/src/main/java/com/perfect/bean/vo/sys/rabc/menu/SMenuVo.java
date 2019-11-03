@@ -27,16 +27,10 @@ public class SMenuVo extends TreeNode implements Serializable {
     private Long id;
 
     /**
-     * 菜单组编号
+     * 菜单编号
      */
-    @TableField("menu_group_code")
-    private String menu_group_code;
-
-    /**
-     * 菜单组名称
-     */
-    @TableField("menu_group_name")
-    private String menu_group_name;
+    @TableField("code")
+    private String code;
 
     /**
      * 菜单名称
@@ -49,6 +43,7 @@ public class SMenuVo extends TreeNode implements Serializable {
     private Long parent_id;
 
     private String depth_name;
+    private Long depth_id;
 
     /**
      * 菜单类型（M目录 C菜单 F按钮）
@@ -71,6 +66,11 @@ public class SMenuVo extends TreeNode implements Serializable {
      * 权限标识
      */
     private String perms;
+
+    /**
+     * 模块id
+     */
+    private String module_id;
 
     /**
      * 请求地址

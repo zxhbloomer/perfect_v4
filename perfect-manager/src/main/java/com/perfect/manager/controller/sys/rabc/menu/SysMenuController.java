@@ -55,32 +55,44 @@ public class SysMenuController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(vo,true));
     }
 
-    @SysLog("集团主表数据更新保存")
-    @ApiOperation("根据参数id，获取集团主表信息")
+    @SysLog("系统菜单数据更新保存")
+    @ApiOperation("根据参数id，获取系统菜单信息")
     @PostMapping("/save")
     @ResponseBody
-    public ResponseEntity<JsonResult<SMenuEntity>> save(@RequestBody(required = false) SMenuEntity bean) {
+    public ResponseEntity<JsonResult<SMenuVo>> save(@RequestBody(required = false) SMenuEntity bean) {
 
         if(service.update(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"更新成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
     }
 
-    @SysLog("集团主表数据新增保存")
-    @ApiOperation("根据参数id，获取集团主表信息")
-    @PostMapping("/insert")
+    @SysLog("系统菜单数据新增菜单组")
+    @ApiOperation("新增菜单组")
+    @PostMapping("/addmenugroup")
     @ResponseBody
-    public ResponseEntity<JsonResult<SMenuEntity>> insert(@RequestBody(required = false) SMenuEntity bean) {
-        if(service.insert(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"插入成功"));
+    public ResponseEntity<JsonResult<SMenuVo>> addMenuGroup(@RequestBody(required = false) SMenuEntity bean) {
+        if(service.addMenuGroup(bean).isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
         }
     }
 
-    @SysLog("集团主表数据逻辑删除复原")
+    @SysLog("系统菜单数据新增菜单组")
+    @ApiOperation("新增菜单组")
+    @PostMapping("/addsubmenu")
+    @ResponseBody
+    public ResponseEntity<JsonResult<SMenuVo>> addSubMenu(@RequestBody(required = false) SMenuEntity bean) {
+        if(service.addMenuGroup(bean).isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
+        } else {
+            throw new InsertErrorException("新增保存失败。");
+        }
+    }
+
+    @SysLog("系统菜单数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
     @PostMapping("/visible")
     @ResponseBody

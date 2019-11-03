@@ -9,6 +9,7 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
+import com.perfect.bean.vo.sys.config.module.SModuleVo;
 import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import com.perfect.common.exception.BusinessException;
@@ -67,6 +68,18 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
     }
 
     /**
+     * 查询by id，返回结果
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public SMenuVo selectByid(Long id) {
+        // 查询 数据
+        return mapper.selectId(id);
+    }
+
+    /**
      * 获取列表，根据id查询所有数据
      *
      * @param searchCondition
@@ -105,7 +118,26 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<Integer> insert(SMenuEntity entity) {
+    public InsertResult<Integer> addMenuGroup(SMenuEntity entity) {
+        // 插入前check
+        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
+        if (cr.isSuccess() == false) {
+            throw new BusinessException(cr.getMessage());
+        }
+        // 插入逻辑保存
+        entity.setVisible(false);
+
+        return InsertResultUtil.OK(mapper.insert(entity));
+    }
+
+    /**
+     * 插入一条记录（选择字段，策略插入）
+     * @param entity 实体对象
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public InsertResult<Integer> addSubMenu(SMenuEntity entity) {
         // 插入前check
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
