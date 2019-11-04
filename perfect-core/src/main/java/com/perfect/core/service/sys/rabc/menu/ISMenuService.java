@@ -2,8 +2,10 @@ package com.perfect.core.service.sys.rabc.menu;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfect.bean.entity.sys.rabc.menu.SMenuEntity;
+import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
+import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
 import com.perfect.bean.vo.sys.config.module.SModuleVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 
@@ -28,6 +30,11 @@ public interface ISMenuService extends IService<SMenuEntity> {
      * 获取所有数据：级联
      */
     List<SMenuVo> getCascaderList(SMenuVo searchCondition) throws InstantiationException, IllegalAccessException;
+
+    /**
+     * 获取所有数据：级联
+     */
+    SMenuVo getCascaderGet(SMenuVo searchCondition) throws InstantiationException, IllegalAccessException;
 
     /**
      * 查询by id，返回结果
@@ -69,4 +76,11 @@ public interface ISMenuService extends IService<SMenuEntity> {
      * @return
      */
     UpdateResult<Integer> update(SMenuEntity entity);
+
+    /**
+     * 批量物理删除
+     * @param searchCondition
+     * @return
+     */
+    DeleteResult<Integer> realDeleteByIdsIn(SMenuEntity searchCondition);
 }

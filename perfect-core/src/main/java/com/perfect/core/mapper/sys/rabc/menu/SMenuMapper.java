@@ -29,7 +29,7 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "            1 level,                                             "
             + "            t0.name,                                             "
             + "            t0.name  as depth_name,                              "
-            + "            t0.id depth_id                                       "
+            + "            cast(t0.id as char) depth_id                         "
             + "       from s_menu t0                                            "
             + "      where t0.parent_id is null                                 "
             + "      union all                                                  "
@@ -38,7 +38,7 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "             t1.level + 1 as level,                              "
             + "             t2.name,                                            "
             + "             CONCAT( t1.name,'>',t2.name)  depth_name,           "
-            + "             CONCAT( t1.id,',',t2.id)  depth_id                  "
+            + "             CONCAT( cast(t1.id as char),',',cast(t2.id as char))  depth_id   "
             + "        from s_menu t2,                                          "
             + "             tab1 t1                                             "
             + "       where t2.parent_id = t1.id                                "
@@ -48,9 +48,11 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "			 t1.name,                                                 "
             + "			 t1.name as label,                                         " // 级联label
             + "             t1.parent_id,                                          "
+            + "             t2.root_id,                                            "
             + "             t1.level,                                              "
             + "             t1.depth_name,                                         "
             + "             t1.depth_id,                                           "
+            + "             t4.depth_id as parent_depth_id,                        "
             + "             t2.code,                                               "
             + "             t2.type,                                               "
             + "             t3.label as type_name,                                 "
@@ -62,12 +64,41 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "             t2.meta_icon,                                          "
             + "             t2.component,                                          "
             + "             t2.affix,                                              "
-            + "             t2.descr                                               "
+            + "             t2.descr,                                              "
+            + "             t2.tentant_id,                                         "
+            + "             t2.c_id,                                               "
+            + "             t2.c_time,                                             "
+            + "             t2.u_id,                                               "
+            + "             t2.u_time,                                             "
+            + "             t2.dbversion                                           "
             + "         from tab1 t1                                               "
             + "   inner join s_menu t2                                             "
             + "		   on t1.id = t2.id                                            "
             + "   left join v_dict_info t3                                         "
             + "		   on t3.code = 'module_type' and t3.dict_value = t2.type      "
+            + "	 LEFT join (                                                           "
+            + "						   with recursive tab1  as (                                           "
+            + "             select t0.id,                                                                  "
+            + "                    t0.parent_id,                                                           "
+            + "                    1 level,                                                                "
+            + "                    t0.name,                                                                "
+            + "                    t0.name  as depth_name,                                                 "
+            + "                    cast(t0.id as char) depth_id                                            "
+            + "               from s_menu t0                                                               "
+            + "              where t0.parent_id is null                                                    "
+            + "              union all                                                                     "
+            + "              select t2.id,                                                                 "
+            + "											 t2.parent_id,                                     "
+            + "                     t1.level + 1 as level,                                                 "
+            + "                     t2.name,                                                               "
+            + "                     CONCAT( t1.name,'>',t2.name)  depth_name,                              "
+            + "                     CONCAT( cast(t1.id as char),',',cast(t2.id as char))  depth_id         "
+            + "                from s_menu t2,                                                             "
+            + "                     tab1 t1                                                                "
+            + "               where t2.parent_id = t1.id                                                   "
+            + "               ) select id,depth_id from tab1                                               "
+            + "							) t4 on t4.id = t1.parent_id                                       "
+            + "                                                                                            "
             + "                                                                    ";
 
     /**
@@ -109,6 +140,18 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null) "
             + "      ")
     List<SMenuVo> getCascaderList(@Param("p1") SMenuVo searchCondition);
+
+    /**
+     * 级联,按条件获取所有数据，没有分页
+     * @param searchCondition
+     * @return
+     */
+    @Select("    "
+        + commonTreeGrid
+        + "  where true "
+        + "    and (t1.id #{p1.id)"
+        + "      ")
+    SMenuVo getCascaderGet(@Param("p1") SMenuVo searchCondition);
 
     /**
      * 没有分页，按id筛选条件

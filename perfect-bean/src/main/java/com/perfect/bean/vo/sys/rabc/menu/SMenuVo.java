@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -38,12 +40,50 @@ public class SMenuVo extends TreeNode implements Serializable {
     private String name;
 
     /**
+     * 根节点ID
+     */
+    private Long root_id;
+
+    /**
      * 父菜单ID
      */
     private Long parent_id;
+    private String parent_depth_id;
+    public List<Long> getParent_depth_id(){
+        List<Long> rtn = new ArrayList<>();
+        if(parent_depth_id == null){
+            return null;
+        }
+        String[] split = parent_depth_id.split(",");
+        for (int i = 0; i < split.length; i++) {
+            rtn.add(Long.valueOf(split[i]));
+        }
+        return rtn;
+    }
+
 
     private String depth_name;
-    private Long depth_id;
+    private String depth_id;
+    public List<Long> getDepth_id(){
+        List<Long> rtn = new ArrayList<>();
+        if(parent_depth_id == null){
+            return null;
+        }
+        String[] split = depth_id.split(",");
+        for (int i = 0; i < split.length; i++) {
+            rtn.add(Long.valueOf(split[i]));
+        }
+        return rtn;
+    }
+
+//    public List<Long> getDepth_id(){
+//        List<Long> rtn = new ArrayList<>();
+//        String[] split = depth_id.split(",");
+//        for (int i = 0; i < split.length; i++) {
+//            rtn.add(Long.valueOf(split[i]));
+//        }
+//        return rtn;
+//    }
 
     /**
      * 菜单类型（M目录 C菜单 F按钮）

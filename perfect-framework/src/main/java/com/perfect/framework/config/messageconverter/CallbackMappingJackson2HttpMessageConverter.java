@@ -105,7 +105,7 @@ public class CallbackMappingJackson2HttpMessageConverter extends FastJsonHttpMes
         } else {
             super.getFastJsonConfig().setSerializerFeatures(SerializerFeature.DisableCircularReferenceDetect,
                                                             SerializerFeature.WriteMapNullValue,
-                                                            SerializerFeature.WriteNullStringAsEmpty,
+//                                                            SerializerFeature.WriteNullStringAsEmpty,  --->注意这个不能开启
                                                             SerializerFeature.WriteNullListAsEmpty,
                                                             SerializerFeature.WriteNullBooleanAsFalse,
                                                             SerializerFeature.PrettyFormat

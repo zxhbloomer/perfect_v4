@@ -5,6 +5,7 @@ import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.sys.config.config.SConfigVo;
+import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
 import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import com.perfect.common.annotation.SysLog;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +48,7 @@ public class SysMenuController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("根据查询条件，获取租户信息")
+    @SysLog("根据查询条件，获取级联信息")
     @ApiOperation("获取级联数据")
     @PostMapping("/cascader/list")
     @ResponseBody
@@ -85,7 +87,7 @@ public class SysMenuController extends BaseController {
     @PostMapping("/addsubmenu")
     @ResponseBody
     public ResponseEntity<JsonResult<SMenuVo>> addSubMenu(@RequestBody(required = false) SMenuEntity bean) {
-        if(service.addMenuGroup(bean).isSuccess()){
+        if(service.addSubMenu(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
@@ -99,5 +101,18 @@ public class SysMenuController extends BaseController {
     public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false) List<SMenuVo> searchConditionList) {
         service.visibleByIdsIn(searchConditionList);
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
+    }
+
+    @SysLog("模块按钮表数据逻辑物理删除，部分数据")
+    @ApiOperation("根据参数id，逻辑删除数据")
+    @PostMapping("/realdelete")
+    @ResponseBody
+    public ResponseEntity<JsonResult<String>> realDelete(@RequestBody(required = false) SMenuEntity searchCondition) {
+        if(searchCondition == null) {
+            return ResponseEntity.ok().body(ResultUtil.OK("没有数据"));
+        } else {
+            service.realDeleteByIdsIn(searchCondition);
+            return ResponseEntity.ok().body(ResultUtil.OK("OK"));
+        }
     }
 }

@@ -3,12 +3,15 @@ package com.perfect.core.serviceimpl.sys.rabc.menu;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.sys.rabc.menu.SMenuEntity;
 import com.perfect.bean.pojo.result.CheckResult;
+import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.CheckResultUtil;
+import com.perfect.bean.result.utils.v1.DeleteResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
+import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
 import com.perfect.bean.vo.sys.config.module.SModuleVo;
 import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
@@ -19,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,6 +51,7 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
     public List<SMenuVo> select(SMenuVo searchCondition) {
         // 查询 数据
         List<SMenuVo> list = mapper.select(searchCondition);
+
         List<SMenuVo> rtnList = TreeUtil.getTreeList(list);
         return rtnList;
     }
@@ -65,6 +70,21 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
         List<SMenuVo> list = mapper.getCascaderList(searchCondition);
         List<SMenuVo> rtnList = TreeUtil.getTreeList(list);
         return rtnList;
+    }
+
+    /**
+     * 级联：获取列表，查询所有数据
+     *
+     * @param searchCondition
+     * @return
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
+    @Override
+    public SMenuVo getCascaderGet(SMenuVo searchCondition) {
+        // 查询 数据
+        SMenuVo vo = mapper.getCascaderGet(searchCondition);
+        return vo;
     }
 
     /**
@@ -126,8 +146,13 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
         }
         // 插入逻辑保存
         entity.setVisible(false);
-
-        return InsertResultUtil.OK(mapper.insert(entity));
+        // 获取id
+        int insertCount = mapper.insert(entity);
+        // 修改root_id
+        entity.setRoot_id(entity.getId());
+        // 更新数据库
+        int updCount = mapper.updateById(entity);
+        return InsertResultUtil.OK(updCount);
     }
 
     /**
@@ -163,6 +188,22 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
         }
         // 更新逻辑保存
         return UpdateResultUtil.OK(mapper.updateById(entity));
+    }
+
+    /**
+     * 批量删除复原
+     *
+     * @param searchCondition
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public DeleteResult<Integer> realDeleteByIdsIn(SMenuEntity searchCondition) {
+        // 1:找到获取子菜单
+        // 2:删除当前以及子菜单
+        List<Long> idList = new ArrayList<>();
+        int result=mapper.deleteBatchIds(idList);
+        return DeleteResultUtil.OK(result);
     }
 
     /**

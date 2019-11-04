@@ -39,6 +39,13 @@ public class SMenuEntity implements Serializable {
     @TableField("name")
     private String name;
 
+
+    /**
+     * 根节点ID
+     */
+    @TableField("root_id")
+    private Long root_id;
+
     /**
      * 父菜单ID
      */
