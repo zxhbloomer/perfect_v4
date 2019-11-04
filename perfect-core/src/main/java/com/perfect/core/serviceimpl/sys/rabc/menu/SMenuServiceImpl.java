@@ -170,6 +170,27 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
         }
         // 插入逻辑保存
         entity.setVisible(false);
+
+        // 获取父亲的entity
+        SMenuEntity parentEntity = getById(entity.getParent_id());
+        Integer son_count = parentEntity.getSon_count();
+        son_count = (son_count == null ? 0 : son_count)  + 1;
+        parentEntity.setSon_count(son_count);
+        // 保存父亲的儿子的个数
+        mapper.updateById(parentEntity);
+
+        // 获取福清的code
+        String parentCode = parentEntity.getCode();
+        // 计算当前编号
+        // 获取当前son_count
+        // 0 代表前面补充0
+        // 4 代表长度为4
+        // d 代表参数为正数型
+        String str = String.format("%04d", son_count);
+        entity.setCode(parentCode + str);
+        entity.setSon_count(0);
+
+        // 保存儿子个数
         return InsertResultUtil.OK(mapper.insert(entity));
     }
 

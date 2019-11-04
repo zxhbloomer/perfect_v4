@@ -53,6 +53,12 @@ public class SMenuEntity implements Serializable {
     private Long parent_id;
 
     /**
+     * 父菜单ID
+     */
+    @TableField("son_count")
+    private Integer son_count;
+
+    /**
      * 排序
      */
     @TableField("sort")

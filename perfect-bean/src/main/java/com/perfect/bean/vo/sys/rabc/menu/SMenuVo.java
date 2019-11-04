@@ -48,6 +48,13 @@ public class SMenuVo extends TreeNode implements Serializable {
      * 父菜单ID
      */
     private Long parent_id;
+
+    /**
+     * 父菜单ID
+     */
+    @TableField("son_count")
+    private Integer son_count;
+
     private String parent_depth_id;
     public List<Long> getParent_depth_id(){
         List<Long> rtn = new ArrayList<>();
@@ -66,7 +73,7 @@ public class SMenuVo extends TreeNode implements Serializable {
     private String depth_id;
     public List<Long> getDepth_id(){
         List<Long> rtn = new ArrayList<>();
-        if(parent_depth_id == null){
+        if(depth_id == null){
             return null;
         }
         String[] split = depth_id.split(",");
