@@ -45,7 +45,6 @@ public interface ICommonAreasService extends IService<NameAndValueVo> {
      * 获取省市区级联
      * @return
      */
-    @Deprecated
     List<SAreasCascaderTreeVo> getAreasCascaderTreeVo();
 
 }

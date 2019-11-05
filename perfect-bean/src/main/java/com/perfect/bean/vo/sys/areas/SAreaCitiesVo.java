@@ -40,5 +40,9 @@ public class SAreaCitiesVo implements Serializable {
      */
     private String name;
 
+    /**
+     * 省级编号
+     */
+    private Integer province_code;
 
 }

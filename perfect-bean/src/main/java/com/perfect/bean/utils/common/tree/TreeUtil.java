@@ -1,6 +1,7 @@
 package com.perfect.bean.utils.common.tree;
 
 import com.perfect.bean.vo.common.tree.ITreeNode;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
@@ -10,6 +11,7 @@ import java.util.*;
  * @author zxh
  * @date 2019年 10月03日 11:33:46
  */
+@Slf4j
 public class TreeUtil {
     public static <T extends ITreeNode> List<T> getTreeList(List<T> listNodes) {
         /**
@@ -75,9 +77,9 @@ public class TreeUtil {
      * @return
      */
     private static <T extends ITreeNode> T getParentLevelData(List<T> beans, Long parentid) {
-
         for (T bean : beans) {
             if (bean.getId().equals(parentid)) {
+                bean.setLeaf(false);
                 return bean;
             }
         }

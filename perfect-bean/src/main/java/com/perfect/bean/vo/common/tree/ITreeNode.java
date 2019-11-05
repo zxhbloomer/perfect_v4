@@ -57,4 +57,6 @@ public interface ITreeNode<T extends ITreeNode> {
      * @return
      */
     Long getParent_id();
+
+    void setLeaf(boolean leaf);
 }

@@ -68,5 +68,14 @@ public class SystemAreaController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(vo));
     }
 
+    @SysLog("根据查询条件，获取区信息")
+    @ApiOperation("根据参数id，获取区信息")
+    @PostMapping("/area/casca")
+    @ResponseBody
+    public ResponseEntity<JsonResult<List<SAreasCascaderTreeVo>>> getAreasCascader() {
+        List<SAreasCascaderTreeVo> vo = service.getAreasCascaderTreeVo();
+        return ResponseEntity.ok().body(ResultUtil.OK(vo,true));
+    }
+
 
 }
