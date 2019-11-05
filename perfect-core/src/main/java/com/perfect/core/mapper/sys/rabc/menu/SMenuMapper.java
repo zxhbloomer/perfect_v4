@@ -29,7 +29,7 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "            1 level,                                             "
             + "            t0.name,                                             "
             + "            t0.name  as depth_name,                              "
-            + "            cast(t0.id as char) depth_id                         "
+            + "            cast(t0.id as varchar(20)) depth_id                         "
             + "       from s_menu t0                                            "
             + "      where t0.parent_id is null                                 "
             + "      union all                                                  "
@@ -38,7 +38,7 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "             t1.level + 1 as level,                              "
             + "             t2.name,                                            "
             + "             CONCAT( t1.depth_name,'>',t2.name)  depth_name,           "
-            + "             CONCAT( cast(t1.depth_id as char),',',cast(t2.id as char))  depth_id   "
+            + "             CONCAT( cast(t1.depth_id as varchar(20)),',',cast(t2.id as varchar(20)))  depth_id   "
             + "        from s_menu t2,                                          "
             + "             tab1 t1                                             "
             + "       where t2.parent_id = t1.id                                "
@@ -83,7 +83,7 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "                    1 level,                                                                "
             + "                    t0.name,                                                                "
             + "                    t0.name  as depth_name,                                                 "
-            + "                    cast(t0.id as char) depth_id                                            "
+            + "                    cast(t0.id as varchar(20)) depth_id                                            "
             + "               from s_menu t0                                                               "
             + "              where t0.parent_id is null                                                    "
             + "              union all                                                                     "
@@ -92,7 +92,7 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "                     t1.level + 1 as level,                                                 "
             + "                     t2.name,                                                               "
             + "                     CONCAT( t1.name,'>',t2.name)  depth_name,                              "
-            + "                     CONCAT( cast(t1.id as char),',',cast(t2.id as char))  depth_id         "
+            + "                     CONCAT( cast(t1.id as varchar(20)),',',cast(t2.id as varchar(20)))  depth_id         "
             + "                from s_menu t2,                                                             "
             + "                     tab1 t1                                                                "
             + "               where t2.parent_id = t1.id                                                   "
@@ -170,53 +170,29 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
 
     /**
      * 按条件获取所有数据，没有分页
+     * @param searchCondition
+     * @return
+     */
+    @Select("    "
+        + " delete "
+        + "   from s_menu  "
+        + "  where true "
+        + "    and code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') "
+        + "      ")
+    void realDeleteByCode(@Param("p1") SMenuVo searchCondition);
+
+    /**
+     * 按条件获取所有数据，没有分页
      * @param code
      * @return
      */
     @Select("    "
         + " select t.* "
-        + "   from m_group t "
+        + "   from s_menu t "
         + "  where true "
         + "    and t.code =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "    and t.is_del =  0   "
         + "      ")
-    List<SMenuEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id,
-        @Param("p3") Long not_equal_id);
-
-    /**
-     * 按条件获取所有数据，没有分页
-     * @param name
-     * @return
-     */
-    @Select("    "
-        + " select t.* "
-        + "   from m_group t "
-        + "  where true "
-        + "    and t.name =  #{p1}   "
-        + "    and (t.id  =  #{p2} or #{p2} is null)   "
-        + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "    and t.is_del =  0   "
-        + "      ")
-    List<SMenuEntity> selectByName(@Param("p1") String name, @Param("p2") Long equal_id,
-        @Param("p3") Long not_equal_id);
-
-    /**
-     * 按条件获取所有数据，没有分页
-     * @param name
-     * @return
-     */
-    @Select("    "
-        + " select t.* "
-        + "   from m_group t "
-        + "  where true "
-        + "    and t.simple_name =  #{p1}   "
-        + "    and (t.id  =  #{p2} or #{p2} is null)   "
-        + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "    and t.is_del =  0   "
-        + "      ")
-    List<SMenuEntity> selectBySimpleName(@Param("p1") String name, @Param("p2") Long equal_id,
-        @Param("p3") Long not_equal_id);
-
+    List<SMenuEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
 }

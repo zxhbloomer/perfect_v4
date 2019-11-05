@@ -163,11 +163,6 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
     @Transactional(rollbackFor = Exception.class)
     @Override
     public InsertResult<Integer> addSubMenu(SMenuEntity entity) {
-        // 插入前check
-        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
-        if (cr.isSuccess() == false) {
-            throw new BusinessException(cr.getMessage());
-        }
         // 插入逻辑保存
         entity.setVisible(false);
 
@@ -189,6 +184,12 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
         String str = String.format("%04d", son_count);
         entity.setCode(parentCode + str);
         entity.setSon_count(0);
+
+        // 插入前check
+        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
+        if (cr.isSuccess() == false) {
+            throw new BusinessException(cr.getMessage());
+        }
 
         // 保存儿子个数
         return InsertResultUtil.OK(mapper.insert(entity));
@@ -219,12 +220,10 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public DeleteResult<Integer> realDeleteByIdsIn(SMenuEntity searchCondition) {
-        // 1:找到获取子菜单
-        // 2:删除当前以及子菜单
-        List<Long> idList = new ArrayList<>();
-        int result=mapper.deleteBatchIds(idList);
-        return DeleteResultUtil.OK(result);
+    public DeleteResult<String> realDeleteByCode(SMenuVo searchCondition) {
+        // 删除当前以及子菜单
+        mapper.realDeleteByCode(searchCondition);
+        return DeleteResultUtil.OK("OK");
     }
 
     /**
@@ -238,70 +237,29 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
         List<SMenuEntity> list = mapper.selectByCode(code, equal_id, not_equal_id);
         return list;
     }
-
-    /**
-     * 获取列表，查询所有数据
-     *
-     * @param name
-     * @return
-     */
-    public List<SMenuEntity> selectByName(String name, Long equal_id, Long not_equal_id) {
-        // 查询 数据
-        List<SMenuEntity> list = mapper.selectByName(name, equal_id, not_equal_id);
-        return list;
-    }
-
-    /**
-     * 获取列表，查询所有数据
-     *
-     * @param name
-     * @return
-     */
-    public List<SMenuEntity> selectBySimpleName(String name, Long equal_id, Long not_equal_id) {
-        // 查询 数据
-        List<SMenuEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id);
-        return list;
-    }
-
     /**
      * check逻辑
      * @return
      */
     public CheckResult checkLogic(SMenuEntity entity, String moduleType){
-//        switch (moduleType) {
-//            case CheckResult.INSERT_CHECK_TYPE:
-//                // 新增场合，不能重复
-//                List<SMenuEntity> codeList_insertCheck = selectByCode(entity.getCode(), null, null);
-//                List<SMenuEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
-//                List<SMenuEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
-//                if (codeList_insertCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("新增保存出错：集团编号出现重复", entity.getCode());
-//                }
-//                if (nameList_insertCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("新增保存出错：集团全称出现重复", entity.getName());
-//                }
-//                if (simple_name_insertCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("新增保存出错：集团简称称出现重复", entity.getSimple_name());
-//                }
-//                break;
-//            case CheckResult.UPDATE_CHECK_TYPE:
-//                // 更新场合，不能重复设置
-//                List<SMenuEntity> codeList_updCheck = selectByCode(entity.getCode(), null, entity.getId());
-//                List<SMenuEntity> nameList_updCheck = selectByName(entity.getName(), null, entity.getId());
-//                List<SMenuEntity> simple_name_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
-//
-//                if (codeList_updCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("更新保存出错：集团编号出现重复", entity.getCode());
-//                }
-//                if (nameList_updCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("更新保存出错：集团全称出现重复", entity.getName());
-//                }
-//                if (simple_name_updCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("更新保存出错：集团简称称出现重复", entity.getSimple_name());
-//                }
-//                break;
-//            default:
-//        }
+        switch (moduleType) {
+            case CheckResult.INSERT_CHECK_TYPE:
+                // 新增场合，不能重复
+                List<SMenuEntity> codeList_insertCheck = selectByCode(entity.getCode(), null, null);
+                if (codeList_insertCheck.size() >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：集团编号出现重复", entity.getCode());
+                }
+                break;
+            case CheckResult.UPDATE_CHECK_TYPE:
+                // 更新场合，不能重复设置
+                List<SMenuEntity> codeList_updCheck = selectByCode(entity.getCode(), null, entity.getId());
+
+                if (codeList_updCheck.size() >= 1) {
+                    return CheckResultUtil.NG("更新保存出错：集团编号出现重复", entity.getCode());
+                }
+                break;
+            default:
+        }
         return CheckResultUtil.OK();
     }
 }

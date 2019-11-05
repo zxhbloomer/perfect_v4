@@ -3,9 +3,13 @@ package com.perfect.core.serviceimpl.sys.areas;
 import com.perfect.bean.entity.sys.areas.SAreaCitiesEntity;
 import com.perfect.bean.entity.sys.areas.SAreaProvincesEntity;
 import com.perfect.bean.entity.sys.areas.SAreasEntity;
+import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.sys.areas.SAreaCitiesVo;
 import com.perfect.bean.vo.sys.areas.SAreaProvincesVo;
+import com.perfect.bean.vo.sys.areas.SAreasCascaderTreeVo;
 import com.perfect.bean.vo.sys.areas.SAreasVo;
+import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
+import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import com.perfect.core.mapper.sys.areas.SAreasMapper;
 import com.perfect.core.service.sys.areas.ICommonAreasService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +42,7 @@ public class CommonAreasServiceImpl extends ServiceImpl<SAreasMapper, NameAndVal
      */
     @Override
     public List<SAreaProvincesVo> getProvinces(SAreaProvincesVo condition) {
-        return null;
+        return mapper.getProvinces(condition);
     }
 
     /**
@@ -48,7 +52,7 @@ public class CommonAreasServiceImpl extends ServiceImpl<SAreasMapper, NameAndVal
      */
     @Override
     public List<SAreaCitiesVo> getCities(SAreaCitiesVo condition) {
-        return null;
+        return mapper.getCities(condition);
     }
 
     /**
@@ -57,7 +61,17 @@ public class CommonAreasServiceImpl extends ServiceImpl<SAreasMapper, NameAndVal
      * @return
      */
     @Override
-    public List<SAreasVo> getProvinces(SAreasVo condition) {
-        return null;
+    public List<SAreasVo> getAreas(SAreasVo condition) {
+        return mapper.getAreas(condition);
+    }
+
+    /**
+     * 获取省市区级联
+     * @return
+     */
+    @Override public List<SAreasCascaderTreeVo> getAreasCascaderTreeVo() {
+        List<SAreasCascaderTreeVo> listVo = mapper.getCascaderList();
+        List<SAreasCascaderTreeVo> rtnList = TreeUtil.getTreeList(listVo);
+        return rtnList;
     }
 }

@@ -7,6 +7,7 @@ import com.perfect.bean.entity.sys.areas.SAreasEntity;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.sys.areas.SAreaCitiesVo;
 import com.perfect.bean.vo.sys.areas.SAreaProvincesVo;
+import com.perfect.bean.vo.sys.areas.SAreasCascaderTreeVo;
 import com.perfect.bean.vo.sys.areas.SAreasVo;
 
 import java.util.List;
@@ -37,6 +38,14 @@ public interface ICommonAreasService extends IService<NameAndValueVo> {
      * 获取区
      * @return
      */
-    List<SAreasVo> getProvinces(SAreasVo condition);
+    List<SAreasVo> getAreas(SAreasVo condition);
+
+
+    /**
+     * 获取省市区级联
+     * @return
+     */
+    @Deprecated
+    List<SAreasCascaderTreeVo> getAreasCascaderTreeVo();
 
 }

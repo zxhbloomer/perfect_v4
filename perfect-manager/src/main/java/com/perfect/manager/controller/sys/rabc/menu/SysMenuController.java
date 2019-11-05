@@ -94,24 +94,15 @@ public class SysMenuController extends BaseController {
         }
     }
 
-    @SysLog("系统菜单数据逻辑删除复原")
-    @ApiOperation("根据参数id，逻辑删除复原数据")
-    @PostMapping("/visible")
-    @ResponseBody
-    public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false) List<SMenuVo> searchConditionList) {
-        service.visibleByIdsIn(searchConditionList);
-        return ResponseEntity.ok().body(ResultUtil.OK("OK"));
-    }
-
     @SysLog("模块按钮表数据逻辑物理删除，部分数据")
     @ApiOperation("根据参数id，逻辑删除数据")
     @PostMapping("/realdelete")
     @ResponseBody
-    public ResponseEntity<JsonResult<String>> realDelete(@RequestBody(required = false) SMenuEntity searchCondition) {
+    public ResponseEntity<JsonResult<String>> realDelete(@RequestBody(required = false) SMenuVo searchCondition) {
         if(searchCondition == null) {
             return ResponseEntity.ok().body(ResultUtil.OK("没有数据"));
         } else {
-            service.realDeleteByIdsIn(searchCondition);
+            service.realDeleteByCode(searchCondition);
             return ResponseEntity.ok().body(ResultUtil.OK("OK"));
         }
     }

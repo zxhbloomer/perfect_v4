@@ -34,4 +34,9 @@ public class PerfectDictConstant {
      * 隐藏显示类型： 0：显示 1：隐藏 null:全部
      */
     public static final String DICT_BTN_NAME_TYPE = "btn_name_type";
+
+    /**
+     * 关联表类型：
+     */
+    public static final String DICT_SYS_SERIAL_TYPE = "sys_serial_type";
 }

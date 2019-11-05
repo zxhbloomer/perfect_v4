@@ -82,5 +82,5 @@ public interface ISMenuService extends IService<SMenuEntity> {
      * @param searchCondition
      * @return
      */
-    DeleteResult<Integer> realDeleteByIdsIn(SMenuEntity searchCondition);
+    DeleteResult<String> realDeleteByCode(SMenuVo searchCondition);
 }

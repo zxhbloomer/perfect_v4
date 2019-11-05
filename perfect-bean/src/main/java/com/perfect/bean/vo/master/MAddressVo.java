@@ -1,13 +1,15 @@
-package com.perfect.bean.entity.master.org;
+package com.perfect.bean.vo.master;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
+import com.perfect.bean.vo.common.condition.PageCondition;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -18,76 +20,96 @@ import lombok.experimental.Accessors;
  * @since 2019-10-30
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("m_address")
-public class MAddressEntity implements Serializable {
+@NoArgsConstructor
+@ApiModel(value = "地址簿", description = "地址簿")
+public class MAddressVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("id")
     private Long id;
 
     /**
      * 邮编
      */
-    @TableField("postal_code")
     private String postal_code;
+
+    /**
+     * 联系人
+     */
+    private String link_man;
+
+    /**
+     * 电话
+     */
+    private String phone;
+
+    /**
+     * 默认
+     */
+    private Boolean is_default;
+
+    /**
+     * 标签
+     */
+    private String tag;
 
     /**
      * 省
      */
-    @TableField("province_code")
     private Integer province_code;
+    private String province_name;
 
     /**
      * 市
      */
-    @TableField("city_code")
     private Integer city_code;
+    private String city_name;
 
     /**
      * 区
      */
-    @TableField("area_code")
     private Integer area_code;
+    private String area_name;
 
     /**
      * 详细地址
      */
-    @TableField("detail_address")
     private String detail_address;
+
+    /**
+     * 关联单号
+     */
+    private String serial_no;
+
+    /**
+     * 关联单号类型
+     */
+    private String serial_type;
 
     /**
      * 是否删除
      */
-    @TableField("is_del")
     private Boolean is_del;
 
     /**
      * 租户id
      */
-    @TableField("tentant_id")
     private Long tentant_id;
 
-    @TableField(value="c_id", fill = FieldFill.INSERT)
     private Long c_id;
 
-    @TableField(value="c_time", fill = FieldFill.INSERT)
-    private LocalDateTime c_time;
 
-    @TableField(value="u_id", fill = FieldFill.INSERT_UPDATE)
     private Long u_id;
 
-    @TableField(value="u_time", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime u_time;
 
     /**
      * 数据版本，乐观锁使用
      */
-    @Version
-    @TableField(value="dbversion", fill = FieldFill.INSERT_UPDATE)
     private Integer dbversion;
 
-
+    /**
+     * 换页条件
+     */
+    private PageCondition pageCondition;
 }

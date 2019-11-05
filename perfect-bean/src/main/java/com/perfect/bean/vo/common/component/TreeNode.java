@@ -17,7 +17,9 @@ import java.util.List;
 @Data
 public class TreeNode implements ITreeNode<TreeNode>, Comparable<TreeNode> {
 
+    /** 级联value */
     private Long id;
+    /** 级联label */
     private String label;
     /** 节点名称 */
     private String name;

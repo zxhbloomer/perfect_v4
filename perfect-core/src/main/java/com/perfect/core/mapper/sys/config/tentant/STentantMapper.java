@@ -40,7 +40,7 @@ public interface STentantMapper extends BaseMapper<STentantEntity> {
         + "                   t2.parent_id,                                              "
         + "                   t1.level + 1 as level,                                    "
         + "                   t2.name,                                                  "
-        + "                   CONCAT( t1.name,'>',t2.name)  depth_name                  "
+        + "                   CONCAT( t1.depth_name,'>',t2.name)  depth_name                  "
         + "              from s_tenant t2,                                              "
         + "                   tab1 t1                                                   "
         + "             where t2.parent_id = t1.id                                       "
