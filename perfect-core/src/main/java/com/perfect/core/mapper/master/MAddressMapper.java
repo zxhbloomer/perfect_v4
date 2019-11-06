@@ -34,6 +34,7 @@ public interface MAddressMapper extends BaseMapper<MAddressEntity> {
         + "        	t2.`name` province_name,                                                                               "
         + "        	t3.`name` city_name,                                                                                   "
         + "        	t4.`name` area_name,                                                                                   "
+        + "        	concat_ws(' / ',t2.`name`,t3.`name`,t4.`name`) as cascader_text,                                       "
         + "        	t5.label tag_name                                                                                      "
         + "    FROM                                                                                                        "
         + "        	m_address t1                                                                                           "

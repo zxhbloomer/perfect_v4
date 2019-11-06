@@ -74,6 +74,7 @@ public class MAddressVo implements Serializable {
     private Integer area_code;
     private String area_name;
 
+    private String cascader_text;
     private List<Integer> cascader_areas;
     public List<Integer> getCascader_areas(){
         if(province_code == null) {
