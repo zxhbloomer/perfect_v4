@@ -25,7 +25,6 @@ import java.util.List;
  * @since 2019-07-11
  */
 @Service
-@CacheConfig(cacheNames={PerfectConstant.CACHE_PC_NAMESPACE + "::" + "role"})
 public class SRoleServiceImpl extends ServiceImpl<SRoleMapper, SRoleEntity> implements ISRoleService {
 
     @Autowired

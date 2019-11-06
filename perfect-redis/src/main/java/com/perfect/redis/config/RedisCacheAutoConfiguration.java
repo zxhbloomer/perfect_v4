@@ -2,7 +2,12 @@ package com.perfect.redis.config;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.cache.Cache;
@@ -11,11 +16,17 @@ import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.time.Duration;
 
 @Configuration
 @AutoConfigureAfter(RedisAutoConfiguration.class)
@@ -23,47 +34,81 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
 
     /**
-     * 选择redis作为默认缓存工具
-     * @param redisConnectionFactory
+     * 自定义缓存管理器
+     * 实现有效期、自定义key前缀、序列化方法
+     *
+     * @param lettuceConnectionFactory
+     * @param jackson2JsonRedisSerializer
      * @return
      */
     @Bean
-    public CacheManager cacheManager(LettuceConnectionFactory redisConnectionFactory) {
-        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager
-            .RedisCacheManagerBuilder
-            .fromConnectionFactory(redisConnectionFactory);
-        return builder.build();
+    public CacheManager cacheManager(
+        @Qualifier("perfect_lettuce_connection_factory") LettuceConnectionFactory lettuceConnectionFactory,
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer) {
+
+        RedisSerializationContext.SerializationPair keyPair =
+            RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer());
+        RedisSerializationContext.SerializationPair valuePair =
+            RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer);
+
+        //以锁写入的方式创建RedisCacheWriter对象
+        RedisCacheWriter writer = RedisCacheWriter.lockingRedisCacheWriter(lettuceConnectionFactory);
+
+        RedisCacheConfiguration cacheConfiguration =
+            RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(30)).serializeKeysWith(keyPair)
+                .serializeValuesWith(valuePair);
+
+        RedisCacheManager redisCacheManager = new RedisCacheManager(writer, cacheConfiguration);
+
+        return redisCacheManager;
+
     }
 
     /**
-     * 重写Redis序列化方式，使用Json方式:
-     * 当我们的数据存储到Redis的时候，我们的键（key）和值（value）都是通过Spring提供的Serializer序列化到数据库的。
-     * RedisTemplate默认使用的是JdkSerializationRedisSerializer，StringRedisTemplate默认使用的是StringRedisSerializer。
-     * Spring Data JPA为我们提供了下面的Serializer：
-     * GenericToStringSerializer、Jackson2JsonRedisSerializer、JacksonJsonRedisSerializer、JdkSerializationRedisSerializer、OxmSerializer、StringRedisSerializer。
-     * 在此我们将自己配置RedisTemplate并定义Serializer。
+     * 配置一个序列器, 将对象序列化为字符串存储, 和将对象反序列化为对象
+     * 并注入到cacheManager和redisTemplate
+     */
+    @Bean
+    public Jackson2JsonRedisSerializer jackson2JsonRedisSerializer() {
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+        ObjectMapper om = new ObjectMapper();
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        jackson2JsonRedisSerializer.setObjectMapper(om);
+        return jackson2JsonRedisSerializer;
+    }
+
+    /**
+     * redisTemplate 操作模板，value 实现Jackson2JsonRedisSerializer
      *
-     * @param redisConnectionFactory
+     * @param lettuceConnectionFactory
+     * @param jackson2JsonRedisSerializer
      * @return
      */
     @Bean
-    public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate redisTemplate(
+        @Qualifier("perfect_lettuce_connection_factory") LettuceConnectionFactory lettuceConnectionFactory,
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer) {
         RedisTemplate redisTemplate = new RedisTemplate();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setConnectionFactory(lettuceConnectionFactory);
 
-        FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
+        //        FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
         // 全局开启AutoType，不建议使用
         // ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
         // 建议使用这种方式，小范围指定白名单
         ParserConfig.getGlobalInstance().addAccept("com.perfect.");
 
-        // 设置值（value）的序列化采用FastJsonRedisSerializer。
-        redisTemplate.setValueSerializer(fastJsonRedisSerializer);
-        redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
-        redisTemplate.setDefaultSerializer(fastJsonRedisSerializer);
         // 设置键（key）的序列化采用StringRedisSerializer。
         redisTemplate.setKeySerializer(new StringRedisSerializer());
+        // 设置值（value）的序列化采用FastJsonRedisSerializer。
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+
+        // Hash key序列化
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        // Hash value序列化
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+
+        redisTemplate.setDefaultSerializer(jackson2JsonRedisSerializer);
 
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
@@ -105,7 +150,7 @@ public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
             public void handleCacheClearError(RuntimeException e, Cache cache) {
 
                 e.printStackTrace();
-                log.error("清楚缓存出现异常:{}", e);
+                log.error("清除缓存出现异常:{}", e);
 
             }
         };

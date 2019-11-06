@@ -10,9 +10,12 @@ import com.perfect.bean.vo.sys.areas.SAreasCascaderTreeVo;
 import com.perfect.bean.vo.sys.areas.SAreasVo;
 import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
+import com.perfect.common.constant.PerfectConstant;
 import com.perfect.core.mapper.sys.areas.SAreasMapper;
 import com.perfect.core.service.sys.areas.ICommonAreasService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -69,7 +72,9 @@ public class CommonAreasServiceImpl extends ServiceImpl<SAreasMapper, NameAndVal
      * 获取省市区级联
      * @return
      */
-    @Override public List<SAreasCascaderTreeVo> getAreasCascaderTreeVo() {
+    @Cacheable(value = PerfectConstant.CACHE_PC.CACHE_AREAS_CASCADER)
+    @Override
+    public List<SAreasCascaderTreeVo> getAreasCascaderTreeVo() {
         List<SAreasCascaderTreeVo> listVo = mapper.getCascaderList();
         List<SAreasCascaderTreeVo> rtnList = TreeUtil.getTreeList(listVo);
         return rtnList;

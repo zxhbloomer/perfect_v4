@@ -89,7 +89,7 @@ public class RedisSessionConfiguration {
         return redisStandaloneConfiguration;
     }
 
-    @Bean
+    @Bean("perfect_lettuce_connection_factory")
     public LettuceConnectionFactory connectionFactory(
             RedisStandaloneConfiguration defaultRedisConfig,
             GenericObjectPoolConfig defaultPoolConfig
