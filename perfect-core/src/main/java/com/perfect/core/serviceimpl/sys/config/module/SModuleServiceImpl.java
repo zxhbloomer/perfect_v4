@@ -215,7 +215,7 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
      */
     public SModuleEntity cleanUpBean(SModuleEntity entity) {
         switch(entity.getType()){
-            case PerfectDictConstant.DICT_MODULE_TYPE_PAGE :
+            case PerfectDictConstant.DICT_SYS_MODULE_TYPE_PAGE :
                 // 页面
                 entity.setPath(null);
                 entity.setRoute_name(null);
@@ -224,7 +224,7 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
                 entity.setComponent(null);
                 entity.setAffix(null);
                 break;
-            case PerfectDictConstant.DICT_MODULE_TYPE_MENU :
+            case PerfectDictConstant.DICT_SYS_MODULE_TYPE_MENU :
                 // 菜单
                 entity.setTemplate_id(null);
                 break;
@@ -257,8 +257,8 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
                     // 模块名称不能重复
                     return CheckResultUtil.NG("新增保存出错：模块名称出现重复", listName_insertCheck);
                 }
-                if(PerfectDictConstant.DICT_MODULE_TYPE_MENU.equals(entity.getType())
-                        || PerfectDictConstant.DICT_MODULE_TYPE_CONTENTS.equals(entity.getType()) ){
+                if(PerfectDictConstant.DICT_SYS_MODULE_TYPE_MENU.equals(entity.getType())
+                        || PerfectDictConstant.DICT_SYS_MODULE_TYPE_CONTENTS.equals(entity.getType()) ){
                     List<SModuleEntity> path_insertCheck = selectByPath(entity.getPath(), null, null);
                     List<SModuleEntity> route_name_insertCheck = selectByRoute_name(entity.getRoute_name(), null, null);
                 }
@@ -275,8 +275,8 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
                     // 模块名称不能重复
                     return CheckResultUtil.NG("更新保存出错：模块名称出现重复", listName_updCheckk);
                 }
-                if(PerfectDictConstant.DICT_MODULE_TYPE_MENU.equals(entity.getType())
-                    || PerfectDictConstant.DICT_MODULE_TYPE_CONTENTS.equals(entity.getType()) ){
+                if(PerfectDictConstant.DICT_SYS_MODULE_TYPE_MENU.equals(entity.getType())
+                    || PerfectDictConstant.DICT_SYS_MODULE_TYPE_CONTENTS.equals(entity.getType()) ){
                     List<SModuleEntity> path_insertCheck = selectByPath(entity.getPath(), null, entity.getId());
                     List<SModuleEntity> route_name_insertCheck = selectByRoute_name(entity.getRoute_name(), null, entity.getId());
                 }

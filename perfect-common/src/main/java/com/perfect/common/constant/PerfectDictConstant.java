@@ -17,10 +17,10 @@ public class PerfectDictConstant {
     /**
      * 模块类型： m目录 c菜单 p页面
      */
-    public static final String DICT_MODULE_TYPE = "module_type";
-    public static final String DICT_MODULE_TYPE_PAGE = "p";
-    public static final String DICT_MODULE_TYPE_MENU = "m";
-    public static final String DICT_MODULE_TYPE_CONTENTS = "c";
+    public static final String DICT_SYS_MODULE_TYPE = "module_type";
+    public static final String DICT_SYS_MODULE_TYPE_PAGE = "p";
+    public static final String DICT_SYS_MODULE_TYPE_MENU = "m";
+    public static final String DICT_SYS_MODULE_TYPE_CONTENTS = "c";
 
     /**
      * 隐藏显示类型： 0：显示 1：隐藏 null:全部
