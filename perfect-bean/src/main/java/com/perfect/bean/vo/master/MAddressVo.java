@@ -10,6 +10,8 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -52,6 +54,7 @@ public class MAddressVo implements Serializable {
      * 标签
      */
     private String tag;
+    private String tag_name;
 
     /**
      * 省
@@ -70,6 +73,24 @@ public class MAddressVo implements Serializable {
      */
     private Integer area_code;
     private String area_name;
+
+    private List<Integer> cascader_areas;
+    public List<Integer> getCascader_areas(){
+        if(province_code == null) {
+            return null;
+        }
+        if(city_code == null) {
+            return null;
+        }
+        if(area_code == null) {
+            return null;
+        }
+        List<Integer> rtnList = new ArrayList<>();
+        rtnList.add(province_code);
+        rtnList.add(city_code);
+        rtnList.add(area_code);
+        return rtnList;
+    }
 
     /**
      * 详细地址

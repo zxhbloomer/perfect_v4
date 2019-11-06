@@ -20,6 +20,11 @@ import java.io.Serializable;
 @ApiModel(value = "省市区", description = "省市区")
 public class SAreasCascaderTreeVo extends TreeNode implements Serializable {
 
-    private static final long serialVersionUID = 4673417574541698444L;
+    private static final long serialVersionUID = 8330843713725719097L;
+
+    /**
+     * 级联控件使用，父节点id
+     */
+    private Long value;
 
 }

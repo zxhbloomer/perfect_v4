@@ -3,9 +3,11 @@ package com.perfect.core.service.master;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfect.bean.entity.master.MAddressEntity;
+import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.master.MAddressVo;
+import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
 
 import java.util.List;
 
@@ -34,11 +36,11 @@ public interface IMAddressService extends IService<MAddressEntity> {
     List<MAddressEntity> selectIdsIn(List<MAddressEntity> searchCondition) throws InstantiationException, IllegalAccessException;
 
     /**
-     * 批量删除复原
+     * 批量物理删除
      * @param searchCondition
      * @return
      */
-    void deleteByIdsIn(List<MAddressEntity> searchCondition);
+    DeleteResult<Integer> realDeleteByIdsIn(List<MAddressVo> searchCondition);
 
     /**
      * 插入一条记录（选择字段，策略插入）

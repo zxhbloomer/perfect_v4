@@ -39,4 +39,9 @@ public class PerfectDictConstant {
      * 关联表类型：
      */
     public static final String DICT_SYS_SERIAL_TYPE = "sys_serial_type";
+
+    /**
+     * 地址簿_tag标签：
+     */
+    public static final String DICT_SYS_ADDRESS_TAG_TYPE  = "sys_address_tag_type";
 }

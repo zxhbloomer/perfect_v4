@@ -5,12 +5,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.master.MAddressEntity;
 import com.perfect.bean.pojo.result.CheckResult;
+import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.CheckResultUtil;
+import com.perfect.bean.result.utils.v1.DeleteResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.MAddressVo;
+import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.master.MAddressMapper;
 import com.perfect.core.service.master.IMAddressService;
@@ -19,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -86,19 +90,19 @@ public class MAddressServiceImpl extends ServiceImpl<MAddressMapper, MAddressEnt
 
     /**
      * 批量删除复原
+     *
      * @param searchCondition
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void deleteByIdsIn(List<MAddressEntity> searchCondition) {
-        List<MAddressEntity> list = mapper.selectIdsIn(searchCondition);
-        list.forEach(
-            bean -> {
-                bean.setIs_del(!bean.getIs_del());
-            }
-        );
-        saveOrUpdateBatch(list, 500);
+    public DeleteResult<Integer> realDeleteByIdsIn(List<MAddressVo> searchCondition) {
+        List<Long> idList = new ArrayList<>();
+        searchCondition.forEach(bean -> {
+            idList.add(bean.getId());
+        });
+        int result=mapper.deleteBatchIds(idList);
+        return DeleteResultUtil.OK(result);
     }
 
     /**
