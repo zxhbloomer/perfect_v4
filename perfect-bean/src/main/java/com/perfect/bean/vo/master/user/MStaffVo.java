@@ -50,9 +50,15 @@ public class MStaffVo implements Serializable {
     private String simple_name_py;
 
     /**
+     * 登陆用户id，关联id
+     */
+    private Long userid;
+
+    /**
      * 男=1,女=2
      */
     private String sex;
+    private String sex_text;
 
     /**
      * 生日

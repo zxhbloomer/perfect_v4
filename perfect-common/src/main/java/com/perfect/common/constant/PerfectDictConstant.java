@@ -49,4 +49,14 @@ public class PerfectDictConstant {
      * 企业类型：
      */
     public static final String DICT_SYS_COMPANY_TYPE  = "sys_company_type";
+
+    /**
+     * 性别：
+     */
+    public static final String DICT_SYS_SEX_TYPE  = "sys_sex_type";
+
+    /**
+     * 在职情况：
+     */
+    public static final String DICT_USR_SERVICE_TYPE  = "usr_service_type";
 }

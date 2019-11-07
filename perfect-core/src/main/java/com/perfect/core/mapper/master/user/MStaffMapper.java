@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.master.user.MStaffEntity;
+import com.perfect.bean.vo.master.MAddressVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -60,7 +61,7 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
             + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
             + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
             + "      ")
-    IPage<MStaffEntity> selectPage(Page page, @Param("p1") MStaffVo searchCondition);
+    IPage<MStaffVo> selectPage(Page page, @Param("p1") MStaffVo searchCondition);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -99,7 +100,7 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
             + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
             + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
             + "      ")
-    List<MStaffEntity> select(@Param("p1") MStaffVo searchCondition);
+    List<MStaffVo> select(@Param("p1") MStaffVo searchCondition);
 
     /**
      * 没有分页，按id筛选条件
@@ -114,7 +115,7 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
             + "         #{item.id}  "
             + "        </foreach>"
             + "  </script>")
-    List<MStaffEntity> selectIdsIn(@Param("p1") List<MStaffVo> searchCondition);
+    List<MStaffEntity> selectIdsIn(@Param("p1") List<MStaffEntity> searchCondition);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -165,4 +166,39 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
             + "      ")
     List<MStaffEntity> selectBySimpleName(@Param("p1") String name, @Param("p2") Long equal_id,
                                             @Param("p3") Long not_equal_id);
+
+    /**
+     * 页面查询列表
+     * @return
+     */
+    @Select("    "
+            + "  SELECT                                                                                                        "
+            + "        	t1.*,                                                                                                  "
+            + "        	t2.`name` province_name,                                                                               "
+            + "        	t3.`name` city_name,                                                                                   "
+            + "        	t4.`name` area_name,                                                                                   "
+            + "        	concat_ws(' / ',t2.`name`,t3.`name`,t4.`name`) as cascader_text,                                       "
+            + "        	t5.label tag_name                                                                                      "
+            + "    FROM                                                                                                        "
+            + "        	m_address t1                                                                                           "
+            + "        	LEFT JOIN s_area_provinces t2 ON t1.province_code = t2.`code`                                          "
+            + "        	LEFT JOIN s_area_cities t3 ON t1.city_code = t3.`code`                                                 "
+            + "        	LEFT JOIN s_areas t4 ON t1.area_code = t4.`code`                                                       "
+            + "        	LEFT JOIN v_dict_info t5 ON t5.code = 'sys_address_tag_type' and t1.tag = t5.dict_value                "
+            + "  where true                                                                                                    "
+            + "     and (t1.id = #{p1})  "
+            + "      ")
+    MStaffVo selectByid(@Param("p1") Long id);
+
+    /**
+     * 放到session中
+     * @param p1
+     * @return
+     */
+    @Select( "   " +
+            " select t.* " +
+            "   from m_staff t " +
+            "  where t.user_id = #{p1}")
+    MStaffEntity getDataByUserId(@Param("p1") Long p1);
+
 }
