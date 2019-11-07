@@ -10,6 +10,7 @@ import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -83,6 +84,12 @@ public class MCompanyEntity implements Serializable {
      */
     @TableField("end_date")
     private LocalDate end_date;
+
+    /**
+     * 营业执照 长期flg
+     */
+    @TableField("long_term")
+    private Boolean long_term;
 
     /**
      * 描述

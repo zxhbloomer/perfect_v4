@@ -44,4 +44,9 @@ public class PerfectDictConstant {
      * 地址簿_tag标签：
      */
     public static final String DICT_SYS_ADDRESS_TAG_TYPE  = "sys_address_tag_type";
+
+    /**
+     * 企业类型：
+     */
+    public static final String DICT_SYS_COMPANY_TYPE  = "sys_company_type";
 }

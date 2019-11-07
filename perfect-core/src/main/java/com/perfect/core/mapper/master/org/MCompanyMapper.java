@@ -122,7 +122,7 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
      */
     @Select("    "
         + " select t.* "
-        + "   from m_group t "
+        + "   from m_company t "
         + "  where true "
         + "    and t.code =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
@@ -138,7 +138,7 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
      */
     @Select("    "
         + " select t.* "
-        + "   from m_group t "
+        + "   from m_company t "
         + "  where true "
         + "    and t.name =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
@@ -155,7 +155,7 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
      */
     @Select("    "
         + " select t.* "
-        + "   from m_group t "
+        + "   from m_company t "
         + "  where true "
         + "    and t.simple_name =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "

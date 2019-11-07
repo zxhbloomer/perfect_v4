@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -70,6 +71,11 @@ public class MCompanyVo implements Serializable {
      * 营业有效期
      */
     private LocalDate end_date;
+
+    /**
+     * 营业执照 长期flg
+     */
+    private Boolean long_term;
 
     /**
      * 描述
