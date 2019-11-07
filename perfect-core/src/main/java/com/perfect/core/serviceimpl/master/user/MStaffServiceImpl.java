@@ -1,9 +1,9 @@
-package com.perfect.core.serviceimpl.client.user;
+package com.perfect.core.serviceimpl.master.user;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.perfect.bean.entity.client.user.MStaffEntity;
-import com.perfect.core.mapper.client.user.MStaffMapper;
-import com.perfect.core.service.client.user.IMStaffService;
+import com.perfect.bean.entity.master.user.MStaffEntity;
+import com.perfect.core.mapper.master.user.MStaffMapper;
+import com.perfect.core.service.master.user.IMStaffService;
 import org.springframework.stereotype.Service;
 
 /**

@@ -2,11 +2,11 @@ package com.perfect.core.serviceimpl.client.user;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.bo.user.login.MUserBo;
-import com.perfect.bean.entity.client.user.MStaffEntity;
+import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.entity.client.user.MUserEntity;
 import com.perfect.bean.pojo.redis.user.UserInSessionPojo;
 import com.perfect.bean.vo.user.info.UserInfoVo;
-import com.perfect.core.mapper.client.user.MStaffMapper;
+import com.perfect.core.mapper.master.user.MStaffMapper;
 import com.perfect.core.mapper.client.user.MUserMapper;
 import com.perfect.core.service.client.user.IMUserService;
 import lombok.extern.slf4j.Slf4j;

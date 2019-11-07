@@ -1,7 +1,7 @@
-package com.perfect.core.service.client.user;
+package com.perfect.core.service.master.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.perfect.bean.entity.client.user.MStaffEntity;
+import com.perfect.bean.entity.master.user.MStaffEntity;
 
 /**
  * <p>
