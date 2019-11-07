@@ -141,6 +141,16 @@ public class MAddressServiceImpl extends ServiceImpl<MAddressMapper, MAddressEnt
     }
 
     /**
+     * 获取数据byid
+     * @param id
+     * @return
+     */
+    @Override
+    public MAddressVo selectByid(Long id){
+        return mapper.selectByid(id);
+    }
+
+    /**
      * check逻辑
      * @return
      */

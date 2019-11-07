@@ -8,6 +8,7 @@ import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.master.MAddressVo;
 import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -55,4 +56,11 @@ public interface IMAddressService extends IService<MAddressEntity> {
      * @return
      */
     UpdateResult<Integer> update(MAddressEntity entity);
+
+    /**
+     * 获取数据byid
+     * @param id
+     * @return
+     */
+    MAddressVo selectByid(Long id);
 }

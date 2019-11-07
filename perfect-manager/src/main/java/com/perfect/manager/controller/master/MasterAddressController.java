@@ -80,4 +80,12 @@ public class MasterAddressController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 
+    @SysLog("地址簿主表数据逻辑删除复原")
+    @ApiOperation("根据参数id，逻辑删除复原数据")
+    @PostMapping("/address/get")
+    @ResponseBody
+    public ResponseEntity<JsonResult<MAddressVo>> selectById(@RequestBody(required = false) MAddressVo searchCondition) {
+        return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(searchCondition.getId())));
+    }
+
 }

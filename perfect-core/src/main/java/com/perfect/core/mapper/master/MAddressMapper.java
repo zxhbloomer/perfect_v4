@@ -87,4 +87,26 @@ public interface MAddressMapper extends BaseMapper<MAddressEntity> {
         + "  </script>")
     List<MAddressEntity> selectIdsIn(@Param("p1") List<MAddressEntity> searchCondition);
 
+    /**
+     * 页面查询列表
+     * @return
+     */
+    @Select("    "
+            + "  SELECT                                                                                                        "
+            + "        	t1.*,                                                                                                  "
+            + "        	t2.`name` province_name,                                                                               "
+            + "        	t3.`name` city_name,                                                                                   "
+            + "        	t4.`name` area_name,                                                                                   "
+            + "        	concat_ws(' / ',t2.`name`,t3.`name`,t4.`name`) as cascader_text,                                       "
+            + "        	t5.label tag_name                                                                                      "
+            + "    FROM                                                                                                        "
+            + "        	m_address t1                                                                                           "
+            + "        	LEFT JOIN s_area_provinces t2 ON t1.province_code = t2.`code`                                          "
+            + "        	LEFT JOIN s_area_cities t3 ON t1.city_code = t3.`code`                                                 "
+            + "        	LEFT JOIN s_areas t4 ON t1.area_code = t4.`code`                                                       "
+            + "        	LEFT JOIN v_dict_info t5 ON t5.code = 'sys_address_tag_type' and t1.tag = t5.dict_value                "
+            + "  where true                                                                                                    "
+            + "     and (t1.id = #{p1})  "
+            + "      ")
+    MAddressVo selectByid(@Param("p1") Long id);
 }
