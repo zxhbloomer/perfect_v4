@@ -1,7 +1,7 @@
 package com.perfect.core.serviceimpl.client.user;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.perfect.bean.entity.client.user.MUserLiteEntity;
+import com.perfect.bean.entity.master.user.MUserLiteEntity;
 import com.perfect.core.mapper.client.user.MUserLiteMapper;
 import com.perfect.core.service.client.user.IMUserLiteService;
 import org.springframework.stereotype.Service;

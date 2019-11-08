@@ -4,7 +4,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.perfect.bean.bo.user.login.MUserBo;
-import com.perfect.bean.entity.client.user.MUserEntity;
+import com.perfect.bean.entity.master.user.MUserEntity;
 
 /**
  * 安全类工具类

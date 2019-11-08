@@ -1,4 +1,4 @@
-package com.perfect.bean.vo.user.info;
+package com.perfect.bean.vo.master.user;
 
 import io.swagger.annotations.ApiModel;
 import java.io.Serializable;

@@ -160,4 +160,9 @@ public class MStaffVo implements Serializable {
      * 换页条件
      */
     private PageCondition pageCondition;
+
+    /**
+     * 用户主表
+     */
+    private MUserVo user;
 }

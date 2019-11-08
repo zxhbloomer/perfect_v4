@@ -1,7 +1,7 @@
 package com.perfect.core.mapper.client.user;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.perfect.bean.entity.client.user.MUserLiteEntity;
+import com.perfect.bean.entity.master.user.MUserLiteEntity;
 import org.springframework.stereotype.Repository;
 
 /**

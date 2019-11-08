@@ -1,9 +1,9 @@
 package com.perfect.core.service.client.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.perfect.bean.entity.client.user.MUserEntity;
+import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.pojo.redis.user.UserInSessionPojo;
-import com.perfect.bean.vo.user.info.UserInfoVo;
+import com.perfect.bean.vo.master.user.UserInfoVo;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**

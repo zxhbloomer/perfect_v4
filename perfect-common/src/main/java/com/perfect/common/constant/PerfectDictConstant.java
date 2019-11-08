@@ -69,4 +69,9 @@ public class PerfectDictConstant {
      * 婚否：
      */
     public static final String DICT_USR_WED_TYPE  = "usr_wed_type";
+
+    /**
+     * 登录用户类型：
+     */
+    public static final String DICT_USR_LOGIN_TYPE  = "usr_login_type";
 }

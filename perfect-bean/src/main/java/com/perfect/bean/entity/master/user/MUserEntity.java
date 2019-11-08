@@ -1,4 +1,4 @@
-package com.perfect.bean.entity.client.user;
+package com.perfect.bean.entity.master.user;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.perfect.bean.entity.base.entity.v1.BaseEntity;
@@ -21,25 +21,16 @@ import java.time.LocalDateTime;
 @TableName("m_user")
 public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -5981357904929165446L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    /**
+     * 登陆用户名
+     */
     @TableField("login_name")
     private String login_name;
-
-    /**
-     * 用户实名
-     */
-    @TableField("name")
-    private String name;
-
-    /**
-     * 简称
-     */
-    @TableField("simple_name")
-    private String simple_name;
 
     /**
      * 系统用户=10,职员=20,客户=30,供应商=40,其他=50,认证管理员=60,审计管理员=70
@@ -59,13 +50,6 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
      */
     @TableField("pwd")
     private String pwd;
-
-    /**
-     * 是否是已经删除
-
-     */
-    @TableField("is_del")
-    private Boolean is_del;
 
     /**
      * 是否锁定
@@ -115,13 +99,6 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
     private Long staff_id;
 
     /**
-     * 密码生效日期
-
-     */
-    @TableField("pwd_effective_date")
-    private LocalDateTime pwd_effective_date;
-
-    /**
      * 用户锁定时间
      */
     @TableField("locked_time")
@@ -151,45 +128,6 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
     @TableField("pwd_his_pwd")
     private String pwd_his_pwd;
 
-    @TableField("email")
-    private String email;
-
-    /**
-     * 家庭电话
-     */
-    @TableField("home_telno")
-    private String home_telno;
-
-    /**
-     * 办公室电话
-     */
-    @TableField("office_telno")
-    private String office_telno;
-
-    /**
-     * 手机号码
-     */
-    @TableField("cell_telno")
-    private String cell_telno;
-
-    /**
-     * 租户代码
-     */
-    @TableField("corp_code")
-    private String corp_code;
-
-    /**
-     * 租户名称
-     */
-    @TableField("corp_name")
-    private String corp_name;
-
-    /**
-     * 性别
-     */
-    @TableField("sex")
-    private Boolean sex;
-
     /**
      * 头像路径
      */
@@ -202,6 +140,12 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
     @TableField("last_login_date")
     private LocalDateTime last_login_date;
 
+    /**
+     * 是否删除
+     */
+    @TableField(value = "is_del", fill = FieldFill.INSERT)
+    private Boolean is_del;
+
     @TableField(value="c_id", fill = FieldFill.INSERT)
     private Long c_id;
 
@@ -211,7 +155,6 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
     @TableField(value="u_id", fill = FieldFill.INSERT_UPDATE)
     private Long u_id;
 
-    @Version
     @TableField(value="u_time", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime u_time;
 

@@ -1,6 +1,6 @@
 package com.perfect.bean.bo.user.login;
 
-import com.perfect.bean.entity.client.user.MUserEntity;
+import com.perfect.bean.entity.master.user.MUserEntity;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.perfect.bean.result.utils.v1.ResultUtil;
-import com.perfect.bean.vo.user.info.UserInfoVo;
+import com.perfect.bean.vo.master.user.UserInfoVo;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.core.service.client.user.IMUserService;
 import com.perfect.framework.base.controller.v1.BaseController;

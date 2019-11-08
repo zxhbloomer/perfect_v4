@@ -1,7 +1,7 @@
 package com.perfect.core.service.client.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.perfect.bean.entity.client.user.MUserLiteEntity;
+import com.perfect.bean.entity.master.user.MUserLiteEntity;
 
 /**
  * <p>

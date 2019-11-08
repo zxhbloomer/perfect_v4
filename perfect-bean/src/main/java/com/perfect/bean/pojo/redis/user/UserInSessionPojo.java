@@ -1,7 +1,7 @@
 package com.perfect.bean.pojo.redis.user;
 
 import com.perfect.bean.entity.master.user.MStaffEntity;
-import com.perfect.bean.entity.client.user.MUserEntity;
+import com.perfect.bean.entity.master.user.MUserEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

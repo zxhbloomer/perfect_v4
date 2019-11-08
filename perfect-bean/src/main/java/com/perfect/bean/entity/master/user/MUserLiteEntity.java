@@ -1,4 +1,4 @@
-package com.perfect.bean.entity.client.user;
+package com.perfect.bean.entity.master.user;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.perfect.bean.entity.base.entity.v1.BaseEntity;
