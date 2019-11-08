@@ -33,7 +33,7 @@ public class SecurityUtil {
      * 获取login的userid
      * @return
      */
-    public static long getLoginUserId(){
+    public static long getLoginUser_id(){
         if(SecurityUtil.getAuthentication() == null){
             return -1;
         } else {

@@ -6,7 +6,9 @@ import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
+import com.perfect.bean.vo.master.user.MStaffExportVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
+import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
 
 import java.util.List;
 
@@ -22,17 +24,22 @@ public interface IMStaffService extends IService<MStaffEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<MStaffVo> selectPage(MStaffVo searchCondition) throws InstantiationException, IllegalAccessException;
+    IPage<MStaffVo> selectPage(MStaffVo searchCondition) ;
 
     /**
      * 获取所有数据
      */
-    List<MStaffVo> select(MStaffVo searchCondition) throws InstantiationException, IllegalAccessException;
+    List<MStaffVo> select(MStaffVo searchCondition);
 
     /**
      * 获取所选id的数据
      */
-    List<MStaffEntity> selectIdsIn(List<MStaffEntity> searchCondition) throws InstantiationException, IllegalAccessException;
+    List<MStaffVo> selectIdsIn(List<MStaffVo> searchCondition) ;
+
+    /**
+     * 获取所选id的数据
+     */
+    List<MStaffExportVo> exportBySelectIdsIn(List<MStaffVo> searchCondition);
 
     /**
      * 批量物理删除
@@ -61,4 +68,11 @@ public interface IMStaffService extends IService<MStaffEntity> {
      * @return
      */
     MStaffVo selectByid(Long id);
+
+    /**
+     * 批量删除复原
+     * @param searchCondition
+     * @return
+     */
+    void deleteByIdsIn(List<MStaffVo> searchCondition);
 }

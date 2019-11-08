@@ -85,13 +85,13 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUserEntity> impl
 
     /**
      * 获取保存到session中的userbean
-     * @param userid
+     * @param user_id
      * @return
      */
     @Override
-    public UserInSessionPojo getUserInSessionBean(long userid){
-        MUserEntity mUserEntity = mUserMapper.selectById(userid);
-        MStaffEntity mStaffEntity = mStaffMapper.getDataByUserId(mUserEntity.getId());
+    public UserInSessionPojo getUserInSessionBean(long user_id){
+        MUserEntity mUserEntity = mUserMapper.selectById(user_id);
+        MStaffEntity mStaffEntity = mStaffMapper.getDataByUser_id(mUserEntity.getId());
         UserInSessionPojo userInSessionPojo = new UserInSessionPojo();
         userInSessionPojo.setUser_info(mUserEntity);
         userInSessionPojo.setStaff_info(mStaffEntity);

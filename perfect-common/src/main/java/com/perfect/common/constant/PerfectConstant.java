@@ -77,5 +77,6 @@ public class PerfectConstant {
      */
     public class CACHE_PC {
         public static final String CACHE_AREAS_CASCADER = "CACHE_AREAS_CASCADER";
+        public static final String CACHE_DICT_TYPE = "CACHE_DICT_TYPE";
     }
 }

@@ -54,8 +54,8 @@ public class MStaffEntity extends BaseEntity<MStaffEntity> implements Serializab
     /**
      * 登陆用户id，关联id
      */
-    @TableField("userid")
-    private Long userid;
+    @TableField("user_id")
+    private Long user_id;
 
     /**
      * 男=1,女=2
@@ -133,7 +133,7 @@ public class MStaffEntity extends BaseEntity<MStaffEntity> implements Serializab
      * 婚否
      */
     @TableField("is_wed")
-    private Boolean is_wed;
+    private String is_wed;
 
     /**
      * 名族

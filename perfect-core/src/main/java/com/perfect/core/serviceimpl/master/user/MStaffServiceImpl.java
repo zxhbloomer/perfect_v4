@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.master.user.MStaffEntity;
+import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
@@ -12,8 +13,11 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.DeleteResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
+import com.perfect.bean.vo.master.user.MStaffExportVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
+import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.master.MAddressMapper;
 import com.perfect.core.mapper.master.user.MStaffMapper;
 import com.perfect.core.service.master.user.IMStaffService;
@@ -48,8 +52,7 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
      * @throws IllegalAccessException
      */
     @Override
-    public IPage<MStaffVo> selectPage(MStaffVo searchCondition)
-            throws InstantiationException, IllegalAccessException {
+    public IPage<MStaffVo> selectPage(MStaffVo searchCondition) {
         // 分页条件
         Page<MStaffEntity> pageCondition =
                 new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
@@ -82,9 +85,19 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
      * @throws IllegalAccessException
      */
     @Override
-    public List<MStaffEntity> selectIdsIn(List<MStaffEntity> searchCondition) {
+    public List<MStaffVo> selectIdsIn(List<MStaffVo> searchCondition) {
         // 查询 数据
-        List<MStaffEntity> list = mapper.selectIdsIn(searchCondition);
+        List<MStaffVo> list = mapper.selectIdsIn(searchCondition);
+        return list;
+    }
+
+    /**
+     * 获取所选id的数据
+     */
+    @Override
+    public List<MStaffExportVo> exportBySelectIdsIn(List<MStaffVo> searchCondition) {
+        // 查询 数据
+        List<MStaffExportVo> list = mapper.exportSelectIdsIn(searchCondition);
         return list;
     }
 
@@ -151,44 +164,25 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
     }
 
     /**
+     * 批量删除复原
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public void deleteByIdsIn(List<MStaffVo> searchCondition){
+        List<MStaffVo> list = mapper.selectIdsIn(searchCondition);
+        list.forEach(bean -> {
+            bean.setIs_del(!bean.getIs_del());
+        });
+        List<MStaffEntity> entityList = BeanUtilsSupport.copyProperties(list, MStaffEntity.class);
+        super.saveOrUpdateBatch(entityList, 500);
+    }
+
+    /**
      * check逻辑
      * @return
      */
     public CheckResult checkLogic(MStaffEntity entity, String moduleType){
-//        switch (moduleType) {
-//            case CheckResult.INSERT_CHECK_TYPE:
-//                // 新增场合，不能重复
-//                List<MStaffEntity> codeList_insertCheck = selectByCode(entity.getCode(), null, null);
-//                List<MStaffEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
-//                List<MStaffEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
-//                if (codeList_insertCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("新增保存出错：集团编号出现重复", entity.getCode());
-//                }
-//                if (nameList_insertCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("新增保存出错：集团全称出现重复", entity.getName());
-//                }
-//                if (simple_name_insertCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("新增保存出错：集团简称称出现重复", entity.getSimple_name());
-//                }
-//                break;
-//            case CheckResult.UPDATE_CHECK_TYPE:
-//                // 更新场合，不能重复设置
-//                List<MStaffEntity> codeList_updCheck = selectByCode(entity.getCode(), null, entity.getId());
-//                List<MStaffEntity> nameList_updCheck = selectByName(entity.getName(), null, entity.getId());
-//                List<MStaffEntity> simple_name_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
-//
-//                if (codeList_updCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("更新保存出错：集团编号出现重复", entity.getCode());
-//                }
-//                if (nameList_updCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("更新保存出错：集团全称出现重复", entity.getName());
-//                }
-//                if (simple_name_updCheck.size() >= 1) {
-//                    return CheckResultUtil.NG("更新保存出错：集团简称称出现重复", entity.getSimple_name());
-//                }
-//                break;
-//            default:
-//        }
         return CheckResultUtil.OK();
     }
 }

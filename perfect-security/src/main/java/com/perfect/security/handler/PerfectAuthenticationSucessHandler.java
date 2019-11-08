@@ -38,7 +38,7 @@ public class PerfectAuthenticationSucessHandler implements AuthenticationSuccess
         token.put("token",getSessionId(authentication, request.getSession().getId()));
 
         // 处理缓存
-        setUserSession(SecurityUtil.getLoginUserId());
+        setUserSession(SecurityUtil.getLoginUser_id());
 
         ResponseResultUtil.responseWriteOK(token, response);
     }
@@ -64,9 +64,9 @@ public class PerfectAuthenticationSucessHandler implements AuthenticationSuccess
 
     /**
      * 执行usersession往session中保存的逻辑
-     * @param userid
+     * @param user_id
      */
-    public void setUserSession(long userid){
-        iMUserService.getUserInSessionBean(userid);
+    public void setUserSession(long user_id){
+        iMUserService.getUserInSessionBean(user_id);
     }
 }

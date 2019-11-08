@@ -9,6 +9,7 @@ import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.core.mapper.common.CommonComponentMapper;
 import com.perfect.core.service.common.ICommonComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,6 +80,7 @@ public class CommonComponentServiceImpl extends ServiceImpl<CommonComponentMappe
      * 下拉选项卡：按参数查询
      * @return
      */
+    @Cacheable(value = PerfectConstant.CACHE_PC.CACHE_DICT_TYPE, key = "#root.targetClass + #root.methodName + #condition.para")
     @Override
     public List<NameAndValueVo> selectComponent(NameAndValueVo condition) {
         return mapper.getSelectDictDataNormal(condition.getPara());

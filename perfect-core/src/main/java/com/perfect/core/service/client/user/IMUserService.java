@@ -26,9 +26,9 @@ public interface IMUserService extends IService<MUserEntity> , UserDetailsServic
 
     /**
      * 获取保存到session中的userbean
-     * @param userid
+     * @param user_id
      * @return
      */
-    UserInSessionPojo getUserInSessionBean(long userid);
+    UserInSessionPojo getUserInSessionBean(long user_id);
 
 }

@@ -59,4 +59,14 @@ public class PerfectDictConstant {
      * 在职情况：
      */
     public static final String DICT_USR_SERVICE_TYPE  = "usr_service_type";
+
+    /**
+     * 学历情况：
+     */
+    public static final String DICT_USR_DEGREE_TYPE  = "usr_degree_type";
+
+    /**
+     * 婚否：
+     */
+    public static final String DICT_USR_WED_TYPE  = "usr_wed_type";
 }
