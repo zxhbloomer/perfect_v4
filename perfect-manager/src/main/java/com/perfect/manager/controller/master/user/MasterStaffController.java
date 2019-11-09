@@ -58,7 +58,7 @@ public class MasterStaffController extends BaseController {
     @ApiOperation("根据参数id，获取员工主表信息")
     @PostMapping("/save")
     @ResponseBody
-    public ResponseEntity<JsonResult<MStaffVo>> save(@RequestBody(required = false) MStaffEntity bean) {
+    public ResponseEntity<JsonResult<MStaffVo>> save(@RequestBody(required = false) MStaffVo bean) {
 
         if(service.update(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
@@ -71,7 +71,7 @@ public class MasterStaffController extends BaseController {
     @ApiOperation("根据参数id，获取员工主表信息")
     @PostMapping("/insert")
     @ResponseBody
-    public ResponseEntity<JsonResult<MStaffVo>> insert(@RequestBody(required = false) MStaffEntity bean) {
+    public ResponseEntity<JsonResult<MStaffVo>> insert(@RequestBody(required = false) MStaffVo bean) {
         if(service.insert(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
         } else {

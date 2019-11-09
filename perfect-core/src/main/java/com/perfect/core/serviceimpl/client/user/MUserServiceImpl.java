@@ -5,7 +5,16 @@ import com.perfect.bean.bo.user.login.MUserBo;
 import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.pojo.redis.user.UserInSessionPojo;
+import com.perfect.bean.pojo.result.CheckResult;
+import com.perfect.bean.pojo.result.InsertResult;
+import com.perfect.bean.pojo.result.UpdateResult;
+import com.perfect.bean.result.utils.v1.CheckResultUtil;
+import com.perfect.bean.result.utils.v1.InsertResultUtil;
+import com.perfect.bean.result.utils.v1.UpdateResultUtil;
+import com.perfect.bean.vo.master.user.MStaffVo;
+import com.perfect.bean.vo.master.user.MUserVo;
 import com.perfect.bean.vo.master.user.UserInfoVo;
+import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.master.user.MStaffMapper;
 import com.perfect.core.mapper.client.user.MUserMapper;
 import com.perfect.core.service.client.user.IMUserService;
@@ -15,6 +24,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -96,5 +106,60 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUserEntity> impl
         userInSessionPojo.setUser_info(mUserEntity);
         userInSessionPojo.setStaff_info(mStaffEntity);
         return userInSessionPojo;
+    }
+
+
+
+    /**
+     * 插入一条记录（选择字段，策略插入）
+     * @param entity 实体对象
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public InsertResult<Integer> insert(MUserEntity entity) {
+        // 插入前check
+        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
+        if (cr.isSuccess() == false) {
+            throw new BusinessException(cr.getMessage());
+        }
+        // 插入逻辑保存
+        entity.setIs_del(false);
+        return InsertResultUtil.OK(mUserMapper.insert(entity));
+    }
+
+    /**
+     * 更新一条记录（选择字段，策略更新）
+     * @param entity 实体对象
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public UpdateResult<Integer> update(MUserEntity entity) {
+        // 更新前check
+        CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
+        if (cr.isSuccess() == false) {
+            throw new BusinessException(cr.getMessage());
+        }
+        // 更新逻辑保存
+        return UpdateResultUtil.OK(mUserMapper.updateById(entity));
+    }
+
+    /**
+     * 获取数据byid
+     * @param id
+     * @return
+     */
+    @Override
+    public MUserVo selectByid(Long id){
+        return mUserMapper.selectByid(id);
+    }
+
+    /**
+     * check逻辑
+     * @return
+     */
+    public CheckResult checkLogic(MUserEntity entity, String moduleType){
+        return CheckResultUtil.OK();
     }
 }

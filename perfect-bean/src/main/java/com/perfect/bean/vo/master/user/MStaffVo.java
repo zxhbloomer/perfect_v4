@@ -165,4 +165,15 @@ public class MStaffVo implements Serializable {
      * 用户主表
      */
     private MUserVo user;
+    public MUserVo getUser(){
+        return new MUserVo();
+    }
+
+    /**
+     * 如果需要获取该对象，使用这个发方法
+     * @return
+     */
+    public MUserVo getRealUser(){
+        return user;
+    }
 }

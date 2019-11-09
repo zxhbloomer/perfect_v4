@@ -37,6 +37,7 @@ public class MUserVo  implements Serializable {
      * 系统用户=10,职员=20,客户=30,供应商=40,其他=50,认证管理员=60,审计管理员=70
      */
     private String type;
+    private String type_text;
 
     /**
      * 描述
