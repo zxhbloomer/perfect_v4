@@ -3,10 +3,16 @@ package com.perfect.manager.controller.master.user;
 import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.vo.master.user.MUserVo;
+import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.InsertErrorException;
+import com.perfect.common.exception.PasswordException;
 import com.perfect.common.exception.UpdateErrorException;
+import com.perfect.common.utils.string.StringUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.perfect.bean.result.utils.v1.ResultUtil;
@@ -18,6 +24,9 @@ import com.perfect.framework.base.controller.v1.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author zxh
@@ -77,5 +86,37 @@ public class UserController extends BaseController {
         }
     }
 
+    @SysLog("获取用户信息")
+    @ApiOperation("获取用户信息")
+    @PostMapping("/list")
+    @ResponseBody
+    public ResponseEntity<JsonResult<MUserVo>> getUsrBeanById(@RequestBody(required = false) MUserEntity bean) {
+        MUserVo mUserVo = service.selectByid(bean.getId());
+        return ResponseEntity.ok().body(ResultUtil.OK(mUserVo));
+    }
+
+    @SysLog("获取用户信息")
+    @ApiOperation("获取用户信息")
+    @PostMapping("/getpsd")
+    @ResponseBody
+    public ResponseEntity<JsonResult<String>> getUsrPsdString(@RequestBody(required = false) MUserEntity bean, HttpServletRequest request) {
+        MUserVo mUserVo = service.selectByid(bean.getId());
+        if(!StringUtil.isEmpty(bean.getPwd())){
+            String encodePsd = this.getPassword(bean.getPwd());
+            // 保存到session中
+            HttpSession session = request.getSession();
+            session.setAttribute(PerfectConstant.SESSION_KEY_USER_PASSWORD, encodePsd);
+            return ResponseEntity.ok().body(ResultUtil.OK("OK"));
+        } else {
+            throw new PasswordException("密码设置失败。");
+        }
+    }
+
+    private String getPassword(String psdOrignalCode){
+        //加密对象
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodePassword = passwordEncoder.encode(psdOrignalCode);
+        return encodePassword;
+    }
 
 }

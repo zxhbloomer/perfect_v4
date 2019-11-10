@@ -17,17 +17,22 @@ import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.user.MStaffExportVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
+import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
+import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.client.user.MUserMapper;
 import com.perfect.core.mapper.master.MAddressMapper;
 import com.perfect.core.mapper.master.user.MStaffMapper;
 import com.perfect.core.service.master.user.IMStaffService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +52,7 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
 
     @Autowired
     private MUserMapper mUserMapper;
+
 
     /**
      * 获取列表，页面查询
@@ -130,7 +136,7 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<Integer> insert(MStaffVo vo) {
+    public InsertResult<Integer> insert(MStaffVo vo, HttpSession session) {
         // 分拆entity
         MStaffEntity mStaffEntity = (MStaffEntity) BeanUtilsSupport.copyProperties(vo, MStaffEntity.class);
         MUserEntity mUserEntity = (MUserEntity) BeanUtilsSupport.copyProperties(vo.getRealUser(), MUserEntity.class);
@@ -155,6 +161,15 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
         mStaffEntity.setIs_del(false);
         mUserEntity.setIs_del(false);
 
+        // 判断session中的密码是否有设置，如果有设置则获取并保存
+        Object sessionObj = session.getAttribute(PerfectConstant.SESSION_KEY_USER_PASSWORD);
+        if(sessionObj != null) {
+            String encodePsd = (String) sessionObj;
+            mUserEntity.setPwd(encodePsd);
+            // 删除
+            session.removeAttribute(PerfectConstant.SESSION_KEY_USER_PASSWORD);
+        }
+
         // 更新保存
         mapper.updateById(mStaffEntity);
         mUserMapper.updateById(mUserEntity);
@@ -169,7 +184,7 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public UpdateResult<Integer> update(MStaffVo vo) {
+    public UpdateResult<Integer> update(MStaffVo vo, HttpSession session) {
         // 分拆entity
         MStaffEntity mStaffEntity = (MStaffEntity) BeanUtilsSupport.copyProperties(vo, MStaffEntity.class);
         MUserEntity mUserEntity = (MUserEntity) BeanUtilsSupport.copyProperties(vo.getRealUser(), MUserEntity.class);
@@ -182,6 +197,15 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
         CheckResult cr2 = checkUserEntity(mUserEntity, CheckResult.INSERT_CHECK_TYPE);
         if (cr2.isSuccess() == false) {
             throw new BusinessException(cr2.getMessage());
+        }
+
+        // 判断session中的密码是否有设置，如果有设置则获取并保存
+        Object sessionObj = session.getAttribute(PerfectConstant.SESSION_KEY_USER_PASSWORD);
+        if(sessionObj != null) {
+            String encodePsd = (String) sessionObj;
+            mUserEntity.setPwd(encodePsd);
+            // 删除
+            session.removeAttribute(PerfectConstant.SESSION_KEY_USER_PASSWORD);
         }
 
         // 更新保存
@@ -269,4 +293,6 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
         List<MUserEntity> list = mUserMapper.selectLoginName(login_name, equal_id, not_equal_id);
         return list;
     }
+
+
 }

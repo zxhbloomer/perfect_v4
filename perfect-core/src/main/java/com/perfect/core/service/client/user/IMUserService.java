@@ -57,4 +57,6 @@ public interface IMUserService extends IService<MUserEntity> , UserDetailsServic
      * @return
      */
     MUserVo selectByid(Long id);
+
+
 }

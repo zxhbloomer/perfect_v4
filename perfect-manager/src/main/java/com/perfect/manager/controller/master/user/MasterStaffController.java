@@ -3,6 +3,7 @@ package com.perfect.manager.controller.master.user;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.perfect.bean.entity.master.user.MStaffEntity;
@@ -58,9 +59,9 @@ public class MasterStaffController extends BaseController {
     @ApiOperation("根据参数id，获取员工主表信息")
     @PostMapping("/save")
     @ResponseBody
-    public ResponseEntity<JsonResult<MStaffVo>> save(@RequestBody(required = false) MStaffVo bean) {
+    public ResponseEntity<JsonResult<MStaffVo>> save(@RequestBody(required = false) MStaffVo bean, HttpServletRequest request) {
 
-        if(service.update(bean).isSuccess()){
+        if(service.update(bean, request.getSession()).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
@@ -71,8 +72,8 @@ public class MasterStaffController extends BaseController {
     @ApiOperation("根据参数id，获取员工主表信息")
     @PostMapping("/insert")
     @ResponseBody
-    public ResponseEntity<JsonResult<MStaffVo>> insert(@RequestBody(required = false) MStaffVo bean) {
-        if(service.insert(bean).isSuccess()){
+    public ResponseEntity<JsonResult<MStaffVo>> insert(@RequestBody(required = false) MStaffVo bean, HttpServletRequest request) {
+        if(service.insert(bean, request.getSession()).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");

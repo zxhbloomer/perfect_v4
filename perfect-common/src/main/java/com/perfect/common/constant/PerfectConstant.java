@@ -17,6 +17,8 @@ public class PerfectConstant {
     public static final String SESSION_KEY_IMAGE_CODE = "SESSION_KEY_IMAGE_CODE";
     // 手机验证码 session key
     public static final String SESSION_KEY_SMS_CODE = "SESSION_KEY_SMS_CODE";
+    // 用户注册 所保存的密码
+    public static final String SESSION_KEY_USER_PASSWORD = "SESSION_KEY_USER_PASSWORD";
 
     // QQ 用户信息获取 URL
     public static final String GET_QQ_USER_INFO_URL = "https://graph.qq.com/user/get_user_info?oauth_consumer_key=%s&openid=%s";

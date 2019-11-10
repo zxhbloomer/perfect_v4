@@ -10,6 +10,7 @@ import com.perfect.bean.vo.master.user.MStaffExportVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -53,14 +54,14 @@ public interface IMStaffService extends IService<MStaffEntity> {
      * @param entity 实体对象
      * @return
      */
-    InsertResult<Integer> insert(MStaffVo entity);
+    InsertResult<Integer> insert(MStaffVo entity, HttpSession session);
 
     /**
      * 更新一条记录（选择字段，策略更新）
      * @param entity 实体对象
      * @return
      */
-    UpdateResult<Integer> update(MStaffVo entity);
+    UpdateResult<Integer> update(MStaffVo entity, HttpSession session);
 
     /**
      * 获取数据byid
