@@ -52,7 +52,7 @@ public class MStaffEntity extends BaseEntity<MStaffEntity> implements Serializab
     private String simple_name_py;
 
     /**
-     * 登陆用户id，关联id
+     * 登录用户id，关联id
      */
     @TableField("user_id")
     private Long user_id;

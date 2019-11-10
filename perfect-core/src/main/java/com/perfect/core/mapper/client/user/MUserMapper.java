@@ -58,8 +58,8 @@ public interface MUserMapper extends BaseMapper<MUserEntity> {
             + "   from m_user t "
             + "  where true "
             + "    and t.login_name =  #{p1}  "
-            + "    and (t.id  =  #{p3} or #{p2} is null)   "
-            + "    and (t.id  <> #{p4} or #{p3} is null)   "
+            + "    and (t.id  =  #{p2} or #{p2} is null)   "
+            + "    and (t.id  <> #{p3} or #{p3} is null)   "
             + "    and t.is_del =  0   "
             + "      ")
     List<MUserEntity> selectLoginName(@Param("p1") String login_name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);

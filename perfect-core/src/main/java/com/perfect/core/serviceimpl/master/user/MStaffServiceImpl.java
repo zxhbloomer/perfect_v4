@@ -152,6 +152,8 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
         // 增添关系
         mUserEntity.setStaff_id(mStaffEntity.getId());
         mStaffEntity.setUser_id(mUserEntity.getId());
+        mStaffEntity.setIs_del(false);
+        mUserEntity.setIs_del(false);
 
         // 更新保存
         mapper.updateById(mStaffEntity);
@@ -228,22 +230,26 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
      * @return
      */
     public CheckResult checkUserEntity(MUserEntity entity, String moduleType){
-        // 登陆人名称不能重复
+        // 登录人名称不能重复
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
-                List<MUserEntity> listValue_insertCheck = selectLoginName(entity.getLogin_name(), null, null);
-                // 新增场合，不能重复
-                if (listValue_insertCheck.size() >= 1) {
-                    // 模块编号不能重复
-                    return CheckResultUtil.NG("新增保存出错：登陆用户名出现重复", listValue_insertCheck);
+                if(entity.getIs_enable()){
+                    List<MUserEntity> listValue_insertCheck = selectLoginName(entity.getLogin_name(), null, null);
+                    // 新增场合，不能重复
+                    if (listValue_insertCheck.size() >= 1) {
+                        // 模块编号不能重复
+                        return CheckResultUtil.NG("新增保存出错：登录用户名出现重复", listValue_insertCheck);
+                    }
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
-                List<MUserEntity> listValue_updCheck = selectLoginName(entity.getLogin_name(), null, entity.getId());
-                // 更新场合，不能重复设置
-                if (listValue_updCheck.size() >= 1) {
-                    // 模块编号不能重复
-                    return CheckResultUtil.NG("更新保存出错：登陆用户名出现重复", listValue_updCheck);
+                if(entity.getIs_enable()){
+                    List<MUserEntity> listValue_updCheck = selectLoginName(entity.getLogin_name(), null, entity.getId());
+                    // 更新场合，不能重复设置
+                    if (listValue_updCheck.size() >= 1) {
+                        // 模块编号不能重复
+                        return CheckResultUtil.NG("更新保存出错：登录用户名出现重复", listValue_updCheck);
+                    }
                 }
                 break;
             default:

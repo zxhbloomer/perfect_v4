@@ -49,7 +49,7 @@ public class MasterStaffController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<IPage<MStaffVo>>> list(@RequestBody(required = false)
-                                                                        MStaffVo searchCondition) throws IllegalAccessException, InstantiationException {
+                                                                        MStaffVo searchCondition) {
         IPage<MStaffVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }

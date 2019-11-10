@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Data
 @Builder
 @AllArgsConstructor
-@ApiModel(value = "登陆授权服务器类", description = "作为登陆授权服务器数据bean")
+@ApiModel(value = "登录授权服务器类", description = "作为登录授权服务器数据bean")
 public class TokenLoginVo implements Serializable {
     private static final long serialVersionUID = -2008867352253446153L;
 

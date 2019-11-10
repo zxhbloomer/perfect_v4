@@ -27,7 +27,7 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
     private Long id;
 
     /**
-     * 登陆用户名
+     * 登录用户名
      */
     @TableField("login_name")
     private String login_name;
@@ -135,7 +135,7 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
     private String avatar;
 
     /**
-     * 最后登陆时间
+     * 最后登录时间
      */
     @TableField("last_login_date")
     private LocalDateTime last_login_date;

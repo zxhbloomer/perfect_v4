@@ -29,7 +29,7 @@ public class MUserVo  implements Serializable {
     private Long id;
 
     /**
-     * 登陆用户名
+     * 登录用户名
      */
     private String login_name;
 
@@ -121,7 +121,7 @@ public class MUserVo  implements Serializable {
     private String avatar;
 
     /**
-     * 最后登陆时间
+     * 最后登录时间
      */
     private LocalDateTime last_login_date;
 
