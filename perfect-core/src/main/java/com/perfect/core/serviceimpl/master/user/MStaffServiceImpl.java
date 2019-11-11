@@ -151,6 +151,16 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
             throw new BusinessException(cr2.getMessage());
         }
 
+        // 部分默认值设置
+        mStaffEntity.setIs_del(mStaffEntity.getIs_del() == null ? false : mStaffEntity.getIs_del());
+
+        mUserEntity.setIs_del(mUserEntity.getIs_del() == null ? false : mUserEntity.getIs_del());
+        mUserEntity.setIs_lock(mUserEntity.getIs_lock() == null ? false : mUserEntity.getIs_lock());
+        mUserEntity.setIs_enable(mUserEntity.getIs_enable() == null ? false : mUserEntity.getIs_enable());
+        mUserEntity.setIs_biz_admin(mUserEntity.getIs_biz_admin() == null ? false : mUserEntity.getIs_biz_admin());
+        mUserEntity.setIs_changed_pwd(mUserEntity.getIs_changed_pwd() == null ? false : mUserEntity.getIs_changed_pwd());
+
+
         // 插入逻辑保存
         mUserMapper.insert(mUserEntity);
         mapper.insert(mStaffEntity);
@@ -174,6 +184,8 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
         mapper.updateById(mStaffEntity);
         mUserMapper.updateById(mUserEntity);
 
+        // 返回值确定
+        vo.setId(mStaffEntity.getId());
         return InsertResultUtil.OK(1);
     }
 
@@ -190,11 +202,11 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
         MUserEntity mUserEntity = (MUserEntity) BeanUtilsSupport.copyProperties(vo.getRealUser(), MUserEntity.class);
 
         // 插入前check
-        CheckResult cr1 = checkStaffEntity(mStaffEntity, CheckResult.INSERT_CHECK_TYPE);
+        CheckResult cr1 = checkStaffEntity(mStaffEntity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr1.isSuccess() == false) {
             throw new BusinessException(cr1.getMessage());
         }
-        CheckResult cr2 = checkUserEntity(mUserEntity, CheckResult.INSERT_CHECK_TYPE);
+        CheckResult cr2 = checkUserEntity(mUserEntity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr2.isSuccess() == false) {
             throw new BusinessException(cr2.getMessage());
         }
@@ -203,14 +215,26 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
         Object sessionObj = session.getAttribute(PerfectConstant.SESSION_KEY_USER_PASSWORD);
         if(sessionObj != null) {
             String encodePsd = (String) sessionObj;
+            // 备份旧的密码
+            mUserEntity.setPwd_his_pwd(mUserEntity.getPwd());
+            // 保存新的密码
             mUserEntity.setPwd(encodePsd);
             // 删除
             session.removeAttribute(PerfectConstant.SESSION_KEY_USER_PASSWORD);
         }
 
-        // 更新保存
+        mUserEntity.setStaff_id(mStaffEntity.getId());
+        if(mStaffEntity.getUser_id() == null){
+            mUserMapper.insert(mUserEntity);
+        } else {
+            mUserMapper.updateById(mUserEntity);
+        }
+        mStaffEntity.setUser_id(mUserEntity.getId());
         mapper.updateById(mStaffEntity);
-        mUserMapper.updateById(mUserEntity);
+
+
+        // 设置返回值
+        vo.setId(mStaffEntity.getId());
 
         // 更新逻辑保存
         return UpdateResultUtil.OK(1);

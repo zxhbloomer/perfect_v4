@@ -106,7 +106,7 @@ public class UserController extends BaseController {
             // 保存到session中
             HttpSession session = request.getSession();
             session.setAttribute(PerfectConstant.SESSION_KEY_USER_PASSWORD, encodePsd);
-            return ResponseEntity.ok().body(ResultUtil.OK("OK"));
+            return ResponseEntity.ok().body(ResultUtil.OK(bean.getPwd()));
         } else {
             throw new PasswordException("密码设置失败。");
         }
