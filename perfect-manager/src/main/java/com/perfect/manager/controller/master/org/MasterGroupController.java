@@ -44,8 +44,7 @@ public class MasterGroupController extends BaseController {
     @ApiOperation("根据参数id，获取集团主表信息")
     @PostMapping("/group/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<MGroupEntity>>> list(@RequestBody(required = false)
-        MGroupVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<IPage<MGroupEntity>>> list(@RequestBody(required = false) MGroupVo searchCondition) {
         IPage<MGroupEntity> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
@@ -78,8 +77,7 @@ public class MasterGroupController extends BaseController {
     @SysLog("集团主表数据导出")
     @ApiOperation("根据选择的数据，集团主表数据导出")
     @PostMapping("/group/export_all")
-    public void exportAll(@RequestBody(required = false) MGroupVo searchCondition, HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportAll(@RequestBody(required = false) MGroupVo searchCondition, HttpServletResponse response) throws IOException {
         List<MGroupEntity> searchResult = service.select(searchCondition);
         List<MGroupExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MGroupExportVo.class);
         ExcelUtil<MGroupExportVo> util = new ExcelUtil<>(MGroupExportVo.class);
@@ -89,9 +87,7 @@ public class MasterGroupController extends BaseController {
     @SysLog("集团主表数据导出")
     @ApiOperation("根据选择的数据，集团主表数据导出")
     @PostMapping("/group/export_selection")
-    public void exportSelection(@RequestBody(required = false) List<MGroupVo> searchConditionList,
-        HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportSelection(@RequestBody(required = false) List<MGroupVo> searchConditionList, HttpServletResponse response) throws IOException {
         List<MGroupEntity> searchResult = service.selectIdsIn(searchConditionList);
         List<MGroupExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MGroupExportVo.class);
         ExcelUtil<MGroupExportVo> util = new ExcelUtil<>(MGroupExportVo.class);

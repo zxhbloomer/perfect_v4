@@ -39,8 +39,7 @@ public class SRoleServiceImpl extends ServiceImpl<SRoleMapper, SRoleEntity> impl
      * @throws IllegalAccessException
      */
     @Override
-    public IPage<SRoleEntity> selectPage(SRoleVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+    public IPage<SRoleEntity> selectPage(SRoleVo searchCondition) {
         // 分页条件
         Page<SRoleEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());

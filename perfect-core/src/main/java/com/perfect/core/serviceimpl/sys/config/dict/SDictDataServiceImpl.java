@@ -49,8 +49,7 @@ public class SDictDataServiceImpl extends ServiceImpl<SDictDataMapper, SDictData
      * @throws IllegalAccessException
      */
     @Override
-    public IPage<SDictDataVo> selectPage(SDictDataVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+    public IPage<SDictDataVo> selectPage(SDictDataVo searchCondition) {
         // 分页条件
         Page<SDictTypeEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());

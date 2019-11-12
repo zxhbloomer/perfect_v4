@@ -23,17 +23,17 @@ public interface ISConfigService extends IService<SConfigEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<SConfigVo> selectPage(SConfigVo searchCondition) throws InstantiationException, IllegalAccessException;
+    IPage<SConfigVo> selectPage(SConfigVo searchCondition) ;
 
     /**
      * 获取所有数据
      */
-    List<SConfigVo> select(SConfigVo searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SConfigVo> select(SConfigVo searchCondition) ;
 
     /**
      * 获取所选id的数据
      */
-    List<SConfigVo> selectIdsIn(List<SConfigVo> searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SConfigVo> selectIdsIn(List<SConfigVo> searchCondition) ;
 
     /**
      * 查询by id，返回结果

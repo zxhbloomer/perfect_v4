@@ -60,8 +60,7 @@ public class ModuleController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<IPage<SModuleVo>>> list(@RequestBody(required = false)
-        SModuleVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+        SModuleVo searchCondition) {
         IPage<SModuleVo> vo = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(vo));
     }
@@ -93,8 +92,7 @@ public class ModuleController extends BaseController {
     @SysLog("资源表数据导出")
     @ApiOperation("根据选择的数据，资源表数据导出")
     @PostMapping("/export_all")
-    public void exportAll(@RequestBody(required = false) SModuleVo searchCondition, HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportAll(@RequestBody(required = false) SModuleVo searchCondition, HttpServletResponse response) throws IOException {
         List<SModuleEntity> searchResult = service.select(searchCondition);
         List<SModuleExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SModuleExportVo.class);
         ExcelUtil<SModuleExportVo> util = new ExcelUtil<>(SModuleExportVo.class);
@@ -104,9 +102,7 @@ public class ModuleController extends BaseController {
     @SysLog("资源数据导出")
     @ApiOperation("根据选择的数据，资源数据导出")
     @PostMapping("/export_selection")
-    public void exportSelection(@RequestBody(required = false) List<SModuleVo> searchConditionList,
-        HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportSelection(@RequestBody(required = false) List<SModuleVo> searchConditionList, HttpServletResponse response) throws IOException {
         List<SModuleEntity> searchResult = service.selectIdsIn(searchConditionList);
         List<SModuleExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SModuleExportVo.class);
         ExcelUtil<SModuleExportVo> util = new ExcelUtil<>(SModuleExportVo.class);

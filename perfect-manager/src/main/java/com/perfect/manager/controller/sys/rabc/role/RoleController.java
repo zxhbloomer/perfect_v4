@@ -59,8 +59,7 @@ public class RoleController extends BaseController {
     @ApiOperation("根据参数id，获取角色信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<SRoleEntity>>> list(@RequestBody(required = false) SRoleVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+    public ResponseEntity<JsonResult<IPage<SRoleEntity>>> list(@RequestBody(required = false) SRoleVo searchCondition) {
         IPage<SRoleEntity> sRoleEntity = isRoleService.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(sRoleEntity));
     }
@@ -92,8 +91,7 @@ public class RoleController extends BaseController {
     @SysLog("角色数据导出")
     @ApiOperation("根据选择的数据，角色数据导出")
     @PostMapping("/export_all")
-    public void exportAll(@RequestBody(required = false) SRoleVo searchCondition, HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportAll(@RequestBody(required = false) SRoleVo searchCondition, HttpServletResponse response) throws IOException {
         // List<SRoleExportVo> rtnList = new ArrayList<>();
         List<SRoleEntity> searchResult = isRoleService.select(searchCondition);
         List<SRoleExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SRoleExportVo.class);
@@ -104,9 +102,7 @@ public class RoleController extends BaseController {
     @SysLog("角色数据导出")
     @ApiOperation("根据选择的数据，角色数据导出")
     @PostMapping("/export_selection")
-    public void exportSelection(@RequestBody(required = false) List<SRoleVo> searchConditionList,
-        HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportSelection(@RequestBody(required = false) List<SRoleVo> searchConditionList, HttpServletResponse response) throws IOException {
         List<SRoleEntity> searchResult = isRoleService.selectIdsIn(searchConditionList);
         List<SRoleExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SRoleExportVo.class);
         ExcelUtil<SRoleExportVo> util = new ExcelUtil<>(SRoleExportVo.class);

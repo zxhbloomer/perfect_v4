@@ -38,8 +38,7 @@ public class SResourceServiceImpl extends ServiceImpl<SResourceMapper, SResource
      * @throws IllegalAccessException
      */
     @Override
-    public IPage<SResourceEntity> selectPage(SResourceVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+    public IPage<SResourceEntity> selectPage(SResourceVo searchCondition) {
         // 分页条件
         Page<SResourceEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());

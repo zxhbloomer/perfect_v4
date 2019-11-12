@@ -40,9 +40,9 @@ public class MUserVo  implements Serializable {
     private String type_text;
 
     /**
-     * 描述
+     * 自我介绍
      */
-    private String descr;
+    private String introduction;
 
     /**
      * 密码

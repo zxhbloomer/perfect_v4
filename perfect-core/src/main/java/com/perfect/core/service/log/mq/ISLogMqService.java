@@ -23,7 +23,7 @@ public interface ISLogMqService extends IService<SLogMqEntity> {
     /**
      * 获取所有数据
      */
-    List<SLogMqEntity> selectAll() throws InstantiationException, IllegalAccessException;
+    List<SLogMqEntity> selectAll() ;
 
     /**
      * 查询by id，返回结果

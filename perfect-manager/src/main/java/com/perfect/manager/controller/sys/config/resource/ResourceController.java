@@ -58,8 +58,7 @@ public class ResourceController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<IPage<SResourceEntity>>> list(@RequestBody(required = false)
-        SResourceVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+        SResourceVo searchCondition) {
         IPage<SResourceEntity> sResourceEntity = isResourceService.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(sResourceEntity));
     }
@@ -91,8 +90,7 @@ public class ResourceController extends BaseController {
     @SysLog("资源表数据导出")
     @ApiOperation("根据选择的数据，资源表数据导出")
     @PostMapping("/export_all")
-    public void exportAll(@RequestBody(required = false) SResourceVo searchCondition, HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportAll(@RequestBody(required = false) SResourceVo searchCondition, HttpServletResponse response) throws IOException {
         // List<SRoleExportVo> rtnList = new ArrayList<>();
         List<SResourceEntity> searchResult = isResourceService.select(searchCondition);
         List<SResourceExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SRoleExportVo.class);
@@ -103,9 +101,7 @@ public class ResourceController extends BaseController {
     @SysLog("资源数据导出")
     @ApiOperation("根据选择的数据，资源数据导出")
     @PostMapping("/export_selection")
-    public void exportSelection(@RequestBody(required = false) List<SResourceVo> searchConditionList,
-        HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportSelection(@RequestBody(required = false) List<SResourceVo> searchConditionList, HttpServletResponse response) throws IOException {
         List<SResourceEntity> searchResult = isResourceService.selectIdsIn(searchConditionList);
         List<SResourceExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SRoleExportVo.class);
         ExcelUtil<SResourceExportVo> util = new ExcelUtil<>(SResourceExportVo.class);

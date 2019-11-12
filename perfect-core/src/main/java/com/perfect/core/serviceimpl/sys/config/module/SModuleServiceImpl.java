@@ -48,8 +48,7 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
      * @throws IllegalAccessException
      */
     @Override
-    public IPage<SModuleVo> selectPage(SModuleVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+    public IPage<SModuleVo> selectPage(SModuleVo searchCondition) {
         // 分页条件
         Page<SModuleVo> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());

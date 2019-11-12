@@ -48,8 +48,7 @@ public class MAddressServiceImpl extends ServiceImpl<MAddressMapper, MAddressEnt
      * @throws IllegalAccessException
      */
     @Override
-    public IPage<MAddressVo> selectPage(MAddressVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+    public IPage<MAddressVo> selectPage(MAddressVo searchCondition) {
         // 分页条件
         Page<MAddressEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());

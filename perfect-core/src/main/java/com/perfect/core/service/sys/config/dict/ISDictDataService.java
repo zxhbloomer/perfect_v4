@@ -21,17 +21,17 @@ public interface ISDictDataService extends IService<SDictDataEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<SDictDataVo> selectPage(SDictDataVo searchCondition) throws InstantiationException, IllegalAccessException;
+    IPage<SDictDataVo> selectPage(SDictDataVo searchCondition) ;
 
     /**
      * 获取所有数据
      */
-    List<SDictDataVo> select(SDictDataVo searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SDictDataVo> select(SDictDataVo searchCondition) ;
 
     /**
      * 获取所选id的数据
      */
-    List<SDictDataVo> selectIdsIn(List<SDictDataVo> searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SDictDataVo> selectIdsIn(List<SDictDataVo> searchCondition) ;
 
     /**
      * 查询by id，返回结果

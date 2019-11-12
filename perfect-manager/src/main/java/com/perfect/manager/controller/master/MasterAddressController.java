@@ -40,8 +40,7 @@ public class MasterAddressController extends BaseController {
     @ApiOperation("根据参数id，获取地址簿主表信息")
     @PostMapping("/address/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<MAddressVo>>> list(@RequestBody(required = false)
-        MAddressVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<IPage<MAddressVo>>> list(@RequestBody(required = false) MAddressVo searchCondition) {
         IPage<MAddressVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }

@@ -21,17 +21,17 @@ public interface IMGroupService extends IService<MGroupEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<MGroupEntity> selectPage(MGroupVo searchCondition) throws InstantiationException, IllegalAccessException;
+    IPage<MGroupEntity> selectPage(MGroupVo searchCondition) ;
 
     /**
      * 获取所有数据
      */
-    List<MGroupEntity> select(MGroupVo searchCondition) throws InstantiationException, IllegalAccessException;
+    List<MGroupEntity> select(MGroupVo searchCondition) ;
 
     /**
      * 获取所选id的数据
      */
-    List<MGroupEntity> selectIdsIn(List<MGroupVo> searchCondition) throws InstantiationException, IllegalAccessException;
+    List<MGroupEntity> selectIdsIn(List<MGroupVo> searchCondition) ;
 
     /**
      * 批量删除复原

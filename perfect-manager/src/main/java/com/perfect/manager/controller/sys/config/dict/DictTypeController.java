@@ -61,8 +61,7 @@ public class DictTypeController extends BaseController {
     @ApiOperation("根据参数id，获取字典主表信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<SDictTypeEntity>>> list(@RequestBody(required = false)
-        SDictTypeVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<IPage<SDictTypeEntity>>> list(@RequestBody(required = false) SDictTypeVo searchCondition) {
         IPage<SDictTypeEntity> entity = isDictTypeService.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
@@ -95,8 +94,7 @@ public class DictTypeController extends BaseController {
     @SysLog("字典主表数据导出")
     @ApiOperation("根据选择的数据，字典主表数据导出")
     @PostMapping("/export_all")
-    public void exportAll(@RequestBody(required = false) SDictTypeVo searchCondition, HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportAll(@RequestBody(required = false) SDictTypeVo searchCondition, HttpServletResponse response) throws IOException {
         List<SDictTypeEntity> searchResult = isDictTypeService.select(searchCondition);
         List<SDictTypeExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SDictTypeExportVo.class);
         ExcelUtil<SDictTypeExportVo> util = new ExcelUtil<>(SDictTypeExportVo.class);
@@ -106,9 +104,7 @@ public class DictTypeController extends BaseController {
     @SysLog("字典主表数据导出")
     @ApiOperation("根据选择的数据，字典主表数据导出")
     @PostMapping("/export_selection")
-    public void exportSelection(@RequestBody(required = false) List<SDictTypeVo> searchConditionList,
-        HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportSelection(@RequestBody(required = false) List<SDictTypeVo> searchConditionList, HttpServletResponse response) throws IOException {
         List<SDictTypeEntity> searchResult = isDictTypeService.selectIdsIn(searchConditionList);
         List<SResourceExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SDictTypeExportVo.class);
         ExcelUtil<SResourceExportVo> util = new ExcelUtil<>(SResourceExportVo.class);

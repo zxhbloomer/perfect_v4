@@ -45,8 +45,7 @@ public class SConfigServiceImpl extends ServiceImpl<SConfigMapper, SConfigEntity
      * @throws IllegalAccessException
      */
     @Override
-    public IPage<SConfigVo> selectPage(SConfigVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+    public IPage<SConfigVo> selectPage(SConfigVo searchCondition) {
         // 分页条件
         Page<SDictTypeEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());

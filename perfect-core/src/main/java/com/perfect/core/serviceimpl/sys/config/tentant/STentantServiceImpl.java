@@ -81,8 +81,7 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
      * @throws IllegalAccessException
      */
     @Override
-    public IPage<STentantVo> selectPage(STentantVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+    public IPage<STentantVo> selectPage(STentantVo searchCondition) {
         // 分页条件
         Page<STentantVo> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());

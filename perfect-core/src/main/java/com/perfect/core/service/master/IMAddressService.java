@@ -24,17 +24,17 @@ public interface IMAddressService extends IService<MAddressEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<MAddressVo> selectPage(MAddressVo searchCondition) throws InstantiationException, IllegalAccessException;
+    IPage<MAddressVo> selectPage(MAddressVo searchCondition) ;
 
     /**
      * 获取所有数据
      */
-    List<MAddressVo> select(MAddressVo searchCondition) throws InstantiationException, IllegalAccessException;
+    List<MAddressVo> select(MAddressVo searchCondition) ;
 
     /**
      * 获取所选id的数据
      */
-    List<MAddressEntity> selectIdsIn(List<MAddressEntity> searchCondition) throws InstantiationException, IllegalAccessException;
+    List<MAddressEntity> selectIdsIn(List<MAddressEntity> searchCondition) ;
 
     /**
      * 批量物理删除

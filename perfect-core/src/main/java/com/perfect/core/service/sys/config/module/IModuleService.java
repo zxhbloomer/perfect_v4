@@ -23,17 +23,17 @@ public interface IModuleService extends IService<SModuleEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<SModuleVo> selectPage(SModuleVo searchCondition) throws InstantiationException, IllegalAccessException;
+    IPage<SModuleVo> selectPage(SModuleVo searchCondition) ;
 
     /**
      * 获取所有数据
      */
-    List<SModuleEntity> select(SModuleVo searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SModuleEntity> select(SModuleVo searchCondition) ;
 
     /**
      * 获取所选id的数据
      */
-    List<SModuleEntity> selectIdsIn(List<SModuleVo> searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SModuleEntity> selectIdsIn(List<SModuleVo> searchCondition) ;
 
     /**
      * 批量导入

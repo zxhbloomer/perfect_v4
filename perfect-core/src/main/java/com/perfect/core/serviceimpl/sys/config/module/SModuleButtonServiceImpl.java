@@ -54,8 +54,7 @@ public class SModuleButtonServiceImpl extends ServiceImpl<SModuleButtonMapper, S
      * @throws IllegalAccessException
      */
     @Override
-    public IPage<SModuleButtonVo> selectPage(SModuleButtonVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+    public IPage<SModuleButtonVo> selectPage(SModuleButtonVo searchCondition) {
         // 分页条件
         Page<SModuleButtonVo> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());

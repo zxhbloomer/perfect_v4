@@ -24,17 +24,17 @@ public interface ISMenuService extends IService<SMenuEntity> {
     /**
      * 获取所有数据
      */
-    List<SMenuVo> select(SMenuVo searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SMenuVo> select(SMenuVo searchCondition) ;
 
     /**
      * 获取所有数据：级联
      */
-    List<SMenuVo> getCascaderList(SMenuVo searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SMenuVo> getCascaderList(SMenuVo searchCondition) ;
 
     /**
      * 获取所有数据：级联
      */
-    SMenuVo getCascaderGet(SMenuVo searchCondition) throws InstantiationException, IllegalAccessException;
+    SMenuVo getCascaderGet(SMenuVo searchCondition) ;
 
     /**
      * 查询by id，返回结果
@@ -47,7 +47,7 @@ public interface ISMenuService extends IService<SMenuEntity> {
     /**
      * 获取所选id的数据
      */
-    List<SMenuEntity> selectIdsIn(List<SMenuVo> searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SMenuEntity> selectIdsIn(List<SMenuVo> searchCondition) ;
 
     /**
      * 批量删除复原

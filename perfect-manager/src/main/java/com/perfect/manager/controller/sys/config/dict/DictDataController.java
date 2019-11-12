@@ -64,8 +64,7 @@ public class DictDataController extends BaseController {
     @ApiOperation("根据参数id，获取字典数据表信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<SDictDataVo>>> list(@RequestBody(required = false)
-        SDictDataVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<IPage<SDictDataVo>>> list(@RequestBody(required = false) SDictDataVo searchCondition)  {
         IPage<SDictDataVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
@@ -97,8 +96,7 @@ public class DictDataController extends BaseController {
     @SysLog("字典数据表数据导出")
     @ApiOperation("根据选择的数据，字典数据表数据导出")
     @PostMapping("/export_all")
-    public void exportAll(@RequestBody(required = false) SDictDataVo searchCondition, HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportAll(@RequestBody(required = false) SDictDataVo searchCondition, HttpServletResponse response) throws IOException {
         List<SDictDataVo> searchResult = service.select(searchCondition);
         List<SDictTypeExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SDictTypeExportVo.class);
         ExcelUtil<SDictTypeExportVo> util = new ExcelUtil<>(SDictTypeExportVo.class);
@@ -108,9 +106,7 @@ public class DictDataController extends BaseController {
     @SysLog("字典数据表数据导出")
     @ApiOperation("根据选择的数据，字典数据表数据导出")
     @PostMapping("/export_selection")
-    public void exportSelection(@RequestBody(required = false) List<SDictDataVo> searchConditionList,
-        HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportSelection(@RequestBody(required = false) List<SDictDataVo> searchConditionList, HttpServletResponse response) throws IOException {
         List<SDictDataVo> searchResult = service.selectIdsIn(searchConditionList);
         List<SResourceExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SDictTypeExportVo.class);
         ExcelUtil<SResourceExportVo> util = new ExcelUtil<>(SResourceExportVo.class);

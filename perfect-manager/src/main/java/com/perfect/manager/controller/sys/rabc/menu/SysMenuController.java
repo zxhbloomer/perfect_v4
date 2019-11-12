@@ -43,7 +43,7 @@ public class SysMenuController extends BaseController {
     @ApiOperation("根据参数id，获取菜单主表信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<List<SMenuVo>>> list(@RequestBody(required = false) SMenuVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<List<SMenuVo>>> list(@RequestBody(required = false) SMenuVo searchCondition) {
         List<SMenuVo> entity = service.select(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
@@ -52,7 +52,7 @@ public class SysMenuController extends BaseController {
     @ApiOperation("获取级联数据")
     @PostMapping("/cascader/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<List<SMenuVo>>> cascaderList(@RequestBody(required = false) SMenuVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<List<SMenuVo>>> cascaderList(@RequestBody(required = false) SMenuVo searchCondition) {
         List<SMenuVo> vo = service.getCascaderList(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(vo,true));
     }

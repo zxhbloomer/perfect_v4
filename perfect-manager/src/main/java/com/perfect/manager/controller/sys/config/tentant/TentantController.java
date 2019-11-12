@@ -58,8 +58,7 @@ public class TentantController extends BaseController implements TentantMqCallba
     @ApiOperation("获取租户树数据")
     @PostMapping("/tree/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<List<STentantTreeVo>>> treeList(@RequestBody(required = false)
-        SConfigVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<List<STentantTreeVo>>> treeList(@RequestBody(required = false) SConfigVo searchCondition) {
         List<STentantTreeVo> vo = service.getTreeList(null,null);
         List<STentantTreeVo> rtnVo = TreeUtil.getTreeList(vo);
         return ResponseEntity.ok().body(ResultUtil.OK(rtnVo));
@@ -69,8 +68,7 @@ public class TentantController extends BaseController implements TentantMqCallba
     @ApiOperation("获取级联数据")
     @PostMapping("/cascader/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<List<STentantTreeVo>>> cascaderList(@RequestBody(required = false)
-        SConfigVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<List<STentantTreeVo>>> cascaderList(@RequestBody(required = false)SConfigVo searchCondition) {
         List<STentantTreeVo> vo = service.getCascaderList(null,null);
         List<STentantTreeVo> rtnVo = TreeUtil.getTreeList(vo);
         return ResponseEntity.ok().body(ResultUtil.OK(rtnVo,true));
@@ -100,8 +98,7 @@ public class TentantController extends BaseController implements TentantMqCallba
     @ApiOperation("根据参数id，获取租户信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<STentantVo>>> list(@RequestBody(required = false)
-        STentantVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<IPage<STentantVo>>> list(@RequestBody(required = false) STentantVo searchCondition) {
         IPage<STentantVo> entity = service.selectPage(searchCondition);
             return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }

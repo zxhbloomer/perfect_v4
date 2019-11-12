@@ -45,8 +45,7 @@ public class MGroupServiceImpl extends ServiceImpl<MGroupMapper, MGroupEntity> i
      * @throws IllegalAccessException
      */
     @Override
-    public IPage<MGroupEntity> selectPage(MGroupVo searchCondition)
-        throws InstantiationException, IllegalAccessException {
+    public IPage<MGroupEntity> selectPage(MGroupVo searchCondition) {
         // 分页条件
         Page<MGroupEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());

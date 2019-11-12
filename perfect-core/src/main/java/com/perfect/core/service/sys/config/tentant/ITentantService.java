@@ -40,13 +40,12 @@ public interface ITentantService extends IService<STentantEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<STentantVo> selectPage(STentantVo searchCondition) throws InstantiationException, IllegalAccessException;
+    IPage<STentantVo> selectPage(STentantVo searchCondition) ;
 
     /**
      * 获取所选id的数据
      */
-    List<STentantEntity> selectIdsIn(List<STentantVo> searchCondition)
-        throws InstantiationException, IllegalAccessException;
+    List<STentantEntity> selectIdsIn(List<STentantVo> searchCondition) ;
 
     /**
      * 插入一条记录（选择字段，策略插入）

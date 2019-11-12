@@ -24,17 +24,17 @@ public interface IModuleButtonService extends IService<SModuleButtonEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<SModuleButtonVo> selectPage(SModuleButtonVo searchCondition) throws InstantiationException, IllegalAccessException;
+    IPage<SModuleButtonVo> selectPage(SModuleButtonVo searchCondition) ;
 
     /**
      * 获取所有数据
      */
-    List<SModuleButtonVo> select(SModuleButtonVo searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SModuleButtonVo> select(SModuleButtonVo searchCondition) ;
 
     /**
      * 获取所选id的数据
      */
-    List<SModuleButtonVo> selectIdsIn(List<SModuleButtonVo> searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SModuleButtonVo> selectIdsIn(List<SModuleButtonVo> searchCondition) ;
 
     /**
      * 批量物理删除

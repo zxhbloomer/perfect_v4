@@ -43,8 +43,7 @@ public class ModuleButtonController extends BaseController {
     @ApiOperation("根据参数id，获取模块按钮表信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<SModuleButtonVo>>> list(@RequestBody(required = false)
-        SModuleButtonVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<IPage<SModuleButtonVo>>> list(@RequestBody(required = false) SModuleButtonVo searchCondition) {
         IPage<SModuleButtonVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }

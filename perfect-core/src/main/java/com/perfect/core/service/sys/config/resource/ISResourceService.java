@@ -19,17 +19,17 @@ public interface ISResourceService extends IService<SResourceEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<SResourceEntity> selectPage(SResourceVo searchCondition) throws InstantiationException, IllegalAccessException;
+    IPage<SResourceEntity> selectPage(SResourceVo searchCondition) ;
 
     /**
      * 获取所有数据
      */
-    List<SResourceEntity> select(SResourceVo searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SResourceEntity> select(SResourceVo searchCondition) ;
 
     /**
      * 获取所选id的数据
      */
-    List<SResourceEntity> selectIdsIn(List<SResourceVo> searchCondition) throws InstantiationException, IllegalAccessException;
+    List<SResourceEntity> selectIdsIn(List<SResourceVo> searchCondition) ;
 
     /**
      * 批量导入

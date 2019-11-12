@@ -58,8 +58,7 @@ public class ConfigController extends BaseController {
     @ApiOperation("根据参数id，获取系统参数信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<SConfigVo>>> list(@RequestBody(required = false)
-        SConfigVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<IPage<SConfigVo>>> list(@RequestBody(required = false) SConfigVo searchCondition) {
         IPage<SConfigVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
@@ -96,8 +95,7 @@ public class ConfigController extends BaseController {
     @SysLog("系统参数数据导出")
     @ApiOperation("根据选择的数据，系统参数数据导出")
     @PostMapping("/export_all")
-    public void exportAll(@RequestBody(required = false) SConfigVo searchCondition, HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportAll(@RequestBody(required = false) SConfigVo searchCondition, HttpServletResponse response) throws IOException {
         List<SConfigVo> searchResult = service.select(searchCondition);
         List<SConfigDataExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SConfigDataExportVo.class);
         ExcelUtil<SConfigDataExportVo> util = new ExcelUtil<>(SConfigDataExportVo.class);
@@ -107,9 +105,7 @@ public class ConfigController extends BaseController {
     @SysLog("系统参数数据导出")
     @ApiOperation("根据选择的数据，系统参数数据导出")
     @PostMapping("/export_selection")
-    public void exportSelection(@RequestBody(required = false) List<SConfigVo> searchConditionList,
-        HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportSelection(@RequestBody(required = false) List<SConfigVo> searchConditionList, HttpServletResponse response) throws IOException {
         List<SConfigVo> searchResult = service.selectIdsIn(searchConditionList);
         List<SResourceExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SConfigDataExportVo.class);
         ExcelUtil<SResourceExportVo> util = new ExcelUtil<>(SResourceExportVo.class);

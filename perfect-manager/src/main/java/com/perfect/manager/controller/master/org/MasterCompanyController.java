@@ -44,8 +44,7 @@ public class MasterCompanyController extends BaseController {
     @ApiOperation("根据参数id，获取公司主表信息")
     @PostMapping("/company/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<MCompanyEntity>>> list(@RequestBody(required = false)
-        MCompanyVo searchCondition) throws IllegalAccessException, InstantiationException {
+    public ResponseEntity<JsonResult<IPage<MCompanyEntity>>> list(@RequestBody(required = false) MCompanyVo searchCondition){
         IPage<MCompanyEntity> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
@@ -78,8 +77,7 @@ public class MasterCompanyController extends BaseController {
     @SysLog("公司主表数据导出")
     @ApiOperation("根据选择的数据，公司主表数据导出")
     @PostMapping("/company/export_all")
-    public void exportAll(@RequestBody(required = false) MCompanyVo searchCondition, HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportAll(@RequestBody(required = false) MCompanyVo searchCondition, HttpServletResponse response) throws IOException {
         List<MCompanyEntity> searchResult = service.select(searchCondition);
         List<MCompanyExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MCompanyExportVo.class);
         ExcelUtil<MCompanyExportVo> util = new ExcelUtil<>(MCompanyExportVo.class);
@@ -89,9 +87,7 @@ public class MasterCompanyController extends BaseController {
     @SysLog("公司主表数据导出")
     @ApiOperation("根据选择的数据，公司主表数据导出")
     @PostMapping("/company/export_selection")
-    public void exportSelection(@RequestBody(required = false) List<MCompanyVo> searchConditionList,
-        HttpServletResponse response)
-        throws IllegalAccessException, InstantiationException, IOException {
+    public void exportSelection(@RequestBody(required = false) List<MCompanyVo> searchConditionList, HttpServletResponse response) throws IOException {
         List<MCompanyEntity> searchResult = service.selectIdsIn(searchConditionList);
         List<MCompanyExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MCompanyExportVo.class);
         ExcelUtil<MCompanyExportVo> util = new ExcelUtil<>(MCompanyExportVo.class);
