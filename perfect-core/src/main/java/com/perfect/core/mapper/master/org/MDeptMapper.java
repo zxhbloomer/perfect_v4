@@ -21,6 +21,22 @@ import java.util.List;
  */
 @Repository
 public interface MDeptMapper extends BaseMapper<MDeptEntity> {
+
+    String COMMON_SELECT = "                                                         "
+        + "                                                                          "
+        + "           SELECT                                                         "
+        + "           	t1.* ,                                                       "
+        + "           	t2.`name` as handler_id_name,                                "
+        + "           	t3.`name` as sub_handler_id_name,                            "
+        + "           	t4.`name` as leader_id_name                                  "
+        + "           FROM                                                           "
+        + "           	m_dept t1                                                    "
+        + "           	LEFT JOIN m_staff t2 on t1.handler_id = t2.id                "
+        + "           	LEFT JOIN m_staff t3 on t1.sub_handler_id = t3.id            "
+        + "           	LEFT JOIN m_staff t4 on t1.leader_id = t4.id                 "
+        + "                                                                          ";
+
+
     /**
      * 页面查询列表
      * @param page
@@ -28,12 +44,11 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
      * @return
      */
     @Select("    "
-        + " select t.* "
-        + "   from m_group t "
-        + "  where true "
-        + "    and (t.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-        + "    and (t.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
+        + COMMON_SELECT
+        + "  where true                                                              "
+        + "    and (t1.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)  "
+        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)  "
+        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                 "
         + "      ")
     IPage<MDeptVo> selectPage(Page page, @Param("p1") MDeptVo searchCondition);
 
@@ -43,12 +58,11 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
      * @return
      */
     @Select("    "
-        + " select t.* "
-        + "   from m_group t "
+        + COMMON_SELECT
         + "  where true "
-        + "    and (t.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-        + "    and (t.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
+        + "    and (t1.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)  "
+        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)  "
+        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                 "
         + "      ")
     List<MDeptVo> select(@Param("p1") MDeptVo searchCondition);
 
@@ -59,7 +73,7 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
      */
     @Select("<script>"
         + " select t.* "
-        + "   from m_group t "
+        + "   from m_dept t "
         + "  where t.id in "
         + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>"
         + "         #{item.id}  "
@@ -74,7 +88,7 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
      */
     @Select("    "
         + " select t.* "
-        + "   from m_group t "
+        + "   from m_dept t "
         + "  where true "
         + "    and t.code =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
@@ -91,7 +105,7 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
      */
     @Select("    "
         + " select t.* "
-        + "   from m_group t "
+        + "   from m_dept t "
         + "  where true "
         + "    and t.name =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
@@ -108,7 +122,7 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
      */
     @Select("    "
         + " select t.* "
-        + "   from m_group t "
+        + "   from m_dept t "
         + "  where true "
         + "    and t.simple_name =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
@@ -123,13 +137,10 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
      * @param id
      * @return
      */
-    @Select("<script>"
-        + " select t.* "
-        + "   from m_group t "
-        + "  where t.id in "
-        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>"
-        + "         #{item.id}  "
-        + "        </foreach>"
-        + "  </script>")
+    @Select("                                                                        "
+        + COMMON_SELECT
+        + "  where true                                                              "
+        + "    and (t1.id = #{p1})                                                   "
+        + "                                                                          ")
     MDeptVo selectByid(@Param("p1") Long id);
 }

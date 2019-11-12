@@ -196,13 +196,13 @@ public class MDeptServiceImpl extends ServiceImpl<MDeptMapper, MDeptEntity> impl
                 List<MDeptEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
                 List<MDeptEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
                 if (codeList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：集团编号出现重复", entity.getCode());
+                    return CheckResultUtil.NG("新增保存出错：部门编号出现重复", entity.getCode());
                 }
                 if (nameList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：集团全称出现重复", entity.getName());
+                    return CheckResultUtil.NG("新增保存出错：部门全称出现重复", entity.getName());
                 }
                 if (simple_name_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：集团简称称出现重复", entity.getSimple_name());
+                    return CheckResultUtil.NG("新增保存出错：部门简称称出现重复", entity.getSimple_name());
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
@@ -212,13 +212,13 @@ public class MDeptServiceImpl extends ServiceImpl<MDeptMapper, MDeptEntity> impl
                 List<MDeptEntity> simple_name_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
 
                 if (codeList_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：集团编号出现重复", entity.getCode());
+                    return CheckResultUtil.NG("更新保存出错：部门编号出现重复", entity.getCode());
                 }
                 if (nameList_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：集团全称出现重复", entity.getName());
+                    return CheckResultUtil.NG("更新保存出错：部门全称出现重复", entity.getName());
                 }
                 if (simple_name_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：集团简称称出现重复", entity.getSimple_name());
+                    return CheckResultUtil.NG("更新保存出错：部门简称称出现重复", entity.getSimple_name());
                 }
                 break;
             default:

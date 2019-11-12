@@ -31,7 +31,7 @@ import java.util.List;
  * @author zhangxh
  */
 @RestController
-@RequestMapping(value = "/api/v1/dept")
+@RequestMapping(value = "/api/v1/org/dept")
 @Slf4j
 @Api("部门主表相关")
 public class MasterDeptController extends BaseController {
@@ -67,7 +67,7 @@ public class MasterDeptController extends BaseController {
 
     @SysLog("部门主表数据新增保存")
     @ApiOperation("根据参数id，获取部门主表信息")
-    @PostMapping("/group/insert")
+    @PostMapping("/insert")
     @ResponseBody
     public ResponseEntity<JsonResult<MDeptVo>> insert(@RequestBody(required = false) MDeptEntity bean) {
         if(service.insert(bean).isSuccess()){
