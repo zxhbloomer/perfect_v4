@@ -44,7 +44,7 @@ public interface MAddressMapper extends BaseMapper<MAddressEntity> {
         + "        	LEFT JOIN v_dict_info t5 ON t5.code = 'sys_address_tag_type' and t1.tag = t5.dict_value                "
         + "  where true                                                                                                    "
         + "     and (t1.serial_type = #{p1.serial_type,jdbcType=VARCHAR} or #{p1.serial_type,jdbcType=VARCHAR} is null  )  "
-        + "     and (t1.serial_no = #{p1.serial_no,jdbcType=VARCHAR} or #{p1.serial_no,jdbcType=VARCHAR} is null     )     "
+        + "     and (t1.serial_id = #{p1.serial_id,jdbcType=BIGINT} or #{p1.serial_id,jdbcType=BIGINT} is null     )     "
         + "      ")
     IPage<MAddressVo> selectPage(Page page, @Param("p1") MAddressVo searchCondition);
 
@@ -68,7 +68,7 @@ public interface MAddressMapper extends BaseMapper<MAddressEntity> {
         + "        	LEFT JOIN v_dict_info t5 ON t5.code = 'sys_address_tag_type' and t1.tag = t5.dict_value                "
         + "  where true                                                                                                    "
         + "     and (t1.serial_type = #{p1.serial_type,jdbcType=VARCHAR} or #{p1.serial_type,jdbcType=VARCHAR} is null  )  "
-        + "     and (t1.serial_no = #{p1.serial_no,jdbcType=VARCHAR} or #{p1.serial_no,jdbcType=VARCHAR} is null     )     "
+        + "     and (t1.serial_id = #{p1.serial_id,jdbcType=BIGINT} or #{p1.serial_id,jdbcType=BIGINT} is null     )     "
         + "      ")
     List<MAddressVo> select(@Param("p1") MAddressVo searchCondition);
 

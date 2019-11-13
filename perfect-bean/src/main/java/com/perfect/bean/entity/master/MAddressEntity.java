@@ -85,8 +85,8 @@ public class MAddressEntity implements Serializable {
     /**
      * 关联单号
      */
-    @TableField("serial_no")
-    private String serial_no;
+    @TableField("serial_id")
+    private Long serial_id;
 
     /**
      * 关联单号类型

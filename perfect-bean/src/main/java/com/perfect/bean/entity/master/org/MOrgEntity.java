@@ -42,8 +42,8 @@ public class MOrgEntity implements Serializable {
     /**
      * 关联单号
      */
-    @TableField("serial_no")
-    private String serial_no;
+    @TableField("serial_id")
+    private String serial_id;
 
     /**
      * 关联单号类型

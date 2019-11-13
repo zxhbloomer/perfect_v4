@@ -101,7 +101,7 @@ public class MAddressVo implements Serializable {
     /**
      * 关联单号
      */
-    private String serial_no;
+    private Long serial_id;
 
     /**
      * 关联单号类型
