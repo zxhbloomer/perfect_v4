@@ -52,6 +52,12 @@ public class MOrgEntity implements Serializable {
     private String serial_type;
 
     /**
+     * 编号，00010001..
+     */
+    @TableField("code")
+    private String code;
+
+    /**
      * 类型：10（租户）、20（集团）、30（公司）、40（部门）、50（岗位）、60（人员）
      */
     @TableField("type")

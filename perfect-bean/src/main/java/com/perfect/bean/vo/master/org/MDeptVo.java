@@ -44,22 +44,28 @@ public class MDeptVo implements Serializable {
     private String simple_name;
 
     /**
-     * 负责人
+     * 部门主管
      */
     private Long handler_id;
     private String handler_id_name;
 
     /**
-     * 部门副负责人
+     * 部门副主管
      */
     private Long sub_handler_id;
     private String sub_handler_id_name;
 
     /**
-     * 部门主管领导
+     * 上级主管领导
      */
     private Long leader_id;
     private String leader_id_name;
+
+    /**
+     * 上级分管领导
+     */
+    private Long response_leader_id;
+    private String response_leader_id_name;
 
     /**
      * 描述

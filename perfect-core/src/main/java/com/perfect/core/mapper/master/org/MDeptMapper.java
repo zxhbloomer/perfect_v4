@@ -28,12 +28,14 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
         + "           	t1.* ,                                                       "
         + "           	t2.`name` as handler_id_name,                                "
         + "           	t3.`name` as sub_handler_id_name,                            "
-        + "           	t4.`name` as leader_id_name                                  "
+        + "           	t4.`name` as leader_id_name,                                 "
+        + "           	t5.`name` as response_leader_id_name                         "
         + "           FROM                                                           "
         + "           	m_dept t1                                                    "
         + "           	LEFT JOIN m_staff t2 on t1.handler_id = t2.id                "
         + "           	LEFT JOIN m_staff t3 on t1.sub_handler_id = t3.id            "
         + "           	LEFT JOIN m_staff t4 on t1.leader_id = t4.id                 "
+        + "           	LEFT JOIN m_staff t5 on t1.leader_id = t5.id                 "
         + "                                                                          ";
 
 

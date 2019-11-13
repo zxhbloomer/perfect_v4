@@ -46,22 +46,28 @@ public class MDeptEntity implements Serializable {
     private String simple_name;
 
     /**
-     * 负责人
+     * 部门主管
      */
     @TableField("handler_id")
     private Long handler_id;
 
     /**
-     * 部门副负责人
+     * 部门副主管
      */
     @TableField("sub_handler_id")
     private Long sub_handler_id;
 
     /**
-     * 部门主管领导
+     * 上级主管领导
      */
     @TableField("leader_id")
     private Long leader_id;
+
+    /**
+     * 上级分管领导
+     */
+    @TableField("response_leader_id")
+    private Long response_leader_id;
 
     /**
      * 描述
