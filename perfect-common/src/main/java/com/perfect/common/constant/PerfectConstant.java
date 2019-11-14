@@ -68,6 +68,13 @@ public class PerfectConstant {
     /**
      * redis前缀
      */
+    public class SESSION_PREFIX {
+        public static final String SESSION_USER_PREFIX_PREFIX = "PERFECT_USER_SESSION";
+    }
+
+    /**
+     * redis前缀
+     */
     public class REDIS_PREFIX {
         public static final String MQ_SEND_PREFIX = "PERFECT_MQ";// mq发送消息暂存到redis的prefix
         public static final String MQ_CONSUME_FAILT_PREFIX = "PERFECT_MQ_CONSUME_FAILT_PREFIX";

@@ -1,6 +1,7 @@
 package com.perfect.core.service.client.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.pojo.redis.user.UserInSessionPojo;
@@ -30,11 +31,11 @@ public interface IMUserService extends IService<MUserEntity> , UserDetailsServic
 
 
     /**
-     * 获取保存到session中的userbean
+     * 获取userbean
      * @param user_id
      * @return
      */
-    UserInSessionPojo getUserInSessionBean(long user_id);
+    UserSessionBo getUserBean(long user_id);
 
 
     /**

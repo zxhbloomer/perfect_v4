@@ -48,7 +48,7 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
      * @throws IllegalAccessException
      */
     @Override
-    public List<SMenuVo> select(SMenuVo searchCondition) {
+    public List<SMenuVo> getTreeList(SMenuVo searchCondition) {
         // 查询 数据
         List<SMenuVo> list = mapper.select(searchCondition);
 

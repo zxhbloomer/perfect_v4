@@ -40,7 +40,7 @@ public class MOrgVo implements Serializable {
     /**
      * 关联单号
      */
-    private String serial_id;
+    private Long serial_id;
 
     /**
      * 关联单号类型

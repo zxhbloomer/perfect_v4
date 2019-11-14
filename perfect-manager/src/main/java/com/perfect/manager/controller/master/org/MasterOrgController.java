@@ -4,9 +4,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
+import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.master.org.MDeptExportVo;
+import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MPositionExportVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
+import com.perfect.bean.vo.sys.config.config.SConfigVo;
+import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
@@ -41,6 +45,15 @@ public class MasterOrgController extends BaseController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @SysLog("根据查询条件，获取租户信息")
+    @ApiOperation("获取租户树数据")
+    @PostMapping("/tree/list")
+    @ResponseBody
+    public ResponseEntity<JsonResult<List<MOrgTreeVo>>> treeList(@RequestBody(required = false) MOrgTreeVo searchCondition) {
+        List<MOrgTreeVo> vo = service.getTreeList(searchCondition);
+        return ResponseEntity.ok().body(ResultUtil.OK(vo));
+    }
 
     @SysLog("根据查询条件，获取组织架构主表信息")
     @ApiOperation("根据参数id，获取组织架构主表信息")

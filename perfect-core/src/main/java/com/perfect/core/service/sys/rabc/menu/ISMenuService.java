@@ -24,7 +24,7 @@ public interface ISMenuService extends IService<SMenuEntity> {
     /**
      * 获取所有数据
      */
-    List<SMenuVo> select(SMenuVo searchCondition) ;
+    List<SMenuVo> getTreeList(SMenuVo searchCondition) ;
 
     /**
      * 获取所有数据：级联

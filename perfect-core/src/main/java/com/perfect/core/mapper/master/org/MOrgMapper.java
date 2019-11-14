@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.master.org.MOrgEntity;
+import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -22,14 +23,15 @@ import java.util.List;
 @Repository
 public interface MOrgMapper extends BaseMapper<MOrgEntity> {
 
-    String COMMON_SELECT = "                                                                                                "
+    String COMMON_TREE_SELECT = "                                                                                                "
             + "         WITH recursive cte AS (                                                                             "
             + "               SELECT                                                                                        "
             + "                 t0.id,                                                                                      "
             + "                 t0.id as value,                                                                             "
-            + "                       t0.parent_id ,                                                                        "
-            + "                       1 level,                                                                              "
-            + "                       cast(t0.id as varchar(20)) depth_id                                                   "
+            + "                 t0.tentant_id,                                                                              "
+            + "                 t0.parent_id ,                                                                              "
+            + "                 1 level,                                                                                    "
+            + "                 cast(t0.id as varchar(20)) depth_id                                                         "
             + "               FROM                                                                                          "
             + "                       m_org t0                                                                              "
             + "               where t0.parent_id is null                                                                    "
@@ -37,9 +39,10 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
             + "               SELECT                                                                                        "
             + "                 t2.id,                                                                                      "
             + "                 t2.id as value,                                                                             "
-            + "                       t2.parent_id,                                                                         "
-            + "                       t1.level + 1 as level,                                                                "
-            + "                       CONCAT( cast(t1.depth_id as varchar(20)),',',cast(t2.id as varchar(20))) depth_id     "
+            + "                 t2.tentant_id,                                                                              "
+            + "                 t2.parent_id,                                                                               "
+            + "                 t1.level + 1 as level,                                                                      "
+            + "                 CONCAT( cast(t1.depth_id as varchar(20)),',',cast(t2.id as varchar(20))) depth_id           "
             + "               FROM                                                                                          "
             + "                       m_org t2,                                                                             "
             + "                       cte t1                                                                                "
@@ -47,6 +50,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
             + "                 t2.parent_id = t1.id                                                                        "
             + "               )                                                                                             "
             + "                  select t1.* ,                                                                              "
+            + "                     t3.name as label,                                                                       "
             + "                     t3.name,                                                                                "
             + "                     t3.simple_name,                                                                         "
             + "                     t4.label                                                                                "
@@ -70,13 +74,23 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
             + "                                                                          ";
 
     /**
+     * 左侧树查询
+     */
+    @Select("    "
+        + COMMON_TREE_SELECT
+        + "  where true                                                                                       "
+        //+ "    and (t2.tentant_id = #{p1.tentant_id,jdbcType=BIGINT})                                         "
+        + "      ")
+    List<MOrgTreeVo> getTreeList(MOrgTreeVo searchCondition);
+
+    /**
      * 页面查询列表
      * @param page
      * @param searchCondition
      * @return
      */
     @Select("    "
-        + COMMON_SELECT
+        + COMMON_TREE_SELECT
         + "  where true                                                              "
         + "    and (t1.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)  "
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)  "
@@ -84,13 +98,15 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "      ")
     IPage<MOrgVo> selectPage(Page page, @Param("p1") MOrgVo searchCondition);
 
+
+
     /**
      * 按条件获取所有数据，没有分页
      * @param searchCondition
      * @return
      */
     @Select("    "
-        + COMMON_SELECT
+        + COMMON_TREE_SELECT
         + "  where true "
         + "    and (t1.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)  "
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)  "
@@ -170,7 +186,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
      * @return
      */
     @Select("                                                                        "
-        + COMMON_SELECT
+        + COMMON_TREE_SELECT
         + "  where true                                                              "
         + "    and (t1.id = #{p1})                                                   "
         + "                                                                          ")

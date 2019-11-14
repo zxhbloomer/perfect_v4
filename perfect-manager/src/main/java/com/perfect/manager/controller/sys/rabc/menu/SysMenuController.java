@@ -44,7 +44,7 @@ public class SysMenuController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<List<SMenuVo>>> list(@RequestBody(required = false) SMenuVo searchCondition) {
-        List<SMenuVo> entity = service.select(searchCondition);
+        List<SMenuVo> entity = service.getTreeList(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 

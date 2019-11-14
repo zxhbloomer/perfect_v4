@@ -1,9 +1,11 @@
 package com.perfect.core.serviceimpl.client.user;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.bo.user.login.MUserBo;
 import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.entity.master.user.MUserEntity;
+import com.perfect.bean.entity.sys.config.tenant.STentantEntity;
 import com.perfect.bean.pojo.redis.user.UserInSessionPojo;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
@@ -14,10 +16,14 @@ import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.bean.vo.master.user.MUserVo;
 import com.perfect.bean.vo.master.user.UserInfoVo;
+import com.perfect.bean.vo.sys.config.tenant.STentantVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.master.user.MStaffMapper;
 import com.perfect.core.mapper.client.user.MUserMapper;
+import com.perfect.core.mapper.sys.config.tentant.STentantMapper;
 import com.perfect.core.service.client.user.IMUserService;
+import com.perfect.core.service.master.user.IMStaffService;
+import com.perfect.core.service.sys.config.tentant.ITentantService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -41,10 +47,13 @@ import java.util.List;
 @Service
 @Slf4j
 public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUserEntity> implements IMUserService {
+
     @Autowired
     private MUserMapper mUserMapper;
     @Autowired
-    private MStaffMapper mStaffMapper;
+    private IMStaffService imStaffService;
+    @Autowired
+    private ITentantService iTentantService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -94,18 +103,25 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUserEntity> impl
     }
 
     /**
-     * 获取保存到session中的userbean
+     * 获取userbean
      * @param user_id
      * @return
      */
     @Override
-    public UserInSessionPojo getUserInSessionBean(long user_id){
+    public UserSessionBo getUserBean(long user_id){
         MUserEntity mUserEntity = mUserMapper.selectById(user_id);
-        MStaffEntity mStaffEntity = mStaffMapper.getDataByUser_id(mUserEntity.getId());
-        UserInSessionPojo userInSessionPojo = new UserInSessionPojo();
-        userInSessionPojo.setUser_info(mUserEntity);
-        userInSessionPojo.setStaff_info(mStaffEntity);
-        return userInSessionPojo;
+        MStaffVo mStaffVo = imStaffService.selectByid(mUserEntity.getId());
+        STentantVo sTentantVo = iTentantService.selectByid(mStaffVo != null ? mStaffVo.getTentant_id() : null);
+        UserSessionBo userSessionBo = new UserSessionBo();
+        userSessionBo.setUser_info(mUserEntity);
+        userSessionBo.setStaff_info(mStaffVo);
+        userSessionBo.setTentant_info(sTentantVo);
+
+        // 设置basebean
+        userSessionBo.setAccountId(mUserEntity.getId());
+        userSessionBo.setTenant_Id(mStaffVo != null ? mStaffVo.getTentant_id() : null);
+
+        return userSessionBo;
     }
 
 

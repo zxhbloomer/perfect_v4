@@ -98,7 +98,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-devtools</artifactId>
                 <version>${project.build.springbootversion}</version>
-                <scope>runtime</scope>
+                <optional>true</optional>
+                <scope>true</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.session</groupId>
@@ -478,6 +479,9 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${project.build.springbootversion}</version>
+                    <configuration>
+                        <fork>true</fork>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

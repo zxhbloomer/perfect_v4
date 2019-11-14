@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
+import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
 
 import java.util.List;
@@ -18,6 +19,11 @@ import java.util.List;
  * @since 2019-08-23
  */
 public interface IMOrgService extends IService<MOrgEntity> {
+
+    /**
+     * 获取所有数据，左侧树数据
+     */
+    List<MOrgTreeVo> getTreeList(MOrgTreeVo searchCondition) ;
 
     /**
      * 获取所有数据

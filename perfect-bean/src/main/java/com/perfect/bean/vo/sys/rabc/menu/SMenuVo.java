@@ -52,7 +52,6 @@ public class SMenuVo extends TreeNode implements Serializable {
     /**
      * 父菜单ID
      */
-    @TableField("son_count")
     private Integer son_count;
 
     private String parent_depth_id;

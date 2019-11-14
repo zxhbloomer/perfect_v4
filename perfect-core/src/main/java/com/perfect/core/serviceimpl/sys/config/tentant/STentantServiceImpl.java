@@ -169,8 +169,13 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
      */
     @Override
     public STentantVo selectByid(Long id) {
-        // 查询 数据
-        return mapper.selectId(id);
+        if (id != null) {
+            // 查询 数据
+            return mapper.selectId(id);
+        } else {
+            return null;
+        }
+
     }
 
     /**

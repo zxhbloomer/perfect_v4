@@ -10,7 +10,10 @@ import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
+import com.perfect.bean.utils.common.tree.TreeUtil;
+import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
+import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.master.org.MOrgMapper;
 import com.perfect.core.service.master.org.IMOrgService;
@@ -35,6 +38,20 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
 
     @Autowired
     private MOrgMapper mapper;
+
+
+    /**
+     * 获取所有数据，左侧树数据
+     */
+    @Override
+    public List<MOrgTreeVo> getTreeList(MOrgTreeVo searchCondition) {
+        // 查询 数据
+        List<MOrgTreeVo> list = mapper.getTreeList(searchCondition);
+
+        List<MOrgTreeVo> rtnList = TreeUtil.getTreeList(list);
+        return rtnList;
+    }
+
     /**
      * 获取列表，查询所有数据
      *

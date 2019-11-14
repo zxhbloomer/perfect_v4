@@ -1,7 +1,12 @@
 package com.perfect.security.handler;
 
+import com.alibaba.fastjson.JSON;
+import com.perfect.bean.bo.session.user.UserSessionBo;
+import com.perfect.bean.pojo.redis.user.UserInSessionPojo;
 import com.perfect.bean.result.utils.v1.ResponseResultUtil;
 import com.perfect.common.constant.PerfectConstant;
+import com.perfect.common.utils.redis.RedisUtil;
+import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.service.client.user.IMUserService;
 import com.perfect.core.utils.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +17,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +29,9 @@ public class PerfectAuthenticationSucessHandler implements AuthenticationSuccess
 
     @Autowired
     private IMUserService iMUserService;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     private SessionRegistry sessionRegistry;
 
@@ -64,9 +73,29 @@ public class PerfectAuthenticationSucessHandler implements AuthenticationSuccess
 
     /**
      * 执行usersession往session中保存的逻辑
+     *
      * @param user_id
      */
-    public void setUserSession(long user_id){
-        iMUserService.getUserInSessionBean(user_id);
+    public void setUserSession(long user_id) {
+        UserSessionBo userSessionBo = iMUserService.getUserBean(user_id);
+        String userJson = JSON.toJSONString(userSessionBo);
+        String sessionId = ServletUtil.getSession().getId();
+
+        // 设置session id
+        userSessionBo.setSession_id(sessionId);
+        userSessionBo.setAppKey("PC_APP");
+        // todo：租户管理员设置
+        userSessionBo.setTenantAdmin(false);
+
+        // 保存到redis中
+        redisUtil.putToMap(PerfectConstant.SESSION_PREFIX.SESSION_USER_PREFIX_PREFIX, sessionId, userJson);
+        HttpSession session = ServletUtil.getSession();
+        String key = PerfectConstant.SESSION_PREFIX.SESSION_USER_PREFIX_PREFIX + "_" + sessionId;
+        if (ServletUtil.getUserSession() != null) {
+            session.removeAttribute(key);
+            session.setAttribute(key, userJson);
+        } else {
+            session.setAttribute(key, userJson);
+        }
     }
 }
