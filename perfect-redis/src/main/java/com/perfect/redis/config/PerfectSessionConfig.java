@@ -5,6 +5,7 @@ import com.perfect.redis.listener.SpringHttpSessionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration;
 
 import javax.servlet.http.HttpSessionListener;
@@ -25,7 +26,7 @@ public class PerfectSessionConfig extends RedisHttpSessionConfiguration {
         List<HttpSessionListener> list = new ArrayList<>();
         list.add(new SpringHttpSessionListener());
         this.setHttpSessionListeners(list);
-        this.setMaxInactiveIntervalInSeconds(perfectConfigProperies.getRedisCacheExpiredMin() * 60);
+//        this.setMaxInactiveIntervalInSeconds(perfectConfigProperies.getRedisCacheExpiredMin() * 60);
     }
 
     /**

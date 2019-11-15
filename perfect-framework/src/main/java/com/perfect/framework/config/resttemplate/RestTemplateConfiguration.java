@@ -32,12 +32,6 @@ import java.util.List;
  */
 @Configuration
 public class RestTemplateConfiguration {
-//    @Bean
-//    public RestTemplate restTemplate(){
-//        RestTemplate restTemplate = new RestTemplate();
-////        restTemplate.getInterceptors().add(new LoggingClientHttpRequestInterceptorUtil());
-//        return restTemplate;
-//    }
 
     @Value("${RestTemplate-ConnectTimeout}")
     private int RestTemplate_ConnectTimeout;
@@ -93,19 +87,19 @@ public class RestTemplateConfiguration {
      * 配置的话，@JsonFormat会因为设置SerializationFeature.FAIL_ON_EMPTY_BEANS
      * 而失效，配置后无需再DTO中添加@JsonFormat(pattern = "yyyy-MM-dd HH:ss:mm", timezone = "GMT+8")注解
      */
-    @Bean
-    public ObjectMapper objectMapper(){
-
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
-
-        javaTimeModule.addSerializer(
-                LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
-        return new ObjectMapper()
-                .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .registerModule(javaTimeModule);
-    }
+//    @Bean
+//    public ObjectMapper objectMapper(){
+//
+//        JavaTimeModule javaTimeModule = new JavaTimeModule();
+//
+//        javaTimeModule.addSerializer(
+//                LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+//
+//        return new ObjectMapper()
+//                .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+//                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+//                .registerModule(javaTimeModule);
+//    }
 
     @Bean
     @ConditionalOnMissingBean({ClientHttpRequestFactory.class})
