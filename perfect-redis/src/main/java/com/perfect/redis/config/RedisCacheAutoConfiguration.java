@@ -1,10 +1,12 @@
 package com.perfect.redis.config;
 
 import com.alibaba.fastjson.parser.ParserConfig;
-import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.perfect.common.constant.PerfectConstant;
+import com.perfect.common.properies.PerfectConfigProperies;
+import com.perfect.redis.listener.RedisKeyExpirationListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +24,8 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -32,6 +36,11 @@ import java.time.Duration;
 @AutoConfigureAfter(RedisAutoConfiguration.class)
 @Slf4j
 public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
+
+    @Autowired
+    RedisKeyExpirationListener redisKeyExpirationListener;
+    @Autowired
+    private PerfectConfigProperies perfectConfigProperies;
 
     /**
      * 自定义缓存管理器
@@ -54,8 +63,9 @@ public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
         //以锁写入的方式创建RedisCacheWriter对象
         RedisCacheWriter writer = RedisCacheWriter.lockingRedisCacheWriter(lettuceConnectionFactory);
 
+        int redisCacheExpiredMin = perfectConfigProperies.getRedisCacheExpiredMin();
         RedisCacheConfiguration cacheConfiguration =
-            RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(30)).serializeKeysWith(keyPair)
+            RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(redisCacheExpiredMin)).serializeKeysWith(keyPair)
                 .serializeValuesWith(valuePair);
 
         RedisCacheManager redisCacheManager = new RedisCacheManager(writer, cacheConfiguration);
@@ -112,6 +122,26 @@ public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
 
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
+    }
+
+    @Bean
+    public ChannelTopic expiredTopic() {
+        ChannelTopic ot = new ChannelTopic("__keyevent@0__:expired");
+        return ot;
+    }
+
+    /**
+     * redis增加监听
+     * @param
+     * @return
+     */
+    @Bean("perfect_redis_listener_container")
+    RedisMessageListenerContainer keyExpirationListenerContainer(
+        @Qualifier("perfect_lettuce_connection_factory") LettuceConnectionFactory lettuceConnectionFactory) {
+
+        RedisMessageListenerContainer listenerContainer = new RedisMessageListenerContainer();
+        listenerContainer.setConnectionFactory(lettuceConnectionFactory);
+        return listenerContainer;
     }
 
     /**

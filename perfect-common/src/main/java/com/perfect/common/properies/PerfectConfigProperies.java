@@ -29,4 +29,8 @@ public class PerfectConfigProperies {
     private String fsUsername;
     private String fsGroupid;
 
+    /**
+     * redis 过期时间
+     */
+    private int redisCacheExpiredMin = 30;
 }

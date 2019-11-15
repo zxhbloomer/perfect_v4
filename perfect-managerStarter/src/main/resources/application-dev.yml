@@ -243,6 +243,8 @@ perfect:
     open-aop-log: true
     # 错误日志输出简单模式
     simple-model: true
+    # redis 缓存过期时间min
+    redis-cache-expired-min: 30
   security:
     # 免认证静态资源路径
     anon-resources-url: /css/**,/js/**,/fonts/**,/img/**

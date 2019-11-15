@@ -1,5 +1,6 @@
 package com.perfect.common.utils.redis;
 
+import com.perfect.common.properies.PerfectConfigProperies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,8 @@ public class RedisUtil {
 
     @Autowired
 	private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private PerfectConfigProperies perfectConfigProperies;
 
 	/**
 	 * 设置key-value失效时间，字符串类型key
@@ -234,6 +237,9 @@ public class RedisUtil {
    public boolean putToMap(String key, String item, Object value) {
        try {
            redisTemplate.opsForHash().put(key, item, value);
+           int redisCacheExpiredMin = perfectConfigProperies.getRedisCacheExpiredMin();
+           long redisCacheExpiredSecond = redisCacheExpiredMin * 60;
+           expire(key, redisCacheExpiredSecond);
            return true;
        } catch (Exception e) {
            e.printStackTrace();
@@ -249,6 +255,7 @@ public class RedisUtil {
     * @param time 时间(秒) 注意:如果已存在的hash表有时间,这里将会替换原有的时间
     * @return true 成功 false失败
     */
+   @Deprecated
    public boolean putToMap(String key, String item, Object value, long time) {
        try {
            redisTemplate.opsForHash().put(key, item, value);
