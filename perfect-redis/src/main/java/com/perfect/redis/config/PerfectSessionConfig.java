@@ -16,17 +16,13 @@ import java.util.List;
  *
  */
 @Configuration
-@EnableConfigurationProperties(PerfectConfigProperies.class)
 public class PerfectSessionConfig extends RedisHttpSessionConfiguration {
-
-    @Autowired
-    private PerfectConfigProperies perfectConfigProperies;
 
     public PerfectSessionConfig() {
         List<HttpSessionListener> list = new ArrayList<>();
         list.add(new SpringHttpSessionListener());
         this.setHttpSessionListeners(list);
-//        this.setMaxInactiveIntervalInSeconds(perfectConfigProperies.getRedisCacheExpiredMin() * 60);
+        this.setMaxInactiveIntervalInSeconds(30 * 60);
     }
 
     /**
