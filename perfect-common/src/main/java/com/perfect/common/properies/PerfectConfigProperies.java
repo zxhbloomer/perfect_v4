@@ -3,12 +3,14 @@ package com.perfect.common.properies;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * @author zxh
  */
 @Configuration
 @ConfigurationProperties(prefix = "perfect.config")
+@PropertySource("classpath:application.yml")
 @Data
 public class PerfectConfigProperies {
 

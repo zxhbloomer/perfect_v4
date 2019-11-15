@@ -6,8 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.perfect.security.properties.PerfectSecurityProperties;
@@ -32,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @EnableConfigurationProperties({PerfectSecurityProperties.class})
 @EnableCaching
 @EnableRabbit
+@ServletComponentScan
 public class ManagerClientResourceServerStart {
 
     public static ConfigurableApplicationContext config;

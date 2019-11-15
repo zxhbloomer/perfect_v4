@@ -88,7 +88,6 @@ public class PerfectAuthenticationSucessHandler implements AuthenticationSuccess
         userSessionBo.setTenantAdmin(false);
 
         // 保存到redis中
-        redisUtil.putToMap(PerfectConstant.SESSION_PREFIX.SESSION_USER_PREFIX_PREFIX, sessionId, userJson);
         HttpSession session = ServletUtil.getSession();
         String key = PerfectConstant.SESSION_PREFIX.SESSION_USER_PREFIX_PREFIX + "_" + sessionId;
         if (ServletUtil.getUserSession() != null) {
