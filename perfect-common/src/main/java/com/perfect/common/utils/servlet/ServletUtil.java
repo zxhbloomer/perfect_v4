@@ -1,19 +1,14 @@
 package com.perfect.common.utils.servlet;
 
-import com.alibaba.fastjson.JSON;
-import com.perfect.common.constant.PerfectConstant;
-import com.perfect.common.utils.redis.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public class ServletUtil {
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-    @Autowired
-    private RedisUtil redisUtil;
+import com.perfect.common.constant.PerfectConstant;
+
+public class ServletUtil {
 
     /**
      * 获取session
@@ -36,5 +31,4 @@ public class ServletUtil {
         String key = PerfectConstant.SESSION_PREFIX.SESSION_USER_PREFIX_PREFIX + "_" + sessionId;
         return session.getAttribute(key);
     }
-
 }

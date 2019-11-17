@@ -110,7 +110,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUserEntity> impl
     @Override
     public UserSessionBo getUserBean(long user_id){
         MUserEntity mUserEntity = mUserMapper.selectById(user_id);
-        MStaffVo mStaffVo = imStaffService.selectByid(mUserEntity.getId());
+        MStaffVo mStaffVo = imStaffService.selectByid(mUserEntity.getStaff_id());
         STentantVo sTentantVo = iTentantService.selectByid(mStaffVo != null ? mStaffVo.getTentant_id() : null);
         UserSessionBo userSessionBo = new UserSessionBo();
         userSessionBo.setUser_info(mUserEntity);

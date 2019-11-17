@@ -28,7 +28,7 @@ public interface IMOrgService extends IService<MOrgEntity> {
     /**
      * 获取所有数据
      */
-    List<MOrgVo> select(MOrgVo searchCondition) ;
+    List<MOrgTreeVo> select(MOrgVo searchCondition) ;
 
     /**
      * 获取所选id的数据

@@ -84,6 +84,16 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     List<MOrgTreeVo> getTreeList(MOrgTreeVo searchCondition);
 
     /**
+     * 左侧树查询
+     */
+    @Select("    "
+            + COMMON_TREE_SELECT
+            + "  where true                                                                                       "
+            //+ "    and (t2.tentant_id = #{p1.tentant_id,jdbcType=BIGINT})                                         "
+            + "      ")
+    List<MOrgTreeVo> getList(MOrgTreeVo searchCondition);
+
+    /**
      * 页面查询列表
      * @param page
      * @param searchCondition
@@ -108,11 +118,8 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("    "
         + COMMON_TREE_SELECT
         + "  where true "
-        + "    and (t1.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)  "
-        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)  "
-        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                 "
         + "      ")
-    List<MOrgVo> select(@Param("p1") MOrgVo searchCondition);
+    List<MOrgTreeVo> select(@Param("p1") MOrgVo searchCondition);
 
     /**
      * 没有分页，按id筛选条件

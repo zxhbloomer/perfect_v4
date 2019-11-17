@@ -78,13 +78,12 @@ public class PerfectAuthenticationSucessHandler implements AuthenticationSuccess
      */
     public void setUserSession(long user_id) {
         UserSessionBo userSessionBo = iMUserService.getUserBean(user_id);
-        String userJson = JSON.toJSONString(userSessionBo);
         String sessionId = ServletUtil.getSession().getId();
 
         // 设置session id
         userSessionBo.setSession_id(sessionId);
         userSessionBo.setAppKey("PC_APP");
-        // todo：租户管理员设置
+        userSessionBo.setTenant_Id(userSessionBo.getStaff_info().getTentant_id());
         userSessionBo.setTenantAdmin(false);
 
         // 保存到redis中
@@ -92,9 +91,9 @@ public class PerfectAuthenticationSucessHandler implements AuthenticationSuccess
         String key = PerfectConstant.SESSION_PREFIX.SESSION_USER_PREFIX_PREFIX + "_" + sessionId;
         if (ServletUtil.getUserSession() != null) {
             session.removeAttribute(key);
-            session.setAttribute(key, userJson);
+            session.setAttribute(key, userSessionBo);
         } else {
-            session.setAttribute(key, userJson);
+            session.setAttribute(key, userSessionBo);
         }
     }
 }

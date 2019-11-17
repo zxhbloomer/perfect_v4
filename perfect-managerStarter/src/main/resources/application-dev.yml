@@ -245,7 +245,6 @@ perfect:
     simple-model: true
     # redis 缓存过期时间min
     redis-cache-expired-min: 30
-    xx: 100
   security:
     # 免认证静态资源路径
     anon-resources-url: /css/**,/js/**,/fonts/**,/img/**

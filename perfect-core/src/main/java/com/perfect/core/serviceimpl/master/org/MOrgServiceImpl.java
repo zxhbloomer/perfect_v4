@@ -1,9 +1,9 @@
 package com.perfect.core.serviceimpl.master.org;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.entity.master.org.MOrgEntity;
+import com.perfect.bean.entity.sys.rabc.menu.SMenuEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
@@ -13,12 +13,11 @@ import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
-import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
+import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.mapper.master.org.MOrgMapper;
 import com.perfect.core.service.master.org.IMOrgService;
-import com.perfect.core.service.master.org.IMPositionService;
-import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,10 +60,11 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
      * @throws IllegalAccessException
      */
     @Override
-    public List<MOrgVo> select(MOrgVo searchCondition) {
+    public List<MOrgTreeVo> select(MOrgVo searchCondition) {
         // 查询 数据
-        List<MOrgVo> list = mapper.select(searchCondition);
-        return list;
+        List<MOrgTreeVo> list = mapper.select(searchCondition);
+        List<MOrgTreeVo> rtnList = TreeUtil.getTreeList(list);
+        return rtnList;
     }
 
     /**
@@ -104,9 +104,54 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
     public InsertResult<Integer> insert(MOrgEntity entity) {
         // 插入前check
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
+
+        // 设置entity
+        entity.setTentant_id(((UserSessionBo) ServletUtil.getUserSession()).getTenant_Id());
+        switch (entity.getType()) {
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENTANT:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENTANT_SERIAL_TYPE);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT_SERIAL_TYPE);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_STAFF:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_STAFF_SERIAL_TYPE);
+                break;
+        }
+
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
+        // xxxxxxxxx
+
+        // 获取父亲的entity
+        MOrgEntity parentEntity = getById(entity.getParent_id());
+        Integer son_count = parentEntity.getSon_count();
+        son_count = (son_count == null ? 0 : son_count)  + 1;
+        parentEntity.setSon_count(son_count);
+        // 保存父亲的儿子的个数
+        mapper.updateById(parentEntity);
+
+        // 获取父亲的code
+        String parentCode = parentEntity.getCode();
+        // 计算当前编号
+        // 获取当前son_count
+        // 0 代表前面补充0
+        // 4 代表长度为4
+        // d 代表参数为正数型
+        String str = String.format("%04d", son_count);
+        entity.setCode(parentCode + str);
+        entity.setSon_count(0);
+
         return InsertResultUtil.OK(mapper.insert(entity));
     }
 

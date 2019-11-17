@@ -74,4 +74,23 @@ public class PerfectDictConstant {
      * 登录用户类型：
      */
     public static final String DICT_USR_LOGIN_TYPE  = "usr_login_type";
+
+    /**
+     * 组织架构类型：
+     */
+    public static final String DICT_ORG_SETTING_TYPE  = "org_setting_type";
+    public static final String DICT_ORG_SETTING_TYPE_TENTANT  = "10";
+    public static final String DICT_ORG_SETTING_TYPE_TENTANT_SERIAL_TYPE  = "s_tenant";
+    public static final String DICT_ORG_SETTING_TYPE_GROUP  = "20";
+    public static final String DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE  = "m_group";
+    public static final String DICT_ORG_SETTING_TYPE_COMPANY  = "30";
+    public static final String DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE  = "m_company";
+    public static final String DICT_ORG_SETTING_TYPE_DEPT  = "40";
+    public static final String DICT_ORG_SETTING_TYPE_DEPT_SERIAL_TYPE  = "m_dept";
+    public static final String DICT_ORG_SETTING_TYPE_POSITION  = "50";
+    public static final String DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE  = "m_position";
+    public static final String DICT_ORG_SETTING_TYPE_STAFF  = "60";
+    public static final String DICT_ORG_SETTING_TYPE_STAFF_SERIAL_TYPE  = "m_staff";
+
+
 }

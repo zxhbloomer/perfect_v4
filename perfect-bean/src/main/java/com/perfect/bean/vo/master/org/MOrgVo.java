@@ -57,11 +57,6 @@ public class MOrgVo implements Serializable {
      */
     private String type;
 
-    /**
-     * 排序
-     */
-    private Integer sort;
-
     private Long c_id;
 
     private LocalDateTime c_time;

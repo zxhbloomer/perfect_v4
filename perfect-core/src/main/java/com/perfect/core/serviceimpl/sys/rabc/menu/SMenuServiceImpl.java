@@ -174,7 +174,7 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
         // 保存父亲的儿子的个数
         mapper.updateById(parentEntity);
 
-        // 获取福清的code
+        // 获取父亲的code
         String parentCode = parentEntity.getCode();
         // 计算当前编号
         // 获取当前son_count

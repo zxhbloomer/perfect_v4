@@ -58,16 +58,16 @@ public class MOrgEntity implements Serializable {
     private String code;
 
     /**
+     * 父菜单ID
+     */
+    @TableField("son_count")
+    private Integer son_count;
+
+    /**
      * 类型：10（租户）、20（集团）、30（公司）、40（部门）、50（岗位）、60（人员）
      */
     @TableField("type")
     private String type;
-
-    /**
-     * 排序
-     */
-    @TableField("sort")
-    private Integer sort;
 
     @TableField(value="c_id", fill = FieldFill.INSERT)
     private Long c_id;

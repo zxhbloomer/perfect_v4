@@ -59,10 +59,9 @@ public class MasterOrgController extends BaseController {
     @ApiOperation("根据参数id，获取组织架构主表信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<MOrgVo>>> list(@RequestBody(required = false)
-        MOrgVo searchCondition)  {
-        IPage<MOrgVo> entity = null;
-        return ResponseEntity.ok().body(ResultUtil.OK(entity));
+    public ResponseEntity<JsonResult<List<MOrgTreeVo>>> list(@RequestBody(required = false) MOrgVo searchCondition)  {
+        List<MOrgTreeVo> list = service.select(searchCondition);
+        return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
     @SysLog("组织架构主表数据更新保存")
@@ -88,26 +87,6 @@ public class MasterOrgController extends BaseController {
         } else {
             throw new InsertErrorException("新增保存失败。");
         }
-    }
-
-    @SysLog("组织架构主表数据导出")
-    @ApiOperation("根据选择的数据，组织架构主表数据导出")
-    @PostMapping("/export_all")
-    public void exportAll(@RequestBody(required = false) MOrgVo searchCondition, HttpServletResponse response) throws IOException {
-        List<MOrgVo> searchResult = service.select(searchCondition);
-        List<MDeptExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MDeptExportVo.class);
-        ExcelUtil<MDeptExportVo> util = new ExcelUtil<>(MDeptExportVo.class);
-        util.exportExcel("组织架构主表数据导出", "组织架构主表数据", rtnList, response);
-    }
-
-    @SysLog("组织架构主表数据导出")
-    @ApiOperation("根据选择的数据，组织架构主表数据导出")
-    @PostMapping("/export_selection")
-    public void exportSelection(@RequestBody(required = false) List<MOrgVo> searchConditionList, HttpServletResponse response) throws IOException {
-        List<MOrgEntity> searchResult = service.selectIdsIn(searchConditionList);
-        List<MPositionExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MPositionExportVo.class);
-        ExcelUtil<MPositionExportVo> util = new ExcelUtil<>(MPositionExportVo.class);
-        util.exportExcel("组织架构主表数据导出", "组织架构主表数据", rtnList, response);
     }
 
     @SysLog("组织架构主表数据逻辑删除复原")
