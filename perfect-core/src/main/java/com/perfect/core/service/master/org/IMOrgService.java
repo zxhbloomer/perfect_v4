@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
+import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
 
@@ -30,17 +31,6 @@ public interface IMOrgService extends IService<MOrgEntity> {
      */
     List<MOrgTreeVo> select(MOrgVo searchCondition) ;
 
-    /**
-     * 获取所选id的数据
-     */
-    List<MOrgEntity> selectIdsIn(List<MOrgVo> searchCondition) ;
-
-    /**
-     * 批量删除复原
-     * @param searchCondition
-     * @return
-     */
-    void deleteByIdsIn(List<MOrgVo> searchCondition);
 
     /**
      * 插入一条记录（选择字段，策略插入）
@@ -62,4 +52,10 @@ public interface IMOrgService extends IService<MOrgEntity> {
      * @return
      */
     MOrgVo selectByid(Long id);
+
+    /**
+     * 新增模式下，可新增子节点得类型
+     * @return
+     */
+    List<NameAndValueVo> getCorrectTypeByInsertStatus(MOrgVo vo);
 }

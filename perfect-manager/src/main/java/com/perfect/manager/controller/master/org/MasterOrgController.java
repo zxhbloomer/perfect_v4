@@ -5,6 +5,7 @@ import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
+import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.MDeptExportVo;
 import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MPositionExportVo;
@@ -89,12 +90,13 @@ public class MasterOrgController extends BaseController {
         }
     }
 
-    @SysLog("组织架构主表数据逻辑删除复原")
-    @ApiOperation("根据参数id，逻辑删除复原数据")
-    @PostMapping("/delete")
+    @SysLog("新增模式下，可新增子节点得类型")
+    @ApiOperation("新增模式下，可新增子节点得类型")
+    @PostMapping("/get_type")
     @ResponseBody
-    public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false) List<MOrgVo> searchConditionList) {
-        service.deleteByIdsIn(searchConditionList);
-        return ResponseEntity.ok().body(ResultUtil.OK("OK"));
+    public ResponseEntity<JsonResult<List<NameAndValueVo>>> getCorrectTypeByInsertStatus(@RequestBody(required = false) MOrgVo bean) {
+        List<NameAndValueVo> rtn = service.getCorrectTypeByInsertStatus(bean);
+        return ResponseEntity.ok().body(ResultUtil.OK(rtn));
     }
+
 }

@@ -88,11 +88,20 @@ public class CommonComponentServiceImpl extends ServiceImpl<CommonComponentMappe
     }
 
     /**
-     * 下拉选项卡：按参数查询
+     * 下拉选项卡：按参数查询，包含filter
      * @return
      */
     @Override
     public List<NameAndValueVo> selectComponentFilter(DictConditionVo condition) {
         return mapper.getSelectDictDataNormalFilter(condition);
+    }
+
+    /**
+     * 根据字典类型，字典编码，获取字典值
+     * @return
+     */
+    @Override
+    public String getDictName(String code, String dict_value) {
+        return mapper.getDictName(code, dict_value);
     }
 }

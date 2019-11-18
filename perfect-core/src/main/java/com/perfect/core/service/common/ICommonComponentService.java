@@ -46,4 +46,10 @@ public interface ICommonComponentService extends IService<NameAndValueVo> {
      * @return
      */
     List<NameAndValueVo> selectComponentFilter(DictConditionVo condition);
+
+    /**
+     * 根据字典类型，字典编码，获取字典值
+     * @return
+     */
+    String getDictName(String code, String dict_value);
 }

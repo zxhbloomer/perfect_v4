@@ -53,6 +53,11 @@ public class MOrgVo implements Serializable {
     private String code;
 
     /**
+     * 筛选
+     */
+    private String [] filter_para;
+
+    /**
      * 类型：10（租户）、20（集团）、30（公司）、40（部门）、50（岗位）、60（人员）
      */
     private String type;

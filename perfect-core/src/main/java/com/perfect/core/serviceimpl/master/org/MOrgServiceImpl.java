@@ -11,12 +11,14 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
+import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
 import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.mapper.master.org.MOrgMapper;
+import com.perfect.core.service.common.ICommonComponentService;
 import com.perfect.core.service.master.org.IMOrgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,9 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
 
     @Autowired
     private MOrgMapper mapper;
+
+    @Autowired
+    ICommonComponentService iCommonComponentService;
 
 
     /**
@@ -68,33 +73,6 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
     }
 
     /**
-     * 获取列表，根据id查询所有数据
-     *
-     * @param searchCondition
-     * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     */
-    @Override
-    public List<MOrgEntity> selectIdsIn(List<MOrgVo> searchCondition) {
-        // 查询 数据
-        List<MOrgEntity> list = mapper.selectIdsIn(searchCondition);
-        return list;
-    }
-
-    /**
-     * 批量删除复原
-     * @param searchCondition
-     * @return
-     */
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void deleteByIdsIn(List<MOrgVo> searchCondition) {
-        List<MOrgEntity> list = mapper.selectIdsIn(searchCondition);
-        saveOrUpdateBatch(list, 500);
-    }
-
-    /**
      * 插入一条记录（选择字段，策略插入）
      * @param entity 实体对象
      * @return
@@ -102,9 +80,6 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public InsertResult<Integer> insert(MOrgEntity entity) {
-        // 插入前check
-        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
-
         // 设置entity
         entity.setTentant_id(((UserSessionBo) ServletUtil.getUserSession()).getTenant_Id());
         switch (entity.getType()) {
@@ -127,6 +102,9 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
                 entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_STAFF_SERIAL_TYPE);
                 break;
         }
+
+        // 插入前check
+        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
 
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
@@ -163,6 +141,29 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public UpdateResult<Integer> update(MOrgEntity entity) {
+        // 设置entity
+        entity.setTentant_id(((UserSessionBo) ServletUtil.getUserSession()).getTenant_Id());
+        switch (entity.getType()) {
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENTANT:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENTANT_SERIAL_TYPE);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT_SERIAL_TYPE);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_STAFF:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_STAFF_SERIAL_TYPE);
+                break;
+        }
+
         // 更新前check
         CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -183,39 +184,14 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
     }
 
     /**
-     * 获取列表，查询所有数据
+     * 查询添加的子节点是否合法
      *
-     * @param code
      * @return
      */
-    public List<MOrgEntity> selectByCode(String code, Long equal_id, Long not_equal_id) {
+    public Integer selectNodeInsertStatus(String code, String type) {
         // 查询 数据
-        List<MOrgEntity> list = mapper.selectByCode(code, equal_id, not_equal_id);
-        return list;
-    }
-
-    /**
-     * 获取列表，查询所有数据
-     *
-     * @param name
-     * @return
-     */
-    public List<MOrgEntity> selectByName(String name, Long equal_id, Long not_equal_id) {
-        // 查询 数据
-        List<MOrgEntity> list = mapper.selectByName(name, equal_id, not_equal_id);
-        return list;
-    }
-
-    /**
-     * 获取列表，查询所有数据
-     *
-     * @param name
-     * @return
-     */
-    public List<MOrgEntity> selectBySimpleName(String name, Long equal_id, Long not_equal_id) {
-        // 查询 数据
-        List<MOrgEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id);
-        return list;
+        Integer count = mapper.selectNodeInsertStatus(code, type);
+        return count;
     }
 
     /**
@@ -223,7 +199,36 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
      * @return
      */
     public CheckResult checkLogic(MOrgEntity entity, String moduleType){
-
+        switch (moduleType) {
+            case CheckResult.INSERT_CHECK_TYPE:
+                // 查看子节点是否正确：租户->集团->企业->部门->岗位->员工
+                Integer countInsert = this.selectNodeInsertStatus(entity.getCode(),entity.getType());
+                if(countInsert > 0){
+                    String nodeTypeName = iCommonComponentService.getDictName(PerfectDictConstant.DICT_ORG_SETTING_TYPE, entity.getType());
+                    return CheckResultUtil.NG("新增保存出错：新增的子节点类型不能是" + "【" + nodeTypeName + "】", countInsert);
+                }
+                break;
+            case CheckResult.UPDATE_CHECK_TYPE:
+                // 查看子节点是否正确：租户->集团->企业->部门->岗位->员工
+                Integer countUpdate = this.selectNodeInsertStatus(entity.getCode(),entity.getType());
+                if(countUpdate > 0){
+                    String nodeTypeName = iCommonComponentService.getDictName(PerfectDictConstant.DICT_ORG_SETTING_TYPE, entity.getType());
+                    return CheckResultUtil.NG("新增保存出错：更新的当前节点类型不能是" + "【" + nodeTypeName + "】", countUpdate);
+                }
+                break;
+            default:
+        }
         return CheckResultUtil.OK();
+    }
+
+    /**
+     * 新增模式下，可新增子节点得类型
+     * @return
+     */
+    @Override
+    public List<NameAndValueVo> getCorrectTypeByInsertStatus(MOrgVo vo) {
+        // 查询 数据
+        List<NameAndValueVo> rtn = mapper.getCorrectTypeByInsertStatus(vo);
+        return rtn;
     }
 }
