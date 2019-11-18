@@ -56,6 +56,7 @@ public class MOrgVo implements Serializable {
      * 类型：10（租户）、20（集团）、30（公司）、40（部门）、50（岗位）、60（人员）
      */
     private String type;
+    private String type_text;
 
     private Long c_id;
 

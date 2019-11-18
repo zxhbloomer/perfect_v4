@@ -50,10 +50,14 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
             + "                 t2.parent_id = t1.id                                                                        "
             + "               )                                                                                             "
             + "                  select t1.* ,                                                                              "
+            + "                     t2.code,                                                                                "
             + "                     t3.name as label,                                                                       "
             + "                     t3.name,                                                                                "
             + "                     t3.simple_name,                                                                         "
-            + "                     t4.label                                                                                "
+            + "                     t2.type,                                                                                "
+            + "                     t4.label as type_text,                                                                  "
+            + "                     t2.son_count,                                                                           "
+            + "                     t2.u_time                                                                               "
             + "                        from cte t1                                                                          "
             + "          inner join m_org t2 on t1.id = t2.id                                                               "
             + "           left join                                                                                         "
@@ -118,6 +122,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("    "
         + COMMON_TREE_SELECT
         + "  where true "
+        + "    and  (t2.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)  "
         + "      ")
     List<MOrgTreeVo> select(@Param("p1") MOrgVo searchCondition);
 

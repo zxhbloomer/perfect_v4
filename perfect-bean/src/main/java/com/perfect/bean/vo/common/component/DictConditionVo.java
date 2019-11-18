@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "下拉选项的数据", description = "下拉选项的数据")
-public class NameAndValueVo implements Serializable {
+public class DictConditionVo implements Serializable {
     private static final long serialVersionUID = 6697222826158984527L;
 
     /**
@@ -29,4 +29,10 @@ public class NameAndValueVo implements Serializable {
     private String dict_type_code;
     private Long dict_data_id;
 
+    /**
+     * 查询参数
+     */
+    private String para;
+
+    private String [] filter_para;
 }

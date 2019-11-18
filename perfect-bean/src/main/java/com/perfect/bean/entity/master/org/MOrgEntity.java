@@ -58,7 +58,7 @@ public class MOrgEntity implements Serializable {
     private String code;
 
     /**
-     * 父菜单ID
+     * 儿子个数
      */
     @TableField("son_count")
     private Integer son_count;

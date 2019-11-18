@@ -1,6 +1,7 @@
 package com.perfect.core.service.common;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.perfect.bean.vo.common.component.DictConditionVo;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.common.component.PerfectComponentVo;
 
@@ -38,5 +39,11 @@ public interface ICommonComponentService extends IService<NameAndValueVo> {
      * 下拉选项卡：按参数查询
      * @return
      */
-    List<NameAndValueVo> selectComponent(NameAndValueVo condition);
+    List<NameAndValueVo> selectComponent(DictConditionVo condition);
+
+    /**
+     * 下拉选项卡：按参数查询，含有filter
+     * @return
+     */
+    List<NameAndValueVo> selectComponentFilter(DictConditionVo condition);
 }

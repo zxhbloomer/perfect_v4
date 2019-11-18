@@ -53,7 +53,7 @@ public class SMenuEntity implements Serializable {
     private Long parent_id;
 
     /**
-     * 父菜单ID
+     * 儿子个数
      */
     @TableField("son_count")
     private Integer son_count;

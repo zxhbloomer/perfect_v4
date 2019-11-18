@@ -50,7 +50,7 @@ public class SMenuVo extends TreeNode implements Serializable {
     private Long parent_id;
 
     /**
-     * 父菜单ID
+     * 儿子个数
      */
     private Integer son_count;
 

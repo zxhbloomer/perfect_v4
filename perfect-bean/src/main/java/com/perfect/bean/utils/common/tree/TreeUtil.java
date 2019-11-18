@@ -51,10 +51,14 @@ public class TreeUtil {
                     T parentBean = getParentLevelData(parentList, bean.getParent_id());
                     List<T> childrenList = new ArrayList<>();
                     childrenList.add(bean);
-                    if (parentBean.getChildren() == null) {
-                        parentBean.setChildren(childrenList);
+                    if(parentBean != null){
+                        if (parentBean.getChildren() == null) {
+                            parentBean.setChildren(childrenList);
+                        } else {
+                            parentBean.getChildren().addAll(childrenList);
+                        }
                     } else {
-                        parentBean.getChildren().addAll(childrenList);
+                        rtnList.add(bean);
                     }
                     // 2：设置父节点发生错误，2json时发生递归
                     // bean.setParent(parentBean);
@@ -62,9 +66,6 @@ public class TreeUtil {
             }
         }
 
-        /**
-         *
-         */
         return rtnList;
     }
 
@@ -77,10 +78,12 @@ public class TreeUtil {
      * @return
      */
     private static <T extends ITreeNode> T getParentLevelData(List<T> beans, Long parentid) {
-        for (T bean : beans) {
-            if (bean.getId().equals(parentid)) {
-                bean.setLeaf(false);
-                return bean;
+        if(beans != null) {
+            for (T bean : beans) {
+                if (bean.getId().equals(parentid)) {
+                    bean.setLeaf(false);
+                    return bean;
+                }
             }
         }
         return null;

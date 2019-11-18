@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
+import com.perfect.bean.vo.common.component.DictConditionVo;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.common.component.PerfectComponentVo;
 import com.perfect.core.service.common.ICommonComponentService;
@@ -50,8 +51,15 @@ public class CommonComponentController extends BaseController {
     @ApiOperation("共通模块数据下载，下拉选项，按传入参数来获取下拉选项")
     @PostMapping("/select/bypara/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<List<NameAndValueVo>>> getListbypara(HttpServletResponse response ,@RequestBody NameAndValueVo condition) throws IOException {
-        return ResponseEntity.ok().body(ResultUtil.OK(service.selectComponent(condition)));
+    public ResponseEntity<JsonResult<List<NameAndValueVo>>> getListbypara(HttpServletResponse response ,@RequestBody
+                DictConditionVo condition) {
+        List<NameAndValueVo> listRtn = null;
+        if(condition.getFilter_para() != null || condition.getFilter_para().length > 0){
+            listRtn = service.selectComponentFilter(condition);
+        } else {
+            listRtn = service.selectComponent(condition);
+        }
+        return ResponseEntity.ok().body(ResultUtil.OK(listRtn));
     }
 
 }

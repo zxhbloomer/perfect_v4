@@ -2,6 +2,7 @@ package com.perfect.core.serviceimpl.common;
 
 import java.util.List;
 
+import com.perfect.bean.vo.common.component.DictConditionVo;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.common.component.PerfectComponentVo;
 import com.perfect.common.constant.PerfectConstant;
@@ -82,7 +83,16 @@ public class CommonComponentServiceImpl extends ServiceImpl<CommonComponentMappe
      */
     @Cacheable(value = PerfectConstant.CACHE_PC.CACHE_DICT_TYPE, key = "#root.targetClass + #root.methodName + #condition.para")
     @Override
-    public List<NameAndValueVo> selectComponent(NameAndValueVo condition) {
+    public List<NameAndValueVo> selectComponent(DictConditionVo condition) {
         return mapper.getSelectDictDataNormal(condition.getPara());
+    }
+
+    /**
+     * 下拉选项卡：按参数查询
+     * @return
+     */
+    @Override
+    public List<NameAndValueVo> selectComponentFilter(DictConditionVo condition) {
+        return mapper.getSelectDictDataNormalFilter(condition);
     }
 }

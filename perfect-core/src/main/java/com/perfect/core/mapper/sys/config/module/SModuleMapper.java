@@ -30,7 +30,7 @@ public interface SModuleMapper extends BaseMapper<SModuleEntity> {
      * @param searchCondition
      * @return
      */
-    @Select("<script>"
+    @Select("   <script>   "
         + "     SELECT                                                        "
         + "         t1.id,                                                  "
         + "         t1.code,                                                "
@@ -79,10 +79,10 @@ public interface SModuleMapper extends BaseMapper<SModuleEntity> {
         + "    and t1.type in "
         + "        <foreach collection='p1.types' item='item' index='index' open='(' separator=',' close=')'>"
         + "         #{item}  "
-        + "        </foreach>"
-        + "   </if>"
+        + "        </foreach>   "
+        + "   </if>   "
         + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
-        + "  </script>")
+        + "  </script>    ")
     IPage<SModuleVo> selectPage(Page<SModuleVo> page, @Param("p1") SModuleVo searchCondition);
 
     /**

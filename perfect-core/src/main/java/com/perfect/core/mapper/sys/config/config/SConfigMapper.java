@@ -64,13 +64,13 @@ public interface SConfigMapper extends BaseMapper<SConfigEntity> {
      * @param searchCondition
      * @return
      */
-    @Select("<script>"
+    @Select("   <script>   "
         + common_select
         + "  where t.id in "
-        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>"
+        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>    "
         + "         #{item.id}  "
-        + "        </foreach>"
-        + "  </script>")
+        + "        </foreach>    "
+        + "  </script>    ")
     List<SConfigVo> selectIdsIn(@Param("p1") List<SConfigVo> searchCondition);
 
     /**

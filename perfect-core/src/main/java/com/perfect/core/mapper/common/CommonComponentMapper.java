@@ -1,5 +1,6 @@
 package com.perfect.core.mapper.common;
 
+import com.perfect.bean.vo.common.component.DictConditionVo;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.common.component.PerfectComponentVo;
 import org.apache.ibatis.annotations.Param;
@@ -21,15 +22,15 @@ import java.util.List;
 public interface CommonComponentMapper extends BaseMapper<NameAndValueVo> {
 
     String common_select_column = "  "
-        + "  SELECT                                                             "
-        + "       t2.label as `name`,                                                     "
-        + "       t2.dict_value as `value`,                                                 "
-        + "       t1.`name` as dict_type_code,                                   "
-        + "       t2.id as dict_data_id                                          "
+
         + "    ";
 
     @Select( "   "
-        +     common_select_column
+        + "  SELECT                                                              "
+        + "       t2.label as `name`,                                            "
+        + "       t2.dict_value as `value`,                                      "
+        + "       t1.`name` as dict_type_code,                                   "
+        + "       t2.id as dict_data_id                                          "
         + "    FROM                                                              "
         + "       s_dict_type t1                                                 "
         + "       INNER JOIN s_dict_data t2 ON t1.id = t2.dict_type_id           "
@@ -39,4 +40,26 @@ public interface CommonComponentMapper extends BaseMapper<NameAndValueVo> {
         + "     order by t2.sort    "
         + "      ")
     List<NameAndValueVo> getSelectDictDataNormal(@Param("p1") String dict_type_code);
+
+    @Select( "  <script>  "
+        + "  SELECT                                                              "
+        + "       t2.label as `name`,                                            "
+        + "       t2.dict_value as `value`,                                      "
+        + "       t1.`name` as dict_type_code,                                   "
+        + "       t2.id as dict_data_id                                          "
+        + "    FROM                                                              "
+        + "       s_dict_type t1                                                 "
+        + "       INNER JOIN s_dict_data t2 ON t1.id = t2.dict_type_id           "
+        + "       AND t1.is_del = 0                                              "
+        + "       AND t2.is_del = 0                                              "
+        + "       AND t1.code = #{p1.para,jdbcType=VARCHAR}                      "
+        + "   <if test='p1.filter_para != null and p1.filter_para.length!=0' >"
+        + "    and t2.dict_value not in                                              "
+        + "        <foreach collection='p1.filter_para' item='item' index='index' open='(' separator=',' close=')'>"
+        + "         #{item}  "
+        + "        </foreach>   "
+        + "   </if>   "
+        + "     order by t2.sort    "
+        + "  </script>     ")
+    List<NameAndValueVo> getSelectDictDataNormalFilter(@Param("p1") DictConditionVo condition);
 }

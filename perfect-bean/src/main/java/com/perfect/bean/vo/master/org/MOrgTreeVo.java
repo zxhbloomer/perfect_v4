@@ -43,9 +43,15 @@ public class MOrgTreeVo extends TreeNode implements Serializable {
     private String code;
 
     /**
+     * 儿子个数
+     */
+    private Integer son_count;
+
+    /**
      * 类型：10（租户）、20（集团）、30（公司）、40（部门）、50（岗位）、60（人员）
      */
     private String type;
+    private String type_text;
 
     private String depth_id;
     public List<Long> getDepth_id(){
@@ -71,6 +77,14 @@ public class MOrgTreeVo extends TreeNode implements Serializable {
     private String simple_name;
 
     private String label;
+
+    private Long c_id;
+
+    private LocalDateTime c_time;
+
+    private Long u_id;
+
+    private LocalDateTime u_time;
 
     /**
      * 数据版本，乐观锁使用

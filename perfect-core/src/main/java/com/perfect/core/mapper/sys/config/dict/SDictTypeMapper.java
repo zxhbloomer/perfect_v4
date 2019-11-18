@@ -57,14 +57,14 @@ public interface SDictTypeMapper extends BaseMapper<SDictTypeEntity> {
      * @param searchCondition
      * @return
      */
-    @Select("<script>"
+    @Select("   <script>   "
         + " select t.* "
         + "   from s_dict_type t "
         + "  where t.id in "
-        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>"
+        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>    "
         + "         #{item.id}  "
-        + "        </foreach>"
-        + "  </script>")
+        + "        </foreach>    "
+        + "  </script>    ")
     List<SDictTypeEntity> selectIdsIn(@Param("p1") List<SDictTypeVo> searchCondition );
 
     /**

@@ -92,13 +92,13 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
      * @param searchCondition
      * @return
      */
-    @Select("<script>"
+    @Select("    <script>    "
         + common_select
         + "  where t.id in "
-        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>"
+        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>    "
         + "         #{item.id}  "
-        + "        </foreach>"
-        + "  </script>")
+        + "        </foreach>    "
+        + "  </script>    ")
     List<SDictDataVo> selectIdsIn(@Param("p1") List<SDictDataVo> searchCondition );
 
     /**
