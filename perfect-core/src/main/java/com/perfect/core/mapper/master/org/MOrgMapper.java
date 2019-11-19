@@ -7,6 +7,7 @@ import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
+import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -58,7 +59,8 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
             + "                     t2.type,                                                                                "
             + "                     t4.label as type_text,                                                                  "
             + "                     t2.son_count,                                                                           "
-            + "                     t2.u_time                                                                               "
+            + "                     t2.u_time,                                                                              "
+            + "                     t2.dbversion                                                                            "
             + "                        from cte t1                                                                          "
             + "          inner join m_org t2 on t1.id = t2.id                                                               "
             + "           left join                                                                                         "
@@ -159,19 +161,30 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
      * @return
      */
     @Select("  <script>                                                                                              "
-        + "         SELECT                                                                                           "
-        + "         	*                                                                                            "
-        + "         FROM                                                                                             "
-        + "         	v_dict_info t1                                                                               "
-        + "         WHERE                                                                                            "
-        + "         	t1.dict_value >  #{p1}                                                                       "
+        + "           SELECT                                                                                         "
+        + "               t2.label as `name`,                                                                        "
+        + "               t2.dict_value as `value`,                                                                  "
+        + "               t1.`name` as dict_type_code,                                                               "
+        + "               t2.id as dict_data_id                                                                      "
+        + "            FROM                                                                                          "
+        + "               s_dict_type t1                                                                             "
+        + "               INNER JOIN s_dict_data t2 ON t1.id = t2.dict_type_id                                       "
+        + "               AND t1.is_del = 0  AND t2.is_del = 0                                                       "
+        + "           where                                                                                          "
+        + "               t1.code =  '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE + "'                             "
+        + "           and t2.dict_value >=  #{p1.type,jdbcType=VARCHAR}                                              "
+        + "		      and exists (                                                                                   "
+        + "		   					select t.type                                                                    "
+        + "		   					  from m_org t                                                                   "
+        + "		   					 where t.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%')                      "
+        + "		   					   and t2.dict_value >= t.type                                                   "
+        + "		   	            )                                                                                    "
         + "   <if test='p1.filter_para != null and p1.filter_para.length!=0' >                                       "
-        + "         and t1.dict_value not in                                                                         "
+        + "         and t2.dict_value not in                                                                         "
         + "        <foreach collection='p1.filter_para' item='item' index='index' open='(' separator=',' close=')'>  "
         + "         #{item}                                                                                          "
         + "        </foreach>                                                                                        "
         + "   </if>                                                                                                  "
-        + "           and t1.is_del = 0                                                                              "
         + "   </script>                                                                                              ")
     List<NameAndValueVo> getCorrectTypeByInsertStatus(@Param("p1") MOrgVo vo);
 }

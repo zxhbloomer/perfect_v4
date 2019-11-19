@@ -95,6 +95,9 @@ import java.util.List;
         Long jobId = job.getId();
         String jobGroup = job.getJob_group_code();
         job.setIs_effected(ScheduleConstants.Status.PAUSE.getValue());
+
+        job.setC_id(null);
+        job.setC_time(null);
         int rows = jobMapper.updateById(job);
 //        if (rows > 0) {
 //            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
@@ -113,6 +116,9 @@ import java.util.List;
         Long jobId = job.getId();
         String jobGroup = job.getJob_group_code();
         job.setIs_effected(ScheduleConstants.Status.NORMAL.getValue());
+
+        job.setC_id(null);
+        job.setC_time(null);
         int rows = jobMapper.updateById(job);
 //        if (rows > 0) {
 //            scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
@@ -132,6 +138,8 @@ import java.util.List;
         String jobGroup = job.getJob_group_code();
         job.setIs_effected(ScheduleConstants.Status.PAUSE.getValue());
         job.setIs_del(true);
+        job.setC_id(null);
+        job.setC_time(null);
         int rows = jobMapper.updateById(job);
 //        if (rows > 0) {
 //            scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
@@ -215,6 +223,9 @@ import java.util.List;
     @Transactional(rollbackFor = Exception.class)
     public int updateJob(SJobEntity job) throws SchedulerException, TaskException {
         SJobEntity properties = selectJobById(job.getId());
+
+        job.setC_id(null);
+        job.setC_time(null);
         int rows = jobMapper.updateById(job);
         if (rows > 0) {
             updateSchedulerJob(job, properties.getJob_group_code());
@@ -285,6 +296,8 @@ import java.util.List;
     @Override
     public UpdateResult<Integer> update(SJobEntity entity) {
         // 更新逻辑保存
+        entity.setC_id(null);
+        entity.setC_time(null);
         return UpdateResultUtil.OK(jobMapper.updateById(entity));
     }
 }

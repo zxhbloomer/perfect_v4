@@ -158,6 +158,8 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUserEntity> impl
             throw new BusinessException(cr.getMessage());
         }
         // 更新逻辑保存
+        entity.setC_id(null);
+        entity.setC_time(null);
         return UpdateResultUtil.OK(mUserMapper.updateById(entity));
     }
 

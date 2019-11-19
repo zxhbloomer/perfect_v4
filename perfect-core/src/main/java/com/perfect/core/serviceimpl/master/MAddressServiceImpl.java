@@ -136,6 +136,8 @@ public class MAddressServiceImpl extends ServiceImpl<MAddressMapper, MAddressEnt
             throw new BusinessException(cr.getMessage());
         }
         // 更新逻辑保存
+        entity.setC_id(null);
+        entity.setC_time(null);
         return UpdateResultUtil.OK(mapper.updateById(entity));
     }
 

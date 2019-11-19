@@ -109,14 +109,14 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
-        // xxxxxxxxx
-
         // 获取父亲的entity
         MOrgEntity parentEntity = getById(entity.getParent_id());
         Integer son_count = parentEntity.getSon_count();
         son_count = (son_count == null ? 0 : son_count)  + 1;
         parentEntity.setSon_count(son_count);
         // 保存父亲的儿子的个数
+        parentEntity.setC_id(null);
+        parentEntity.setC_time(null);
         mapper.updateById(parentEntity);
 
         // 获取父亲的code
@@ -170,6 +170,8 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
             throw new BusinessException(cr.getMessage());
         }
         // 更新逻辑保存
+        entity.setC_id(null);
+        entity.setC_time(null);
         return UpdateResultUtil.OK(mapper.updateById(entity));
     }
 

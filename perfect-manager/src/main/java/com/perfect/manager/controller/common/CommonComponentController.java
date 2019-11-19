@@ -54,7 +54,7 @@ public class CommonComponentController extends BaseController {
     public ResponseEntity<JsonResult<List<NameAndValueVo>>> getListbypara(HttpServletResponse response ,@RequestBody
                 DictConditionVo condition) {
         List<NameAndValueVo> listRtn = null;
-        if(condition.getFilter_para() != null || condition.getFilter_para().length > 0){
+        if(condition.getFilter_para() != null && condition.getFilter_para().length > 0){
             listRtn = service.selectComponentFilter(condition);
         } else {
             listRtn = service.selectComponent(condition);

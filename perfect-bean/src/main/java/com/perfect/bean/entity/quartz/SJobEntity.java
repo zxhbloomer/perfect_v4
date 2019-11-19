@@ -169,10 +169,10 @@ public class SJobEntity extends BaseEntity<SJobEntity> implements Serializable {
     @TableField("msg")
     private String msg;
 
-    @TableField(value="c_id", fill = FieldFill.INSERT)
+    @TableField(value="c_id", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NOT_EMPTY)
     private Long c_id;
 
-    @TableField(value="c_time", fill = FieldFill.INSERT)
+    @TableField(value="c_time", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NOT_EMPTY)
     private LocalDateTime c_time;
 
     @TableField(value="u_id", fill = FieldFill.INSERT_UPDATE)

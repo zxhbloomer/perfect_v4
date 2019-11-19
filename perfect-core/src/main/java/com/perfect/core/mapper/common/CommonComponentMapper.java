@@ -2,7 +2,6 @@ package com.perfect.core.mapper.common;
 
 import com.perfect.bean.vo.common.component.DictConditionVo;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
-import com.perfect.bean.vo.common.component.PerfectComponentVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;

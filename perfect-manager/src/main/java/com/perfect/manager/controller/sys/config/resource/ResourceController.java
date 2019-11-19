@@ -68,6 +68,8 @@ public class ResourceController extends BaseController {
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<JsonResult<SResourceEntity>> save(@RequestBody(required = false) SResourceEntity sResourceEntity) {
+        sResourceEntity.setC_id(null);
+        sResourceEntity.setC_time(null);
         if(isResourceService.updateById(sResourceEntity)){
             return ResponseEntity.ok().body(ResultUtil.OK(isResourceService.getById(sResourceEntity.getId()),"更新成功"));
         } else {

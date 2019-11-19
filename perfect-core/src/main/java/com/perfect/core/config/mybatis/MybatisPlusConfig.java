@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.perfect.core.config.mybatis.plugin.datascope.DataScopeInterceptor;
 import com.perfect.core.config.mybatis.plugin.autofill.MyBatisAutoFillHandel;
+import com.perfect.core.config.mybatis.sqlinjector.PerfectSqlInjector;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -52,5 +53,14 @@ public class MybatisPlusConfig  {
     @Bean
     public DataScopeInterceptor dataScopeInterceptor() {
         return new DataScopeInterceptor();
+    }
+
+    /**
+     * 自定义 SqlInjector
+     * 里面包含自定义的全局方法
+     */
+    @Bean
+    public PerfectSqlInjector perfectSqlInjector() {
+        return new PerfectSqlInjector();
     }
 }

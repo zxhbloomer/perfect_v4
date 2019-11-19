@@ -151,6 +151,8 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
         // 修改root_id
         entity.setRoot_id(entity.getId());
         // 更新数据库
+        entity.setC_id(null);
+        entity.setC_time(null);
         int updCount = mapper.updateById(entity);
         return InsertResultUtil.OK(updCount);
     }
@@ -172,6 +174,8 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
         son_count = (son_count == null ? 0 : son_count)  + 1;
         parentEntity.setSon_count(son_count);
         // 保存父亲的儿子的个数
+        parentEntity.setC_id(null);
+        parentEntity.setC_time(null);
         mapper.updateById(parentEntity);
 
         // 获取父亲的code
@@ -209,6 +213,8 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> impl
             throw new BusinessException(cr.getMessage());
         }
         // 更新逻辑保存
+        entity.setC_id(null);
+        entity.setC_time(null);
         return UpdateResultUtil.OK(mapper.updateById(entity));
     }
 

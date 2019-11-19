@@ -69,6 +69,8 @@ public class RoleController extends BaseController {
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<JsonResult<SRoleEntity>> save(@RequestBody(required = false) SRoleEntity sRoleEntity) {
+        sRoleEntity.setC_id(null);
+        sRoleEntity.setC_time(null);
         if(isRoleService.updateById(sRoleEntity)){
             return ResponseEntity.ok().body(ResultUtil.OK(isRoleService.getById(sRoleEntity.getId()),"更新成功"));
         } else {

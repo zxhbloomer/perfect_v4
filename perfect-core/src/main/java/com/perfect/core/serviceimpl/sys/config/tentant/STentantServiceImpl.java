@@ -158,6 +158,8 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
             entity.setIs_enable(false);
         }
         // 更新逻辑保存
+        entity.setC_id(null);
+        entity.setC_time(null);
         return UpdateResultUtil.OK(mapper.updateById(entity));
     }
 
@@ -266,6 +268,8 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
     public UpdateResult<Integer> enableUpdate(STentantEntity entity) {
         entity.setIs_enable(true);
         // 更新逻辑保存
+        entity.setC_id(null);
+        entity.setC_time(null);
         return UpdateResultUtil.OK(mapper.updateById(entity));
     }
 
@@ -280,6 +284,8 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
     public UpdateResult<Integer> disableUpdate(STentantEntity entity) {
         entity.setIs_enable(false);
         // 更新逻辑保存
+        entity.setC_id(null);
+        entity.setC_time(null);
         return UpdateResultUtil.OK(mapper.updateById(entity));
     }
 
@@ -300,8 +306,13 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
         enableJobEntity.setMsg(QuartzEnum.TASK_TENTANT_ENABLE.getOk_msg());
         // 2、更新租户bean
         entity.setIs_enable(true);
+
+        entity.setC_id(null);
+        entity.setC_time(null);
         mapper.updateById(entity);
         // 3、更新job
+        enableJobEntity.setC_id(null);
+        enableJobEntity.setC_time(null);
         jobMapper.updateById(enableJobEntity);
 //        // 4、更新job日志
 //        SJobLogEntity sJobLogEntity = new SJobLogEntity();
@@ -329,8 +340,12 @@ public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEnt
         disableJobEntity.setMsg(QuartzEnum.TASK_TENTANT_ENABLE.getOk_msg());
         // 2、更新租户bean
         entity.setIs_enable(true);
+        entity.setC_id(null);
+        entity.setC_time(null);
         mapper.updateById(entity);
         // 3、更新job
+        disableJobEntity.setC_id(null);
+        disableJobEntity.setC_time(null);
         jobMapper.updateById(disableJobEntity);
 //        // 4、更新job日志
 //        SJobLogEntity sJobLogEntity = new SJobLogEntity();

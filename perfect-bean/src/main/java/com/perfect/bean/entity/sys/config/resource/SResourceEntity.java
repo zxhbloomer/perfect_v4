@@ -94,10 +94,10 @@ public class SResourceEntity extends BaseEntity<SResourceEntity> implements Seri
     @TableField("corp_name")
     private String corp_name;
 
-    @TableField(value="c_id", fill = FieldFill.INSERT)
+    @TableField(value="c_id", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NOT_EMPTY)
     private Long c_id;
 
-    @TableField(value="c_time", fill = FieldFill.INSERT)
+    @TableField(value="c_time", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NOT_EMPTY)
     private LocalDateTime c_time;
 
     @TableField(value="u_id", fill = FieldFill.INSERT_UPDATE)

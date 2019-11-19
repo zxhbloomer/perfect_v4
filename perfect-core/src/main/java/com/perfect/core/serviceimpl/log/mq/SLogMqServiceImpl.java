@@ -84,6 +84,8 @@ public class SLogMqServiceImpl extends ServiceImpl<SLogMqMapper, SLogMqEntity> i
     @Override
     public UpdateResult<Integer> update(SLogMqEntity entity) {
         // 更新逻辑保存
+        entity.setC_id(null);
+        entity.setC_time(null);
         return UpdateResultUtil.OK(mapper.updateById(entity));
     }
 

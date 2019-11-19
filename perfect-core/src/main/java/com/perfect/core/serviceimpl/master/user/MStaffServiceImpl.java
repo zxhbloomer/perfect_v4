@@ -181,7 +181,12 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
         }
 
         // 更新保存
+        mStaffEntity.setC_id(null);
+        mStaffEntity.setC_time(null);
         mapper.updateById(mStaffEntity);
+
+        mUserEntity.setC_id(null);
+        mUserEntity.setC_time(null);
         mUserMapper.updateById(mUserEntity);
 
         // 返回值确定
@@ -227,9 +232,13 @@ public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> i
         if(mStaffEntity.getUser_id() == null){
             mUserMapper.insert(mUserEntity);
         } else {
+            mUserEntity.setC_id(null);
+            mUserEntity.setC_time(null);
             mUserMapper.updateById(mUserEntity);
         }
         mStaffEntity.setUser_id(mUserEntity.getId());
+        mStaffEntity.setC_id(null);
+        mStaffEntity.setC_time(null);
         mapper.updateById(mStaffEntity);
 
 

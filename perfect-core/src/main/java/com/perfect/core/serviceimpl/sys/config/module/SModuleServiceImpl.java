@@ -150,6 +150,8 @@ public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity
         }
         SModuleEntity cleanUpEntity = cleanUpBean(entity);
         // 更新逻辑保存
+        cleanUpEntity.setC_id(null);
+        cleanUpEntity.setC_time(null);
         return UpdateResultUtil.OK(mapper.updateById(cleanUpEntity));
     }
 
