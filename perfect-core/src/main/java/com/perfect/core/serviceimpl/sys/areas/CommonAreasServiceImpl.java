@@ -12,6 +12,7 @@ import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.core.mapper.sys.areas.SAreasMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.areas.ICommonAreasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -33,7 +34,7 @@ import java.util.List;
  * @since 2019-08-23
  */
 @Service
-public class CommonAreasServiceImpl extends ServiceImpl<SAreasMapper, NameAndValueVo> implements ICommonAreasService {
+public class CommonAreasServiceImpl extends BaseServiceImpl<SAreasMapper, NameAndValueVo> implements ICommonAreasService {
 
     @Autowired
     private SAreasMapper mapper;

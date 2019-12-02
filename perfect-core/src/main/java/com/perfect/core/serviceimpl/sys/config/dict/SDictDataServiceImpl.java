@@ -17,6 +17,7 @@ import com.perfect.common.exception.BusinessException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.sys.config.dict.SDictDataMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.config.dict.ISDictDataService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ import java.util.List;
  * @since 2019-08-23
  */
 @Service
-public class SDictDataServiceImpl extends ServiceImpl<SDictDataMapper, SDictDataEntity> implements ISDictDataService {
+public class SDictDataServiceImpl extends BaseServiceImpl<SDictDataMapper, SDictDataEntity> implements ISDictDataService {
 
     @Autowired
     private SDictDataMapper mapper;

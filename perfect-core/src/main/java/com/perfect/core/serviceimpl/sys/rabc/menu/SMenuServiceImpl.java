@@ -17,6 +17,7 @@ import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.sys.rabc.menu.SMenuMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.rabc.menu.ISMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ import java.util.List;
  * @since 2019-08-23
  */
 @Service
-public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenuEntity> implements ISMenuService {
+public class SMenuServiceImpl extends BaseServiceImpl<SMenuMapper, SMenuEntity> implements ISMenuService {
 
     @Autowired
     private SMenuMapper mapper;

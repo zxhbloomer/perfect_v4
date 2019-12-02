@@ -3,6 +3,7 @@ package com.perfect.core.serviceimpl.quartz;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.quartz.SJobLogEntity;
 import com.perfect.core.mapper.quartz.SJobLogMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.quartz.ISJobLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
  * @since 2019-07-04
  */
 @Service
-public class SJobLogServiceImpl extends ServiceImpl<SJobLogMapper, SJobLogEntity> implements ISJobLogService {
+public class SJobLogServiceImpl extends BaseServiceImpl<SJobLogMapper, SJobLogEntity> implements ISJobLogService {
 
     @Autowired
     private SJobLogMapper mapper;

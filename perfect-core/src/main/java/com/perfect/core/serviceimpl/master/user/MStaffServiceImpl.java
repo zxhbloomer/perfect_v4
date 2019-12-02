@@ -24,6 +24,7 @@ import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.client.user.MUserMapper;
 import com.perfect.core.mapper.master.MAddressMapper;
 import com.perfect.core.mapper.master.user.MStaffMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.user.IMStaffService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ import java.util.List;
  * @since 2019-07-13
  */
 @Service
-public class MStaffServiceImpl extends ServiceImpl<MStaffMapper, MStaffEntity> implements IMStaffService {
+public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntity> implements IMStaffService {
 
     @Autowired
     private MStaffMapper mapper;

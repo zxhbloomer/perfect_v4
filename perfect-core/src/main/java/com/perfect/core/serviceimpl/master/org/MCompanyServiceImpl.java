@@ -14,6 +14,7 @@ import com.perfect.bean.vo.master.org.MCompanyVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.master.org.MCompanyMapper;
 import com.perfect.core.mapper.master.org.MGroupMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.org.IMCompanyService;
 import com.perfect.core.service.master.org.IMGroupService;
 import com.perfect.core.utils.mybatis.PageUtil;
@@ -32,7 +33,7 @@ import java.util.List;
  * @since 2019-08-23
  */
 @Service
-public class MCompanyServiceImpl extends ServiceImpl<MCompanyMapper, MCompanyEntity> implements IMCompanyService {
+public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompanyEntity> implements IMCompanyService {
 
     @Autowired
     private MCompanyMapper mapper;

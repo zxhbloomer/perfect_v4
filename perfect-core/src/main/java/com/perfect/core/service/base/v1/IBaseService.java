@@ -1,4 +1,4 @@
-package com.perfect.framework.base.service.v1;
+package com.perfect.core.service.base.v1;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 

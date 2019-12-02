@@ -8,6 +8,7 @@ import com.perfect.bean.vo.common.component.PerfectComponentVo;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.core.mapper.common.CommonComponentMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.common.ICommonComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -41,7 +42,7 @@ import com.perfect.core.utils.mybatis.PageUtil;
  * @since 2019-08-23
  */
 @Service
-public class CommonComponentServiceImpl extends ServiceImpl<CommonComponentMapper, NameAndValueVo> implements
+public class CommonComponentServiceImpl extends BaseServiceImpl<CommonComponentMapper, NameAndValueVo> implements
     ICommonComponentService {
 
     @Autowired

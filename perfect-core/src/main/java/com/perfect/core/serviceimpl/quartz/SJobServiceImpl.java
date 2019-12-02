@@ -19,6 +19,7 @@ import com.perfect.common.exception.job.TaskException;
 import com.perfect.common.utils.quartz.CronUtil;
 import com.perfect.common.utils.string.convert.Convert;
 import com.perfect.core.mapper.quartz.SJobMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.quartz.ISJobService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.quartz.JobKey;
@@ -40,7 +41,7 @@ import java.util.List;
  * @author jobob
  * @since 2019-07-04
  */
-@Service public class SJobServiceImpl extends ServiceImpl<SJobMapper, SJobEntity> implements ISJobService {
+@Service public class SJobServiceImpl extends BaseServiceImpl<SJobMapper, SJobEntity> implements ISJobService {
 
     @Autowired
     private SJobMapper jobMapper;

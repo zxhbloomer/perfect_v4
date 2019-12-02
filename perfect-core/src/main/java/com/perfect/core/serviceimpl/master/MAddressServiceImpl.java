@@ -16,6 +16,7 @@ import com.perfect.bean.vo.master.MAddressVo;
 import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.master.MAddressMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.IMAddressService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ import java.util.List;
  * @since 2019-08-23
  */
 @Service
-public class MAddressServiceImpl extends ServiceImpl<MAddressMapper, MAddressEntity> implements IMAddressService {
+public class MAddressServiceImpl extends BaseServiceImpl<MAddressMapper, MAddressEntity> implements IMAddressService {
 
     @Autowired
     private MAddressMapper mapper;

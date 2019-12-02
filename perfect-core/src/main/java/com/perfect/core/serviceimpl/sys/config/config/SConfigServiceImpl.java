@@ -4,6 +4,7 @@ import java.util.List;
 import com.perfect.bean.entity.sys.config.config.SConfigEntity;
 import com.perfect.bean.vo.sys.config.config.SConfigVo;
 import com.perfect.core.mapper.sys.config.config.SConfigMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.config.config.ISConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ import com.perfect.core.utils.mybatis.PageUtil;
  * @since 2019-08-23
  */
 @Service
-public class SConfigServiceImpl extends ServiceImpl<SConfigMapper, SConfigEntity> implements ISConfigService {
+public class SConfigServiceImpl extends BaseServiceImpl<SConfigMapper, SConfigEntity> implements ISConfigService {
 
     @Autowired
     private SConfigMapper mapper;

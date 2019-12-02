@@ -1,10 +1,7 @@
 package com.perfect.core.serviceimpl.master.org;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.bo.session.user.UserSessionBo;
-import com.perfect.bean.entity.master.org.MDeptEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
-import com.perfect.bean.entity.sys.rabc.menu.SMenuEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
@@ -19,6 +16,7 @@ import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.mapper.master.org.MOrgMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.common.ICommonComponentService;
 import com.perfect.core.service.master.org.IMOrgService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,7 @@ import java.util.List;
  * @since 2019-08-23
  */
 @Service
-public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> implements IMOrgService {
+public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> implements IMOrgService {
 
     @Autowired
     private MOrgMapper mapper;

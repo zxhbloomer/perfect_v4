@@ -13,6 +13,7 @@ import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.config.dict.SDictTypeVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.sys.config.dict.SDictTypeMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.config.dict.ISDictTypeService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import java.util.List;
  * @since 2019-08-23
  */
 @Service
-public class SDictTypeServiceImpl extends ServiceImpl<SDictTypeMapper, SDictTypeEntity> implements ISDictTypeService {
+public class SDictTypeServiceImpl extends BaseServiceImpl<SDictTypeMapper, SDictTypeEntity> implements ISDictTypeService {
 
     @Autowired
     private SDictTypeMapper mapper;

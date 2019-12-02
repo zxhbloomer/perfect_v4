@@ -15,6 +15,7 @@ import com.perfect.bean.vo.sys.config.module.SModuleVo;
 import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.sys.config.module.SModuleMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.config.module.IModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ import com.perfect.core.utils.mybatis.PageUtil;
  * @since 2019-08-16
  */
 @Service
-public class SModuleServiceImpl extends ServiceImpl<SModuleMapper, SModuleEntity> implements IModuleService {
+public class SModuleServiceImpl extends BaseServiceImpl<SModuleMapper, SModuleEntity> implements IModuleService {
 
     @Autowired
     private SModuleMapper mapper;

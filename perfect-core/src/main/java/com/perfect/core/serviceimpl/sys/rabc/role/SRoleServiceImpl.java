@@ -7,6 +7,7 @@ import com.perfect.bean.entity.sys.rabc.role.SRoleEntity;
 import com.perfect.bean.vo.sys.rabc.role.SRoleVo;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.core.mapper.sys.rabc.role.SRoleMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.rabc.role.ISRoleService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import java.util.List;
  * @since 2019-07-11
  */
 @Service
-public class SRoleServiceImpl extends ServiceImpl<SRoleMapper, SRoleEntity> implements ISRoleService {
+public class SRoleServiceImpl extends BaseServiceImpl<SRoleMapper, SRoleEntity> implements ISRoleService {
 
     @Autowired
     private SRoleMapper sRoleMapper;

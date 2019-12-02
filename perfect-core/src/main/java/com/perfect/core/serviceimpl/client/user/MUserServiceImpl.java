@@ -21,6 +21,7 @@ import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.master.user.MStaffMapper;
 import com.perfect.core.mapper.client.user.MUserMapper;
 import com.perfect.core.mapper.sys.config.tentant.STentantMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.client.user.IMUserService;
 import com.perfect.core.service.master.user.IMStaffService;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
@@ -46,7 +47,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUserEntity> implements IMUserService {
+public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> implements IMUserService {
 
     @Autowired
     private MUserMapper mUserMapper;

@@ -9,6 +9,7 @@ import com.perfect.bean.result.utils.v1.DeleteResultUtil;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.config.module.IModuleButtonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ import com.perfect.core.utils.mybatis.PageUtil;
  * @since 2019-08-16
  */
 @Service
-public class SModuleButtonServiceImpl extends ServiceImpl<SModuleButtonMapper, SModuleButtonEntity> implements IModuleButtonService {
+public class SModuleButtonServiceImpl extends BaseServiceImpl<SModuleButtonMapper, SModuleButtonEntity> implements IModuleButtonService {
 
     @Autowired
     private SModuleButtonMapper mapper;

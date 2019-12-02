@@ -20,6 +20,7 @@ import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.quartz.SJobLogMapper;
 import com.perfect.core.mapper.quartz.SJobMapper;
 import com.perfect.core.mapper.sys.config.tentant.STentantMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.config.tentant.ITentantService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ import java.util.List;
  * @since 2019-08-16
  */
 @Service
-public class STentantServiceImpl extends ServiceImpl<STentantMapper, STentantEntity> implements ITentantService {
+public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentantEntity> implements ITentantService {
 
     @Autowired
     private STentantMapper mapper;

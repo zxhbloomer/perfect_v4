@@ -13,6 +13,7 @@ import com.perfect.bean.vo.sys.config.config.SConfigVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.log.mq.SLogMqMapper;
 import com.perfect.core.mapper.quartz.SJobLogMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.log.mq.ISLogMqService;
 import com.perfect.core.service.quartz.ISJobLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ import java.util.List;
  * @since 2019-07-04
  */
 @Service
-public class SLogMqServiceImpl extends ServiceImpl<SLogMqMapper, SLogMqEntity> implements ISLogMqService {
+public class SLogMqServiceImpl extends BaseServiceImpl<SLogMqMapper, SLogMqEntity> implements ISLogMqService {
 
     @Autowired
     private SLogMqMapper mapper;

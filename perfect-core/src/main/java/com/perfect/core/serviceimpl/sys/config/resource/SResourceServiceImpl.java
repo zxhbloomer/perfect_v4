@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.sys.config.resource.SResourceEntity;
 import com.perfect.bean.vo.sys.config.resource.SResourceVo;
 import com.perfect.core.mapper.sys.config.resource.SResourceMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.config.resource.ISResourceService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import java.util.List;
  * @since 2019-08-16
  */
 @Service
-public class SResourceServiceImpl extends ServiceImpl<SResourceMapper, SResourceEntity>
+public class SResourceServiceImpl extends BaseServiceImpl<SResourceMapper, SResourceEntity>
     implements ISResourceService {
 
     @Autowired
