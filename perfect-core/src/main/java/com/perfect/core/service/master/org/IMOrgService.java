@@ -6,9 +6,12 @@ import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
+import com.perfect.bean.vo.master.org.MDeptVo;
 import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
+import org.apache.ibatis.annotations.Param;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -58,4 +61,18 @@ public interface IMOrgService extends IService<MOrgEntity> {
      * @return
      */
     List<NameAndValueVo> getCorrectTypeByInsertStatus(MOrgVo vo);
+
+    /**
+     * 删除
+     * @param entity
+     * @return
+     */
+    Boolean deleteById(MOrgEntity entity);
+
+    /**
+     * 根据code，进行 like 'code%'，匹配当前节点以及子节点
+     * @param vo
+     * @return
+     */
+    List<MOrgEntity> getDataByCode(MOrgEntity vo);
 }

@@ -86,9 +86,9 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("    "
         + COMMON_TREE_SELECT
         + "  where true                                                                                       "
-        //+ "    and (t2.tentant_id = #{p1.tentant_id,jdbcType=BIGINT})                                         "
+        + "    and t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT}                                           "
         + "      ")
-    List<MOrgTreeVo> getTreeList(MOrgTreeVo searchCondition);
+    List<MOrgTreeVo> getTreeList(@Param("p1") MOrgTreeVo searchCondition);
 
     /**
      * 左侧树查询
@@ -96,9 +96,9 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("    "
             + COMMON_TREE_SELECT
             + "  where true                                                                                       "
-            //+ "    and (t2.tentant_id = #{p1.tentant_id,jdbcType=BIGINT})                                         "
+            + "    and t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT}                                           "
             + "      ")
-    List<MOrgTreeVo> getList(MOrgTreeVo searchCondition);
+    List<MOrgTreeVo> getList(@Param("p1") MOrgTreeVo searchCondition);
 
     /**
      * 页面查询列表
@@ -108,8 +108,9 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
      */
     @Select("    "
         + COMMON_TREE_SELECT
-        + "  where true                                                              "
-        + "    and (t1.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)  "
+        + "  where true                                                                                                "
+        + "    and t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT}                                                    "
+        + "    and (t1.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)      "
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)  "
         + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                 "
         + "      ")
@@ -124,7 +125,8 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
      */
     @Select("    "
         + COMMON_TREE_SELECT
-        + "  where true "
+        + "  where true                                                                                             "
+        + "    and t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT}                                                 "
         + "    and  (t2.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)  "
         + "      ")
     List<MOrgTreeVo> select(@Param("p1") MOrgVo searchCondition);
@@ -133,16 +135,17 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
      * 查询添加的子节点是否合法
      * @return
      */
-    @Select("                                                       "
-        + "           SELECT                                        "
-        + "           	count(1)                                    "
-        + "           FROM                                          "
-        + "           	m_org t1                                    "
-        + "           WHERE                                         "
-        + "           	    t1.CODE LIKE CONCAT (#{p1},'%')         "
-        + "           	AND t1.type > #{p2}                         "
-        + "                                                         ")
-    Integer selectNodeInsertStatus(@Param("p1")String code, @Param("p2")String type);
+    @Select("                                                                  "
+        + "           SELECT                                                   "
+        + "           	count(1)                                               "
+        + "           FROM                                                     "
+        + "           	m_org t1                                               "
+        + "           WHERE true                                               "
+        + "           	and t1.tentant_id = #{p3}                              "
+        + "           	and t1.CODE LIKE CONCAT (#{p1},'%')                    "
+        + "           	and t1.type > #{p2}                                    "
+        + "                                                                    ")
+    Integer selectNodeInsertStatus(@Param("p1")String code, @Param("p2")String type, @Param("p3") Long tentant_id);
 
     /**
      * 获取单条数据
@@ -176,7 +179,9 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "		      and exists (                                                                                   "
         + "		   					select t.type                                                                    "
         + "		   					  from m_org t                                                                   "
-        + "		   					 where t.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%')                      "
+        + "		   					 where true                                                                      "
+        + "		   					   and t.tentant_id = #{p1.tentant_id,jdbcType=BIGINT}                           "
+        + "		   					   and t.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%')                      "
         + "		   					   and t2.dict_value >= t.type                                                   "
         + "		   	            )                                                                                    "
         + "   <if test='p1.filter_para != null and p1.filter_para.length!=0' >                                       "
@@ -187,4 +192,37 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "   </if>                                                                                                  "
         + "   </script>                                                                                              ")
     List<NameAndValueVo> getCorrectTypeByInsertStatus(@Param("p1") MOrgVo vo);
+
+    /**
+     * check逻辑，查看是否存在重复的子组织
+     * @param vo
+     * @return
+     */
+    @Select("                                                                                                        "
+        + "           SELECT                                                                                         "
+        + "           	count(1)                                                                                     "
+        + "           FROM                                                                                           "
+        + "           	m_org t1                                                                                     "
+        + "           WHERE                                                                                          "
+        + "           	t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT}                                             "
+        + "           	AND t1.serial_type = #{p1.serial_type,jdbcType=VARCHAR}                                      "
+        + "           	AND t1.serial_id = #{p1.serial_id,jdbcType=BIGINT}                                           "
+        + "           	AND (t1.id  =  #{p2} or #{p2} is null)                                                       "
+        + "           	AND (t1.id  <> #{p3} or #{p3} is null)                                                       "
+        + "                                                                                                          ")
+    Integer getCountBySerial(@Param("p1") MOrgEntity vo, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
+
+    /**
+     * 根据code，进行 like 'code%'，匹配当前节点以及子节点
+     * @param vo
+     * @return
+     */
+    @Select("                                                                                                        "
+        + "        select *                                                                                          "
+        + "          from m_org t1                                                                                   "
+        + "         where true                                                                                       "
+        + "           and t1.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%')                                      "
+        + "           and t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT}                                           "
+        + "                                                                                                          ")
+    List<MOrgEntity> getDataByCode(@Param("p1") MOrgEntity vo);
 }

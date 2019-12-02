@@ -1,10 +1,12 @@
 package com.perfect.framework.base.controller.v1;
 
 import com.alibaba.fastjson.JSON;
+import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.pojo.fs.UploadFileResultPojo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.properies.PerfectConfigProperies;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
+import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.excel.bean.importconfig.template.ExcelTemplate;
 import com.perfect.excel.export.ExcelUtil;
 import com.perfect.excel.upload.PerfectExcelReader;
@@ -128,5 +130,22 @@ public class BaseController {
         ExcelUtil.download(filePath, fileName , response);
     }
 
+    /**
+     * 获取当前登录用户的session数据
+     * @return
+     */
+    public UserSessionBo getUserSession(){
+        UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
+        return bo;
+    }
+
+    /**
+     * 获取当前登录用户的session数据:租户数据
+     * @return
+     */
+    public Long getUserSessionTentantId(){
+        Long tenant_Id = getUserSession().getTenant_Id();
+        return tenant_Id;
+    }
 
 }

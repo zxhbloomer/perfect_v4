@@ -2,6 +2,7 @@ package com.perfect.core.serviceimpl.master.org;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.bo.session.user.UserSessionBo;
+import com.perfect.bean.entity.master.org.MDeptEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.entity.sys.rabc.menu.SMenuEntity;
 import com.perfect.bean.pojo.result.CheckResult;
@@ -190,9 +191,20 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
      *
      * @return
      */
-    public Integer selectNodeInsertStatus(String code, String type) {
+    public Integer selectNodeInsertStatus(String code, String type, Long tentant_id) {
         // 查询 数据
-        Integer count = mapper.selectNodeInsertStatus(code, type);
+        Integer count = mapper.selectNodeInsertStatus(code, type, tentant_id);
+        return count;
+    }
+
+    /**
+     * 查询添加的子节点是否合法，子节点被重复选择使用的情况
+     *
+     * @return
+     */
+    public Integer getCountBySerial(MOrgEntity entity, Long equal_id, Long not_equal_id) {
+        // 查询 数据
+        Integer count = mapper.getCountBySerial(entity, equal_id, not_equal_id);
         return count;
     }
 
@@ -201,21 +213,32 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
      * @return
      */
     public CheckResult checkLogic(MOrgEntity entity, String moduleType){
+        Integer count = 0;
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
                 // 查看子节点是否正确：租户->集团->企业->部门->岗位->员工
-                Integer countInsert = this.selectNodeInsertStatus(entity.getCode(),entity.getType());
+                Integer countInsert = this.selectNodeInsertStatus(entity.getCode(),entity.getType(),entity.getTentant_id());
                 if(countInsert > 0){
                     String nodeTypeName = iCommonComponentService.getDictName(PerfectDictConstant.DICT_ORG_SETTING_TYPE, entity.getType());
                     return CheckResultUtil.NG("新增保存出错：新增的子节点类型不能是" + "【" + nodeTypeName + "】", countInsert);
                 }
+                // 查看当前节点是否已经被选择使用
+                count = getCountBySerial(entity, null, null);
+                if(count > 0){
+                    return CheckResultUtil.NG("新增保存出错：您选择的子节点已经在组织架构中，请选择尚未被使用的组织。", count);
+                }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
                 // 查看子节点是否正确：租户->集团->企业->部门->岗位->员工
-                Integer countUpdate = this.selectNodeInsertStatus(entity.getCode(),entity.getType());
+                Integer countUpdate = this.selectNodeInsertStatus(entity.getCode(),entity.getType(),entity.getTentant_id());
                 if(countUpdate > 0){
                     String nodeTypeName = iCommonComponentService.getDictName(PerfectDictConstant.DICT_ORG_SETTING_TYPE, entity.getType());
                     return CheckResultUtil.NG("新增保存出错：更新的当前节点类型不能是" + "【" + nodeTypeName + "】", countUpdate);
+                }
+                // 查看当前节点是否已经被选择使用
+                count = getCountBySerial(entity, null, entity.getId());
+                if(count > 0){
+                    return CheckResultUtil.NG("新增保存出错：您选择的子节点已经在组织架构中，请选择尚未被使用的组织。", count);
                 }
                 break;
             default:
@@ -233,4 +256,33 @@ public class MOrgServiceImpl extends ServiceImpl<MOrgMapper, MOrgEntity> impleme
         List<NameAndValueVo> rtn = mapper.getCorrectTypeByInsertStatus(vo);
         return rtn;
     }
+
+    /**
+     * 删除
+     * @param entity
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean deleteById(MOrgEntity entity) {
+        // 检索子组织数据
+        List<MOrgEntity> rtnList = getDataByCode(entity);
+        rtnList.forEach(bean -> {
+            // 删除 数据
+            mapper.deleteById(bean.getId());
+        });;
+        return true;
+    }
+
+    /**
+     * 根据code，进行 like 'code%'，匹配当前节点以及子节点
+     * @param vo
+     * @return
+     */
+    @Override
+    public List<MOrgEntity> getDataByCode(MOrgEntity vo) {
+        List<MOrgEntity> rtnList = mapper.getDataByCode(vo);
+        return rtnList;
+    }
+
 }

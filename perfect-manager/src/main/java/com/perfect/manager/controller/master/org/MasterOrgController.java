@@ -1,24 +1,15 @@
 package com.perfect.manager.controller.master.org;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
-import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
-import com.perfect.bean.vo.master.org.MDeptExportVo;
 import com.perfect.bean.vo.master.org.MOrgTreeVo;
-import com.perfect.bean.vo.master.org.MPositionExportVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
-import com.perfect.bean.vo.sys.config.config.SConfigVo;
-import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
-import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.service.master.org.IMOrgService;
-import com.perfect.core.service.master.org.IMPositionService;
-import com.perfect.excel.export.ExcelUtil;
 import com.perfect.framework.base.controller.v1.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,8 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -52,6 +41,10 @@ public class MasterOrgController extends BaseController {
     @PostMapping("/tree/list")
     @ResponseBody
     public ResponseEntity<JsonResult<List<MOrgTreeVo>>> treeList(@RequestBody(required = false) MOrgTreeVo searchCondition) {
+        if(searchCondition == null){
+            searchCondition = new MOrgTreeVo();
+            searchCondition.setTentant_id(getUserSessionTentantId());
+        }
         List<MOrgTreeVo> vo = service.getTreeList(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(vo));
     }
@@ -95,8 +88,19 @@ public class MasterOrgController extends BaseController {
     @PostMapping("/get_type")
     @ResponseBody
     public ResponseEntity<JsonResult<List<NameAndValueVo>>> getCorrectTypeByInsertStatus(@RequestBody(required = false) MOrgVo bean) {
+        if(bean.getTentant_id() == null) {
+            bean.setTentant_id(getUserSessionTentantId());
+        }
         List<NameAndValueVo> rtn = service.getCorrectTypeByInsertStatus(bean);
         return ResponseEntity.ok().body(ResultUtil.OK(rtn));
     }
 
+    @SysLog("新增模式下，可新增子节点得类型")
+    @ApiOperation("新增模式下，可新增子节点得类型")
+    @PostMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false) MOrgEntity bean) {
+        Boolean rtn = service.deleteById(bean);
+        return ResponseEntity.ok().body(ResultUtil.OK("删除成功"));
+    }
 }
