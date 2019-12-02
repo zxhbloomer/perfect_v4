@@ -48,6 +48,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     @Override
     public List<MOrgTreeVo> getTreeList(MOrgTreeVo searchCondition) {
+        searchCondition.setTentant_id(getUserSessionTentantId());
         // 查询 数据
         List<MOrgTreeVo> list = mapper.getTreeList(searchCondition);
 
@@ -65,6 +66,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     @Override
     public List<MOrgTreeVo> select(MOrgVo searchCondition) {
+        searchCondition.setTentant_id(getUserSessionTentantId());
         // 查询 数据
         List<MOrgTreeVo> list = mapper.select(searchCondition);
         List<MOrgTreeVo> rtnList = TreeUtil.getTreeList(list);
@@ -80,7 +82,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @Override
     public InsertResult<Integer> insert(MOrgEntity entity) {
         // 设置entity
-        entity.setTentant_id(((UserSessionBo) ServletUtil.getUserSession()).getTenant_Id());
+        entity.setTentant_id(getUserSessionTentantId());
         switch (entity.getType()) {
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENTANT:
                 entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENTANT_SERIAL_TYPE);
@@ -181,7 +183,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     @Override
     public MOrgVo selectByid(Long id){
-        return mapper.selectByid(id);
+        return mapper.selectByid(id, getUserSessionTentantId());
     }
 
     /**
@@ -189,9 +191,9 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      *
      * @return
      */
-    public Integer selectNodeInsertStatus(String code, String type, Long tentant_id) {
+    public Integer selectNodeInsertStatus(String code, String type) {
         // 查询 数据
-        Integer count = mapper.selectNodeInsertStatus(code, type, tentant_id);
+        Integer count = mapper.selectNodeInsertStatus(code, type, getUserSessionTentantId());
         return count;
     }
 
@@ -215,7 +217,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
                 // 查看子节点是否正确：租户->集团->企业->部门->岗位->员工
-                Integer countInsert = this.selectNodeInsertStatus(entity.getCode(),entity.getType(),entity.getTentant_id());
+                Integer countInsert = this.selectNodeInsertStatus(entity.getCode(),entity.getType());
                 if(countInsert > 0){
                     String nodeTypeName = iCommonComponentService.getDictName(PerfectDictConstant.DICT_ORG_SETTING_TYPE, entity.getType());
                     return CheckResultUtil.NG("新增保存出错：新增的子节点类型不能是" + "【" + nodeTypeName + "】", countInsert);
@@ -228,7 +230,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
                 // 查看子节点是否正确：租户->集团->企业->部门->岗位->员工
-                Integer countUpdate = this.selectNodeInsertStatus(entity.getCode(),entity.getType(),entity.getTentant_id());
+                Integer countUpdate = this.selectNodeInsertStatus(entity.getCode(),entity.getType());
                 if(countUpdate > 0){
                     String nodeTypeName = iCommonComponentService.getDictName(PerfectDictConstant.DICT_ORG_SETTING_TYPE, entity.getType());
                     return CheckResultUtil.NG("新增保存出错：更新的当前节点类型不能是" + "【" + nodeTypeName + "】", countUpdate);
@@ -250,6 +252,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     @Override
     public List<NameAndValueVo> getCorrectTypeByInsertStatus(MOrgVo vo) {
+        vo.setTentant_id(getUserSessionTentantId());
         // 查询 数据
         List<NameAndValueVo> rtn = mapper.getCorrectTypeByInsertStatus(vo);
         return rtn;
@@ -274,12 +277,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
 
     /**
      * 根据code，进行 like 'code%'，匹配当前节点以及子节点
-     * @param vo
+     * @param entity
      * @return
      */
     @Override
-    public List<MOrgEntity> getDataByCode(MOrgEntity vo) {
-        List<MOrgEntity> rtnList = mapper.getDataByCode(vo);
+    public List<MOrgEntity> getDataByCode(MOrgEntity entity) {
+        entity.setTentant_id(getUserSessionTentantId());
+        List<MOrgEntity> rtnList = mapper.getDataByCode(entity);
         return rtnList;
     }
 
