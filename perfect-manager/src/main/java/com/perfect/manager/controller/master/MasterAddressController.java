@@ -62,9 +62,9 @@ public class MasterAddressController extends BaseController {
     @ApiOperation("根据参数id，获取地址簿主表信息")
     @PostMapping("/address/insert")
     @ResponseBody
-    public ResponseEntity<JsonResult<MAddressEntity>> insert(@RequestBody(required = false) MAddressEntity bean) {
+    public ResponseEntity<JsonResult<MAddressVo>> insert(@RequestBody(required = false) MAddressEntity bean) {
         if(service.insert(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"插入成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
         }

@@ -44,7 +44,8 @@ public interface MAddressMapper extends BaseMapper<MAddressEntity> {
         + "        	LEFT JOIN v_dict_info t5 ON t5.code = 'sys_address_tag_type' and t1.tag = t5.dict_value                "
         + "  where true                                                                                                    "
         + "     and (t1.serial_type = #{p1.serial_type,jdbcType=VARCHAR} or #{p1.serial_type,jdbcType=VARCHAR} is null  )  "
-        + "     and (t1.serial_id = #{p1.serial_id,jdbcType=BIGINT} or #{p1.serial_id,jdbcType=BIGINT} is null     )     "
+        + "     and (t1.serial_id = #{p1.serial_id,jdbcType=BIGINT} or #{p1.serial_id,jdbcType=BIGINT} is null     )       "
+        + "     and (t1.tentant_id =#{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)          "
         + "      ")
     IPage<MAddressVo> selectPage(Page page, @Param("p1") MAddressVo searchCondition);
 
@@ -69,6 +70,7 @@ public interface MAddressMapper extends BaseMapper<MAddressEntity> {
         + "  where true                                                                                                    "
         + "     and (t1.serial_type = #{p1.serial_type,jdbcType=VARCHAR} or #{p1.serial_type,jdbcType=VARCHAR} is null  )  "
         + "     and (t1.serial_id = #{p1.serial_id,jdbcType=BIGINT} or #{p1.serial_id,jdbcType=BIGINT} is null     )     "
+        + "     and (t1.tentant_id =#{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)          "
         + "      ")
     List<MAddressVo> select(@Param("p1") MAddressVo searchCondition);
 
@@ -80,12 +82,14 @@ public interface MAddressMapper extends BaseMapper<MAddressEntity> {
     @Select("<script>"
         + " select t.* "
         + "   from m_group t "
-        + "  where t.id in "
+        + "  where true "
+        + "    and (t.tentant_id = #{p2} or #{p2} is null  )                                               "
+        + "    and t.id in "
         + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>"
         + "         #{item.id}  "
         + "        </foreach>"
         + "  </script>")
-    List<MAddressEntity> selectIdsIn(@Param("p1") List<MAddressEntity> searchCondition);
+    List<MAddressEntity> selectIdsIn(@Param("p1") List<MAddressEntity> searchCondition, @Param("p2")Long tentant_id);
 
     /**
      * 页面查询列表
@@ -106,7 +110,8 @@ public interface MAddressMapper extends BaseMapper<MAddressEntity> {
             + "        	LEFT JOIN s_areas t4 ON t1.area_code = t4.`code`                                                       "
             + "        	LEFT JOIN v_dict_info t5 ON t5.code = 'sys_address_tag_type' and t1.tag = t5.dict_value                "
             + "  where true                                                                                                    "
-            + "     and (t1.id = #{p1})  "
+            + "     and (t1.id = #{p1})                                                                                        "
+            + "     and (t1.tentant_id = #{p2} or #{p2} is null  )                                                             "
             + "      ")
-    MAddressVo selectByid(@Param("p1") Long id);
+    MAddressVo selectByid(@Param("p1") Long id, @Param("p2")Long tentant_id);
 }

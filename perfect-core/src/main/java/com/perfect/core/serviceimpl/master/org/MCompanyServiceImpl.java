@@ -48,6 +48,7 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
      */
     @Override
     public IPage<MCompanyEntity> selectPage(MCompanyVo searchCondition) {
+        searchCondition.setTentant_id(getUserSessionTentantId());
         // 分页条件
         Page<MCompanyEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
@@ -66,6 +67,7 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
      */
     @Override
     public List<MCompanyEntity> select(MCompanyVo searchCondition) {
+        searchCondition.setTentant_id(getUserSessionTentantId());
         // 查询 数据
         List<MCompanyEntity> list = mapper.select(searchCondition);
         return list;
@@ -82,7 +84,7 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
     @Override
     public List<MCompanyEntity> selectIdsIn(List<MCompanyVo> searchCondition) {
         // 查询 数据
-        List<MCompanyEntity> list = mapper.selectIdsIn(searchCondition);
+        List<MCompanyEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTentantId());
         return list;
     }
 
@@ -94,10 +96,11 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteByIdsIn(List<MCompanyVo> searchCondition) {
-        List<MCompanyEntity> list = mapper.selectIdsIn(searchCondition);
+        List<MCompanyEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTentantId());
         list.forEach(
             bean -> {
                 bean.setIs_del(!bean.getIs_del());
+                bean.setTentant_id(getUserSessionTentantId());
             }
         );
         saveOrUpdateBatch(list, 500);
@@ -111,6 +114,7 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
     @Transactional(rollbackFor = Exception.class)
     @Override
     public InsertResult<Integer> insert(MCompanyEntity entity) {
+        entity.setTentant_id(getUserSessionTentantId());
         // 插入前check
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -137,6 +141,7 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
         // 更新逻辑保存
         entity.setC_id(null);
         entity.setC_time(null);
+        entity.setTentant_id(getUserSessionTentantId());
         return UpdateResultUtil.OK(mapper.updateById(entity));
     }
 
@@ -148,7 +153,7 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
      */
     public List<MCompanyEntity> selectByCode(String code, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MCompanyEntity> list = mapper.selectByCode(code, equal_id, not_equal_id);
+        List<MCompanyEntity> list = mapper.selectByCode(code, equal_id, not_equal_id, getUserSessionTentantId());
         return list;
     }
 
@@ -160,7 +165,7 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
      */
     public List<MCompanyEntity> selectByName(String name, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MCompanyEntity> list = mapper.selectByName(name, equal_id, not_equal_id);
+        List<MCompanyEntity> list = mapper.selectByName(name, equal_id, not_equal_id, getUserSessionTentantId());
         return list;
     }
 
@@ -172,7 +177,7 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
      */
     public List<MCompanyEntity> selectBySimpleName(String name, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MCompanyEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id);
+        List<MCompanyEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id, getUserSessionTentantId());
         return list;
     }
 

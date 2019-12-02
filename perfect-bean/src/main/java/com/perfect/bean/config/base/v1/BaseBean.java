@@ -6,4 +6,5 @@ package com.perfect.bean.config.base.v1;
  */
 public class BaseBean<T> {
 
+
 }

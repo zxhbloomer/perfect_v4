@@ -47,6 +47,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      */
     @Override
     public IPage<MGroupEntity> selectPage(MGroupVo searchCondition) {
+        searchCondition.setTentant_id(getUserSessionTentantId());
         // 分页条件
         Page<MGroupEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
@@ -65,6 +66,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      */
     @Override
     public List<MGroupEntity> select(MGroupVo searchCondition) {
+        searchCondition.setTentant_id(getUserSessionTentantId());
         // 查询 数据
         List<MGroupEntity> list = mapper.select(searchCondition);
         return list;
@@ -81,7 +83,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @Override
     public List<MGroupEntity> selectIdsIn(List<MGroupVo> searchCondition) {
         // 查询 数据
-        List<MGroupEntity> list = mapper.selectIdsIn(searchCondition);
+        List<MGroupEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTentantId());
         return list;
     }
 
@@ -93,10 +95,11 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteByIdsIn(List<MGroupVo> searchCondition) {
-        List<MGroupEntity> list = mapper.selectIdsIn(searchCondition);
+        List<MGroupEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTentantId());
         list.forEach(
             bean -> {
                 bean.setIs_del(!bean.getIs_del());
+                bean.setTentant_id(getUserSessionTentantId());
             }
         );
         saveOrUpdateBatch(list, 500);
@@ -110,6 +113,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @Transactional(rollbackFor = Exception.class)
     @Override
     public InsertResult<Integer> insert(MGroupEntity entity) {
+        entity.setTentant_id(getUserSessionTentantId());
         // 插入前check
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -128,6 +132,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @Transactional(rollbackFor = Exception.class)
     @Override
     public UpdateResult<Integer> update(MGroupEntity entity) {
+        entity.setTentant_id(getUserSessionTentantId());
         // 更新前check
         CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -147,7 +152,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      */
     public List<MGroupEntity> selectByCode(String code, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MGroupEntity> list = mapper.selectByCode(code, equal_id, not_equal_id);
+        List<MGroupEntity> list = mapper.selectByCode(code, equal_id, not_equal_id, getUserSessionTentantId());
         return list;
     }
 
@@ -159,7 +164,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      */
     public List<MGroupEntity> selectByName(String name, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MGroupEntity> list = mapper.selectByName(name, equal_id, not_equal_id);
+        List<MGroupEntity> list = mapper.selectByName(name, equal_id, not_equal_id, getUserSessionTentantId());
         return list;
     }
 
@@ -171,7 +176,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      */
     public List<MGroupEntity> selectBySimpleName(String name, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MGroupEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id);
+        List<MGroupEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id, getUserSessionTentantId());
         return list;
     }
 

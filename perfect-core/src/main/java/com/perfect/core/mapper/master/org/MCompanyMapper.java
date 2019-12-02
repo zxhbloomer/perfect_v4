@@ -57,7 +57,8 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "         LEFT JOIN m_address AS t2 ON t1.address_id = t2.id          "
         + "  where true "
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
+        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                "
+        + "    and (t1.tentant_id =#{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)      "
         + "      ")
     IPage<MCompanyEntity> selectPage(Page page, @Param("p1") MCompanyVo searchCondition);
 
@@ -95,8 +96,9 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "         m_company AS t1                                             "
         + "         LEFT JOIN m_address AS t2 ON t1.address_id = t2.id          "
         + "  where true "
-        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
+        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)   "
+        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                  "
+        + "    and (t1.tentant_id =#{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)      "
         + "      ")
     List<MCompanyEntity> select(@Param("p1") MCompanyVo searchCondition);
 
@@ -105,15 +107,17 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
      * @param searchCondition
      * @return
      */
-    @Select("<script>"
-        + " select t.* "
-        + "   from m_group t "
-        + "  where t.id in "
-        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>"
-        + "         #{item.id}  "
-        + "        </foreach>"
+    @Select("<script>                                                                                      "
+        + " select t.*                                                                                     "
+        + "   from m_company t                                                                               "
+        + "  where true                                                                                    "
+        + "    and (t.tentant_id = #{p2} or #{p2} is null  )                                               "
+        + "    and t.id in                                                                                 "
+        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>    "
+        + "         #{item.id}                                                                             "
+        + "        </foreach>                                                                              "
         + "  </script>")
-    List<MCompanyEntity> selectIdsIn(@Param("p1") List<MCompanyVo> searchCondition);
+    List<MCompanyEntity> selectIdsIn(@Param("p1") List<MCompanyVo> searchCondition, @Param("p2")Long tentant_id);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -127,9 +131,14 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "    and t.code =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
+        + "    and (t.tentant_id  = #{p4} or #{p4} is null)   "
         + "    and t.is_del =  0   "
         + "      ")
-    List<MCompanyEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
+    List<MCompanyEntity> selectByCode(@Param("p1") String code,
+        @Param("p2") Long equal_id,
+        @Param("p3") Long not_equal_id,
+        @Param("p4")Long tentant_id
+        );
 
     /**
      * 按条件获取所有数据，没有分页
@@ -143,10 +152,11 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "    and t.name =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
+        + "    and (t.tentant_id  = #{p4} or #{p4} is null)   "
         + "    and t.is_del =  0   "
         + "      ")
     List<MCompanyEntity> selectByName(@Param("p1") String name, @Param("p2") Long equal_id,
-        @Param("p3") Long not_equal_id);
+        @Param("p3") Long not_equal_id, @Param("p4")Long tentant_id);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -160,8 +170,9 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "    and t.simple_name =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
+        + "    and (t.tentant_id  = #{p4} or #{p4} is null)   "
         + "    and t.is_del =  0   "
         + "      ")
     List<MCompanyEntity> selectBySimpleName(@Param("p1") String name, @Param("p2") Long equal_id,
-        @Param("p3") Long not_equal_id);
+        @Param("p3") Long not_equal_id, @Param("p4")Long tentant_id);
 }
