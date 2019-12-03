@@ -27,10 +27,11 @@ public interface MUserMapper extends BaseMapper<MUserEntity> {
      * @param p1
      * @return
      */
-    @Select( "   " +
-            " select t.* " +
-            "   from m_user t " +
-            "  where t.login_name = #{p1}")
+    @Select( "                                                 "
+        + "    select t.*                                      "
+        + "      from m_user t                                 "
+        + "     where t.login_name = #{p1}                     "
+        + "                                                    ")
     MUserEntity getDataByName(@Param("p1") String p1);
 
 
@@ -38,30 +39,32 @@ public interface MUserMapper extends BaseMapper<MUserEntity> {
      * 页面查询列表
      * @return
      */
-    @Select("    "
-            + "      SELECT                                                                                                          "
-            + "              t1.* ,                                                                                                  "
-            + "            	 t2.label as type_text                                                                                   "
-            + "        FROM                                                                                                          "
-            + "              m_user t1                                                                                               "
-            + "   left join  v_dict_info t2 on t2.code = 'usr_login_type' and t1.type = t2.dict_value                                "
-            + "       where  true                                                                                                    "
-            + "         and  (t1.id = #{p1})                                                                                         "
-            + "      ")
-    MUserVo selectByid(@Param("p1") Long id);
+    @Select("                                                                                                                    "
+        + "      SELECT                                                                                                          "
+        + "              t1.* ,                                                                                                  "
+        + "            	 t2.label as type_text                                                                                   "
+        + "        FROM                                                                                                          "
+        + "              m_user t1                                                                                               "
+        + "   left join  v_dict_info t2 on t2.code = 'usr_login_type' and t1.type = t2.dict_value                                "
+        + "       where  true                                                                                                    "
+        + "         and  (t1.id = #{p1})                                                                                         "
+        + "         and (t1.tentant_id  = #{p2} or #{p2} is null)                                                                "
+        + "                                                                                                                      ")
+    MUserVo selectByid(@Param("p1") Long id, @Param("p2")Long tentant_id);
 
     /**
      * 按条件获取所有数据，没有分页
      */
-    @Select("    "
-            + " select t.* "
-            + "   from m_user t "
-            + "  where true "
-            + "    and t.login_name =  #{p1}  "
-            + "    and (t.id  =  #{p2} or #{p2} is null)   "
-            + "    and (t.id  <> #{p3} or #{p3} is null)   "
-            + "    and t.is_del =  0   "
-            + "      ")
-    List<MUserEntity> selectLoginName(@Param("p1") String login_name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
+    @Select("                                                                                                    "
+        + " select t.*                                                                                           "
+        + "   from m_user t                                                                                      "
+        + "  where true                                                                                          "
+        + "    and t.login_name =  #{p1}                                                                         "
+        + "    and (t.id  =  #{p2} or #{p2} is null)                                                             "
+        + "    and (t.id  <> #{p3} or #{p3} is null)                                                             "
+        + "    and t.is_del =  0                                                                                 "
+        + "    and (t.tentant_id  = #{p4} or #{p4} is null)                                                      "
+        + "                                                                                                      ")
+    List<MUserEntity> selectLoginName(@Param("p1") String login_name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id, @Param("p4")Long tentant_id);
 
 }

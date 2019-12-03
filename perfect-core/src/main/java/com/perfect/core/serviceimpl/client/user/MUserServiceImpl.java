@@ -171,7 +171,7 @@ public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> 
      */
     @Override
     public MUserVo selectByid(Long id){
-        return mUserMapper.selectByid(id);
+        return mUserMapper.selectByid(id, getUserSessionTentantId());
     }
 
     /**

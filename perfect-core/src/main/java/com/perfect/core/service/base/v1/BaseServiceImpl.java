@@ -25,6 +25,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
      * @return
      */
     public Long getUserSessionTentantId(){
+        if(getUserSession() == null) {
+            return null;
+        }
         Long tenant_Id = getUserSession().getTenant_Id();
         return tenant_Id;
     }

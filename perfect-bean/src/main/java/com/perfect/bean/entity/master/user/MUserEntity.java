@@ -141,6 +141,12 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
     private LocalDateTime last_login_date;
 
     /**
+     * 租户id
+     */
+    @TableField("tentant_id")
+    private Long tentant_id;
+
+    /**
      * 是否删除
      */
     @TableField(value = "is_del", fill = FieldFill.INSERT)

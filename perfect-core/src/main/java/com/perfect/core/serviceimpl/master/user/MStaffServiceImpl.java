@@ -65,6 +65,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
      */
     @Override
     public IPage<MStaffVo> selectPage(MStaffVo searchCondition) {
+        searchCondition.setTentant_id(getUserSessionTentantId());
         // 分页条件
         Page<MStaffEntity> pageCondition =
                 new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
@@ -83,6 +84,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
      */
     @Override
     public List<MStaffVo> select(MStaffVo searchCondition) {
+        searchCondition.setTentant_id(getUserSessionTentantId());
         // 查询 数据
         List<MStaffVo> list = mapper.select(searchCondition);
         return list;
@@ -99,7 +101,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
     @Override
     public List<MStaffVo> selectIdsIn(List<MStaffVo> searchCondition) {
         // 查询 数据
-        List<MStaffVo> list = mapper.selectIdsIn(searchCondition);
+        List<MStaffVo> list = mapper.selectIdsIn(searchCondition, getUserSessionTentantId());
         return list;
     }
 
@@ -109,7 +111,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
     @Override
     public List<MStaffExportVo> exportBySelectIdsIn(List<MStaffVo> searchCondition) {
         // 查询 数据
-        List<MStaffExportVo> list = mapper.exportSelectIdsIn(searchCondition);
+        List<MStaffExportVo> list = mapper.exportSelectIdsIn(searchCondition, getUserSessionTentantId());
         return list;
     }
 
@@ -160,10 +162,11 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
         mUserEntity.setIs_enable(mUserEntity.getIs_enable() == null ? false : mUserEntity.getIs_enable());
         mUserEntity.setIs_biz_admin(mUserEntity.getIs_biz_admin() == null ? false : mUserEntity.getIs_biz_admin());
         mUserEntity.setIs_changed_pwd(mUserEntity.getIs_changed_pwd() == null ? false : mUserEntity.getIs_changed_pwd());
-
+        mUserEntity.setTentant_id(getUserSessionTentantId());
 
         // 插入逻辑保存
         mUserMapper.insert(mUserEntity);
+        mStaffEntity.setTentant_id(getUserSessionTentantId());
         mapper.insert(mStaffEntity);
 
         // 增添关系
@@ -184,10 +187,12 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
         // 更新保存
         mStaffEntity.setC_id(null);
         mStaffEntity.setC_time(null);
+        mStaffEntity.setTentant_id(getUserSessionTentantId());
         mapper.updateById(mStaffEntity);
 
         mUserEntity.setC_id(null);
         mUserEntity.setC_time(null);
+        mUserEntity.setTentant_id(getUserSessionTentantId());
         mUserMapper.updateById(mUserEntity);
 
         // 返回值确定
@@ -257,7 +262,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
      */
     @Override
     public MStaffVo selectByid(Long id){
-        return mapper.selectByid(id);
+        return mapper.selectByid(id, getUserSessionTentantId());
     }
 
     /**
@@ -267,7 +272,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
      */
     @Override
     public void deleteByIdsIn(List<MStaffVo> searchCondition){
-        List<MStaffVo> list = mapper.selectIdsIn(searchCondition);
+        List<MStaffVo> list = mapper.selectIdsIn(searchCondition, getUserSessionTentantId());
         list.forEach(bean -> {
             bean.setIs_del(!bean.getIs_del());
         });
@@ -324,7 +329,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
      */
     public List<MUserEntity> selectLoginName(String login_name, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MUserEntity> list = mUserMapper.selectLoginName(login_name, equal_id, not_equal_id);
+        List<MUserEntity> list = mUserMapper.selectLoginName(login_name, equal_id, not_equal_id, getUserSessionTentantId());
         return list;
     }
 
