@@ -14,10 +14,14 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
 
     @Override
     public ImageCode createCode() {
-        int width = perfectSecurityProperties.getCode().getImage().getWidth(); // 验证码图片宽度
-        int height =  perfectSecurityProperties.getCode().getImage().getHeight(); // 验证码图片长度
-        int length = perfectSecurityProperties.getCode().getImage().getLength(); // 验证码位数
-        int expireIn = perfectSecurityProperties.getCode().getImage().getExpireIn(); // 验证码有效时间
+        // 验证码图片宽度
+        int width = perfectSecurityProperties.getCode().getImage().getWidth();
+        // 验证码图片长度
+        int height =  perfectSecurityProperties.getCode().getImage().getHeight();
+        // 验证码位数
+        int length = perfectSecurityProperties.getCode().getImage().getLength();
+        // 验证码有效时间
+        int expireIn = perfectSecurityProperties.getCode().getImage().getExpireIn();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         Graphics g = image.getGraphics();
@@ -48,10 +52,12 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
 
     private Color getRandColor(int fc, int bc) {
         Random random = new Random();
-        if (fc > 255)
+        if (fc > 255) {
             fc = 255;
-        if (bc > 255)
+        }
+        if (bc > 255) {
             bc = 255;
+        }
         int r = fc + random.nextInt(bc - fc);
         int g = fc + random.nextInt(bc - fc);
         int b = fc + random.nextInt(bc - fc);

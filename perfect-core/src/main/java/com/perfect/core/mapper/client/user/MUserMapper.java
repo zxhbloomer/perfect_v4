@@ -31,6 +31,8 @@ public interface MUserMapper extends BaseMapper<MUserEntity> {
         + "    select t.*                                      "
         + "      from m_user t                                 "
         + "     where t.login_name = #{p1}                     "
+        + "       and t.is_enable = true                       "
+        + "       and t.is_del = false                         "
         + "                                                    ")
     MUserEntity getDataByName(@Param("p1") String p1);
 

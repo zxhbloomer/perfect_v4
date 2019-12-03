@@ -27,6 +27,13 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
     private Long id;
 
     /**
+     * 登录模式：（10：手机号码；20：邮箱）
+     */
+    @TableField("login_type")
+    private String login_type;
+
+
+    /**
      * 登录用户名
      */
     @TableField("login_name")

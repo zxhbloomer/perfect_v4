@@ -49,6 +49,7 @@
         <mybatis-plus.version>3.2.0</mybatis-plus.version>
         <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
         <mybatis-spring-boot-starter.version>2.1.0</mybatis-spring-boot-starter.version>
+        <kaptcha.version>2.3.2</kaptcha.version>
         </properties>
 
     <dependencyManagement>
@@ -380,6 +381,12 @@
                 <groupId>org.jooq</groupId>
                 <artifactId>joor-java-8</artifactId>
                 <version>0.9.7</version>
+            </dependency>
+            <!--验证码 -->
+            <dependency>
+                <groupId>com.github.penggle</groupId>
+                <artifactId>kaptcha</artifactId>
+                <version>${kaptcha.version}</version>
             </dependency>
             <!-- prefect 模块 -->
             <dependency>

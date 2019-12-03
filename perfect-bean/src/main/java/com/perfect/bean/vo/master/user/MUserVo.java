@@ -29,6 +29,11 @@ public class MUserVo  implements Serializable {
     private Long id;
 
     /**
+     * 登录模式：（10：手机号码；20：邮箱）
+     */
+    private String login_type;
+
+    /**
      * 登录用户名
      */
     private String login_name;

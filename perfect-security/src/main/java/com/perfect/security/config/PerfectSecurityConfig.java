@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.session.SessionRegistry;
@@ -203,14 +204,11 @@ public class PerfectSecurityConfig extends WebSecurityConfigurerAdapter {
                     perfectSecurityProperties.getCode().getImage().getCreateUrl(),
                     /** 创建短信验证码路径 */
                     perfectSecurityProperties.getCode().getSms().getCreateUrl()
-
                 )
                 /** 配置免认证路径 */
                 .permitAll()
-                /** 所有请求 */
-                .anyRequest()
-                /** 都需要认证 */
-                .authenticated()
+                /** 所有请求 *//** 都需要认证 */
+                .anyRequest().authenticated()
             .and()
                 .csrf().disable()
                 /** 添加短信验证码认证流程 */
@@ -288,6 +286,14 @@ public class PerfectSecurityConfig extends WebSecurityConfigurerAdapter {
         initParameters.put("isIncludeRichText", "true");
         filterRegistrationBean.setInitParameters(initParameters);
         return filterRegistrationBean;
+    }
+
+    @Override
+    public void configure(WebSecurity webSecurity) {
+        String[] anonResourcesUrl = StringUtils.splitByWholeSeparatorPreserveAllTokens(
+            perfectSecurityProperties.getAnonResourcesUrl(),",");
+        webSecurity.ignoring()
+            .antMatchers(anonResourcesUrl);
     }
 
 }

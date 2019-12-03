@@ -54,12 +54,16 @@
             <optional>true</optional>
             <scope>true</scope>
         </dependency>
-
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <!--验证码 -->
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
         </dependency>
       <!-- perfect -->
         <dependency>
