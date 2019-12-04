@@ -54,7 +54,8 @@ public class ImageCodeFilter extends OncePerRequestFilter implements Initializin
         }
         boolean match = false;
         for (String u : url) {
-            if (pathMatcher.match(u, httpServletRequest.getRequestURI())) {
+//            if (pathMatcher.match(u, httpServletRequest.getRequestURI())) {
+            if (pathMatcher.match(u, httpServletRequest.getServletPath())) {
                 match = true;
             }
         }
