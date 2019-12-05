@@ -10,22 +10,23 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties({PerfectSecurityProperties.class})
 @ConfigurationProperties(prefix = "perfect.security")
 public class PerfectSecurityProperties {
-    // session过期后自动获取
+    /** session过期后自动获取 */
     private boolean createNewSession;
-    // 登录 URL
+    /** 登录 URL */
     private String loginUrl;
-    // 免认证静态资源路径
+    /** 免认证静态资源路径 */
     private String anonResourcesUrl;
-    // 记住我超时时间
+    /** 记住我超时时间 */
     private int rememberMeTimeout;
-    // 登出 URL
+    /** 登出 URL */
     private String logoutUrl;
-    // 主页 URL
+    /** 主页 URL */
     private String indexUrl;
-    // 开发者模式，可以跳过验证码
+    /** 开发者模式，可以跳过验证码 */
     private Boolean developModel;
-    // 错误日志输出简易模式
+    /** 错误日志输出简易模式 */
     private Boolean logSampleModel;
+
 
     @Value("${perfect.security.session.maximum-sessions}")
     private Integer MAX_SESSIONS;
@@ -95,13 +96,6 @@ public class PerfectSecurityProperties {
         this.logoutUrl = logoutUrl;
     }
 
-//    public SocialProperties getSocial() {
-//        return social;
-//    }
-
-//    public void setSocial(SocialProperties social) {
-//        this.social = social;
-//    }
     public String getIndexUrl() {
         return indexUrl;
     }
@@ -118,4 +112,5 @@ public class PerfectSecurityProperties {
     public void setCreateNewSession(boolean createNewSession) {
         this.createNewSession = createNewSession;
     }
+
 }

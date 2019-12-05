@@ -6,10 +6,14 @@ public class SmsCodeProperties {
     private int expireIn = 60;
     private String createUrl = "";
 
-    // 处理使用短信验证码认证 URL
+    /** 处理使用短信验证码认证 URL */
     private String loginProcessingUrl = "";
 
     private String url = "";
+
+    /** 验证码方式：math，char */
+    private String captchaType;
+
 
     public int getLength() {
         return length;
@@ -49,5 +53,13 @@ public class SmsCodeProperties {
 
     public void setLoginProcessingUrl(String loginProcessingUrl) {
         this.loginProcessingUrl = loginProcessingUrl;
+    }
+
+    public String getCaptchaType() {
+        return captchaType;
+    }
+
+    public void setCaptchaType(String captchaType) {
+        this.captchaType = captchaType;
     }
 }

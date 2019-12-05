@@ -1,5 +1,6 @@
 package com.perfect.bean.bo.session.user;
 
+import com.perfect.bean.bo.sys.SysInfoBo;
 import com.perfect.bean.config.base.v1.SessionBean;
 import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.vo.master.user.MStaffVo;
@@ -33,5 +34,10 @@ public class UserSessionBo extends SessionBean implements Serializable {
      * 租户 信息
      */
     private STentantVo tentant_info;
+
+    /**
+     * 系统参数
+     */
+    private SysInfoBo sys_Info;
 
 }

@@ -27,8 +27,8 @@ spring:
     restart:
       enabled: true
   rabbitmq:
-    addresses: 127.0.0.1:5672
-#    addresses: 172.21.1.227:5672
+#    addresses: 127.0.0.1:5672
+    addresses: 172.21.1.227:5672
     username: admin
     password: admin
     virtual-host: /
@@ -251,7 +251,7 @@ perfect:
     code:
       image:
         # 验证码相关配置，以下资源需要验证图形验证码，生成图形验证码的请求 ，
-        create-url: /image/code
+        create-url: /api/v1/captcha/captchaImage
         # 验证码相关配置，图形验证码失效时间
         expire-in: 60
         # 验证码相关配置，图形验证码高度，单位 px
@@ -264,6 +264,7 @@ perfect:
         url:
         # 验证码相关配置，图形验证码图片长度，单位 px
         width: 148
+        captcha-type: char
       sms:
         # 验证码相关配置，短信验证码相关配置，以下资源需要短信验证码验证，生成短信验证码的请求 url
         create-url: /sms/code

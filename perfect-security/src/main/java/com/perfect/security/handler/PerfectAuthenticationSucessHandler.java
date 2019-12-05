@@ -2,6 +2,7 @@ package com.perfect.security.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.perfect.bean.bo.session.user.UserSessionBo;
+import com.perfect.bean.bo.sys.SysInfoBo;
 import com.perfect.bean.pojo.redis.user.UserInSessionPojo;
 import com.perfect.bean.result.utils.v1.ResponseResultUtil;
 import com.perfect.common.constant.PerfectConstant;
@@ -9,6 +10,7 @@ import com.perfect.common.utils.redis.RedisUtil;
 import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.service.client.user.IMUserService;
 import com.perfect.core.utils.security.SecurityUtil;
+import com.perfect.security.properties.PerfectSecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
@@ -34,6 +36,9 @@ public class PerfectAuthenticationSucessHandler implements AuthenticationSuccess
     private RedisUtil redisUtil;
 
     private SessionRegistry sessionRegistry;
+
+    @Autowired
+    private PerfectSecurityProperties perfectSecurityProperties;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -79,6 +84,11 @@ public class PerfectAuthenticationSucessHandler implements AuthenticationSuccess
     public void setUserSession(long user_id) {
         UserSessionBo userSessionBo = iMUserService.getUserBean(user_id);
         String sessionId = ServletUtil.getSession().getId();
+
+        // 设置系统信息
+        SysInfoBo sysInfoBo = new SysInfoBo();
+        sysInfoBo.setDevelopModel(perfectSecurityProperties.getDevelopModel());
+        userSessionBo.setSys_Info(sysInfoBo);
 
         // 设置session id
         userSessionBo.setSession_id(sessionId);
