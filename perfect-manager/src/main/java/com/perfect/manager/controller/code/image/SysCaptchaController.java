@@ -1,4 +1,4 @@
-package com.perfect.manager.controller.captcha;
+package com.perfect.manager.controller.code.image;
 
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.framework.base.controller.v1.BaseController;
@@ -26,7 +26,7 @@ import java.io.IOException;
  * @author
  */
 @RestController
-@RequestMapping("/api/v1/captcha")
+@RequestMapping("/api/v1")
 @Slf4j
 @Api("图片验证码（支持算术形式）")
 public class SysCaptchaController extends BaseController {
@@ -39,7 +39,7 @@ public class SysCaptchaController extends BaseController {
     /**
      * 验证码生成
      */
-    @GetMapping(value = "/captchaImage")
+    @GetMapping(value = "/imagecode")
     public void getKaptchaImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ImageCode imageCode = (ImageCode) imageCodeGenerator.createCode();
         BufferedImage image = imageCode.getImage();

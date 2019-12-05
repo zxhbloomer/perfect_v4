@@ -36,7 +36,6 @@ public class CaptchaConfigProperties {
         // 验证码文本字符颜色 默认为Color.BLACK
         properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_COLOR, "black");
         // 验证码图片宽度 默认为200
-//        properties.setProperty(KAPTCHA_IMAGE_WIDTH, "160");
         properties.setProperty(KAPTCHA_IMAGE_WIDTH, String.valueOf(perfectSecurityProperties.getCode().getImage().getWidth()));
         // 验证码图片高度 默认为50
         properties.setProperty(KAPTCHA_IMAGE_HEIGHT, String.valueOf(perfectSecurityProperties.getCode().getImage().getHeight()));

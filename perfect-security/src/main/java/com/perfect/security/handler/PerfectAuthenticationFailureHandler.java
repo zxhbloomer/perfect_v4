@@ -41,8 +41,7 @@ public class PerfectAuthenticationFailureHandler implements AuthenticationFailur
         } else {
             message = "认证失败，请联系网站管理员！";
         }
-//        response.getWriter().write(mapper.writeValueAsString(ResponseBo.NG(message)));
-        ResponseResultUtil.responseWriteError(request,response,exception, HttpStatus.UNAUTHORIZED.value(), message);
+        ResponseResultUtil.responseWriteError(request,response,exception, HttpStatus.NOT_ACCEPTABLE.value(), message);
     }
 }
 

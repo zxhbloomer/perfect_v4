@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @AllArgsConstructor
-public class SysLogBO implements Serializable {
+public class SysLogBo implements Serializable {
 
     private static final long serialVersionUID = 3217907220556047829L;
 

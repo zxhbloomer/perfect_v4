@@ -2,7 +2,7 @@ package com.perfect.framework.config.spring.aspect;
 
 
 import com.alibaba.fastjson.JSON;
-import com.perfect.bean.bo.sys.SysLogBO;
+import com.perfect.bean.bo.sys.SysLogBo;
 import com.perfect.bean.entity.sys.SLogEntity;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.common.properies.PerfectConfigProperies;
@@ -75,18 +75,18 @@ public class SysLogAspect {
         Object result = point.proceed();
         BigDecimal time =  new BigDecimal(System.currentTimeMillis() - beginTime);
         try {
-            SysLogBO sysLogBO = printLog(point, time.longValue());
+            SysLogBo SysLogBo = printLog(point, time.longValue());
             if (perfectConfigProperies.isLogSaveDb()){
                 SLogEntity sLogEntity = new SLogEntity();
-                sLogEntity.setOperation(sysLogBO.getRemark());
-                sLogEntity.setUrl(sysLogBO.getUrl());
-                sLogEntity.setTime(sysLogBO.getExecTime());
-                sLogEntity.setHttp_method(sysLogBO.getHttpMethod());
-                sLogEntity.setClass_name(sysLogBO.getClassName());
-                sLogEntity.setClass_method(sysLogBO.getClassMethod());
-                sLogEntity.setIp(sysLogBO.getIp());
-                sLogEntity.setParams(sysLogBO.getParams());
-                sLogEntity.setC_time(sysLogBO.getCreateDate());
+                sLogEntity.setOperation(SysLogBo.getRemark());
+                sLogEntity.setUrl(SysLogBo.getUrl());
+                sLogEntity.setTime(SysLogBo.getExecTime());
+                sLogEntity.setHttp_method(SysLogBo.getHttpMethod());
+                sLogEntity.setClass_name(SysLogBo.getClassName());
+                sLogEntity.setClass_method(SysLogBo.getClassMethod());
+                sLogEntity.setIp(SysLogBo.getIp());
+                sLogEntity.setParams(SysLogBo.getParams());
+                sLogEntity.setC_time(SysLogBo.getCreateDate());
                 iSLogService.save(sLogEntity);
             }
 
@@ -105,7 +105,7 @@ public class SysLogAspect {
      * @param joinPoint
      * @param time
      */
-    private SysLogBO printLog(ProceedingJoinPoint joinPoint, Long time) {
+    private SysLogBo printLog(ProceedingJoinPoint joinPoint, Long time) {
 
         // 获取request
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -114,7 +114,7 @@ public class SysLogAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         SysLog sysLog = method.getAnnotation(SysLog.class);
-        SysLogBO sysLogBO = SysLogBO.builder()
+        SysLogBo sysLogBo = SysLogBo.builder()
                                     .className(joinPoint.getTarget().getClass().getName())
                                     .httpMethod(request.getMethod())
                                     .classMethod(((MethodSignature) joinPoint.getSignature()).getName())
@@ -127,17 +127,17 @@ public class SysLogAspect {
                                     .build();
         if(perfectConfigProperies.isOpenAopLog()){
             log.debug("======================日志开始================================");
-            log.debug("日志名称         : " + sysLogBO.getRemark());
-            log.debug("URL             : " + sysLogBO.getUrl());
-            log.debug("HTTP方法         : " + sysLogBO.getHttpMethod());
-            log.debug("IP               : " + sysLogBO.getIp());
-            log.debug("类名             : " + sysLogBO.getClassName());
-            log.debug("类方法           : " + sysLogBO.getClassMethod());
-            log.debug("执行时间         : " + new BigDecimal(sysLogBO.getExecTime()).divide(BigDecimal.valueOf(1000)).toString() + "秒");
-            log.debug("执行日期         : " + sysLogBO.getCreateDate());
-            log.debug("参数             : " + sysLogBO.getParams());
+            log.debug("日志名称         : " + sysLogBo.getRemark());
+            log.debug("URL             : " + sysLogBo.getUrl());
+            log.debug("HTTP方法         : " + sysLogBo.getHttpMethod());
+            log.debug("IP               : " + sysLogBo.getIp());
+            log.debug("类名             : " + sysLogBo.getClassName());
+            log.debug("类方法           : " + sysLogBo.getClassMethod());
+            log.debug("执行时间         : " + new BigDecimal(sysLogBo.getExecTime()).divide(BigDecimal.valueOf(1000)).toString() + "秒");
+            log.debug("执行日期         : " + sysLogBo.getCreateDate());
+            log.debug("参数             : " + sysLogBo.getParams());
             log.debug("======================日志结束================================");
         }
-        return sysLogBO;
+        return sysLogBo;
     }
 }

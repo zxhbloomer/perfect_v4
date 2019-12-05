@@ -247,7 +247,7 @@ perfect:
     redis-cache-expired-min: 30
   security:
     # 免认证静态资源路径
-    anon-resources-url: /css/**,/js/**,/fonts/**,/img/**,/api/v1/captcha/captchaImage
+    anon-resources-url: /css/**,/js/**,/fonts/**,/img/**,/api/v1/imagecode
     code:
       image:
         # 验证码相关配置，以下资源需要验证图形验证码，生成图形验证码的请求 ，
