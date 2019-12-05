@@ -264,7 +264,8 @@ perfect:
         url:
         # 验证码相关配置，图形验证码图片长度，单位 px
         width: 148
-        captcha-type: char
+        # 支持字符验证和计算式验证：math，char
+        captcha-type: math
       sms:
         # 验证码相关配置，短信验证码相关配置，以下资源需要短信验证码验证，生成短信验证码的请求 url
         create-url: /sms/code

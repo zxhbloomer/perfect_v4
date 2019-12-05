@@ -1,7 +1,9 @@
-package com.perfect.security.code.captcha;
+package com.perfect.security.code.img.captcha;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
+import com.perfect.security.properties.PerfectSecurityProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +18,14 @@ import static com.google.code.kaptcha.Constants.*;
  */
 @Configuration
 public class CaptchaConfigProperties {
+
+    @Autowired
+    private PerfectSecurityProperties perfectSecurityProperties;
+
+    /**
+     * 字符
+     * @return
+     */
     @Bean(name = "captchaProducer")
     public DefaultKaptcha getKaptchaBean() {
 
@@ -26,15 +36,16 @@ public class CaptchaConfigProperties {
         // 验证码文本字符颜色 默认为Color.BLACK
         properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_COLOR, "black");
         // 验证码图片宽度 默认为200
-        properties.setProperty(KAPTCHA_IMAGE_WIDTH, "160");
+//        properties.setProperty(KAPTCHA_IMAGE_WIDTH, "160");
+        properties.setProperty(KAPTCHA_IMAGE_WIDTH, String.valueOf(perfectSecurityProperties.getCode().getImage().getWidth()));
         // 验证码图片高度 默认为50
-        properties.setProperty(KAPTCHA_IMAGE_HEIGHT, "60");
+        properties.setProperty(KAPTCHA_IMAGE_HEIGHT, String.valueOf(perfectSecurityProperties.getCode().getImage().getHeight()));
         // 验证码文本字符大小 默认为40
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_SIZE, "38");
+        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_SIZE, "25");
         // KAPTCHA_SESSION_KEY
         properties.setProperty(KAPTCHA_SESSION_CONFIG_KEY, "kaptchaCode");
         // 验证码文本字符长度 默认为5
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, "4");
+        properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, String.valueOf(perfectSecurityProperties.getCode().getImage().getLength()));
         // 验证码文本字体样式 默认为new Font("Arial", 1, fontSize), new Font("Courier", 1, fontSize)
         properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_NAMES, "Arial,Courier");
         // 图片样式 水纹com.google.code.kaptcha.impl.WaterRipple 鱼眼com.google.code.kaptcha.impl.FishEyeGimpy 阴影com.google.code.kaptcha.impl.ShadowGimpy
@@ -44,6 +55,10 @@ public class CaptchaConfigProperties {
         return defaultKaptcha;
     }
 
+    /**
+     * 计算表达式
+     * @return
+     */
     @Bean(name = "captchaProducerMath")
     public DefaultKaptcha getKaptchaBeanMath() {
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
@@ -55,19 +70,19 @@ public class CaptchaConfigProperties {
         // 验证码文本字符颜色 默认为Color.BLACK
         properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_COLOR, "blue");
         // 验证码图片宽度 默认为200
-        properties.setProperty(KAPTCHA_IMAGE_WIDTH, "160");
+        properties.setProperty(KAPTCHA_IMAGE_WIDTH, String.valueOf(perfectSecurityProperties.getCode().getImage().getWidth()));
         // 验证码图片高度 默认为50
-        properties.setProperty(KAPTCHA_IMAGE_HEIGHT, "60");
+        properties.setProperty(KAPTCHA_IMAGE_HEIGHT, String.valueOf(perfectSecurityProperties.getCode().getImage().getHeight()));
         // 验证码文本字符大小 默认为40
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_SIZE, "35");
+        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_SIZE, "25");
         // KAPTCHA_SESSION_KEY
         properties.setProperty(KAPTCHA_SESSION_CONFIG_KEY, "kaptchaCodeMath");
         // 验证码文本生成器
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_IMPL, "com.ruoyi.framework.config.KaptchaTextCreator");
+        properties.setProperty(KAPTCHA_TEXTPRODUCER_IMPL, "com.perfect.security.code.img.captcha.KaptchaTextCreator");
         // 验证码文本字符间距 默认为2
         properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_SPACE, "3");
         // 验证码文本字符长度 默认为5
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, "6");
+        properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, String.valueOf(perfectSecurityProperties.getCode().getImage().getLength()));
         // 验证码文本字体样式 默认为new Font("Arial", 1, fontSize), new Font("Courier", 1, fontSize)
         properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_NAMES, "Arial,Courier");
         // 验证码噪点颜色 默认为Color.BLACK

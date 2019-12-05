@@ -1,4 +1,4 @@
-package com.perfect.security.code.captcha;
+package com.perfect.security.code.img.captcha;
 
 import com.google.code.kaptcha.text.impl.DefaultTextCreator;
 
