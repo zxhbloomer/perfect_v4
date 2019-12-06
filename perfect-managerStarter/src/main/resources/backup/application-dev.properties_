@@ -122,7 +122,7 @@ perfect.security.develop-model=true
 # session过期后自动获取
 perfect.security.create-new-session=false
 # 登录路径
-perfect.security.login-url=/api/v1/login
+perfect.security.login-url=/login
 # 登出路径
 perfect.security.logout-url=/api/v1/logout
 # 首页路径

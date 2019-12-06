@@ -246,8 +246,8 @@ perfect:
     # redis 缓存过期时间min
     redis-cache-expired-min: 30
   security:
-    # 免认证静态资源路径
-    anon-resources-url: /css/**,/js/**,/fonts/**,/img/**,/api/v1/imagecode
+    # 免认证资源路径
+    anon-resources-url: /css/**,/js/**,/fonts/**,/img/**,/api/v1/imagecode,/signup
     code:
       image:
         # 验证码相关配置，以下资源需要验证图形验证码，生成图形验证码的请求 ，
@@ -284,7 +284,7 @@ perfect:
     # 首页路径
     index-url: /index
     # 登录路径
-    login-url: /api/v1/login
+    login-url: /login
     # 登出路径
     logout-url: /api/v1/logout
     # 记住我有效时间，单位为秒
