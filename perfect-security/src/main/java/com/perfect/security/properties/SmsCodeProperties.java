@@ -11,9 +11,37 @@ public class SmsCodeProperties {
 
     private String url = "";
 
+
     /** 验证码方式：math，char */
     private String captchaType;
 
+    private String apiUri;
+    private String account;
+    private String pswd;
+
+    public String getApiUri() {
+        return apiUri;
+    }
+
+    public void setApiUri(String apiUri) {
+        this.apiUri = apiUri;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getPswd() {
+        return pswd;
+    }
+
+    public void setPswd(String pswd) {
+        this.pswd = pswd;
+    }
 
     public int getLength() {
         return length;

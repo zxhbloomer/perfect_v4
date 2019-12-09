@@ -277,6 +277,10 @@ perfect:
         login-processing-url: /mobile/login
         # 验证码相关配置，短信验证码相关配置，以下资源需要短信验证码验证
         url: /mobile/bind,/mobile/unbind,/test/sms/code
+        # 短信运营商请求参数
+        api-uri: http://222.73.117.158/msg/index.jsp
+        account: qian-01
+        pswd: Txb123456
     # session过期后自动获取
     create-new-session: false
     # 开发者模式，可以跳过验证码
