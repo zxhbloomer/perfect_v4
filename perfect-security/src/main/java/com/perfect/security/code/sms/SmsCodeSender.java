@@ -1,5 +1,5 @@
 package com.perfect.security.code.sms;
 
 public interface SmsCodeSender {
-    void send(String mobile, String code);
+    void sendCode(String mobile, String code, String type) throws Exception;
 }

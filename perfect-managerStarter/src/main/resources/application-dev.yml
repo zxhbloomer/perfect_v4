@@ -247,7 +247,7 @@ perfect:
     redis-cache-expired-min: 30
   security:
     # 免认证资源路径
-    anon-resources-url: /css/**,/js/**,/fonts/**,/img/**,/api/v1/imagecode,/signup
+    anon-resources-url: /css/**,/js/**,/fonts/**,/img/**,/api/v1/imagecode,/signup,/api/v1/sms/code
     code:
       image:
         # 验证码相关配置，以下资源需要验证图形验证码，生成图形验证码的请求 ，
@@ -278,9 +278,9 @@ perfect:
         # 验证码相关配置，短信验证码相关配置，以下资源需要短信验证码验证
         url: /mobile/bind,/mobile/unbind,/test/sms/code
         # 短信运营商请求参数
-        api-uri: http://222.73.117.158/msg/index.jsp
-        account: qian-01
-        pswd: Txb123456
+        api-uri: http://222.73.117.158/msg/HttpBatchSendSM
+        account: VIP-yrgyl8
+        pswd: Tch922973
     # session过期后自动获取
     create-new-session: false
     # 开发者模式，可以跳过验证码

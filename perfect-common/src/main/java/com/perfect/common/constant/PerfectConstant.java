@@ -90,4 +90,18 @@ public class PerfectConstant {
         public static final String CACHE_AREAS_CASCADER = "CACHE_AREAS_CASCADER";
         public static final String CACHE_DICT_TYPE = "CACHE_DICT_TYPE";
     }
+
+    /**
+     * 短信验证码类型
+     */
+    public class SMS_CODE_TYPE {
+        /** 未知 */
+        public static final String SMS_CODE_TYPE_NO_TYPE = "0";
+        /** 注册 */
+        public static final String SMS_CODE_TYPE_REGIST = "1";
+        /** 忘记密码 */
+        public static final String SMS_CODE_TYPE_FORGET = "2";
+        /** 修改绑定手机 */
+        public static final String SMS_CODE_TYPE_CHANGE_MOBILE = "3";
+    }
 }

@@ -1,18 +1,33 @@
 package com.perfect.security.code.sms;
 
+import com.perfect.bean.entity.sys.SSmsCodeEntity;
+import com.perfect.core.service.sys.ISSmsCodeService;
 import com.perfect.security.properties.PerfectSecurityProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpStatus;
-import org.hibernate.validator.internal.util.privilegedactions.GetMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URLDecoder;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Map;
 
+/**
+ * 短信发送
+ */
 @Slf4j
 public class DefaultSmsSender implements SmsCodeSender {
 
+    @Autowired
+    ISSmsCodeService isSmsCodeService;
+
+    @Autowired
     private PerfectSecurityProperties perfectSecurityProperties;
 
     @Value("${perfect.security.code.sms.expire-in}")
@@ -22,7 +37,7 @@ public class DefaultSmsSender implements SmsCodeSender {
     private RestTemplate restTemplate;
 
     @Override
-    public void send(String mobile, String code) {
+    public void sendCode(String mobile, String code, String type) throws Exception {
         String apiUri = perfectSecurityProperties.getCode().getSms().getApiUri();
         String account = perfectSecurityProperties.getCode().getSms().getAccount();
         String pswd = perfectSecurityProperties.getCode().getSms().getPswd();
@@ -31,43 +46,66 @@ public class DefaultSmsSender implements SmsCodeSender {
         /** 扩展码 */
         String extno = null;
 
+        /** code保存到数据库 */
+        SSmsCodeEntity sSmsCodeEntity = new SSmsCodeEntity();
+        sSmsCodeEntity.setMobile(mobile);
+        sSmsCodeEntity.setCode(code);
+        sSmsCodeEntity.setType(type);
+        sSmsCodeEntity.setC_id(null);
+        sSmsCodeEntity.setC_time(LocalDateTime.now());
+        sSmsCodeEntity.setU_id(null);
+        sSmsCodeEntity.setU_time(LocalDateTime.now());
+        isSmsCodeService.save(sSmsCodeEntity);
+
+        this.batchSend(apiUri, account, pswd, mobile, code, needstatus, extno);
         log.debug("手机号：" + mobile + "的短信验证码为：" + code + "，有效时间：" + expireIn + " 秒");
     }
 
-    public  String batchSend(String url,String account,String pswd,String mobile,String msg,boolean needstatus,
-        String extno) throws Exception{
+    /**
+     * 发送短信方法
+     * @param url
+     * @param account
+     * @param pswd
+     * @param mobile
+     * @param msg
+     * @param needstatus
+     * @param extno
+     * @throws Exception
+     */
+    public void batchSend(String url, String account, String pswd, String mobile, String msg, boolean needstatus,
+        String extno) throws Exception {
+        // 上传的url
+        MultiValueMap<String, Object> param = new LinkedMultiValueMap<>();
+        param.add("account", account);
+        param.add("pswd", pswd);
+        param.add("mobile", mobile);
+        param.add("needstatus", String.valueOf(needstatus));
+        param.add("msg", msg);
+        param.add("extno", extno);
+        /**
+         * request 头信息
+         */
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param, headers);
 
-        restTemplate.exchange()
+        //        restTemplate.exchange(url, HttpMethod.POST, httpEntity, Object.class);
 
-        HttpClient client=new HttpClient();
-        GetMethod method=new GetMethod();
-        try{
-            URI base=new URI(url,false);
-            method.setURI(new URI(base,"HttpBatchSendSM",false));
-            method.setQueryString(new NameValuePair[]{
-                new NameValuePair("account",account),
-                new NameValuePair("pswd",pswd),
-                new NameValuePair("mobile",mobile),
-                new NameValuePair("needstatus",
-                    String.valueOf(needstatus)),
-                new NameValuePair("msg",msg),
-                new NameValuePair("extno",extno),
-            });
-            int result=client.executeMethod(method);
-            if(result== HttpStatus.SC_OK) {
-                InputStream in=method.getResponseBodyAsStream();
-                ByteArrayOutputStream baos=new ByteArrayOutputStream();
-                byte[] buffer=new byte[1024];
-                int len=0;
-                while((len=in.read(buffer))!=-1){
-                    baos.write(buffer,0,len);
+
+        /** 使用RestTemplate提供的方法创建RequestCallback */
+        RequestCallback requestCallback = restTemplate.httpEntityCallback(httpEntity);
+        /** 自定义返回值处理器 */
+        ResponseExtractor responseExtractor = new ResponseExtractor() {
+            @Override
+            public Object extractData(ClientHttpResponse response) throws IOException {
+                if(response.getStatusCode() == HttpStatus.OK){
+                    log.debug("短信验证码发送成功【mobile("+ mobile +")】，" +"验证码为：" +  msg);
+                } else {
+                    log.debug("短信验证码发送失败【mobile("+ mobile +")】，" +"验证码为：" +  msg);
                 }
-                return URLDecoder.decode(baos.toString(),"UTF-8");
-            }else{
-                throw new Exception("HTTP ERROR Status: "+method.getStatusCode()+":"+method.getStatusText());
+                return null;
             }
-        }finally{
-            method.releaseConnection();
-        }
+        };
+        Object rtn = restTemplate.execute(url, HttpMethod.POST, requestCallback, responseExtractor);
     }
 }
