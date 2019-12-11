@@ -92,20 +92,20 @@ public class DefaultSmsSender implements SmsCodeSender {
         //        restTemplate.exchange(url, HttpMethod.POST, httpEntity, Object.class);
 
 
-        /** 使用RestTemplate提供的方法创建RequestCallback */
-        RequestCallback requestCallback = restTemplate.httpEntityCallback(httpEntity);
-        /** 自定义返回值处理器 */
-        ResponseExtractor responseExtractor = new ResponseExtractor() {
-            @Override
-            public Object extractData(ClientHttpResponse response) throws IOException {
-                if(response.getStatusCode() == HttpStatus.OK){
-                    log.debug("短信验证码发送成功【mobile("+ mobile +")】，" +"验证码为：" +  msg);
-                } else {
-                    log.debug("短信验证码发送失败【mobile("+ mobile +")】，" +"验证码为：" +  msg);
-                }
-                return null;
-            }
-        };
-        Object rtn = restTemplate.execute(url, HttpMethod.POST, requestCallback, responseExtractor);
+//        /** 使用RestTemplate提供的方法创建RequestCallback */
+//        RequestCallback requestCallback = restTemplate.httpEntityCallback(httpEntity);
+//        /** 自定义返回值处理器 */
+//        ResponseExtractor responseExtractor = new ResponseExtractor() {
+//            @Override
+//            public Object extractData(ClientHttpResponse response) throws IOException {
+//                if(response.getStatusCode() == HttpStatus.OK){
+//                    log.debug("短信验证码发送成功【mobile("+ mobile +")】，" +"验证码为：" +  msg);
+//                } else {
+//                    log.debug("短信验证码发送失败【mobile("+ mobile +")】，" +"验证码为：" +  msg);
+//                }
+//                return null;
+//            }
+//        };
+//        Object rtn = restTemplate.execute(url, HttpMethod.POST, requestCallback, responseExtractor);
     }
 }
