@@ -29,6 +29,7 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
         return null;
     }
 
+    @Override
     public Object getPrincipal() {
         return this.principal;
     }

@@ -23,6 +23,7 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
         super(new AntPathRequestMatcher(perfectSecurityProperties.getCode().getSms().getLoginProcessingUrl(), HttpMethod.POST.toString()));
     }
 
+    @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         if (postOnly && !request.getMethod().equals(HttpMethod.POST.toString())) {
             throw new AuthenticationServiceException("认证方法不支持: " + request.getMethod());
