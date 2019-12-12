@@ -187,7 +187,7 @@ public class SCodeServiceImpl extends BaseServiceImpl<SCodeMapper, SCodeEntity> 
     private void createCode(SCodeEntity entity) {
         // 获取编码方式
         switch (entity.getRule()) {
-            case PerfectDictConstant.DICT_CODE_RULE_SETTING_TYPE_ONE:
+            case PerfectDictConstant.DICT_SYS_CODE_RULE_TYPE_ONE:
                 // 获取系统实际 YYYYMMDD
                 // 获取随机码两位
                 // 自增编号

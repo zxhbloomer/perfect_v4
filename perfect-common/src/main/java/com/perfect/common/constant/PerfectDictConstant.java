@@ -95,8 +95,15 @@ public class PerfectDictConstant {
     /**
      * 自动编号设置：
      */
-    public static final String DICT_CODE_RULE_SETTING_TYPE  = "sys_coderule_type";
+    public static final String DICT_SYS_CODE_RULE_TYPE  = "sys_coderule_type";
     // YYYYMMDD_??_999
-    public static final String DICT_CODE_RULE_SETTING_TYPE_ONE  = "10";
+    public static final String DICT_SYS_CODE_RULE_TYPE_ONE  = "10";
+
+    /**
+     * 自动编号名称：
+     */
+    public static final String DICT_SYS_CODE_TYPE  = "sys_code_type";
+    // YYYYMMDD_??_999
+    public static final String DICT_SYS_CODE_TYPE_S_TENTANT  = "s_tenant";
 
 }

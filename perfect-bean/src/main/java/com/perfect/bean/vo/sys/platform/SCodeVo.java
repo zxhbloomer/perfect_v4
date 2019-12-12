@@ -49,9 +49,14 @@ public class SCodeVo implements Serializable {
     private Long auto_create;
 
     /**
-     * 字典标签
+     * 编码规则
      */
-    private String dict_label;
+    private String code_rule_label;
+
+    /**
+     * 编码名称
+     */
+    private String code_type_label;
 
 
     /**

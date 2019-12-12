@@ -28,15 +28,18 @@ import java.util.List;
 @Repository
 public interface SCodeMapper extends BaseMapper<SCodeEntity> {
 
-    String COMMON_SELECT = "                                                                               "
-        + "                                                                                                "
-        + "   SELECT                                                                                       "
-        + "   	t1.* ,                                                                                     "
-        + "   	t2.label as dict_label                                                                     "
-        + "   FROM                                                                                         "
-        + "   	s_code t1                                                                                  "
-        + "   	LEFT JOIN v_dict_info t2 on t2.code = "
-        + "  '" + PerfectDictConstant.DICT_CODE_RULE_SETTING_TYPE+ "' and t2.dict_value = t1.rule and t2.is_del = 0      "
+    String COMMON_SELECT = "                                                                                   "
+            + "                                                                                                "
+            + "   SELECT                                                                                       "
+            + "   	t1.* ,                                                                                     "
+            + "   	t2.label as code_rule_label,                                                               "
+            + "   	t3.label as code_type_label                                                                "
+            + "   FROM                                                                                         "
+            + "   	s_code t1                                                                                  "
+            + "   	LEFT JOIN v_dict_info t2 on t2.code =                                                      "
+            + "  '" + PerfectDictConstant.DICT_SYS_CODE_RULE_TYPE + "' and t2.dict_value = t1.rule and t2.is_del = 0      "
+            + "   	LEFT JOIN v_dict_info t3 on t3.code =                                                      "
+            + "  '" + PerfectDictConstant.DICT_SYS_CODE_TYPE + "' and t3.dict_value = t1.type and t3.is_del = 0      "
         + "                                                                                                ";
 
 
