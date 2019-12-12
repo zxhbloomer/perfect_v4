@@ -92,5 +92,11 @@ public class PerfectDictConstant {
     public static final String DICT_ORG_SETTING_TYPE_STAFF  = "60";
     public static final String DICT_ORG_SETTING_TYPE_STAFF_SERIAL_TYPE  = "m_staff";
 
+    /**
+     * 自动编号设置：
+     */
+    public static final String DICT_CODE_RULE_SETTING_TYPE  = "sys_coderule_type";
+    // YYYYMMDD_??_999
+    public static final String DICT_CODE_RULE_SETTING_TYPE_ONE  = "10";
 
 }

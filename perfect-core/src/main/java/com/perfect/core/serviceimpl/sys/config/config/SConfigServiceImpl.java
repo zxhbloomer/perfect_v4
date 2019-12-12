@@ -42,13 +42,11 @@ public class SConfigServiceImpl extends BaseServiceImpl<SConfigMapper, SConfigEn
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<SConfigVo> selectPage(SConfigVo searchCondition) {
         // 分页条件
-        Page<SDictTypeEntity> pageCondition =
+        Page<SConfigEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
         // 通过page进行排序
         PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
@@ -60,8 +58,6 @@ public class SConfigServiceImpl extends BaseServiceImpl<SConfigMapper, SConfigEn
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SConfigVo> select(SConfigVo searchCondition) {
@@ -75,8 +71,6 @@ public class SConfigServiceImpl extends BaseServiceImpl<SConfigMapper, SConfigEn
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SConfigVo> selectIdsIn(List<SConfigVo> searchCondition) {

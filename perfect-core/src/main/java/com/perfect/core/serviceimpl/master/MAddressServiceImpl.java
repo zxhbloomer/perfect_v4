@@ -45,8 +45,6 @@ public class MAddressServiceImpl extends BaseServiceImpl<MAddressMapper, MAddres
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<MAddressVo> selectPage(MAddressVo searchCondition) {
@@ -64,8 +62,6 @@ public class MAddressServiceImpl extends BaseServiceImpl<MAddressMapper, MAddres
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MAddressVo> select(MAddressVo searchCondition) {
@@ -80,8 +76,6 @@ public class MAddressServiceImpl extends BaseServiceImpl<MAddressMapper, MAddres
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MAddressEntity> selectIdsIn(List<MAddressEntity> searchCondition) {

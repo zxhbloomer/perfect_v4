@@ -67,7 +67,7 @@ import java.util.List;
     @Override
     public IPage<SJobEntity> selectJobList(SJobVo searchCondition) {
         // 分页条件
-        Page<SDictTypeEntity> pageCondition =
+        Page<SJobEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
         // 通过page进行排序
         PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());

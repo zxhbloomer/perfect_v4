@@ -51,8 +51,6 @@ public class SModuleButtonServiceImpl extends BaseServiceImpl<SModuleButtonMappe
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<SModuleButtonVo> selectPage(SModuleButtonVo searchCondition) {
@@ -69,8 +67,6 @@ public class SModuleButtonServiceImpl extends BaseServiceImpl<SModuleButtonMappe
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SModuleButtonVo> select(SModuleButtonVo searchCondition) {
@@ -84,8 +80,6 @@ public class SModuleButtonServiceImpl extends BaseServiceImpl<SModuleButtonMappe
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SModuleButtonVo> selectIdsIn(List<SModuleButtonVo> searchCondition) {

@@ -45,8 +45,6 @@ public class SModuleServiceImpl extends BaseServiceImpl<SModuleMapper, SModuleEn
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<SModuleVo> selectPage(SModuleVo searchCondition) {
@@ -63,8 +61,6 @@ public class SModuleServiceImpl extends BaseServiceImpl<SModuleMapper, SModuleEn
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SModuleEntity> select(SModuleVo searchCondition) {
@@ -78,8 +74,6 @@ public class SModuleServiceImpl extends BaseServiceImpl<SModuleMapper, SModuleEn
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SModuleEntity> selectIdsIn(List<SModuleVo> searchCondition) {

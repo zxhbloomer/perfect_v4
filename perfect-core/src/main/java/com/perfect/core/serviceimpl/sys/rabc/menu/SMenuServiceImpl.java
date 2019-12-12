@@ -45,8 +45,6 @@ public class SMenuServiceImpl extends BaseServiceImpl<SMenuMapper, SMenuEntity> 
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SMenuVo> getTreeList(SMenuVo searchCondition) {
@@ -62,8 +60,6 @@ public class SMenuServiceImpl extends BaseServiceImpl<SMenuMapper, SMenuEntity> 
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SMenuVo> getCascaderList(SMenuVo searchCondition) {
@@ -78,8 +74,6 @@ public class SMenuServiceImpl extends BaseServiceImpl<SMenuMapper, SMenuEntity> 
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public SMenuVo getCascaderGet(SMenuVo searchCondition) {
@@ -105,8 +99,6 @@ public class SMenuServiceImpl extends BaseServiceImpl<SMenuMapper, SMenuEntity> 
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SMenuEntity> selectIdsIn(List<SMenuVo> searchCondition) {

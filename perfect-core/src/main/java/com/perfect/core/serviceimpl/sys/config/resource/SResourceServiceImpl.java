@@ -35,8 +35,6 @@ public class SResourceServiceImpl extends BaseServiceImpl<SResourceMapper, SReso
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<SResourceEntity> selectPage(SResourceVo searchCondition) {
@@ -53,8 +51,6 @@ public class SResourceServiceImpl extends BaseServiceImpl<SResourceMapper, SReso
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SResourceEntity> select(SResourceVo searchCondition) {
@@ -68,8 +64,6 @@ public class SResourceServiceImpl extends BaseServiceImpl<SResourceMapper, SReso
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SResourceEntity> selectIdsIn(List<SResourceVo> searchCondition) {

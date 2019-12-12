@@ -40,8 +40,6 @@ public class SLogMqServiceImpl extends BaseServiceImpl<SLogMqMapper, SLogMqEntit
      * 获取列表，查询所有数据
      *
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SLogMqEntity> selectAll() {

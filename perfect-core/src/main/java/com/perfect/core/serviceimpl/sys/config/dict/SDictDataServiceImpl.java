@@ -46,8 +46,6 @@ public class SDictDataServiceImpl extends BaseServiceImpl<SDictDataMapper, SDict
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<SDictDataVo> selectPage(SDictDataVo searchCondition) {
@@ -64,8 +62,6 @@ public class SDictDataServiceImpl extends BaseServiceImpl<SDictDataMapper, SDict
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SDictDataVo> select(SDictDataVo searchCondition) {
@@ -79,8 +75,6 @@ public class SDictDataServiceImpl extends BaseServiceImpl<SDictDataMapper, SDict
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<SDictDataVo> selectIdsIn(List<SDictDataVo> searchCondition) {

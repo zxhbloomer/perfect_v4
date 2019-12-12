@@ -42,8 +42,6 @@ public class MPositiionServiceImpl extends BaseServiceImpl<MPositionMapper, MPos
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<MPositionVo> selectPage(MPositionVo searchCondition) {
@@ -61,8 +59,6 @@ public class MPositiionServiceImpl extends BaseServiceImpl<MPositionMapper, MPos
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MPositionVo> select(MPositionVo searchCondition) {
@@ -77,8 +73,6 @@ public class MPositiionServiceImpl extends BaseServiceImpl<MPositionMapper, MPos
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MPositionEntity> selectIdsIn(List<MPositionVo> searchCondition) {

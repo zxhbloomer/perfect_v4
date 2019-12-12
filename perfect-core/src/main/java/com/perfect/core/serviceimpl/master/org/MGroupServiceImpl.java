@@ -42,8 +42,6 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<MGroupEntity> selectPage(MGroupVo searchCondition) {
@@ -61,8 +59,6 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MGroupEntity> select(MGroupVo searchCondition) {
@@ -77,8 +73,6 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MGroupEntity> selectIdsIn(List<MGroupVo> searchCondition) {

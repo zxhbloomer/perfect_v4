@@ -78,8 +78,6 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<STentantVo> selectPage(STentantVo searchCondition) {
@@ -96,8 +94,6 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<STentantEntity> selectIdsIn(List<STentantVo> searchCondition) {
@@ -132,6 +128,8 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
         if(entity.getDisable_time().isBefore(LocalDateTime.now())){
             entity.setIs_enable(false);
         }
+        // 自动生成租户编码
+
         // 插入逻辑保存
         return InsertResultUtil.OK(mapper.insert(entity));
     }

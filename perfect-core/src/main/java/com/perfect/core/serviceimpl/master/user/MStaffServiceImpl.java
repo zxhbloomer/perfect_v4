@@ -60,8 +60,6 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<MStaffVo> selectPage(MStaffVo searchCondition) {
@@ -79,8 +77,6 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MStaffVo> select(MStaffVo searchCondition) {
@@ -95,8 +91,6 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MStaffVo> selectIdsIn(List<MStaffVo> searchCondition) {

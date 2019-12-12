@@ -14,8 +14,6 @@ public class PageUtil {
      * @param sortCondition
      * @param <T>
      * @return
-     * @throws IllegalAccessException
-     * @throws InstantiationException
      */
     public static <T> void setSort(Page page , String sortCondition) {
         if (StringUtil.isNotEmpty(sortCondition)) {

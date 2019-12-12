@@ -44,8 +44,6 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<MDeptVo> selectPage(MDeptVo searchCondition) {
@@ -63,8 +61,6 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MDeptVo> select(MDeptVo searchCondition) {
@@ -79,8 +75,6 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MDeptEntity> selectIdsIn(List<MDeptVo> searchCondition) {

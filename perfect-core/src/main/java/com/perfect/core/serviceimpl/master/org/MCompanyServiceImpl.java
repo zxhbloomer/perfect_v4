@@ -43,8 +43,6 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<MCompanyEntity> selectPage(MCompanyVo searchCondition) {
@@ -62,8 +60,6 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MCompanyEntity> select(MCompanyVo searchCondition) {
@@ -78,8 +74,6 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
      *
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public List<MCompanyEntity> selectIdsIn(List<MCompanyVo> searchCondition) {

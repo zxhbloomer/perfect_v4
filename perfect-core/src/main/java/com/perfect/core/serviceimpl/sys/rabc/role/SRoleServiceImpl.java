@@ -36,8 +36,6 @@ public class SRoleServiceImpl extends BaseServiceImpl<SRoleMapper, SRoleEntity> 
      * 
      * @param searchCondition
      * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
     @Override
     public IPage<SRoleEntity> selectPage(SRoleVo searchCondition) {
