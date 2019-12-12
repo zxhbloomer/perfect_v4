@@ -10,6 +10,7 @@ import com.perfect.bean.vo.master.org.MDeptVo;
 import com.perfect.bean.vo.sys.config.config.SConfigVo;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
 import com.perfect.bean.vo.sys.platform.SCodeVo;
+import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -34,7 +35,8 @@ public interface SCodeMapper extends BaseMapper<SCodeEntity> {
         + "   	t2.label as dict_label                                                                     "
         + "   FROM                                                                                         "
         + "   	s_code t1                                                                                  "
-        + "   	LEFT JOIN v_dict_info t2 on t1.code = 'sys_coderule_type' and t2.dict_value = t1.rule and t2.is_del = 0      "
+        + "   	LEFT JOIN v_dict_info t2 on t2.code = "
+        + "  '" + PerfectDictConstant.DICT_CODE_RULE_SETTING_TYPE+ "' and t2.dict_value = t1.rule and t2.is_del = 0      "
         + "                                                                                                ";
 
 

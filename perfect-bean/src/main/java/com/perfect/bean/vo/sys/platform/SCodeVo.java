@@ -59,6 +59,14 @@ public class SCodeVo implements Serializable {
      */
     private Integer dbversion;
 
+    private Long c_id;
+
+    private LocalDateTime c_time;
+
+    private Long u_id;
+
+    private LocalDateTime u_time;
+
     /**
      * 换页条件
      */

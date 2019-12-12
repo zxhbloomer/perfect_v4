@@ -25,7 +25,7 @@ public class SCodeEntity implements Serializable {
 
     private static final long serialVersionUID = -3616976089046858264L;
 
-    @TableId("id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
