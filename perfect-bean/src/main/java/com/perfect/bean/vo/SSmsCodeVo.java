@@ -26,4 +26,6 @@ public class SSmsCodeVo implements Serializable {
 
     private String mobile;
 
+    private String sms_code;
+
 }

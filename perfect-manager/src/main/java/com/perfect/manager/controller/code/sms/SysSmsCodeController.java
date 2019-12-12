@@ -1,5 +1,6 @@
 package com.perfect.manager.controller.code.sms;
 
+import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.SSmsCodeVo;
@@ -7,6 +8,9 @@ import com.perfect.common.annotation.Limit;
 import com.perfect.common.annotation.RepeatSubmit;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.common.constant.PerfectConstant;
+import com.perfect.common.exception.BusinessException;
+import com.perfect.core.service.client.user.IMUserService;
+import com.perfect.core.service.sys.ISSmsCodeService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import com.perfect.security.code.ValidateCode;
 import com.perfect.security.code.ValidateCodeGenerator;
@@ -47,6 +51,9 @@ public class SysSmsCodeController extends BaseController {
     @Autowired
     private SmsCodeSender smsCodeSender;
 
+    @Autowired
+    IMUserService imUserService;
+
     /**
      * 测试限流注解，下面配置说明该接口 60秒内最多只能访问 10次，保存到 redis的键名为 limit_test，
      * 即 prefix + "_" + key，也可以根据 IP 来限流，需指定 limitType = LimitType.IP
@@ -58,12 +65,29 @@ public class SysSmsCodeController extends BaseController {
     @ResponseBody
     @RepeatSubmit
     public ResponseEntity<JsonResult<String>> createSmsCode(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody SSmsCodeVo mobileBean)
-        throws Exception {
+            @RequestBody SSmsCodeVo mobileBean) throws Exception {
+        // check 手机号码是否已经被注册
+        MUserEntity mUserEntity = imUserService.getDataByName(mobileBean.getMobile());
+        if (mUserEntity != null) {
+            throw new BusinessException("该手机号码已经被注册使用，您可以使用该手机号码进行登录！");
+        }
+
         ValidateCode smsCode = smsCodeGenerator.createCode();
         sessionStrategy.setAttribute(new ServletWebRequest(request), PerfectConstant.SESSION_KEY_SMS_CODE + mobileBean.getMobile(), smsCode);
         // 发送短信
         smsCodeSender.sendCode(mobileBean.getMobile(), smsCode.getCode(), PerfectConstant.SMS_CODE_TYPE.SMS_CODE_TYPE_REGIST);
+        return ResponseEntity.ok().body(ResultUtil.OK("OK"));
+    }
+
+    @SysLog("短信验证")
+    @ApiOperation("短信验证")
+    @Limit(key = "smscodecheck", period = 60, count = 5, name = "验证短信验证码", prefix = "limit")
+    @PostMapping("/sms/code/check")
+    @ResponseBody
+    @RepeatSubmit
+    public ResponseEntity<JsonResult<String>> checkSmsCode(HttpServletRequest request, HttpServletResponse response,
+        @RequestBody(required=false) SSmsCodeVo mobileBean)  {
+        // 本方法主要是触发框架短信验证 SmsCodeFilter
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 }

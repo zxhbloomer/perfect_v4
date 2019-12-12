@@ -51,14 +51,17 @@ public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> 
 
     @Autowired
     private MUserMapper mUserMapper;
+
     @Autowired
     private IMStaffService imStaffService;
+
     @Autowired
     private ITentantService iTentantService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        MUserEntity user = mUserMapper.getDataByName(username);
+//        MUserEntity user = mUserMapper.getDataByName(username);
+        MUserEntity user = getDataByName(username);
 
         if (user == null) {
             log.error("您输入的用户名不存在！");
@@ -125,8 +128,6 @@ public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> 
         return userSessionBo;
     }
 
-
-
     /**
      * 插入一条记录（选择字段，策略插入）
      * @param entity 实体对象
@@ -180,5 +181,17 @@ public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> 
      */
     public CheckResult checkLogic(MUserEntity entity, String moduleType){
         return CheckResultUtil.OK();
+    }
+
+    /**
+     * 根据登录的username获取entity
+     *
+     * @param username
+     * @return
+     */
+    @Override
+    public MUserEntity getDataByName(String username) {
+        MUserEntity entity = mUserMapper.getDataByName(username);
+        return entity;
     }
 }

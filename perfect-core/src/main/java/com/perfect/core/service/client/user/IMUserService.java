@@ -59,5 +59,12 @@ public interface IMUserService extends IService<MUserEntity> , UserDetailsServic
      */
     MUserVo selectByid(Long id);
 
+    /**
+     * 根据登录的username获取entity
+     *
+     * @param username
+     * @return
+     */
+    MUserEntity getDataByName(String username);
 
 }

@@ -1,10 +1,14 @@
 package com.perfect.security.code.sms;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.perfect.bean.vo.SSmsCodeVo;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.ValidateCodeException;
 import com.perfect.common.utils.CommonUtil;
 import com.perfect.security.code.ValidateCode;
 import com.perfect.security.properties.PerfectSecurityProperties;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -63,7 +68,8 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
 
         boolean match = false;
         for (String u : url) {
-            if (pathMatcher.match(u, httpServletRequest.getRequestURI())) {
+//            if (pathMatcher.match(u, httpServletRequest.getRequestURI())) {
+            if (pathMatcher.match(u, httpServletRequest.getServletPath())) {
                 match = true;
             }
         }
@@ -78,9 +84,15 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
         filterChain.doFilter(CommonUtil.convertJsonType2FormData(httpServletRequest), httpServletResponse);
     }
 
-    private void validateSmsCode(ServletWebRequest servletWebRequest) throws ServletRequestBindingException {
-        String smsCodeInRequest = ServletRequestUtils.getStringParameter(servletWebRequest.getRequest(), "smsCode");
-        String mobile = ServletRequestUtils.getStringParameter(servletWebRequest.getRequest(), "mobile");
+    private void validateSmsCode(ServletWebRequest servletWebRequest) throws IOException {
+//        String smsCodeInRequest = ServletRequestUtils.getStringParameter(servletWebRequest.getRequest(), "smsCode");
+//        String mobile = ServletRequestUtils.getStringParameter(servletWebRequest.getRequest(), "mobile");
+
+        String jsonBody = IOUtils.toString( servletWebRequest.getRequest().getInputStream(), "utf-8");
+        SSmsCodeVo vo = JSON.parseObject(jsonBody, SSmsCodeVo.class);
+        String smsCodeInRequest = vo.getSms_code();
+        String mobile = vo.getMobile();
+
         ValidateCode codeInSession = (ValidateCode) sessionStrategy.getAttribute(servletWebRequest, PerfectConstant.SESSION_KEY_SMS_CODE + mobile);
 
         if (StringUtils.isBlank(smsCodeInRequest)) {
