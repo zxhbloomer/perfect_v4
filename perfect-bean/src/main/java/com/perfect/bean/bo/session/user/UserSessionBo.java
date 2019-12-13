@@ -4,9 +4,8 @@ import com.perfect.bean.bo.sys.SysInfoBo;
 import com.perfect.bean.config.base.v1.SessionBean;
 import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.vo.master.user.MStaffVo;
-import com.perfect.bean.vo.sys.config.tenant.STentantVo;
+import com.perfect.bean.vo.sys.config.tenant.STenantVo;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -33,7 +32,7 @@ public class UserSessionBo extends SessionBean implements Serializable {
     /**
      * 租户 信息
      */
-    private STentantVo tentant_info;
+    private STenantVo tenant_info;
 
     /**
      * 系统参数

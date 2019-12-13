@@ -60,8 +60,8 @@ public class MPositionEntity implements Serializable {
     /**
      * 租户id
      */
-    @TableField("tentant_id")
-    private Long tentant_id;
+    @TableField("tenant_id")
+    private Long tenant_id;
 
     @TableField(value="c_id", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NOT_EMPTY)
     private Long c_id;

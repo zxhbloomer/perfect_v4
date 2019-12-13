@@ -50,8 +50,8 @@ public class ProducerConfiguration {
         /**
          * 初始化项目中使用的mq
          */
-        binding(rabbitAdmin, MQEnum.MQ_TASK_Tentant_ENABLE);
-        binding(rabbitAdmin, MQEnum.MQ_TASK_Tentant_Disable);
+        binding(rabbitAdmin, MQEnum.MQ_TASK_Tenant_ENABLE);
+        binding(rabbitAdmin, MQEnum.MQ_TASK_Tenant_Disable);
         return binding;
     }
 

@@ -52,6 +52,12 @@ public class SCodeEntity implements Serializable {
     @TableField("auto_create")
     private Long auto_create;
 
+    /**
+     * 前缀
+     */
+    @TableField("prefex")
+    private String prefex;
+
 
     @TableField(value="c_id", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NOT_EMPTY)
     private Long c_id;

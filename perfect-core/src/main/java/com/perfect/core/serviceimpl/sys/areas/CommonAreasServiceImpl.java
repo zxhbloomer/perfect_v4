@@ -1,27 +1,19 @@
 package com.perfect.core.serviceimpl.sys.areas;
 
-import com.perfect.bean.entity.sys.areas.SAreaCitiesEntity;
-import com.perfect.bean.entity.sys.areas.SAreaProvincesEntity;
-import com.perfect.bean.entity.sys.areas.SAreasEntity;
 import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.sys.areas.SAreaCitiesVo;
 import com.perfect.bean.vo.sys.areas.SAreaProvincesVo;
 import com.perfect.bean.vo.sys.areas.SAreasCascaderTreeVo;
 import com.perfect.bean.vo.sys.areas.SAreasVo;
-import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
-import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.core.mapper.sys.areas.SAreasMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.areas.ICommonAreasService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
-import com.perfect.core.mapper.common.CommonComponentMapper;
 
 import java.util.List;
 

@@ -48,7 +48,7 @@ public class MAddressServiceImpl extends BaseServiceImpl<MAddressMapper, MAddres
      */
     @Override
     public IPage<MAddressVo> selectPage(MAddressVo searchCondition) {
-        searchCondition.setTentant_id(getUserSessionTentantId());
+        searchCondition.setTenant_id(getUserSessionTenantId());
         // 分页条件
         Page<MAddressEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
@@ -65,7 +65,7 @@ public class MAddressServiceImpl extends BaseServiceImpl<MAddressMapper, MAddres
      */
     @Override
     public List<MAddressVo> select(MAddressVo searchCondition) {
-        searchCondition.setTentant_id(getUserSessionTentantId());
+        searchCondition.setTenant_id(getUserSessionTenantId());
         // 查询 数据
         List<MAddressVo> list = mapper.select(searchCondition);
         return list;
@@ -80,7 +80,7 @@ public class MAddressServiceImpl extends BaseServiceImpl<MAddressMapper, MAddres
     @Override
     public List<MAddressEntity> selectIdsIn(List<MAddressEntity> searchCondition) {
         // 查询 数据
-        List<MAddressEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTentantId());
+        List<MAddressEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTenantId());
         return list;
     }
 
@@ -109,7 +109,7 @@ public class MAddressServiceImpl extends BaseServiceImpl<MAddressMapper, MAddres
     @Transactional(rollbackFor = Exception.class)
     @Override
     public InsertResult<Integer> insert(MAddressEntity entity) {
-        entity.setTentant_id(getUserSessionTentantId());
+        entity.setTenant_id(getUserSessionTenantId());
 
         // 插入前check
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
@@ -129,7 +129,7 @@ public class MAddressServiceImpl extends BaseServiceImpl<MAddressMapper, MAddres
     @Transactional(rollbackFor = Exception.class)
     @Override
     public UpdateResult<Integer> update(MAddressEntity entity) {
-        entity.setTentant_id(getUserSessionTentantId());
+        entity.setTenant_id(getUserSessionTenantId());
 
         // 更新前check
         CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
@@ -149,7 +149,7 @@ public class MAddressServiceImpl extends BaseServiceImpl<MAddressMapper, MAddres
      */
     @Override
     public MAddressVo selectByid(Long id){
-        return mapper.selectByid(id, getUserSessionTentantId());
+        return mapper.selectByid(id, getUserSessionTenantId());
     }
 
     /**

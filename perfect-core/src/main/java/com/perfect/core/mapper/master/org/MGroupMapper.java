@@ -34,7 +34,7 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + "    and (t.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
         + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
         + "    and (t.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                "
-        + "    and (t.tentant_id =#{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)      "
+        + "    and (t.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)      "
         + "      ")
     IPage<MGroupEntity> selectPage(Page page, @Param("p1") MGroupVo searchCondition);
 
@@ -50,7 +50,7 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + "    and (t.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
         + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
         + "    and (t.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                "
-        + "    and (t.tentant_id =#{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)      "
+        + "    and (t.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)      "
         + "      ")
     List<MGroupEntity> select(@Param("p1") MGroupVo searchCondition);
 
@@ -63,13 +63,13 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + " select t.* "
         + "   from m_group t "
         + "  where true "
-        + "    and (t.tentant_id = #{p2} or #{p2} is null  )                                               "
+        + "    and (t.tenant_id = #{p2} or #{p2} is null  )                                               "
         + "    and t.id in "
         + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>"
         + "         #{item.id}  "
         + "        </foreach>"
         + "  </script>")
-    List<MGroupEntity> selectIdsIn(@Param("p1") List<MGroupVo> searchCondition, @Param("p2")Long tentant_id);
+    List<MGroupEntity> selectIdsIn(@Param("p1") List<MGroupVo> searchCondition, @Param("p2")Long tenant_id);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -83,10 +83,10 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + "    and t.code =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "    and (t.tentant_id  = #{p4} or #{p4} is null)   "
+        + "    and (t.tenant_id  = #{p4} or #{p4} is null)   "
         + "    and t.is_del =  0   "
         + "      ")
-    List<MGroupEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id, @Param("p4")Long tentant_id);
+    List<MGroupEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id, @Param("p4")Long tenant_id);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -100,10 +100,10 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + "    and t.name =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "    and (t.tentant_id  = #{p4} or #{p4} is null)   "
+        + "    and (t.tenant_id  = #{p4} or #{p4} is null)   "
         + "    and t.is_del =  0   "
         + "      ")
-    List<MGroupEntity> selectByName(@Param("p1") String name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id, @Param("p4")Long tentant_id);
+    List<MGroupEntity> selectByName(@Param("p1") String name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id, @Param("p4")Long tenant_id);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -117,8 +117,8 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + "    and t.simple_name =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "    and (t.tentant_id  = #{p4} or #{p4} is null)   "
+        + "    and (t.tenant_id  = #{p4} or #{p4} is null)   "
         + "    and t.is_del =  0   "
         + "      ")
-    List<MGroupEntity> selectBySimpleName(@Param("p1") String name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id, @Param("p4")Long tentant_id);
+    List<MGroupEntity> selectBySimpleName(@Param("p1") String name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id, @Param("p4")Long tenant_id);
 }

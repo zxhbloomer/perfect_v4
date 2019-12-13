@@ -43,7 +43,7 @@ public class MasterOrgController extends BaseController {
     public ResponseEntity<JsonResult<List<MOrgTreeVo>>> treeList(@RequestBody(required = false) MOrgTreeVo searchCondition) {
         if(searchCondition == null){
             searchCondition = new MOrgTreeVo();
-            searchCondition.setTentant_id(getUserSessionTentantId());
+            searchCondition.setTenant_id(getUserSessionTenantId());
         }
         List<MOrgTreeVo> vo = service.getTreeList(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(vo));
@@ -88,8 +88,8 @@ public class MasterOrgController extends BaseController {
     @PostMapping("/get_type")
     @ResponseBody
     public ResponseEntity<JsonResult<List<NameAndValueVo>>> getCorrectTypeByInsertStatus(@RequestBody(required = false) MOrgVo bean) {
-        if(bean.getTentant_id() == null) {
-            bean.setTentant_id(getUserSessionTentantId());
+        if(bean.getTenant_id() == null) {
+            bean.setTenant_id(getUserSessionTenantId());
         }
         List<NameAndValueVo> rtn = service.getCorrectTypeByInsertStatus(bean);
         return ResponseEntity.ok().body(ResultUtil.OK(rtn));

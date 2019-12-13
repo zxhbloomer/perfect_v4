@@ -24,7 +24,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
      * 获取当前登录用户的session数据:租户数据
      * @return
      */
-    public Long getUserSessionTentantId(){
+    public Long getUserSessionTenantId(){
         if(getUserSession() == null) {
             return null;
         }

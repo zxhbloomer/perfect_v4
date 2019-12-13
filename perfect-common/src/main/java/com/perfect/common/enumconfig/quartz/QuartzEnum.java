@@ -7,24 +7,24 @@ import lombok.Setter;
  * mq重要配置
  */
 public enum QuartzEnum {
-	TASK_TENTANT_ENABLE(
-						QuartzInfo.TentantEnableTask.job_name,
-						QuartzInfo.TentantEnableTask.job_group_code,
-						QuartzInfo.TentantEnableTask.job_group_name,
-						QuartzInfo.TentantEnableTask.job_desc,
-						QuartzInfo.TentantEnableTask.job_simple_name,
-						QuartzInfo.TentantEnableTask.job_serial_type,
-						QuartzInfo.TentantEnableTask.ok_msg
+	TASK_TENANT_ENABLE(
+						QuartzInfo.TenantEnableTask.job_name,
+						QuartzInfo.TenantEnableTask.job_group_code,
+						QuartzInfo.TenantEnableTask.job_group_name,
+						QuartzInfo.TenantEnableTask.job_desc,
+						QuartzInfo.TenantEnableTask.job_simple_name,
+						QuartzInfo.TenantEnableTask.job_serial_type,
+						QuartzInfo.TenantEnableTask.ok_msg
 						),
 
-	TASK_TENTANT_DISABLE(
-						QuartzInfo.TentantDisableTask.job_name,
-						QuartzInfo.TentantDisableTask.job_group_code,
-						QuartzInfo.TentantDisableTask.job_group_name,
-						QuartzInfo.TentantDisableTask.job_desc,
-						QuartzInfo.TentantDisableTask.job_simple_name,
-						QuartzInfo.TentantDisableTask.job_serial_type,
-						QuartzInfo.TentantDisableTask.ok_msg
+	TASK_TENANT_DISABLE(
+						QuartzInfo.TenantDisableTask.job_name,
+						QuartzInfo.TenantDisableTask.job_group_code,
+						QuartzInfo.TenantDisableTask.job_group_name,
+						QuartzInfo.TenantDisableTask.job_desc,
+						QuartzInfo.TenantDisableTask.job_simple_name,
+						QuartzInfo.TenantDisableTask.job_serial_type,
+						QuartzInfo.TenantDisableTask.ok_msg
 						),
 	;
 
@@ -77,9 +77,9 @@ public enum QuartzEnum {
 		 * @author zxh
 		 * @date 2019年 10月12日 23:34:54
 		 */
-		public class TentantEnableTask {
+		public class TenantEnableTask {
 			public static final String job_name = "租户定时任务：启用租户任务";
-			public static final String job_group_code = "perfect_task_tentant";
+			public static final String job_group_code = "perfect_task_tenant";
 			public static final String job_group_name = "租户定时任务";
 			public static final String job_desc = "系统自动生产该项任务:租户定时任务，启用任务";
 			public static final String job_simple_name = "租户启用任务";
@@ -93,9 +93,9 @@ public enum QuartzEnum {
 		 * @author zxh
 		 * @date 2019年 10月12日 23:34:54
 		 */
-		public class TentantDisableTask {
+		public class TenantDisableTask {
 			public static final String job_name = "租户定时任务：停止启用租户任务";
-			public static final String job_group_code = "perfect_task_tentant";
+			public static final String job_group_code = "perfect_task_tenant";
 			public static final String job_group_name = "租户定时任务";
 			public static final String job_desc = "系统自动生产该项任务:租户定时任务，停止启用租户";
 			public static final String job_simple_name = "租户停止任务";

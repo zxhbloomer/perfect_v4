@@ -143,7 +143,7 @@ public class BaseController {
      * 获取当前登录用户的session数据:租户数据
      * @return
      */
-    public Long getUserSessionTentantId(){
+    public Long getUserSessionTenantId(){
         Long tenant_Id = getUserSession().getTenant_Id();
         return tenant_Id;
     }

@@ -35,7 +35,7 @@ public class MOrgVo implements Serializable {
     /**
      * 租户id，根节点
      */
-    private Long tentant_id;
+    private Long tenant_id;
 
     /**
      * 关联单号

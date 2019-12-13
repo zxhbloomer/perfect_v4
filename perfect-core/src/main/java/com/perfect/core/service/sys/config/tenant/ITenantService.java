@@ -1,13 +1,12 @@
-package com.perfect.core.service.sys.config.tentant;
+package com.perfect.core.service.sys.config.tenant;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.perfect.bean.entity.quartz.SJobEntity;
-import com.perfect.bean.entity.sys.config.tenant.STentantEntity;
+import com.perfect.bean.entity.sys.config.tenant.STenantEntity;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
-import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
-import com.perfect.bean.vo.sys.config.tenant.STentantVo;
+import com.perfect.bean.vo.sys.config.tenant.STenantTreeVo;
+import com.perfect.bean.vo.sys.config.tenant.STenantVo;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ import java.util.List;
  * @author zxh
  * @since 2019-08-16
  */
-public interface ITentantService extends IService<STentantEntity> {
+public interface ITenantService extends IService<STenantEntity> {
 
     /**
      * 获取数据，树结构
@@ -27,7 +26,7 @@ public interface ITentantService extends IService<STentantEntity> {
      * @param id
      * @return
      */
-    List<STentantTreeVo> getTreeList(Long id, String nam);
+    List<STenantTreeVo> getTreeList(Long id, String nam);
 
     /**
      * 获取数据，级联结构
@@ -35,17 +34,17 @@ public interface ITentantService extends IService<STentantEntity> {
      * @param id
      * @return
      */
-    List<STentantTreeVo> getCascaderList(Long id, String nam);
+    List<STenantTreeVo> getCascaderList(Long id, String nam);
 
     /**
      * 获取列表，页面查询
      */
-    IPage<STentantVo> selectPage(STentantVo searchCondition) ;
+    IPage<STenantVo> selectPage(STenantVo searchCondition) ;
 
     /**
      * 获取所选id的数据
      */
-    List<STentantEntity> selectIdsIn(List<STentantVo> searchCondition) ;
+    List<STenantEntity> selectIdsIn(List<STenantVo> searchCondition) ;
 
     /**
      * 插入一条记录（选择字段，策略插入）
@@ -53,7 +52,7 @@ public interface ITentantService extends IService<STentantEntity> {
      * @param entity 实体对象
      * @return
      */
-    InsertResult<Integer> insert(STentantEntity entity);
+    InsertResult<Integer> insert(STenantEntity entity);
 
     /**
      * 更新一条记录（选择字段，策略更新）
@@ -61,7 +60,7 @@ public interface ITentantService extends IService<STentantEntity> {
      * @param entity 实体对象
      * @return
      */
-    UpdateResult<Integer> update(STentantEntity entity);
+    UpdateResult<Integer> update(STenantEntity entity);
 
     /**
      * 查询by id，返回结果
@@ -69,19 +68,19 @@ public interface ITentantService extends IService<STentantEntity> {
      * @param id
      * @return
      */
-    STentantVo selectByid(Long id);
+    STenantVo selectByid(Long id);
 
     /**
      * 通过code查询
      *
      */
-    List<STentantEntity> selectByCode(String code);
+    List<STenantEntity> selectByCode(String code);
 
     /**
      * 通过名称查询
      *
      */
-    List<STentantEntity> selectByName(String name);
+    List<STenantEntity> selectByName(String name);
 
     /**
      * 根据ID获取子节点数组
@@ -89,33 +88,33 @@ public interface ITentantService extends IService<STentantEntity> {
      * @param id
      * @return
      */
-     List<STentantTreeVo> getChildren(Long id, String name);
+     List<STenantTreeVo> getChildren(Long id, String name);
 
     /**
      * 启用
      * @param entity
      * @return
      */
-     UpdateResult<Integer> enableUpdate(STentantEntity entity);
+     UpdateResult<Integer> enableUpdate(STenantEntity entity);
 
     /**
      * 禁用
      * @param entity
      * @return
      */
-    UpdateResult<Integer> disableUpdate(STentantEntity entity);
+    UpdateResult<Integer> disableUpdate(STenantEntity entity);
 
     /**
      * 启用
      * @param entity
      * @return
      */
-    boolean enableProcess(STentantEntity entity);
+    boolean enableProcess(STenantEntity entity);
 
     /**
      * 禁用
      * @param entity
      * @return
      */
-    boolean disableProcess(STentantEntity entity);
+    boolean disableProcess(STenantEntity entity);
 }

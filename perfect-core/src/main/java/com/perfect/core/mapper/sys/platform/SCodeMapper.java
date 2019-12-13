@@ -94,7 +94,7 @@ public interface SCodeMapper extends BaseMapper<SCodeEntity> {
 
     /**
      * 页面查询列表
-     * @param searchCondition
+     * @param type
      * @return
      */
     @Select("                                                                                                      "
@@ -103,8 +103,8 @@ public interface SCodeMapper extends BaseMapper<SCodeEntity> {
         + "        FROM                                                                                            "
         + "        	s_code t                                                                                       "
         + "        WHERE true                                                                                      "
-        + "        	 and t.type = #{p1.type,jdbcType=VARCHAR}                                                      "
+        + "        	 and t.type = #{p1}                                                                            "
         + "         for update nowait;                                                                             "
         + "                                                                                                        ")
-    SCodeEntity selectForUpdateNoWait(@Param("p1") SCodeVo searchCondition);
+    SCodeEntity selectForUpdateNoWait(@Param("p1") String type);
 }

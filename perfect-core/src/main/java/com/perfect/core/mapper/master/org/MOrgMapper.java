@@ -30,7 +30,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
             + "               SELECT                                                                                        "
             + "                 t0.id,                                                                                      "
             + "                 t0.id as value,                                                                             "
-            + "                 t0.tentant_id,                                                                              "
+            + "                 t0.tenant_id,                                                                              "
             + "                 t0.parent_id ,                                                                              "
             + "                 1 level,                                                                                    "
             + "                 cast(t0.id as char) depth_id                                                                "
@@ -41,7 +41,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
             + "               SELECT                                                                                        "
             + "                 t2.id,                                                                                      "
             + "                 t2.id as value,                                                                             "
-            + "                 t2.tentant_id,                                                                              "
+            + "                 t2.tenant_id,                                                                              "
             + "                 t2.parent_id,                                                                               "
             + "                 t1.level + 1 as level,                                                                      "
             + "                 CONCAT( cast(t1.depth_id as char),',',cast(t2.id as char)) depth_id                         "
@@ -86,7 +86,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("    "
         + COMMON_TREE_SELECT
         + "  where true                                                                                              "
-        + "    and (t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)    "
+        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)    "
         + "      ")
     List<MOrgTreeVo> getTreeList(@Param("p1") MOrgTreeVo searchCondition);
 
@@ -96,7 +96,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("    "
             + COMMON_TREE_SELECT
             + "  where true                                                                                            "
-            + "    and (t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)  "
+            + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)  "
             + "      ")
     List<MOrgTreeVo> getList(@Param("p1") MOrgTreeVo searchCondition);
 
@@ -109,7 +109,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("    "
         + COMMON_TREE_SELECT
         + "  where true                                                                                                "
-        + "    and (t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)      "
+        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)      "
         + "    and (t1.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)      "
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)  "
         + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                 "
@@ -126,7 +126,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("    "
         + COMMON_TREE_SELECT
         + "  where true                                                                                              "
-        + "    and (t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)    "
+        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)    "
         + "    and (t2.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)    "
         + "      ")
     List<MOrgTreeVo> select(@Param("p1") MOrgVo searchCondition);
@@ -141,11 +141,11 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "           FROM                                                                                           "
         + "           	m_org t1                                                                                     "
         + "           WHERE true                                                                                     "
-        + "           	and (t1.tentant_id = #{p3} or #{p3} is null )                                                "
+        + "           	and (t1.tenant_id = #{p3} or #{p3} is null )                                                "
         + "           	and t1.CODE LIKE CONCAT (#{p1},'%')                                                          "
         + "           	and t1.type > #{p2}                                                                          "
         + "                                                                                                          ")
-    Integer selectNodeInsertStatus(@Param("p1")String code, @Param("p2")String type, @Param("p3") Long tentant_id);
+    Integer selectNodeInsertStatus(@Param("p1")String code, @Param("p2")String type, @Param("p3") Long tenant_id);
 
     /**
      * 获取单条数据
@@ -156,9 +156,9 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + COMMON_TREE_SELECT
         + "  where true                                                              "
         + "    and (t1.id = #{p1})                                                   "
-        + "    and (t1.tentant_id = #{p2} or #{p2} is null)                          "
+        + "    and (t1.tenant_id = #{p2} or #{p2} is null)                          "
         + "                                                                          ")
-    MOrgVo selectByid(@Param("p1") Long id, @Param("p2") Long tentant_id);
+    MOrgVo selectByid(@Param("p1") Long id, @Param("p2") Long tenant_id);
 
     /**
      * 新增模式下，可新增子节点得类型
@@ -181,7 +181,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "		   					select t.type                                                                    "
         + "		   					  from m_org t                                                                   "
         + "		   					 where true                                                                      "
-        + "		   					   and (t.tentant_id = #{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)   "
+        + "		   					   and (t.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)   "
         + "		   					   and t.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%')                      "
         + "		   					   and t2.dict_value >= t.type                                                   "
         + "		   	            )                                                                                    "
@@ -205,7 +205,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "           FROM                                                                                           "
         + "           	m_org t1                                                                                     "
         + "           WHERE true                                                                                     "
-        + "           	AND (t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)    "
+        + "           	AND (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)    "
         + "           	AND t1.serial_type = #{p1.serial_type,jdbcType=VARCHAR}                                      "
         + "           	AND t1.serial_id = #{p1.serial_id,jdbcType=BIGINT}                                           "
         + "           	AND (t1.id  =  #{p2} or #{p2} is null)                                                       "
@@ -223,7 +223,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "          from m_org t1                                                                                   "
         + "         where true                                                                                       "
         + "           and t1.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%')                                      "
-        + "           and t1.tentant_id = #{p1.tentant_id,jdbcType=BIGINT}                                           "
+        + "           and t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT}                                           "
         + "                                                                                                          ")
     List<MOrgEntity> getDataByCode(@Param("p1") MOrgEntity vo);
 }

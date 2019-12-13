@@ -6,7 +6,7 @@
         <groupId>com.perfect</groupId>
         <artifactId>perfect-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath></relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

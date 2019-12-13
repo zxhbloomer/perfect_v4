@@ -50,9 +50,9 @@ public interface MUserMapper extends BaseMapper<MUserEntity> {
         + "   left join  v_dict_info t2 on t2.code = 'usr_login_type' and t1.type = t2.dict_value                                "
         + "       where  true                                                                                                    "
         + "         and  (t1.id = #{p1})                                                                                         "
-        + "         and (t1.tentant_id  = #{p2} or #{p2} is null)                                                                "
+        + "         and (t1.tenant_id  = #{p2} or #{p2} is null)                                                                "
         + "                                                                                                                      ")
-    MUserVo selectByid(@Param("p1") Long id, @Param("p2")Long tentant_id);
+    MUserVo selectByid(@Param("p1") Long id, @Param("p2")Long tenant_id);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -65,8 +65,8 @@ public interface MUserMapper extends BaseMapper<MUserEntity> {
         + "    and (t.id  =  #{p2} or #{p2} is null)                                                             "
         + "    and (t.id  <> #{p3} or #{p3} is null)                                                             "
         + "    and t.is_del =  0                                                                                 "
-        + "    and (t.tentant_id  = #{p4} or #{p4} is null)                                                      "
+        + "    and (t.tenant_id  = #{p4} or #{p4} is null)                                                      "
         + "                                                                                                      ")
-    List<MUserEntity> selectLoginName(@Param("p1") String login_name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id, @Param("p4")Long tentant_id);
+    List<MUserEntity> selectLoginName(@Param("p1") String login_name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id, @Param("p4")Long tenant_id);
 
 }

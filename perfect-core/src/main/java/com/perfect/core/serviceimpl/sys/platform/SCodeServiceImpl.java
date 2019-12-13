@@ -12,6 +12,8 @@ import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.platform.SCodeVo;
 import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.utils.CodeGenerator;
+import com.perfect.common.utils.DateTimeUtil;
 import com.perfect.core.mapper.sys.platform.SCodeMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.platform.ISCodeService;
@@ -20,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -161,22 +165,24 @@ public class SCodeServiceImpl extends BaseServiceImpl<SCodeMapper, SCodeEntity> 
 
     /**
      * 获取编号
-     * @param vo
+     * @param type
      * @return
      */
     @Override
-    public UpdateResult<SCodeEntity> createCode(SCodeVo vo) {
+    @Transactional(rollbackFor = Exception.class)
+    public UpdateResult<SCodeEntity> createCode(String type) {
         // 获取数据 for update nowait;
-        SCodeEntity entity = mapper.selectForUpdateNoWait(vo);
+        SCodeEntity entity = mapper.selectForUpdateNoWait(type);
         // 1、如果不存在，报错需要配置
         if(entity == null) {
             throw new BusinessException("自动生成编号发生错误，请在编码规则中维护规则");
         }
         // 获取编码方式
-        createCode(entity);
+        createCodeProcess(entity);
 
         // 反写到数据库中
         mapper.updateById(entity);
+
         return UpdateResultUtil.OK(entity);
     }
 
@@ -184,13 +190,25 @@ public class SCodeServiceImpl extends BaseServiceImpl<SCodeMapper, SCodeEntity> 
      * 生成编号
      * @param entity
      */
-    private void createCode(SCodeEntity entity) {
+    private void createCodeProcess(SCodeEntity entity) {
         // 获取编码方式
         switch (entity.getRule()) {
             case PerfectDictConstant.DICT_SYS_CODE_RULE_TYPE_ONE:
+                // YYYYMMDD??999
                 // 获取系统实际 YYYYMMDD
+                String first = DateTimeUtil.dateTime();
                 // 获取随机码两位
+                String second_radomchar = CodeGenerator.randomAlphabet(2);
                 // 自增编号
+                long days = ChronoUnit.DAYS.between(entity.getC_time(), LocalDateTime.now());
+                if(days >= 1) {
+                    entity.setAuto_create((long)1);
+                } else {
+                    entity.setAuto_create((entity.getAuto_create() == null ? 1 : entity.getAuto_create()) + 1);
+                }
+                String suffix = CodeGenerator.addLeftZeroForNum(3, entity.getAuto_create());
+                // 合并并设置到entity
+                entity.setCode(entity.getPrefex() == null ? "" : entity.getPrefex().toUpperCase() + first + second_radomchar + suffix);
             break;
         }
     }

@@ -93,7 +93,7 @@ public class PerfectAuthenticationSucessHandler implements AuthenticationSuccess
         // 设置session id
         userSessionBo.setSession_id(sessionId);
         userSessionBo.setAppKey("PC_APP");
-        userSessionBo.setTenant_Id(userSessionBo.getStaff_info().getTentant_id());
+        userSessionBo.setTenant_Id(userSessionBo.getStaff_info().getTenant_id());
         userSessionBo.setTenantAdmin(false);
 
         // 保存到redis中

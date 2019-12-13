@@ -11,6 +11,7 @@ import java.util.Random;
  */
 public class CodeGenerator {
     public static final String ALLCHAR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String ALL_ALPHABET_UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     private static Map<String, Integer> prefixs = Maps.newHashMap();
     private static char[] chars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -52,6 +53,16 @@ public class CodeGenerator {
     public static String addLeftZeroForNum(int num, int value) {
         return String.format("%" + num + "d", value).replace(" ", "0");
     }
+    /**
+     * 字符串不足位数补长
+     *
+     * @param num   长度
+     * @param value 值
+     * @return
+     */
+    public static String addLeftZeroForNum(int num, Long value) {
+        return String.format("%" + num + "d", value).replace(" ", "0");
+    }
 
     /**
      * 字符串不足位数补长
@@ -78,6 +89,22 @@ public class CodeGenerator {
         }
         return sb.toString().toUpperCase();
     }
+
+    /**
+     * 返回一个定长的随机字符串(只包含大写字母)
+     *
+     * @param length 随机字符串长度
+     * @return 随机字符串
+     */
+    public static String randomAlphabet(int length) {
+        StringBuffer sb = new StringBuffer();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            sb.append(ALL_ALPHABET_UPPERCASE.charAt(random.nextInt(ALL_ALPHABET_UPPERCASE.length())));
+        }
+        return sb.toString().toUpperCase();
+    }
+
 
 
     /**

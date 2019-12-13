@@ -51,7 +51,7 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + common_select
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)           "
         + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                          "
-        + "    and (t1.tentant_id =#{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)      "
+        + "    and (t1.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)      "
         + "      ")
     IPage<MStaffVo> selectPage(Page page, @Param("p1") MStaffVo searchCondition);
 
@@ -64,7 +64,7 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + common_select
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)           "
         + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                          "
-        + "    and (t1.tentant_id =#{p1.tentant_id,jdbcType=BIGINT} or #{p1.tentant_id,jdbcType=BIGINT} is null)      "
+        + "    and (t1.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)      "
         + "      ")
     List<MStaffVo> select(@Param("p1") MStaffVo searchCondition);
 
@@ -75,13 +75,13 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
      */
     @Select("<script>"
         + common_select
-        + "  and (t1.tentant_id  = #{p2} or #{p2} is null)                                                  "
+        + "  and (t1.tenant_id  = #{p2} or #{p2} is null)                                                  "
         + "  and t1.id in                                                                                   "
         + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>     "
         + "         #{item.id}                                                                              "
         + "        </foreach>                                                                               "
         + "  </script>                                                                                      ")
-    List<MStaffVo> selectIdsIn(@Param("p1") List<MStaffVo> searchCondition, @Param("p2")Long tentant_id);
+    List<MStaffVo> selectIdsIn(@Param("p1") List<MStaffVo> searchCondition, @Param("p2")Long tenant_id);
 
     /**
      * 没有分页，按id筛选条件
@@ -90,13 +90,13 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
      */
     @Select("<script>"
         + common_select
-        + "  and (t1.tentant_id  = #{p2} or #{p2} is null)                                                  "
+        + "  and (t1.tenant_id  = #{p2} or #{p2} is null)                                                  "
         + "  and t1.id in                                                                                   "
         + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>     "
         + "         #{item.id}                                                                              "
         + "        </foreach>                                                                               "
         + "  </script>                                                                                      ")
-    List<MStaffExportVo> exportSelectIdsIn(@Param("p1") List<MStaffVo> searchCondition, @Param("p2")Long tentant_id);
+    List<MStaffExportVo> exportSelectIdsIn(@Param("p1") List<MStaffVo> searchCondition, @Param("p2")Long tenant_id);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -110,11 +110,11 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "    and t.name =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "    and (t.tentant_id  = #{p4} or #{p4} is null)   "
+        + "    and (t.tenant_id  = #{p4} or #{p4} is null)   "
         + "    and t.is_del =  0   "
         + "      ")
     List<MStaffEntity> selectByName(@Param("p1") String name, @Param("p2") Long equal_id,
-                                      @Param("p3") Long not_equal_id, @Param("p4")Long tentant_id);
+                                      @Param("p3") Long not_equal_id, @Param("p4")Long tenant_id);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -128,11 +128,11 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "    and t.simple_name =  #{p1}   "
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "    and (t.tentant_id  = #{p4} or #{p4} is null)   "
+        + "    and (t.tenant_id  = #{p4} or #{p4} is null)   "
         + "    and t.is_del =  0   "
         + "      ")
     List<MStaffEntity> selectBySimpleName(@Param("p1") String name, @Param("p2") Long equal_id,
-                                            @Param("p3") Long not_equal_id, @Param("p4")Long tentant_id);
+                                            @Param("p3") Long not_equal_id, @Param("p4")Long tenant_id);
 
     /**
      * 页面查询列表
@@ -153,9 +153,9 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "             LEFT JOIN v_dict_info AS t5 ON t5.code = 'usr_wed_type' and t5.dict_value = t1.is_wed                   "
         + "       where true                                                                                                    "
         + "         and (t1.id = #{p1})  "
-        + "         and (t1.tentant_id = #{p2} or #{p2} is null )  "
+        + "         and (t1.tenant_id = #{p2} or #{p2} is null )  "
         + "      ")
-    MStaffVo selectByid(@Param("p1") Long id, @Param("p2")Long tentant_id);
+    MStaffVo selectByid(@Param("p1") Long id, @Param("p2")Long tenant_id);
 
     /**
      * 放到session中
@@ -166,8 +166,8 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + " select t.*                                          "
         + "   from m_staff t                                    "
         + "  where t.user_id = #{p1}                            "
-        + "    and (t1.tentant_id = #{p2} or #{p2} is null )    "
+        + "    and (t1.tenant_id = #{p2} or #{p2} is null )    "
         + "                                                     ")
-    MStaffEntity getDataByUser_id(@Param("p1") Long p1, @Param("p2")Long tentant_id);
+    MStaffEntity getDataByUser_id(@Param("p1") Long p1, @Param("p2")Long tenant_id);
 
 }

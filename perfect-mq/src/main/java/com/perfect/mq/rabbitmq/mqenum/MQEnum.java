@@ -7,14 +7,14 @@ package com.perfect.mq.rabbitmq.mqenum;
  * mq重要配置
  */
 public enum MQEnum {
-	MQ_TASK_Tentant_ENABLE(MqInfo.TentantEnableTask.queueCode,
-		MqInfo.TentantEnableTask.name,
-		MqInfo.TentantEnableTask.exchange,
-		MqInfo.TentantEnableTask.routing_key),
-	MQ_TASK_Tentant_Disable(MqInfo.TentantDisableTask.queueCode,
-		MqInfo.TentantDisableTask.name,
-		MqInfo.TentantDisableTask.exchange,
-		MqInfo.TentantDisableTask.routing_key)
+	MQ_TASK_Tenant_ENABLE(MqInfo.TenantEnableTask.queueCode,
+		MqInfo.TenantEnableTask.name,
+		MqInfo.TenantEnableTask.exchange,
+		MqInfo.TenantEnableTask.routing_key),
+	MQ_TASK_Tenant_Disable(MqInfo.TenantDisableTask.queueCode,
+		MqInfo.TenantDisableTask.name,
+		MqInfo.TenantDisableTask.exchange,
+		MqInfo.TenantDisableTask.routing_key)
 	;
 
 	private String queueCode;
@@ -81,11 +81,11 @@ public enum MQEnum {
 		 * @author zxh
 		 * @date 2019年 10月12日 23:34:54
 		 */
-		public class TentantEnableTask {
-			public static final String queueCode = "perfect-task-tentant-enable";
+		public class TenantEnableTask {
+			public static final String queueCode = "perfect-task-tenant-enable";
 			public static final String name = "租户任务消息队列：启用";
-			public static final String exchange = "perfect-task-tentant-enable-exchange";
-			public static final String routing_key = "perfect-task-tentant-enable.#";
+			public static final String exchange = "perfect-task-tenant-enable-exchange";
+			public static final String routing_key = "perfect-task-tenant-enable.#";
 		}
 
 		/**
@@ -94,11 +94,11 @@ public enum MQEnum {
 		 * @author zxh
 		 * @date 2019年 10月12日 23:34:54
 		 */
-		public class TentantDisableTask {
-			public static final String queueCode = "perfect-task-tentant-disable";
+		public class TenantDisableTask {
+			public static final String queueCode = "perfect-task-tenant-disable";
 			public static final String name = "租户任务消息队列：关闭";
-			public static final String exchange = "perfect-task-tentant-disable-exchange";
-			public static final String routing_key = "perfect-task-tentant-disable.#";
+			public static final String exchange = "perfect-task-tenant-disable-exchange";
+			public static final String routing_key = "perfect-task-tenant-disable.#";
 		}
 	}
 }

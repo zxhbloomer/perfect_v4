@@ -47,7 +47,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
      */
     @Override
     public IPage<MDeptVo> selectPage(MDeptVo searchCondition) {
-        searchCondition.setTentant_id(getUserSessionTentantId());
+        searchCondition.setTenant_id(getUserSessionTenantId());
         // 分页条件
         Page<MDeptEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
@@ -64,7 +64,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
      */
     @Override
     public List<MDeptVo> select(MDeptVo searchCondition) {
-        searchCondition.setTentant_id(getUserSessionTentantId());
+        searchCondition.setTenant_id(getUserSessionTenantId());
         // 查询 数据
         List<MDeptVo> list = mapper.select(searchCondition);
         return list;
@@ -79,7 +79,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
     @Override
     public List<MDeptEntity> selectIdsIn(List<MDeptVo> searchCondition) {
         // 查询 数据
-        List<MDeptEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTentantId());
+        List<MDeptEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTenantId());
         return list;
     }
 
@@ -91,7 +91,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteByIdsIn(List<MDeptVo> searchCondition) {
-        List<MDeptEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTentantId());
+        List<MDeptEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTenantId());
         list.forEach(
             bean -> {
                 bean.setIs_del(!bean.getIs_del());
@@ -115,7 +115,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
         }
         // 插入逻辑保存
         entity.setIs_del(false);
-        entity.setTentant_id(getUserSessionTentantId());
+        entity.setTenant_id(getUserSessionTenantId());
         return InsertResultUtil.OK(mapper.insert(entity));
     }
 
@@ -135,7 +135,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
         // 更新逻辑保存
         entity.setC_id(null);
         entity.setC_time(null);
-        entity.setTentant_id(getUserSessionTentantId());
+        entity.setTenant_id(getUserSessionTenantId());
         return UpdateResultUtil.OK(mapper.updateById(entity));
     }
 
@@ -146,7 +146,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
      */
     @Override
     public MDeptVo selectByid(Long id){
-        return mapper.selectByid(id, getUserSessionTentantId());
+        return mapper.selectByid(id, getUserSessionTenantId());
     }
 
     /**
@@ -157,7 +157,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
      */
     public List<MDeptEntity> selectByCode(String code, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MDeptEntity> list = mapper.selectByCode(code, equal_id, not_equal_id, getUserSessionTentantId());
+        List<MDeptEntity> list = mapper.selectByCode(code, equal_id, not_equal_id, getUserSessionTenantId());
         return list;
     }
 
@@ -169,7 +169,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
      */
     public List<MDeptEntity> selectByName(String name, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MDeptEntity> list = mapper.selectByName(name, equal_id, not_equal_id, getUserSessionTentantId());
+        List<MDeptEntity> list = mapper.selectByName(name, equal_id, not_equal_id, getUserSessionTenantId());
         return list;
     }
 
@@ -181,7 +181,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
      */
     public List<MDeptEntity> selectBySimpleName(String name, Long equal_id, Long not_equal_id) {
         // 查询 数据
-        List<MDeptEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id, getUserSessionTentantId());
+        List<MDeptEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id, getUserSessionTenantId());
         return list;
     }
 

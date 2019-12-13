@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * @date 2019年 10月03日 11:55:24
  */
 @Data
-public class STentantTreeVo extends TreeNode implements Serializable {
+public class STenantTreeVo extends TreeNode implements Serializable {
 
     private static final long serialVersionUID = -7928187114619523854L;
 

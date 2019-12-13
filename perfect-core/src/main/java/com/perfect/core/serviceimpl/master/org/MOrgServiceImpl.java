@@ -48,7 +48,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     @Override
     public List<MOrgTreeVo> getTreeList(MOrgTreeVo searchCondition) {
-        searchCondition.setTentant_id(getUserSessionTentantId());
+        searchCondition.setTenant_id(getUserSessionTenantId());
         // 查询 数据
         List<MOrgTreeVo> list = mapper.getTreeList(searchCondition);
 
@@ -64,7 +64,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     @Override
     public List<MOrgTreeVo> select(MOrgVo searchCondition) {
-        searchCondition.setTentant_id(getUserSessionTentantId());
+        searchCondition.setTenant_id(getUserSessionTenantId());
         // 查询 数据
         List<MOrgTreeVo> list = mapper.select(searchCondition);
         List<MOrgTreeVo> rtnList = TreeUtil.getTreeList(list);
@@ -80,10 +80,10 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @Override
     public InsertResult<Integer> insert(MOrgEntity entity) {
         // 设置entity
-        entity.setTentant_id(getUserSessionTentantId());
+        entity.setTenant_id(getUserSessionTenantId());
         switch (entity.getType()) {
-            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENTANT:
-                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENTANT_SERIAL_TYPE);
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP:
                 entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
@@ -141,10 +141,10 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @Override
     public UpdateResult<Integer> update(MOrgEntity entity) {
         // 设置entity
-        entity.setTentant_id(((UserSessionBo) ServletUtil.getUserSession()).getTenant_Id());
+        entity.setTenant_id(((UserSessionBo) ServletUtil.getUserSession()).getTenant_Id());
         switch (entity.getType()) {
-            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENTANT:
-                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENTANT_SERIAL_TYPE);
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP:
                 entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
@@ -181,7 +181,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     @Override
     public MOrgVo selectByid(Long id){
-        return mapper.selectByid(id, getUserSessionTentantId());
+        return mapper.selectByid(id, getUserSessionTenantId());
     }
 
     /**
@@ -191,7 +191,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     public Integer selectNodeInsertStatus(String code, String type) {
         // 查询 数据
-        Integer count = mapper.selectNodeInsertStatus(code, type, getUserSessionTentantId());
+        Integer count = mapper.selectNodeInsertStatus(code, type, getUserSessionTenantId());
         return count;
     }
 
@@ -250,7 +250,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     @Override
     public List<NameAndValueVo> getCorrectTypeByInsertStatus(MOrgVo vo) {
-        vo.setTentant_id(getUserSessionTentantId());
+        vo.setTenant_id(getUserSessionTenantId());
         // 查询 数据
         List<NameAndValueVo> rtn = mapper.getCorrectTypeByInsertStatus(vo);
         return rtn;
@@ -280,7 +280,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     @Override
     public List<MOrgEntity> getDataByCode(MOrgEntity entity) {
-        entity.setTentant_id(getUserSessionTentantId());
+        entity.setTenant_id(getUserSessionTenantId());
         List<MOrgEntity> rtnList = mapper.getDataByCode(entity);
         return rtnList;
     }

@@ -1,11 +1,11 @@
-package com.perfect.core.mapper.sys.config.tentant;
+package com.perfect.core.mapper.sys.config.tenant;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.perfect.bean.entity.sys.config.tenant.STentantEntity;
-import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
-import com.perfect.bean.vo.sys.config.tenant.STentantVo;
+import com.perfect.bean.entity.sys.config.tenant.STenantEntity;
+import com.perfect.bean.vo.sys.config.tenant.STenantTreeVo;
+import com.perfect.bean.vo.sys.config.tenant.STenantVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -21,7 +21,7 @@ import java.util.List;
  * @since 2019-08-16
  */
 @Repository
-public interface STentantMapper extends BaseMapper<STentantEntity> {
+public interface STenantMapper extends BaseMapper<STenantEntity> {
 
     /**
      * 树查询使用
@@ -129,7 +129,7 @@ public interface STentantMapper extends BaseMapper<STentantEntity> {
         + "    and (t1.depth_name like CONCAT ('%',#{p2},'%') or #{p2} is null)                                                             "
         + "        ;"
     )
-    List<STentantTreeVo> getTreeList(@Param("p1") Long id, @Param("p2") String name);
+    List<STenantTreeVo> getTreeList(@Param("p1") Long id, @Param("p2") String name);
 
     /**
      * 获取树的数据，级联
@@ -150,7 +150,7 @@ public interface STentantMapper extends BaseMapper<STentantEntity> {
             + "    and (t1.depth_name like CONCAT ('%',#{p2},'%') or #{p2} is null)                                                             "
             + "        ;"
     )
-    List<STentantTreeVo> getCascaderList(@Param("p1") Long id, @Param("p2") String name);
+    List<STenantTreeVo> getCascaderList(@Param("p1") Long id, @Param("p2") String name);
 
     /**
      * 页面查询列表
@@ -163,7 +163,7 @@ public interface STentantMapper extends BaseMapper<STentantEntity> {
         + commonGridSql
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
         + "  </script>")
-    IPage<STentantVo> selectPage(Page<STentantVo> page, @Param("p1") STentantVo searchCondition);
+    IPage<STenantVo> selectPage(Page<STenantVo> page, @Param("p1") STenantVo searchCondition);
 
 
     /**
@@ -180,7 +180,7 @@ public interface STentantMapper extends BaseMapper<STentantEntity> {
         + "         #{item.id}  "
         + "        </foreach>"
         + "  </script>")
-    List<STentantEntity> selectIdsIn(@Param("p1") List<STentantVo> searchCondition);
+    List<STenantEntity> selectIdsIn(@Param("p1") List<STenantVo> searchCondition);
 
     /**
      * 按id查询
@@ -192,7 +192,7 @@ public interface STentantMapper extends BaseMapper<STentantEntity> {
         + commonGridSql
         + "  and t1.id =  #{p1} "
         + "        ")
-    STentantVo selectId(@Param("p1") Long id);
+    STenantVo selectId(@Param("p1") Long id);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -206,7 +206,7 @@ public interface STentantMapper extends BaseMapper<STentantEntity> {
         + "  where true "
         + "    and t.code =  #{p1}"
         + "      ")
-    List<STentantEntity> selectByCode(@Param("p1") String code);
+    List<STenantEntity> selectByCode(@Param("p1") String code);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -220,5 +220,5 @@ public interface STentantMapper extends BaseMapper<STentantEntity> {
         + "  where true "
         + "    and t.name =  #{p1}"
         + "      ")
-    List<STentantEntity> selectByName(@Param("p1") String name);
+    List<STenantEntity> selectByName(@Param("p1") String name);
 }

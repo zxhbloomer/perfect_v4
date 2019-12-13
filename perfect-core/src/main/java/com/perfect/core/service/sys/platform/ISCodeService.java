@@ -59,8 +59,8 @@ public interface ISCodeService extends IService<SCodeEntity> {
 
     /**
      * 获取编号
-     * @param vo
+     * @param type
      * @return
      */
-    UpdateResult<SCodeEntity> createCode(SCodeVo vo);
+    UpdateResult<SCodeEntity> createCode(String type);
 }

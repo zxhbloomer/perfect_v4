@@ -116,7 +116,7 @@ public class MAddressVo implements Serializable {
     /**
      * 租户id
      */
-    private Long tentant_id;
+    private Long tenant_id;
 
     private Long c_id;
 

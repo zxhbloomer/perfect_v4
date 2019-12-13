@@ -1,12 +1,8 @@
 package com.perfect.core.serviceimpl.client.user;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.bo.user.login.MUserBo;
-import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.entity.master.user.MUserEntity;
-import com.perfect.bean.entity.sys.config.tenant.STentantEntity;
-import com.perfect.bean.pojo.redis.user.UserInSessionPojo;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
@@ -16,15 +12,13 @@ import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.bean.vo.master.user.MUserVo;
 import com.perfect.bean.vo.master.user.UserInfoVo;
-import com.perfect.bean.vo.sys.config.tenant.STentantVo;
+import com.perfect.bean.vo.sys.config.tenant.STenantVo;
 import com.perfect.common.exception.BusinessException;
-import com.perfect.core.mapper.master.user.MStaffMapper;
 import com.perfect.core.mapper.client.user.MUserMapper;
-import com.perfect.core.mapper.sys.config.tentant.STentantMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.client.user.IMUserService;
 import com.perfect.core.service.master.user.IMStaffService;
-import com.perfect.core.service.sys.config.tentant.ITentantService;
+import com.perfect.core.service.sys.config.tenant.ITenantService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -56,7 +50,7 @@ public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> 
     private IMStaffService imStaffService;
 
     @Autowired
-    private ITentantService iTentantService;
+    private ITenantService iTenantService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -115,15 +109,15 @@ public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> 
     public UserSessionBo getUserBean(long user_id){
         MUserEntity mUserEntity = mUserMapper.selectById(user_id);
         MStaffVo mStaffVo = imStaffService.selectByid(mUserEntity.getStaff_id());
-        STentantVo sTentantVo = iTentantService.selectByid(mStaffVo != null ? mStaffVo.getTentant_id() : null);
+        STenantVo sTenantVo = iTenantService.selectByid(mStaffVo != null ? mStaffVo.getTenant_id() : null);
         UserSessionBo userSessionBo = new UserSessionBo();
         userSessionBo.setUser_info(mUserEntity);
         userSessionBo.setStaff_info(mStaffVo);
-        userSessionBo.setTentant_info(sTentantVo);
+        userSessionBo.setTenant_info(sTenantVo);
 
         // 设置basebean
         userSessionBo.setAccountId(mUserEntity.getId());
-        userSessionBo.setTenant_Id(mStaffVo != null ? mStaffVo.getTentant_id() : null);
+        userSessionBo.setTenant_Id(mStaffVo != null ? mStaffVo.getTenant_id() : null);
 
         return userSessionBo;
     }
@@ -172,7 +166,7 @@ public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> 
      */
     @Override
     public MUserVo selectByid(Long id){
-        return mUserMapper.selectByid(id, getUserSessionTentantId());
+        return mUserMapper.selectByid(id, getUserSessionTenantId());
     }
 
     /**

@@ -79,8 +79,8 @@ public class PerfectDictConstant {
      * 组织架构类型：
      */
     public static final String DICT_ORG_SETTING_TYPE  = "org_setting_type";
-    public static final String DICT_ORG_SETTING_TYPE_TENTANT  = "10";
-    public static final String DICT_ORG_SETTING_TYPE_TENTANT_SERIAL_TYPE  = "s_tenant";
+    public static final String DICT_ORG_SETTING_TYPE_TENANT  = "10";
+    public static final String DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE  = "s_tenant";
     public static final String DICT_ORG_SETTING_TYPE_GROUP  = "20";
     public static final String DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE  = "m_group";
     public static final String DICT_ORG_SETTING_TYPE_COMPANY  = "30";
@@ -96,14 +96,14 @@ public class PerfectDictConstant {
      * 自动编号设置：
      */
     public static final String DICT_SYS_CODE_RULE_TYPE  = "sys_coderule_type";
-    // YYYYMMDD_??_999
+    // YYYYMMDD??999
     public static final String DICT_SYS_CODE_RULE_TYPE_ONE  = "10";
 
     /**
      * 自动编号名称：
      */
     public static final String DICT_SYS_CODE_TYPE  = "sys_code_type";
-    // YYYYMMDD_??_999
-    public static final String DICT_SYS_CODE_TYPE_S_TENTANT  = "s_tenant";
+    /** 租户编号 */
+    public static final String DICT_SYS_CODE_TYPE_S_TENANT  = "s_tenant";
 
 }

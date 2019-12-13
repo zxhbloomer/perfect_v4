@@ -150,8 +150,8 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
     /**
      * 租户id
      */
-    @TableField("tentant_id")
-    private Long tentant_id;
+    @TableField("tenant_id")
+    private Long tenant_id;
 
     /**
      * 是否删除

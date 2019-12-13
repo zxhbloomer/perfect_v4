@@ -36,8 +36,8 @@ public class MOrgEntity implements Serializable {
     /**
      * 租户id，根节点
      */
-    @TableField("tentant_id")
-    private Long tentant_id;
+    @TableField("tenant_id")
+    private Long tenant_id;
 
     /**
      * 关联单号

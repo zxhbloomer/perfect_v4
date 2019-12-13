@@ -64,6 +64,11 @@ public class SCodeVo implements Serializable {
      */
     private Integer dbversion;
 
+    /**
+     * 前缀
+     */
+    private String prefex;
+
     private Long c_id;
 
     private LocalDateTime c_time;

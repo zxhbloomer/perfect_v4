@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("s_tenant")
-public class STentantEntity implements Serializable {
+public class STenantEntity implements Serializable {
 
     private static final long serialVersionUID = -9178316502154676964L;
 

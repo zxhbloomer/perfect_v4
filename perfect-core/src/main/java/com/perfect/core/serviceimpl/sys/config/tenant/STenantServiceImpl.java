@@ -1,27 +1,26 @@
-package com.perfect.core.serviceimpl.sys.config.tentant;
+package com.perfect.core.serviceimpl.sys.config.tenant;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.quartz.SJobEntity;
-import com.perfect.bean.entity.quartz.SJobLogEntity;
-import com.perfect.bean.entity.sys.config.tenant.STentantEntity;
+import com.perfect.bean.entity.sys.config.tenant.STenantEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
-import com.perfect.bean.vo.sys.config.tenant.STentantTreeVo;
-import com.perfect.bean.vo.sys.config.tenant.STentantVo;
+import com.perfect.bean.vo.sys.config.tenant.STenantTreeVo;
+import com.perfect.bean.vo.sys.config.tenant.STenantVo;
 import com.perfect.common.enumconfig.quartz.QuartzEnum;
 import com.perfect.common.exception.BusinessException;
-import com.perfect.common.utils.bean.BeanUtilsSupport;
+import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.quartz.SJobLogMapper;
 import com.perfect.core.mapper.quartz.SJobMapper;
-import com.perfect.core.mapper.sys.config.tentant.STentantMapper;
+import com.perfect.core.mapper.sys.config.tenant.STenantMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
-import com.perfect.core.service.sys.config.tentant.ITentantService;
+import com.perfect.core.service.sys.config.tenant.ITenantService;
+import com.perfect.core.serviceimpl.common.autocode.TenantAutoCodeImpl;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,15 +38,16 @@ import java.util.List;
  * @since 2019-08-16
  */
 @Service
-public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentantEntity> implements ITentantService {
+public class STenantServiceImpl extends BaseServiceImpl<STenantMapper, STenantEntity> implements ITenantService {
 
     @Autowired
-    private STentantMapper mapper;
-
+    private STenantMapper mapper;
     @Autowired
     private SJobMapper jobMapper;
     @Autowired
     private SJobLogMapper jobLogMapper;
+    @Autowired
+    private TenantAutoCodeImpl tenantAutoCode;
 
     /**
      * 获取数据，树结构
@@ -56,8 +56,8 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      * @return
      */
     @Override
-    public List<STentantTreeVo> getTreeList(Long id, String name) {
-        List<STentantTreeVo> listVo = mapper.getTreeList(id, name);
+    public List<STenantTreeVo> getTreeList(Long id, String name) {
+        List<STenantTreeVo> listVo = mapper.getTreeList(id, name);
         return listVo;
     }
 
@@ -68,8 +68,8 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      * @return
      */
     @Override
-    public List<STentantTreeVo> getCascaderList(Long id, String name) {
-        List<STentantTreeVo> listVo = mapper.getCascaderList(id, name);
+    public List<STenantTreeVo> getCascaderList(Long id, String name) {
+        List<STenantTreeVo> listVo = mapper.getCascaderList(id, name);
         return listVo;
     }
 
@@ -80,9 +80,9 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      * @return
      */
     @Override
-    public IPage<STentantVo> selectPage(STentantVo searchCondition) {
+    public IPage<STenantVo> selectPage(STenantVo searchCondition) {
         // 分页条件
-        Page<STentantVo> pageCondition =
+        Page<STenantVo> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
         // 通过page进行排序
         PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
@@ -96,9 +96,9 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      * @return
      */
     @Override
-    public List<STentantEntity> selectIdsIn(List<STentantVo> searchCondition) {
+    public List<STenantEntity> selectIdsIn(List<STenantVo> searchCondition) {
         // 查询 数据
-        List<STentantEntity> list = mapper.selectIdsIn(searchCondition);
+        List<STenantEntity> list = mapper.selectIdsIn(searchCondition);
         return list;
     }
 
@@ -110,7 +110,7 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<Integer> insert(STentantEntity entity) {
+    public InsertResult<Integer> insert(STenantEntity entity) {
         // 插入前check
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
 
@@ -128,8 +128,10 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
         if(entity.getDisable_time().isBefore(LocalDateTime.now())){
             entity.setIs_enable(false);
         }
-        // 自动生成租户编码
-
+        // 租户编码如果为空，自动生成租户编码
+        if(StringUtil.isEmpty(entity.getCode())){
+            entity.setCode(tenantAutoCode.autoCode().getCode());
+        }
         // 插入逻辑保存
         return InsertResultUtil.OK(mapper.insert(entity));
     }
@@ -142,7 +144,7 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public UpdateResult<Integer> update(STentantEntity entity) {
+    public UpdateResult<Integer> update(STenantEntity entity) {
         // 更新前check
         CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -169,7 +171,7 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      * @return
      */
     @Override
-    public STentantVo selectByid(Long id) {
+    public STenantVo selectByid(Long id) {
         if (id != null) {
             // 查询 数据
             return mapper.selectId(id);
@@ -186,9 +188,9 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      * @return
      */
     @Override
-    public List<STentantEntity> selectByCode(String code) {
+    public List<STenantEntity> selectByCode(String code) {
         // 查询 数据
-        List<STentantEntity> list = mapper.selectByCode(code);
+        List<STenantEntity> list = mapper.selectByCode(code);
         return list;
     }
 
@@ -199,9 +201,9 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      * @return
      */
     @Override
-    public List<STentantEntity> selectByName(String name) {
+    public List<STenantEntity> selectByName(String name) {
         // 查询 数据
-        List<STentantEntity> list = mapper.selectByName(name);
+        List<STenantEntity> list = mapper.selectByName(name);
         return list;
     }
 
@@ -210,9 +212,9 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      * 
      * @return
      */
-    public CheckResult checkLogic(STentantEntity entity, String moduleType) {
-        List<STentantEntity> listCode = selectByCode(entity.getCode());
-        List<STentantEntity> listName = selectByName(entity.getName());
+    public CheckResult checkLogic(STenantEntity entity, String moduleType) {
+        List<STenantEntity> listCode = selectByCode(entity.getCode());
+        List<STenantEntity> listName = selectByName(entity.getName());
 
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
@@ -251,8 +253,8 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      * @return
      */
     @Override
-    public List<STentantTreeVo> getChildren(Long id, String name) {
-        List<STentantTreeVo> list = mapper.getTreeList(id, name);
+    public List<STenantTreeVo> getChildren(Long id, String name) {
+        List<STenantTreeVo> list = mapper.getTreeList(id, name);
         return null;
     }
 
@@ -264,7 +266,7 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public UpdateResult<Integer> enableUpdate(STentantEntity entity) {
+    public UpdateResult<Integer> enableUpdate(STenantEntity entity) {
         entity.setIs_enable(true);
         // 更新逻辑保存
         entity.setC_id(null);
@@ -280,7 +282,7 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public UpdateResult<Integer> disableUpdate(STentantEntity entity) {
+    public UpdateResult<Integer> disableUpdate(STenantEntity entity) {
         entity.setIs_enable(false);
         // 更新逻辑保存
         entity.setC_id(null);
@@ -296,13 +298,13 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean enableProcess(STentantEntity entity){
+    public boolean enableProcess(STenantEntity entity){
         boolean rtn = false;
         // 1、获取相应的job enable bean
-        SJobEntity enableJobEntity = jobMapper.selectJobBySerialId(entity.getId(), QuartzEnum.TASK_TENTANT_ENABLE.getJob_serial_type());
+        SJobEntity enableJobEntity = jobMapper.selectJobBySerialId(entity.getId(), QuartzEnum.TASK_TENANT_ENABLE.getJob_serial_type());
         enableJobEntity.setLast_run_time(LocalDateTime.now());
         enableJobEntity.setRun_times(enableJobEntity.getRun_times() == null ? 0 : enableJobEntity.getRun_times() + 1);
-        enableJobEntity.setMsg(QuartzEnum.TASK_TENTANT_ENABLE.getOk_msg());
+        enableJobEntity.setMsg(QuartzEnum.TASK_TENANT_ENABLE.getOk_msg());
         // 2、更新租户bean
         entity.setIs_enable(true);
 
@@ -330,13 +332,13 @@ public class STentantServiceImpl extends BaseServiceImpl<STentantMapper, STentan
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean disableProcess(STentantEntity entity){
+    public boolean disableProcess(STenantEntity entity){
         boolean rtn = false;
         // 1、获取相应的job enable bean
-        SJobEntity disableJobEntity = jobMapper.selectJobBySerialId(entity.getId(), QuartzEnum.TASK_TENTANT_DISABLE.getJob_serial_type());
+        SJobEntity disableJobEntity = jobMapper.selectJobBySerialId(entity.getId(), QuartzEnum.TASK_TENANT_DISABLE.getJob_serial_type());
         disableJobEntity.setLast_run_time(LocalDateTime.now());
         disableJobEntity.setRun_times(disableJobEntity.getRun_times() == null ? 0 : disableJobEntity.getRun_times() + 1);
-        disableJobEntity.setMsg(QuartzEnum.TASK_TENTANT_ENABLE.getOk_msg());
+        disableJobEntity.setMsg(QuartzEnum.TASK_TENANT_ENABLE.getOk_msg());
         // 2、更新租户bean
         entity.setIs_enable(true);
         entity.setC_id(null);

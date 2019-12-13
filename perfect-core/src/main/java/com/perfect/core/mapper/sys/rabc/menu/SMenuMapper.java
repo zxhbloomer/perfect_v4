@@ -65,7 +65,7 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "             t2.component,                                          "
             + "             t2.affix,                                              "
             + "             t2.descr,                                              "
-            + "             t2.tentant_id,                                         "
+            + "             t2.tenant_id,                                         "
             + "             t2.c_id,                                               "
             + "             t2.c_time,                                             "
             + "             t2.u_id,                                               "
