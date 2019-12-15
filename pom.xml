@@ -46,7 +46,7 @@
         <spring.social.version>1.1.6.RELEASE</spring.social.version>
         <poi.version>4.1.0</poi.version>
         <fastjson.version>1.2.62</fastjson.version>
-        <mybatis-plus.version>3.2.0</mybatis-plus.version>
+        <mybatis-plus.version>3.3.0</mybatis-plus.version>
         <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
         <mybatis-spring-boot-starter.version>2.1.0</mybatis-spring-boot-starter.version>
         <kaptcha.version>2.3.2</kaptcha.version>
