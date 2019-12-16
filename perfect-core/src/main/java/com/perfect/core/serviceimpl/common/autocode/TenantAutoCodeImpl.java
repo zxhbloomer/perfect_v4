@@ -1,10 +1,10 @@
 package com.perfect.core.serviceimpl.common.autocode;
 
-import com.perfect.bean.entity.sys.platform.SCodeEntity;
+import com.perfect.bean.entity.sys.platform.syscode.SCodeEntity;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.core.service.common.autocode.IAutoCode;
-import com.perfect.core.service.sys.platform.ISCodeService;
+import com.perfect.core.service.sys.platform.syscode.ISCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

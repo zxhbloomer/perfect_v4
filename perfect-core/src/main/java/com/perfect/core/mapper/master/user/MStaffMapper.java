@@ -111,7 +111,7 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
         + "    and (t.tenant_id  = #{p4} or #{p4} is null)   "
-        + "    and t.is_del =  0   "
+//        + "    and t.is_del =  0   "
         + "      ")
     List<MStaffEntity> selectByName(@Param("p1") String name, @Param("p2") Long equal_id,
                                       @Param("p3") Long not_equal_id, @Param("p4")Long tenant_id);
@@ -129,7 +129,7 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "    and (t.id  =  #{p2} or #{p2} is null)   "
         + "    and (t.id  <> #{p3} or #{p3} is null)   "
         + "    and (t.tenant_id  = #{p4} or #{p4} is null)   "
-        + "    and t.is_del =  0   "
+//        + "    and t.is_del =  0   "
         + "      ")
     List<MStaffEntity> selectBySimpleName(@Param("p1") String name, @Param("p2") Long equal_id,
                                             @Param("p3") Long not_equal_id, @Param("p4")Long tenant_id);

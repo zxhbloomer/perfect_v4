@@ -14,23 +14,23 @@ import java.util.Map;
  */
 public class BaseEntity<T> extends BaseBean<T> {
 
-    /**
-     * 获取属性名和表列名的map
-     */
-    @TableField(exist = false)
-    private Map<String, String> mapPropertyColumn;
-
-    /**
-     * 获取表列名和属性的map
-     */
-    @TableField(exist = false)
-    private Map<String, String> mapColumnProperty;
-
-    /**
-     * entity名字
-     */
-    @TableField(exist = false)
-    private Class<T> entity;
+//    /**
+//     * 获取属性名和表列名的map
+//     */
+//    @TableField(exist = false)
+//    private Map<String, String> mapPropertyColumn;
+//
+//    /**
+//     * 获取表列名和属性的map
+//     */
+//    @TableField(exist = false)
+//    private Map<String, String> mapColumnProperty;
+//
+//    /**
+//     * entity名字
+//     */
+//    @TableField(exist = false)
+//    private Class<T> entity;
 
     /** 数据权限_租户 */
     @Getter

@@ -1,15 +1,15 @@
-package com.perfect.manager.controller.sys.platform;
+package com.perfect.manager.controller.sys.platform.syscode;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.perfect.bean.entity.sys.platform.SCodeEntity;
+import com.perfect.bean.entity.sys.platform.syscode.SCodeEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
-import com.perfect.bean.vo.sys.platform.SCodeVo;
+import com.perfect.bean.vo.sys.platform.syscode.SCodeVo;
 import com.perfect.common.annotation.RepeatSubmit;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
-import com.perfect.core.service.sys.platform.ISCodeService;
+import com.perfect.core.service.sys.platform.syscode.ISCodeService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

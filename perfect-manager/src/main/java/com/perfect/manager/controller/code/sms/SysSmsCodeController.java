@@ -4,6 +4,7 @@ import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.SSmsCodeVo;
+import com.perfect.bean.vo.sys.platform.SignUpVo;
 import com.perfect.common.annotation.Limit;
 import com.perfect.common.annotation.RepeatSubmit;
 import com.perfect.common.annotation.SysLog;
@@ -11,6 +12,7 @@ import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.service.client.user.IMUserService;
 import com.perfect.core.service.sys.ISSmsCodeService;
+import com.perfect.core.service.sys.platform.ISignUpService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import com.perfect.security.code.ValidateCode;
 import com.perfect.security.code.ValidateCodeGenerator;
@@ -54,6 +56,9 @@ public class SysSmsCodeController extends BaseController {
     @Autowired
     IMUserService imUserService;
 
+    @Autowired
+    ISignUpService service;
+
     /**
      * 测试限流注解，下面配置说明该接口 60秒内最多只能访问 10次，保存到 redis的键名为 limit_test，
      * 即 prefix + "_" + key，也可以根据 IP 来限流，需指定 limitType = LimitType.IP
@@ -87,7 +92,10 @@ public class SysSmsCodeController extends BaseController {
     @RepeatSubmit
     public ResponseEntity<JsonResult<String>> checkSmsCode(HttpServletRequest request, HttpServletResponse response,
         @RequestBody(required=false) SSmsCodeVo mobileBean)  {
-        // 本方法主要是触发框架短信验证 SmsCodeFilter
+        // 本方法主要是触发框架短信验证 SmsCodeFilter（框架自动验证），并且验证手机号码是否可用
+        SignUpVo bean = new SignUpVo();
+        bean.setMobile(mobileBean.getMobile());
+        service.checkMobile(bean);
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 }

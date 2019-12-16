@@ -1,4 +1,4 @@
-package com.perfect.bean.vo.sys.platform;
+package com.perfect.bean.vo.sys.platform.syscode;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.perfect.bean.vo.common.condition.PageCondition;

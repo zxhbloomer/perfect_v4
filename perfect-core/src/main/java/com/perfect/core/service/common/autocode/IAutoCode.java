@@ -1,6 +1,6 @@
 package com.perfect.core.service.common.autocode;
 
-import com.perfect.bean.entity.sys.platform.SCodeEntity;
+import com.perfect.bean.entity.sys.platform.syscode.SCodeEntity;
 
 /**
  * @ClassName: AutoCodeInterFace

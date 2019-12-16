@@ -74,6 +74,16 @@ public class PerfectDictConstant {
      * 登录用户类型：
      */
     public static final String DICT_USR_LOGIN_TYPE  = "usr_login_type";
+    /** 系统用户=10,职员=20,客户=30,供应商=40,其他=50,认证管理员=60,审计管理员=70 */
+    public static final String DICT_USR_LOGIN_TYPE_ADMIN  = "60";
+
+    /**
+     * 登录用户类型：
+     */
+    public static final String DICT_SYS_LOGIN_TYPE  = "sys_login_type";
+    /** 登录模式：（10：手机号码；20：邮箱） */
+    public static final String DICT_SYS_LOGIN_TYPE_MOBILE  = "10";
+    public static final String DICT_SYS_LOGIN_TYPE_EMAIL  = "20";
 
     /**
      * 组织架构类型：

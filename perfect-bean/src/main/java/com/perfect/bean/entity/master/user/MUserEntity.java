@@ -127,7 +127,7 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
      * 传统认证方式=0,智能钥匙认证=1,动态密码锁=2,指纹认证方式=3
      */
     @TableField("login_author_way")
-    private Boolean login_author_way;
+    private String login_author_way;
 
     /**
      * 历史密码

@@ -1,22 +1,22 @@
-package com.perfect.core.serviceimpl.sys.platform;
+package com.perfect.core.serviceimpl.sys.platform.syscode;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.perfect.bean.entity.sys.platform.SCodeEntity;
+import com.perfect.bean.entity.sys.platform.syscode.SCodeEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
-import com.perfect.bean.vo.sys.platform.SCodeVo;
+import com.perfect.bean.vo.sys.platform.syscode.SCodeVo;
 import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.CodeGenerator;
 import com.perfect.common.utils.DateTimeUtil;
 import com.perfect.core.mapper.sys.platform.SCodeMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
-import com.perfect.core.service.sys.platform.ISCodeService;
+import com.perfect.core.service.sys.platform.syscode.ISCodeService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

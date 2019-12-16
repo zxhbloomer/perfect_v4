@@ -102,7 +102,7 @@ public class UserController extends BaseController {
     public ResponseEntity<JsonResult<String>> getUsrPsdString(@RequestBody(required = false) MUserEntity bean, HttpServletRequest request) {
         MUserVo mUserVo = service.selectByid(bean.getId());
         if(!StringUtil.isEmpty(bean.getPwd())){
-            String encodePsd = this.getPassword(bean.getPwd());
+            String encodePsd = getPassword(bean.getPwd());
             // 保存到session中
             HttpSession session = request.getSession();
             session.setAttribute(PerfectConstant.SESSION_KEY_USER_PASSWORD, encodePsd);
@@ -111,12 +111,4 @@ public class UserController extends BaseController {
             throw new PasswordException("密码设置失败。");
         }
     }
-
-    private String getPassword(String psdOrignalCode){
-        //加密对象
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodePassword = passwordEncoder.encode(psdOrignalCode);
-        return encodePassword;
-    }
-
 }

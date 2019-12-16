@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 @TableName("s_tenant")
 public class STenantEntity implements Serializable {
 

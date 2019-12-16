@@ -1,4 +1,4 @@
-package com.perfect.bean.entity.sys.platform;
+package com.perfect.bean.entity.sys.platform.syscode;
 
 import com.baomidou.mybatisplus.annotation.*;
 

@@ -104,4 +104,11 @@ public class PerfectConstant {
         /** 修改绑定手机 */
         public static final String SMS_CODE_TYPE_CHANGE_MOBILE = "3";
     }
+
+    /**
+     * 注册时
+     */
+    public class SIGN_UP {
+        public static final String TENANT_SERIAL_NO = "0001";
+    }
 }

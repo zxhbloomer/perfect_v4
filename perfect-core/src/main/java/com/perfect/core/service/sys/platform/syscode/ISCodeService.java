@@ -1,11 +1,11 @@
-package com.perfect.core.service.sys.platform;
+package com.perfect.core.service.sys.platform.syscode;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.perfect.bean.entity.sys.platform.SCodeEntity;
+import com.perfect.bean.entity.sys.platform.syscode.SCodeEntity;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
-import com.perfect.bean.vo.sys.platform.SCodeVo;
+import com.perfect.bean.vo.sys.platform.syscode.SCodeVo;
 
 import java.util.List;
 

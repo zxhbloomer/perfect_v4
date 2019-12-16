@@ -15,6 +15,8 @@ import org.apache.poi.poifs.filesystem.FileMagic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -146,6 +148,18 @@ public class BaseController {
     public Long getUserSessionTenantId(){
         Long tenant_Id = getUserSession().getTenant_Id();
         return tenant_Id;
+    }
+
+    /**
+     * 加密密码
+     * @param psdOrignalCode
+     * @return
+     */
+    public String getPassword(String psdOrignalCode){
+        //加密对象
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodePassword = passwordEncoder.encode(psdOrignalCode);
+        return encodePassword;
     }
 
 }
