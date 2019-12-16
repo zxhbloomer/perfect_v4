@@ -162,7 +162,7 @@ public interface SModuleMapper extends BaseMapper<SModuleEntity> {
         + "     FROM                                                        "
         + "         s_module AS t1                                          "
         + "         LEFT JOIN s_resource AS t2 ON t1.template_id = t2.id    "
-        + "         LEFT JOIN v_dict_info AS t3 ON t3.code = 'module_type' and t3.dict_value = t1.type    "
+        + "         LEFT JOIN v_dict_info AS t3 ON t3.code = = '" + PerfectDictConstant.DICT_SYS_MODULE_TYPE + "' and t3.dict_value = t1.type    "
         + "         LEFT JOIN                                               "
         + "                   (                                             "
         + "                     select t.parent_id,                         "
