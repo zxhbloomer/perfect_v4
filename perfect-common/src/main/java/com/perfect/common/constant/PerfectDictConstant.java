@@ -17,7 +17,7 @@ public class PerfectDictConstant {
     /**
      * 模块类型： m目录 c菜单 p页面
      */
-    public static final String DICT_SYS_MODULE_TYPE = "module_type";
+    public static final String DICT_SYS_MODULE_TYPE = "sys_module_type";
     public static final String DICT_SYS_MODULE_TYPE_PAGE = "p";
     public static final String DICT_SYS_MODULE_TYPE_MENU = "m";
     public static final String DICT_SYS_MODULE_TYPE_CONTENTS = "c";
@@ -115,5 +115,7 @@ public class PerfectDictConstant {
     public static final String DICT_SYS_CODE_TYPE  = "sys_code_type";
     /** 租户编号 */
     public static final String DICT_SYS_CODE_TYPE_S_TENANT  = "s_tenant";
+    /** 菜单组编号 */
+    public static final String DICT_SYS_CODE_TYPE_S_MENU  = "s_menu";
 
 }

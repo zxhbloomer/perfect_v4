@@ -12,9 +12,11 @@ import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.sys.rabc.menu.SMenuMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.rabc.menu.ISMenuService;
+import com.perfect.core.serviceimpl.common.autocode.SysMenuAutoCodeImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +36,8 @@ public class SMenuServiceImpl extends BaseServiceImpl<SMenuMapper, SMenuEntity> 
 
     @Autowired
     private SMenuMapper mapper;
+    @Autowired
+    private SysMenuAutoCodeImpl sysMenuAutoCode;
 
     /**
      * 获取列表，查询所有数据
@@ -141,6 +145,9 @@ public class SMenuServiceImpl extends BaseServiceImpl<SMenuMapper, SMenuEntity> 
         // 更新数据库
         entity.setC_id(null);
         entity.setC_time(null);
+        if(StringUtil.isEmpty(entity.getCode())){
+            entity.setCode(sysMenuAutoCode.autoCode().getCode());
+        }
         int updCount = mapper.updateById(entity);
         return InsertResultUtil.OK(updCount);
     }

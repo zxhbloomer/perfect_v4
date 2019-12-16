@@ -31,7 +31,6 @@ public class MyBatisAutoFillHandel implements MetaObjectHandler {
         this.setFieldValByNameMy("is_del", false, metaObject);
         // 默认未启用
         this.setFieldValByNameMy("is_enable", false, metaObject);
-
     }
 
     /**
