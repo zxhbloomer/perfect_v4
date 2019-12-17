@@ -25,9 +25,9 @@ public interface MPositionMapper extends BaseMapper<MPositionEntity> {
     String COMMON_SELECT = "                                                         "
         + "                                                                          "
         + "           SELECT                                                         "
-        + "           	t1.*                                                       "
+        + "           	t1.*                                                         "
         + "           FROM                                                           "
-        + "           	m_position t1                                                    "
+        + "           	m_position t1                                                "
         + "                                                                          ";
 
 
@@ -140,7 +140,7 @@ public interface MPositionMapper extends BaseMapper<MPositionEntity> {
         + COMMON_SELECT
         + "  where true                                                              "
         + "    and (t1.id = #{p1})                                                   "
-        + "    and (t1.tenant_id = #{p2} or #{p2} is null)                          "
+        + "    and (t1.tenant_id = #{p2} or #{p2} is null)                           "
         + "                                                                          ")
     MPositionVo selectByid(@Param("p1") Long id, @Param("p2")Long tenant_id);
 }

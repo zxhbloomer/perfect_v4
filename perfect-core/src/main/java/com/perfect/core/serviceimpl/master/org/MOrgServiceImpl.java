@@ -1,6 +1,8 @@
 package com.perfect.core.serviceimpl.master.org;
 
 import com.perfect.bean.bo.session.user.UserSessionBo;
+import com.perfect.bean.entity.master.org.MCompanyEntity;
+import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
@@ -10,8 +12,7 @@ import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
-import com.perfect.bean.vo.master.org.MOrgTreeVo;
-import com.perfect.bean.vo.master.org.MOrgVo;
+import com.perfect.bean.vo.master.org.*;
 import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.servlet.ServletUtil;
@@ -69,6 +70,42 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         List<MOrgTreeVo> list = mapper.select(searchCondition);
         List<MOrgTreeVo> rtnList = TreeUtil.getTreeList(list);
         return rtnList;
+    }
+
+    /**
+     * 获取所有的组织数据
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public MOrgAllDataVo getAllOrgData(MOrgVo searchCondition) {
+        MOrgAllDataVo mOrgAllDataVo = new MOrgAllDataVo();
+        // 1:获取 组织数据
+        List<MOrgTreeVo> listOrg = select(searchCondition);
+        mOrgAllDataVo.setOrgs(listOrg);
+
+        // 1:获取 组织数据
+        List<MGroupEntity> listGroup = mapper.getGroupList(searchCondition);
+        mOrgAllDataVo.setGroups(listGroup);
+
+        // 2:获取 企业信息
+        List<MCompanyEntity> listcompany = mapper.getCompanyList(searchCondition);
+        mOrgAllDataVo.setCompanies(listcompany);
+
+        // 3:获取 部门信息
+        List<MDeptVo> listDept =  mapper.getDeptList(searchCondition);
+        mOrgAllDataVo.setDepts(listDept);
+
+        // 4:获取 岗位信息
+        List<MPositionVo> listPosition =  mapper.getPositionList(searchCondition);
+        mOrgAllDataVo.setPositions(listPosition);
+
+        // 5:获取 员工信息
+        // TODO:需要有管理，尚未处理
+
+        // 6:获取 数量
+
+        return mOrgAllDataVo;
     }
 
     /**

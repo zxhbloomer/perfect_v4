@@ -3,10 +3,11 @@ package com.perfect.core.mapper.master.org;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.perfect.bean.entity.master.org.MCompanyEntity;
+import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
-import com.perfect.bean.vo.master.org.MOrgTreeVo;
-import com.perfect.bean.vo.master.org.MOrgVo;
+import com.perfect.bean.vo.master.org.*;
 import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -223,7 +224,79 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "          from m_org t1                                                                                   "
         + "         where true                                                                                       "
         + "           and t1.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%')                                      "
-        + "           and t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT}                                           "
+        + "           and t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT}                                             "
         + "                                                                                                          ")
     List<MOrgEntity> getDataByCode(@Param("p1") MOrgEntity vo);
+
+    /**
+     * 集团查询列表
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                           "
+        + " select                                                                                                      "
+        + "   *                                                                                                         "
+        + "   FROM                                                                                                      "
+        + "        m_group t1                                                                                           "
+        + "        LEFT JOIN (SELECT t.serial_id FROM m_org t WHERE t.type = '20') t2 ON t1.id = t2.serial_id           "
+        + "  where true                                                                                                 "
+        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
+        + "                                                                                                             ")
+    List<MGroupEntity> getGroupList(@Param("p1") MOrgVo searchCondition);
+
+    /**
+     * 企业查询列表
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                           "
+        + " select                                                                                                      "
+        + "   *                                                                                                         "
+        + "   FROM                                                                                                      "
+        + "        m_company t1                                                                                         "
+        + "        LEFT JOIN (SELECT t.serial_id FROM m_org t WHERE t.type = '30') t2 ON t1.id = t2.serial_id           "
+        + "  where true                                                                                                 "
+        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
+        + "                                                                                                             ")
+    List<MCompanyEntity> getCompanyList(@Param("p1") MOrgVo searchCondition);
+
+    /**
+     * 部门查询列表
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                           "
+        + "           SELECT                                                                                            "
+        + "           	t1.* ,                                                                                          "
+        + "           	t2.`name` as handler_id_name,                                                                   "
+        + "           	t3.`name` as sub_handler_id_name,                                                               "
+        + "           	t4.`name` as leader_id_name,                                                                    "
+        + "           	t5.`name` as response_leader_id_name                                                            "
+        + "           FROM                                                                                              "
+        + "           	m_dept t1                                                                                       "
+        + "           	LEFT JOIN m_staff t2 on t1.handler_id = t2.id                                                   "
+        + "           	LEFT JOIN m_staff t3 on t1.sub_handler_id = t3.id                                               "
+        + "           	LEFT JOIN m_staff t4 on t1.leader_id = t4.id                                                    "
+        + "           	LEFT JOIN m_staff t5 on t1.leader_id = t5.id                                                    "
+         + "            LEFT JOIN (SELECT t.serial_id FROM m_org t WHERE t.type = '40') t6 ON t1.id = t6.serial_id      "
+        + "  where true                                                                                                 "
+        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
+        + "                                                                                                             ")
+    List<MDeptVo> getDeptList(@Param("p1") MOrgVo searchCondition);
+
+    /**
+     * 岗位查询列表
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                           "
+        + "           SELECT                                                                                            "
+        + "           	t1.*                                                                                            "
+        + "           FROM                                                                                              "
+        + "           	m_position t1                                                                                   "
+         + "            LEFT JOIN (SELECT t.serial_id FROM m_org t WHERE t.type = '50') t2 ON t1.id = t2.serial_id      "
+        + "  where true                                                                                                 "
+        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
+        + "                                                                                                             ")
+    List<MPositionVo> getPositionList(@Param("p1") MOrgVo searchCondition);
 }

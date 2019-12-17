@@ -4,6 +4,7 @@ import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
+import com.perfect.bean.vo.master.org.MOrgAllDataVo;
 import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
 import com.perfect.common.annotation.SysLog;
@@ -54,6 +55,7 @@ public class MasterOrgController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<List<MOrgTreeVo>>> list(@RequestBody(required = false) MOrgVo searchCondition)  {
+        MOrgAllDataVo mOrgAllDataVo = service.getAllOrgData(searchCondition);
         List<MOrgTreeVo> list = service.select(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }

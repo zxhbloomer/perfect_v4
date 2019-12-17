@@ -7,6 +7,7 @@ import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.MDeptVo;
+import com.perfect.bean.vo.master.org.MOrgAllDataVo;
 import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.bean.vo.master.org.MOrgVo;
 import org.apache.ibatis.annotations.Param;
@@ -33,6 +34,13 @@ public interface IMOrgService extends IService<MOrgEntity> {
      * 获取所有数据
      */
     List<MOrgTreeVo> select(MOrgVo searchCondition) ;
+
+    /**
+     * 获取所有的组织数据
+     * @param searchCondition
+     * @return
+     */
+    MOrgAllDataVo getAllOrgData(MOrgVo searchCondition);
 
 
     /**
