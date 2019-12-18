@@ -21,15 +21,15 @@ public class MOrgCountsVo implements Serializable {
     private static final long serialVersionUID = 6103601680477614084L;
 
     /** 组织机构 数量 */
-    private Long CountOrg;
+    private Long orgs_count;
     /** 集团信息 数量 */
-    private Long CountGroup;
+    private Long group_count;
     /** 企业信息 数量 */
-    private Long CountCompany;
+    private Long company_count;
     /** 部门信息 数量 */
-    private Long CountDept;
+    private Long dept_count;
     /** 岗位信息 数量 */
-    private Long CountPosition;
+    private Long position_count;
     /** 员工信息 数量 */
-    private Long CountStaff;
+    private Long staff_count;
 }

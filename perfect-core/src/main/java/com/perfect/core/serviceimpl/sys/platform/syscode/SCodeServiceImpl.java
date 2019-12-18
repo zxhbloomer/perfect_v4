@@ -204,7 +204,7 @@ public class SCodeServiceImpl extends BaseServiceImpl<SCodeMapper, SCodeEntity> 
                 if(days >= 1) {
                     entity.setAuto_create((long)1);
                 } else {
-                    entity.setAuto_create((entity.getAuto_create() == null ? 1 : entity.getAuto_create()) + 1);
+                    entity.setAuto_create((entity.getAuto_create() == null ? 0 : entity.getAuto_create()) + 1);
                 }
                 String suffix = CodeGenerator.addLeftZeroForNum(3, entity.getAuto_create());
                 // 合并并设置到entity

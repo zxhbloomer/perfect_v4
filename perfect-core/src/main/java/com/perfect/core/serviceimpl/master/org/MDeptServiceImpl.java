@@ -14,10 +14,12 @@ import com.perfect.bean.vo.master.org.MDeptVo;
 import com.perfect.bean.vo.master.org.MDeptVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.master.org.MDeptMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.org.IMDeptService;
 import com.perfect.core.service.master.org.IMGroupService;
+import com.perfect.core.serviceimpl.common.autocode.MDeptAutoCodeImpl;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,8 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
 
     @Autowired
     private MDeptMapper mapper;
+    @Autowired
+    private MDeptAutoCodeImpl autoCode;
 
     /**
      * 获取列表，页面查询
@@ -108,6 +112,10 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public InsertResult<Integer> insert(MDeptEntity entity) {
+        // 编码如果为空，自动生成编码
+        if(StringUtil.isEmpty(entity.getCode())){
+            entity.setCode(autoCode.autoCode().getCode());
+        }
         // 插入前check
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {

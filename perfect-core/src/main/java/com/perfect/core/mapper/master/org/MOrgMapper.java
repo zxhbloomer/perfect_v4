@@ -34,7 +34,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
             + "                 t0.tenant_id,                                                                              "
             + "                 t0.parent_id ,                                                                              "
             + "                 1 level,                                                                                    "
-            + "                 cast(t0.id as char) depth_id                                                                "
+            + "                 cast(t0.id as char(50)) depth_id                                                                "
             + "               FROM                                                                                          "
             + "                       m_org t0                                                                              "
             + "               where t0.parent_id is null                                                                    "
@@ -45,7 +45,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
             + "                 t2.tenant_id,                                                                              "
             + "                 t2.parent_id,                                                                               "
             + "                 t1.level + 1 as level,                                                                      "
-            + "                 CONCAT( cast(t1.depth_id as char),',',cast(t2.id as char)) depth_id                         "
+            + "                 CONCAT( cast(t1.depth_id as char(50)),',',cast(t2.id as char(50))) depth_id                         "
             + "               FROM                                                                                          "
             + "                       m_org t2,                                                                             "
             + "                       cte t1                                                                                "
@@ -228,17 +228,12 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "                                                                                                          ")
     List<MOrgEntity> getDataByCode(@Param("p1") MOrgEntity vo);
 
-    /**
-     * 集团查询列表
-     * @param searchCondition
-     * @return
-     */
-    @Select("                                                                                                           "
+    String groupListSql = "                                                                                             "
         + " select                                                                                                      "
         + "   *                                                                                                         "
         + "   FROM                                                                                                      "
         + "        m_group t1                                                                                           "
-        + "        inner JOIN (                                                                                          "
+        + "        inner JOIN (                                                                                         "
         + "                   SELECT t.serial_id                                                                        "
         + "                     FROM m_org t                                                                            "
         + "                    WHERE t.type = '20'                                                                      "
@@ -246,15 +241,18 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "                   ) t2 ON t1.id = t2.serial_id                                                              "
         + "  where true                                                                                                 "
         + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
-        + "                                                                                                             ")
-    List<MGroupEntity> getGroupList(@Param("p1") MOrgVo searchCondition);
-
+        +"                                                                                                              ";
     /**
-     * 企业查询列表
+     * 集团查询列表
      * @param searchCondition
      * @return
      */
     @Select("                                                                                                           "
+        + groupListSql
+        + "                                                                                                             ")
+    List<MGroupEntity> getGroupList(@Param("p1") MOrgVo searchCondition);
+
+    String companyListSql = "                                                                                           "
         + " select                                                                                                      "
         + "   *                                                                                                         "
         + "   FROM                                                                                                      "
@@ -267,15 +265,18 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "                   ) t2 ON t1.id = t2.serial_id                                                              "
         + "  where true                                                                                                 "
         + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
-        + "                                                                                                             ")
-    List<MCompanyEntity> getCompanyList(@Param("p1") MOrgVo searchCondition);
-
+        + "                                                                                                             ";
     /**
-     * 部门查询列表
+     * 企业查询列表
      * @param searchCondition
      * @return
      */
     @Select("                                                                                                           "
+        + companyListSql
+        + "                                                                                                             ")
+    List<MCompanyEntity> getCompanyList(@Param("p1") MOrgVo searchCondition);
+
+    String deptListSql = "                                                                                              "
         + "           SELECT                                                                                            "
         + "           	t1.* ,                                                                                          "
         + "           	t2.`name` as handler_id_name,                                                                   "
@@ -296,15 +297,18 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "                   ) t6 ON t1.id = t6.serial_id                                                              "
         + "  where true                                                                                                 "
         + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
-        + "                                                                                                             ")
-    List<MDeptVo> getDeptList(@Param("p1") MOrgVo searchCondition);
-
+        + "                                                                                                             ";
     /**
-     * 岗位查询列表
+     * 部门查询列表
      * @param searchCondition
      * @return
      */
     @Select("                                                                                                           "
+        + deptListSql
+        + "                                                                                                             ")
+    List<MDeptVo> getDeptList(@Param("p1") MOrgVo searchCondition);
+
+    String positionListSql = "                                                                                          "
         + "           SELECT                                                                                            "
         + "           	t1.*                                                                                            "
         + "           FROM                                                                                              "
@@ -317,6 +321,43 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "                   ) t2 ON t1.id = t2.serial_id                                                              "
         + "  where true                                                                                                 "
         + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
+        + "                                                                                                             ";
+    /**
+     * 岗位查询列表
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                           "
+        + positionListSql
         + "                                                                                                             ")
     List<MPositionVo> getPositionList(@Param("p1") MOrgVo searchCondition);
+
+
+    /**
+     * 获取所有的组织以及子组织数量，仅仅是数量
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                           "
+        + "   select                                                                                                    "
+        + "           IFNULL((                                                                                          "
+        + "               null                                                                                          " //todo：待定
+        + "            ),0) as orgs_count ,                                                                             "
+        + "           IFNULL((                                                                                          "
+        + "            select count(1) from ( " + groupListSql +")     tab2                                             "
+        + "            ),0) as group_count ,                                                                            "
+        + "           IFNULL((                                                                                          "
+        + "            select count(1) from ( " + companyListSql +")   tab3                                             "
+        + "           ),0)  as company_count,                                                                           "
+        + "           IFNULL((                                                                                          "
+        + "            select count(1) from ( " + deptListSql +")      tab4                                             "
+        + "           ),0)  as dept_count,                                                                              "
+        + "           IFNULL((                                                                                          "
+        + "            select count(1) from ( " + positionListSql +")  tab5                                             "
+        + "           ),0)  as position_count,                                                                          "
+        + "           IFNULL((                                                                                          "
+        + "               null                                                                                          " //todo：待定
+        + "           ),0)  as staff_count                                                                              "
+        + "                                                                                                             ")
+    MOrgCountsVo getAllOrgDataCount(@Param("p1") MOrgVo searchCondition);
 }

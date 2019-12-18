@@ -117,5 +117,10 @@ public class PerfectDictConstant {
     public static final String DICT_SYS_CODE_TYPE_S_TENANT  = "s_tenant";
     /** 菜单组编号 */
     public static final String DICT_SYS_CODE_TYPE_S_MENU  = "s_menu";
-
+    /** 集团主表编号 */
+    public static final String DICT_SYS_CODE_TYPE_M_GROUP  = "m_group";
+    /** 部门主表编号 */
+    public static final String DICT_SYS_CODE_TYPE_M_DEPT  = "m_dept";
+    /** 岗位主表编号 */
+    public static final String DICT_SYS_CODE_TYPE_M_POSITION  = "m_position";
 }

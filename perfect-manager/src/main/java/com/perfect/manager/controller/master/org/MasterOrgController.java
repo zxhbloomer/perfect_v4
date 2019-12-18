@@ -51,8 +51,17 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(vo));
     }
 
+    @SysLog("根据查询条件，获取所有的组织以及子组织数量，仅仅是数量")
+    @ApiOperation("根据查询条件，获取所有的组织以及子组织数量，仅仅是数量")
+    @PostMapping("/count")
+    @ResponseBody
+    public ResponseEntity<JsonResult<MOrgCountsVo>> getAllOrgDataCount(@RequestBody(required = false) MOrgVo searchCondition)  {
+        MOrgCountsVo vo = service.getAllOrgDataCount(searchCondition);
+        return ResponseEntity.ok().body(ResultUtil.OK(vo));
+    }
+
     @SysLog("根据查询条件，获取组织架构主表信息")
-    @ApiOperation("根据参数id，获取组织架构主表信息")
+    @ApiOperation("根据查询条件，获取组织架构主表信息")
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<List<MOrgTreeVo>>> getOrgs(@RequestBody(required = false) MOrgVo searchCondition)  {
@@ -60,8 +69,8 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
-    @SysLog("根据查询条件，获取组织架构主表信息")
-    @ApiOperation("根据参数id，获取组织架构主表信息")
+    @SysLog("根据查询条件，获取集团信息")
+    @ApiOperation("根据查询条件，获取集团信息")
     @PostMapping("/groups")
     @ResponseBody
     public ResponseEntity<JsonResult<List<MGroupEntity>>> getGroups(@RequestBody(required = false) MOrgVo searchCondition)  {
@@ -69,8 +78,8 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
-    @SysLog("根据查询条件，获取组织架构主表信息")
-    @ApiOperation("根据参数id，获取组织架构主表信息")
+    @SysLog("根据查询条件，获取企业信息")
+    @ApiOperation("根据查询条件，获取企业信息")
     @PostMapping("/companies")
     @ResponseBody
     public ResponseEntity<JsonResult<List<MCompanyEntity>>> getCompanies(@RequestBody(required = false) MOrgVo searchCondition)  {
@@ -78,8 +87,8 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
-    @SysLog("根据查询条件，获取组织架构主表信息")
-    @ApiOperation("根据参数id，获取组织架构主表信息")
+    @SysLog("根据查询条件，获取部门信息")
+    @ApiOperation("根据查询条件，获取部门信息")
     @PostMapping("/depts")
     @ResponseBody
     public ResponseEntity<JsonResult<List<MDeptVo>>> getDepts(@RequestBody(required = false) MOrgVo searchCondition)  {
@@ -87,8 +96,8 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
-    @SysLog("根据查询条件，获取组织架构主表信息")
-    @ApiOperation("根据参数id，获取组织架构主表信息")
+    @SysLog("根据查询条件，获取岗位信息")
+    @ApiOperation("根据查询条件，获取岗位信息")
     @PostMapping("/positions")
     @ResponseBody
     public ResponseEntity<JsonResult<List<MPositionVo>>> getPositions(@RequestBody(required = false) MOrgVo searchCondition)  {
@@ -96,15 +105,14 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
-    @SysLog("根据查询条件，获取组织架构主表信息")
-    @ApiOperation("根据参数id，获取组织架构主表信息")
+    @SysLog("根据查询条件，获取员工信息")
+    @ApiOperation("根据查询条件，获取员工信息")
     @PostMapping("/staffs")
     @ResponseBody
     public ResponseEntity<JsonResult<List<MStaffVo>>> getStaffs(@RequestBody(required = false) MOrgVo searchCondition)  {
         List<MStaffVo> list = service.getStaffs(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
-
 
     @SysLog("组织架构主表数据更新保存")
     @ApiOperation("根据参数id，获取组织架构主表信息")

@@ -79,34 +79,9 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @return
      */
     @Override
-    public MOrgAllDataVo getAllOrgData(MOrgVo searchCondition) {
-        MOrgAllDataVo mOrgAllDataVo = new MOrgAllDataVo();
-        // 1:获取 组织数据
-        List<MOrgTreeVo> listOrg = select(searchCondition);
-        mOrgAllDataVo.setOrgs(listOrg);
-
-        // 1:获取 组织数据
-        List<MGroupEntity> listGroup = mapper.getGroupList(searchCondition);
-        mOrgAllDataVo.setGroups(listGroup);
-
-        // 2:获取 企业信息
-        List<MCompanyEntity> listcompany = mapper.getCompanyList(searchCondition);
-        mOrgAllDataVo.setCompanies(listcompany);
-
-        // 3:获取 部门信息
-        List<MDeptVo> listDept =  mapper.getDeptList(searchCondition);
-        mOrgAllDataVo.setDepts(listDept);
-
-        // 4:获取 岗位信息
-        List<MPositionVo> listPosition =  mapper.getPositionList(searchCondition);
-        mOrgAllDataVo.setPositions(listPosition);
-
-        // 5:获取 员工信息
-        // TODO:需要有管理，尚未处理
-
-        // 6:获取 数量
-
-        return mOrgAllDataVo;
+    public MOrgCountsVo getAllOrgDataCount(MOrgVo searchCondition) {
+        MOrgCountsVo mOrgCountsVo = mapper.getAllOrgDataCount(searchCondition);
+        return mOrgCountsVo;
     }
 
     /**

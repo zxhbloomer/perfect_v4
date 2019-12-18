@@ -36,11 +36,11 @@ public interface IMOrgService extends IService<MOrgEntity> {
     List<MOrgTreeVo> select(MOrgVo searchCondition) ;
 
     /**
-     * 获取所有的组织数据
+     * 获取所有的组织以及子组织数量，仅仅是数量
      * @param searchCondition
      * @return
      */
-    MOrgAllDataVo getAllOrgData(MOrgVo searchCondition);
+    MOrgCountsVo getAllOrgDataCount(MOrgVo searchCondition);
 
     /**
      * 获取组织数据

@@ -13,9 +13,12 @@ import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.org.MGroupVo;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.master.org.MGroupMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.org.IMGroupService;
+import com.perfect.core.serviceimpl.common.autocode.MGroupAutoCodeImpl;
+import com.perfect.core.serviceimpl.common.autocode.TenantAutoCodeImpl;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +39,9 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
 
     @Autowired
     private MGroupMapper mapper;
+
+    @Autowired
+    private MGroupAutoCodeImpl autoCode;
 
     /**
      * 获取列表，页面查询
@@ -108,6 +114,10 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @Override
     public InsertResult<Integer> insert(MGroupEntity entity) {
         entity.setTenant_id(getUserSessionTenantId());
+        // 编号为空则自动生成编号
+        if(StringUtil.isEmpty(entity.getCode())){
+            entity.setCode(autoCode.autoCode().getCode());
+        }
         // 插入前check
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
