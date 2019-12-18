@@ -1,6 +1,7 @@
 package com.perfect.bean.vo.master.org;
 
 import com.perfect.bean.vo.common.component.TreeNode;
+import com.perfect.bean.vo.common.condition.PageCondition;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -91,4 +92,8 @@ public class MOrgTreeVo extends TreeNode implements Serializable {
      */
     private Integer dbversion;
 
+    /**
+     * 换页条件
+     */
+    private PageCondition pageCondition;
 }

@@ -1,5 +1,6 @@
 package com.perfect.manager.controller.master.org;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
@@ -38,8 +39,8 @@ public class MasterOrgController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据查询条件，获取租户信息")
-    @ApiOperation("获取租户树数据")
+    @SysLog("根据查询条件，获取组织机构信息")
+    @ApiOperation("获取组织机构树数据")
     @PostMapping("/tree/list")
     @ResponseBody
     public ResponseEntity<JsonResult<List<MOrgTreeVo>>> treeList(@RequestBody(required = false) MOrgTreeVo searchCondition) {
@@ -73,8 +74,8 @@ public class MasterOrgController extends BaseController {
     @ApiOperation("根据查询条件，获取集团信息")
     @PostMapping("/groups")
     @ResponseBody
-    public ResponseEntity<JsonResult<List<MGroupEntity>>> getGroups(@RequestBody(required = false) MOrgVo searchCondition)  {
-        List<MGroupEntity> list = service.getGroups(searchCondition);
+    public ResponseEntity<JsonResult<IPage<MGroupEntity>>> getGroups(@RequestBody(required = false) MOrgTreeVo searchCondition)  {
+        IPage<MGroupEntity> list = service.getGroups(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
@@ -82,7 +83,7 @@ public class MasterOrgController extends BaseController {
     @ApiOperation("根据查询条件，获取企业信息")
     @PostMapping("/companies")
     @ResponseBody
-    public ResponseEntity<JsonResult<List<MCompanyEntity>>> getCompanies(@RequestBody(required = false) MOrgVo searchCondition)  {
+    public ResponseEntity<JsonResult<List<MCompanyEntity>>> getCompanies(@RequestBody(required = false) MOrgTreeVo searchCondition)  {
         List<MCompanyEntity> list = service.getCompanies(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }

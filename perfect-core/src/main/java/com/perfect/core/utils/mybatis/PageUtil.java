@@ -1,5 +1,6 @@
 package com.perfect.core.utils.mybatis;
 
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.common.utils.string.StringUtil;
 
@@ -19,12 +20,12 @@ public class PageUtil {
         if (StringUtil.isNotEmpty(sortCondition)) {
             if (sortCondition.startsWith("-")) {
                 // 此为降序
-                page.setDesc(sortCondition.substring(1));
-//                page.addOrder(OrderItem.desc(sortCondition.substring(1)));
+//                page.setDesc(sortCondition.substring(1));
+                page.addOrder(OrderItem.desc(sortCondition.substring(1)));
             } else {
                 // 此为升序
-                page.setAsc(sortCondition);
-//                page.addOrder(OrderItem.asc(sortCondition));
+//                page.setAsc(sortCondition);
+                page.addOrder(OrderItem.asc(sortCondition));
             }
         }
     }

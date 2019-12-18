@@ -250,7 +250,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("                                                                                                           "
         + groupListSql
         + "                                                                                                             ")
-    List<MGroupEntity> getGroupList(@Param("p1") MOrgVo searchCondition);
+    IPage<MGroupEntity> getGroupList(Page page, @Param("p1") MOrgTreeVo searchCondition);
 
     String companyListSql = "                                                                                           "
         + " select                                                                                                      "
@@ -274,7 +274,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("                                                                                                           "
         + companyListSql
         + "                                                                                                             ")
-    List<MCompanyEntity> getCompanyList(@Param("p1") MOrgVo searchCondition);
+    List<MCompanyEntity> getCompanyList(Page page, @Param("p1") MOrgTreeVo searchCondition);
 
     String deptListSql = "                                                                                              "
         + "           SELECT                                                                                            "

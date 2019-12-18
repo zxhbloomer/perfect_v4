@@ -1,6 +1,7 @@
 package com.perfect.bean.vo.master.org;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -75,5 +76,4 @@ public class MOrgVo implements Serializable {
      * 数据版本，乐观锁使用
      */
     private Integer dbversion;
-
 }

@@ -1,6 +1,9 @@
 package com.perfect.core.serviceimpl.master.org;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.bo.session.user.UserSessionBo;
+import com.perfect.bean.entity.master.MAddressEntity;
 import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
@@ -21,6 +24,7 @@ import com.perfect.core.mapper.master.org.MOrgMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.common.ICommonComponentService;
 import com.perfect.core.service.master.org.IMOrgService;
+import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,8 +105,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @return
      */
     @Override
-    public List<MGroupEntity> getGroups(MOrgVo searchCondition) {
-        List<MGroupEntity> listGroup = mapper.getGroupList(searchCondition);
+    public IPage<MGroupEntity> getGroups(MOrgTreeVo searchCondition) {
+        // 分页条件
+        Page<MGroupEntity> pageCondition =
+            new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
+        // 通过page进行排序
+        PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
+        IPage<MGroupEntity> listGroup = mapper.getGroupList(pageCondition, searchCondition);
         return listGroup;
     }
 
@@ -112,8 +121,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @return
      */
     @Override
-    public List<MCompanyEntity> getCompanies(MOrgVo searchCondition) {
-        List<MCompanyEntity> listcompany = mapper.getCompanyList(searchCondition);
+    public List<MCompanyEntity> getCompanies(MOrgTreeVo searchCondition) {
+        // 分页条件
+        Page<MCompanyEntity> pageCondition =
+            new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
+        // 通过page进行排序
+        PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
+        List<MCompanyEntity> listcompany = mapper.getCompanyList(pageCondition, searchCondition);
         return listcompany;
     }
 
