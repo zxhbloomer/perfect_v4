@@ -121,13 +121,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @return
      */
     @Override
-    public List<MCompanyEntity> getCompanies(MOrgTreeVo searchCondition) {
+    public IPage<MCompanyEntity> getCompanies(MOrgTreeVo searchCondition) {
         // 分页条件
         Page<MCompanyEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
         // 通过page进行排序
         PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
-        List<MCompanyEntity> listcompany = mapper.getCompanyList(pageCondition, searchCondition);
+        IPage<MCompanyEntity> listcompany = mapper.getCompanyList(pageCondition, searchCondition);
         return listcompany;
     }
 
@@ -137,8 +137,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @return
      */
     @Override
-    public List<MDeptVo> getDepts(MOrgVo searchCondition) {
-        List<MDeptVo> listDept =  mapper.getDeptList(searchCondition);
+    public IPage<MDeptVo> getDepts(MOrgTreeVo searchCondition) {
+        // 分页条件
+        Page<MDeptVo> pageCondition =
+                new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
+        // 通过page进行排序
+        PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
+        IPage<MDeptVo> listDept =  mapper.getDeptList(pageCondition, searchCondition);
         return listDept;
     }
 
@@ -148,8 +153,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @return
      */
     @Override
-    public List<MPositionVo> getPositions(MOrgVo searchCondition) {
-        List<MPositionVo> listPosition =  mapper.getPositionList(searchCondition);
+    public IPage<MPositionVo> getPositions(MOrgTreeVo searchCondition) {
+        // 分页条件
+        Page<MDeptVo> pageCondition =
+                new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
+        // 通过page进行排序
+        PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
+        IPage<MPositionVo> listPosition =  mapper.getPositionList(pageCondition, searchCondition);
         return listPosition;
     }
 

@@ -61,21 +61,21 @@ public interface IMOrgService extends IService<MOrgEntity> {
      * @param searchCondition
      * @return
      */
-    List<MCompanyEntity> getCompanies(MOrgTreeVo searchCondition);
+    IPage<MCompanyEntity> getCompanies(MOrgTreeVo searchCondition);
 
     /**
      * 获取部门数据
      * @param searchCondition
      * @return
      */
-    List<MDeptVo> getDepts(MOrgVo searchCondition);
+    IPage<MDeptVo> getDepts(MOrgTreeVo searchCondition);
 
     /**
      * 获取岗位数据
      * @param searchCondition
      * @return
      */
-    List<MPositionVo> getPositions(MOrgVo searchCondition);
+    IPage<MPositionVo> getPositions(MOrgTreeVo searchCondition);
 
     /**
      * 获取员工数据

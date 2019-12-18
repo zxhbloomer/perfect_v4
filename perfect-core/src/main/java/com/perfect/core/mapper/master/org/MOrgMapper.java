@@ -274,7 +274,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("                                                                                                           "
         + companyListSql
         + "                                                                                                             ")
-    List<MCompanyEntity> getCompanyList(Page page, @Param("p1") MOrgTreeVo searchCondition);
+    IPage<MCompanyEntity> getCompanyList(Page page, @Param("p1") MOrgTreeVo searchCondition);
 
     String deptListSql = "                                                                                              "
         + "           SELECT                                                                                            "
@@ -306,7 +306,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("                                                                                                           "
         + deptListSql
         + "                                                                                                             ")
-    List<MDeptVo> getDeptList(@Param("p1") MOrgVo searchCondition);
+    IPage<MDeptVo> getDeptList(Page page, @Param("p1") MOrgTreeVo searchCondition);
 
     String positionListSql = "                                                                                          "
         + "           SELECT                                                                                            "
@@ -330,7 +330,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("                                                                                                           "
         + positionListSql
         + "                                                                                                             ")
-    List<MPositionVo> getPositionList(@Param("p1") MOrgVo searchCondition);
+    IPage<MPositionVo> getPositionList(Page page, @Param("p1") MOrgTreeVo searchCondition);
 
 
     /**
