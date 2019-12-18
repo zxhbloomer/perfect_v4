@@ -2,14 +2,14 @@ package com.perfect.core.service.master.org;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.perfect.bean.entity.master.org.MCompanyEntity;
+import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
-import com.perfect.bean.vo.master.org.MDeptVo;
-import com.perfect.bean.vo.master.org.MOrgAllDataVo;
-import com.perfect.bean.vo.master.org.MOrgTreeVo;
-import com.perfect.bean.vo.master.org.MOrgVo;
+import com.perfect.bean.vo.master.org.*;
+import com.perfect.bean.vo.master.user.MStaffVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;
@@ -42,6 +42,47 @@ public interface IMOrgService extends IService<MOrgEntity> {
      */
     MOrgAllDataVo getAllOrgData(MOrgVo searchCondition);
 
+    /**
+     * 获取组织数据
+     * @param searchCondition
+     * @return
+     */
+    List<MOrgTreeVo> getOrgs(MOrgVo searchCondition);
+
+    /**
+     * 获取集团数据
+     * @param searchCondition
+     * @return
+     */
+    List<MGroupEntity> getGroups(MOrgVo searchCondition);
+
+    /**
+     * 获取企业数据
+     * @param searchCondition
+     * @return
+     */
+    List<MCompanyEntity> getCompanies(MOrgVo searchCondition);
+
+    /**
+     * 获取部门数据
+     * @param searchCondition
+     * @return
+     */
+    List<MDeptVo> getDepts(MOrgVo searchCondition);
+
+    /**
+     * 获取岗位数据
+     * @param searchCondition
+     * @return
+     */
+    List<MPositionVo> getPositions(MOrgVo searchCondition);
+
+    /**
+     * 获取员工数据
+     * @param searchCondition
+     * @return
+     */
+    List<MStaffVo> getStaffs(MOrgVo searchCondition);
 
     /**
      * 插入一条记录（选择字段，策略插入）

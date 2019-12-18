@@ -1,12 +1,13 @@
 package com.perfect.manager.controller.master.org;
 
+import com.perfect.bean.entity.master.org.MCompanyEntity;
+import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
-import com.perfect.bean.vo.master.org.MOrgAllDataVo;
-import com.perfect.bean.vo.master.org.MOrgTreeVo;
-import com.perfect.bean.vo.master.org.MOrgVo;
+import com.perfect.bean.vo.master.org.*;
+import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
@@ -54,11 +55,56 @@ public class MasterOrgController extends BaseController {
     @ApiOperation("根据参数id，获取组织架构主表信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<List<MOrgTreeVo>>> list(@RequestBody(required = false) MOrgVo searchCondition)  {
-        MOrgAllDataVo mOrgAllDataVo = service.getAllOrgData(searchCondition);
-        List<MOrgTreeVo> list = service.select(searchCondition);
+    public ResponseEntity<JsonResult<List<MOrgTreeVo>>> getOrgs(@RequestBody(required = false) MOrgVo searchCondition)  {
+        List<MOrgTreeVo> list = service.getOrgs(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
+
+    @SysLog("根据查询条件，获取组织架构主表信息")
+    @ApiOperation("根据参数id，获取组织架构主表信息")
+    @PostMapping("/groups")
+    @ResponseBody
+    public ResponseEntity<JsonResult<List<MGroupEntity>>> getGroups(@RequestBody(required = false) MOrgVo searchCondition)  {
+        List<MGroupEntity> list = service.getGroups(searchCondition);
+        return ResponseEntity.ok().body(ResultUtil.OK(list));
+    }
+
+    @SysLog("根据查询条件，获取组织架构主表信息")
+    @ApiOperation("根据参数id，获取组织架构主表信息")
+    @PostMapping("/companies")
+    @ResponseBody
+    public ResponseEntity<JsonResult<List<MCompanyEntity>>> getCompanies(@RequestBody(required = false) MOrgVo searchCondition)  {
+        List<MCompanyEntity> list = service.getCompanies(searchCondition);
+        return ResponseEntity.ok().body(ResultUtil.OK(list));
+    }
+
+    @SysLog("根据查询条件，获取组织架构主表信息")
+    @ApiOperation("根据参数id，获取组织架构主表信息")
+    @PostMapping("/depts")
+    @ResponseBody
+    public ResponseEntity<JsonResult<List<MDeptVo>>> getDepts(@RequestBody(required = false) MOrgVo searchCondition)  {
+        List<MDeptVo> list = service.getDepts(searchCondition);
+        return ResponseEntity.ok().body(ResultUtil.OK(list));
+    }
+
+    @SysLog("根据查询条件，获取组织架构主表信息")
+    @ApiOperation("根据参数id，获取组织架构主表信息")
+    @PostMapping("/positions")
+    @ResponseBody
+    public ResponseEntity<JsonResult<List<MPositionVo>>> getPositions(@RequestBody(required = false) MOrgVo searchCondition)  {
+        List<MPositionVo> list = service.getPositions(searchCondition);
+        return ResponseEntity.ok().body(ResultUtil.OK(list));
+    }
+
+    @SysLog("根据查询条件，获取组织架构主表信息")
+    @ApiOperation("根据参数id，获取组织架构主表信息")
+    @PostMapping("/staffs")
+    @ResponseBody
+    public ResponseEntity<JsonResult<List<MStaffVo>>> getStaffs(@RequestBody(required = false) MOrgVo searchCondition)  {
+        List<MStaffVo> list = service.getStaffs(searchCondition);
+        return ResponseEntity.ok().body(ResultUtil.OK(list));
+    }
+
 
     @SysLog("组织架构主表数据更新保存")
     @ApiOperation("根据参数id，获取组织架构主表信息")

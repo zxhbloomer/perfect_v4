@@ -13,6 +13,7 @@ import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.*;
+import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.servlet.ServletUtil;
@@ -106,6 +107,71 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         // 6:获取 数量
 
         return mOrgAllDataVo;
+    }
+
+    /**
+     * 获取组织数据
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public List<MOrgTreeVo> getOrgs(MOrgVo searchCondition) {
+        List<MOrgTreeVo> listOrg = select(searchCondition);
+        return listOrg;
+    }
+
+    /**
+     * 获取集团数据
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public List<MGroupEntity> getGroups(MOrgVo searchCondition) {
+        List<MGroupEntity> listGroup = mapper.getGroupList(searchCondition);
+        return listGroup;
+    }
+
+    /**
+     * 获取企业数据
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public List<MCompanyEntity> getCompanies(MOrgVo searchCondition) {
+        List<MCompanyEntity> listcompany = mapper.getCompanyList(searchCondition);
+        return listcompany;
+    }
+
+    /**
+     * 获取部门数据
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public List<MDeptVo> getDepts(MOrgVo searchCondition) {
+        List<MDeptVo> listDept =  mapper.getDeptList(searchCondition);
+        return listDept;
+    }
+
+    /**
+     * 获取岗位数据
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public List<MPositionVo> getPositions(MOrgVo searchCondition) {
+        List<MPositionVo> listPosition =  mapper.getPositionList(searchCondition);
+        return listPosition;
+    }
+
+    /**
+     * 获取员工数据
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public List<MStaffVo> getStaffs(MOrgVo searchCondition) {
+        return null;
     }
 
     /**
