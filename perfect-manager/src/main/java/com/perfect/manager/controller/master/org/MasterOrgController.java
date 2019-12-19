@@ -74,8 +74,8 @@ public class MasterOrgController extends BaseController {
     @ApiOperation("根据查询条件，获取集团信息")
     @PostMapping("/groups")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<MGroupEntity>>> getGroups(@RequestBody(required = false) MOrgTreeVo searchCondition)  {
-        IPage<MGroupEntity> list = service.getGroups(searchCondition);
+    public ResponseEntity<JsonResult<IPage<MGroupVo>>> getGroups(@RequestBody(required = false) MOrgTreeVo searchCondition)  {
+        IPage<MGroupVo> list = service.getGroups(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
@@ -83,8 +83,8 @@ public class MasterOrgController extends BaseController {
     @ApiOperation("根据查询条件，获取企业信息")
     @PostMapping("/companies")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<MCompanyEntity>>> getCompanies(@RequestBody(required = false) MOrgTreeVo searchCondition)  {
-        IPage<MCompanyEntity> list = service.getCompanies(searchCondition);
+    public ResponseEntity<JsonResult<IPage<MCompanyVo>>> getCompanies(@RequestBody(required = false) MOrgTreeVo searchCondition)  {
+        IPage<MCompanyVo> list = service.getCompanies(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 

@@ -228,20 +228,22 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "                                                                                                          ")
     List<MOrgEntity> getDataByCode(@Param("p1") MOrgEntity vo);
 
-    String groupListSql = "                                                                                             "
-        + " select                                                                                                      "
-        + "   *                                                                                                         "
-        + "   FROM                                                                                                      "
-        + "        m_group t1                                                                                           "
-        + "        inner JOIN (                                                                                         "
-        + "                   SELECT t.serial_id                                                                        "
-        + "                     FROM m_org t                                                                            "
-        + "                    WHERE t.type = '20'                                                                      "
-        + "                      and (t.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
-        + "                   ) t2 ON t1.id = t2.serial_id                                                              "
-        + "  where true                                                                                                 "
-        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
-        +"                                                                                                              ";
+    String groupListSql = "                                                                                              "
+        + "         select                                                                                               "
+        + "                t1.*,                                                                                         "
+        + "                t2.parent_serial_id,                                                                          "
+        + "                t2.parent_serial_type,                                                                        "
+        + "                t2.parent_name,                                                                               "
+        + "                t2.parent_simple_name,                                                                        "
+        + "                t2.parent_type_text                                                                           "
+        + "          FROM                                                                                                "
+        + "               m_group t1                                                                                     "
+        + "    inner JOIN v_org_relation t2 ON t2.type = '20'                                                            "
+        + "           and (t2.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
+        + "           and t1.id = t2.serial_id                                                                           "
+        + "         where true                                                                                           "
+        + "           and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)    "
+        +"                                                                                                               ";
     /**
      * 集团查询列表
      * @param searchCondition
@@ -250,19 +252,20 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("                                                                                                           "
         + groupListSql
         + "                                                                                                             ")
-    IPage<MGroupEntity> getGroupList(Page page, @Param("p1") MOrgTreeVo searchCondition);
+    IPage<MGroupVo> getGroupList(Page page, @Param("p1") MOrgTreeVo searchCondition);
 
     String companyListSql = "                                                                                           "
-        + " select                                                                                                      "
-        + "   *                                                                                                         "
-        + "   FROM                                                                                                      "
-        + "        m_company t1                                                                                         "
-        + "        inner JOIN (                                                                                          "
-        + "                   SELECT t.serial_id                                                                        "
-        + "                     FROM m_org t                                                                            "
-        + "                    WHERE t.type = '30'                                                                      "
-        + "                      and (t.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
-        + "                   ) t2 ON t1.id = t2.serial_id                                                              "
+        + "        select                                                                                               "
+        + "               t1.*,                                                                                         "
+        + "               t2.parent_serial_id,                                                                          "
+        + "               t2.parent_serial_type,                                                                        "
+        + "               t2.parent_name,                                                                               "
+        + "               t2.parent_simple_name,                                                                        "
+        + "               t2.parent_type_text                                                                           "
+        + "          FROM m_company t1                                                                                  "
+        + "    inner JOIN v_org_relation t2 ON t2.type = '30'                                                            "
+        + "           and (t2.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
+        + "           and t1.id = t2.serial_id                                                                           "
         + "  where true                                                                                                 "
         + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
         + "                                                                                                             ";
@@ -274,7 +277,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("                                                                                                           "
         + companyListSql
         + "                                                                                                             ")
-    IPage<MCompanyEntity> getCompanyList(Page page, @Param("p1") MOrgTreeVo searchCondition);
+    IPage<MCompanyVo> getCompanyList(Page page, @Param("p1") MOrgTreeVo searchCondition);
 
     String deptListSql = "                                                                                              "
         + "           SELECT                                                                                            "
@@ -282,19 +285,21 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "           	t2.`name` as handler_id_name,                                                                   "
         + "           	t3.`name` as sub_handler_id_name,                                                               "
         + "           	t4.`name` as leader_id_name,                                                                    "
-        + "           	t5.`name` as response_leader_id_name                                                            "
+        + "           	t5.`name` as response_leader_id_name,                                                           "
+        + "             t6.parent_serial_id,                                                                            "
+        + "             t6.parent_serial_type,                                                                          "
+        + "             t6.parent_name,                                                                                 "
+        + "             t6.parent_simple_name,                                                                          "
+        + "             t6.parent_type_text                                                                             "
         + "           FROM                                                                                              "
         + "           	m_dept t1                                                                                       "
         + "           	LEFT JOIN m_staff t2 on t1.handler_id = t2.id                                                   "
         + "           	LEFT JOIN m_staff t3 on t1.sub_handler_id = t3.id                                               "
         + "           	LEFT JOIN m_staff t4 on t1.leader_id = t4.id                                                    "
         + "           	LEFT JOIN m_staff t5 on t1.leader_id = t5.id                                                    "
-        + "        inner JOIN (                                                                                          "
-        + "                   SELECT t.serial_id                                                                        "
-        + "                     FROM m_org t                                                                            "
-        + "                    WHERE t.type = '40'                                                                      "
-        + "                      and (t.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
-        + "                   ) t6 ON t1.id = t6.serial_id                                                              "
+        + "    inner JOIN v_org_relation t6 ON t6.type = '40'                                                            "
+        + "           and (t6.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
+        + "           and t1.id = t6.serial_id                                                                           "
         + "  where true                                                                                                 "
         + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
         + "                                                                                                             ";
@@ -310,15 +315,17 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
 
     String positionListSql = "                                                                                          "
         + "           SELECT                                                                                            "
-        + "           	t1.*                                                                                            "
+        + "           	  t1.*,                                                                                         "
+        + "               t2.parent_serial_id,                                                                          "
+        + "               t2.parent_serial_type,                                                                        "
+        + "               t2.parent_name,                                                                               "
+        + "               t2.parent_simple_name,                                                                        "
+        + "               t2.parent_type_text                                                                           "
         + "           FROM                                                                                              "
         + "           	m_position t1                                                                                   "
-        + "        inner JOIN (                                                                                          "
-        + "                   SELECT t.serial_id                                                                        "
-        + "                     FROM m_org t                                                                            "
-        + "                    WHERE t.type = '50'                                                                      "
-        + "                      and (t.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
-        + "                   ) t2 ON t1.id = t2.serial_id                                                              "
+        + "    inner JOIN v_org_relation t2 ON t2.type = '50'                                                            "
+        + "           and (t2.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
+        + "           and t1.id = t2.serial_id                                                                           "
         + "  where true                                                                                                 "
         + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
         + "                                                                                                             ";

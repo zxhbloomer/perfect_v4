@@ -54,14 +54,14 @@ public interface IMOrgService extends IService<MOrgEntity> {
      * @param searchCondition
      * @return
      */
-    IPage<MGroupEntity> getGroups(MOrgTreeVo searchCondition);
+    IPage<MGroupVo> getGroups(MOrgTreeVo searchCondition);
 
     /**
      * 获取企业数据
      * @param searchCondition
      * @return
      */
-    IPage<MCompanyEntity> getCompanies(MOrgTreeVo searchCondition);
+    IPage<MCompanyVo> getCompanies(MOrgTreeVo searchCondition);
 
     /**
      * 获取部门数据

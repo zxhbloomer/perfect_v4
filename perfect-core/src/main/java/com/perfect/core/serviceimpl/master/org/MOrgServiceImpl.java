@@ -105,13 +105,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @return
      */
     @Override
-    public IPage<MGroupEntity> getGroups(MOrgTreeVo searchCondition) {
+    public IPage<MGroupVo> getGroups(MOrgTreeVo searchCondition) {
         // 分页条件
         Page<MGroupEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
         // 通过page进行排序
         PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
-        IPage<MGroupEntity> listGroup = mapper.getGroupList(pageCondition, searchCondition);
+        IPage<MGroupVo> listGroup = mapper.getGroupList(pageCondition, searchCondition);
         return listGroup;
     }
 
@@ -121,13 +121,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @return
      */
     @Override
-    public IPage<MCompanyEntity> getCompanies(MOrgTreeVo searchCondition) {
+    public IPage<MCompanyVo> getCompanies(MOrgTreeVo searchCondition) {
         // 分页条件
         Page<MCompanyEntity> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
         // 通过page进行排序
         PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
-        IPage<MCompanyEntity> listcompany = mapper.getCompanyList(pageCondition, searchCondition);
+        IPage<MCompanyVo> listcompany = mapper.getCompanyList(pageCondition, searchCondition);
         return listcompany;
     }
 

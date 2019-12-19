@@ -73,6 +73,19 @@ public class MGroupVo implements Serializable {
     private Integer dbversion;
 
     /**
+     * 关联单号
+     */
+    private Long parent_serial_id;
+
+    /**
+     * 关联单号类型
+     */
+    private String parent_serial_type;
+    private String parent_name;
+    private String parent_simple_name;
+    private String parent_type_text;
+
+    /**
      * 换页条件
      */
     private PageCondition pageCondition;
