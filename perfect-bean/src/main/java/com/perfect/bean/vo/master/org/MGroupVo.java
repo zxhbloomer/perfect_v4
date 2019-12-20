@@ -86,6 +86,11 @@ public class MGroupVo implements Serializable {
     private String parent_type_text;
 
     /**
+     * 弹出框模式：空：普通模式；10：组织使用，需要排除已经选择的数据；
+     */
+    private String dataModel;
+
+    /**
      * 换页条件
      */
     private PageCondition pageCondition;

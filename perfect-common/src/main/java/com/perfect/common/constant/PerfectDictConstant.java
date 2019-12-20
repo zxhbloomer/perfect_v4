@@ -123,4 +123,13 @@ public class PerfectDictConstant {
     public static final String DICT_SYS_CODE_TYPE_M_DEPT  = "m_dept";
     /** 岗位主表编号 */
     public static final String DICT_SYS_CODE_TYPE_M_POSITION  = "m_position";
+
+    /**
+     * 组织架构中已被使用
+     */
+    public static final String DICT_ORG_USED_TYPE  = "org_used_type";
+    /** 显示组织机构中未被使用  */
+    public static final String DICT_ORG_USED_TYPE_SHOW_UNUSED  = "10";
+    /** 显示所有  */
+    public static final String DICT_ORG_USED_TYPE_SHOW_ALL  = null;
 }
