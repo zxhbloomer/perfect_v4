@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.vo.master.org.MCompanyVo;
+import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -58,7 +59,19 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "  where true "
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
         + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                "
-        + "    and (t1.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)      "
+        + "    and (t1.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)         "
+        + "    and (t1.id =#{p1.id,jdbcType=BIGINT} or #{p1.id,jdbcType=BIGINT} is null)                               "
+        + "    and (                                                                                                  "
+        + "       case when #{p1.dataModel,jdbcType=VARCHAR} = '"+ PerfectDictConstant.DICT_ORG_USED_TYPE_SHOW_UNUSED +"' then   "
+        + "           not exists(                                                                                     "
+        + "                     select 1                                                                              "
+        + "                       from m_org subt1                                                                    "
+        + "                      where subt1.serial_type = '"+ PerfectDictConstant.DICT_SYS_CODE_TYPE_M_COMPANY +"'   "
+        + "                        and t1.id = subt1.serial_id                                                         "
+        + "           )                                                                                               "
+        + "       else true                                                                                           "
+        + "       end                                                                                                 "
+        + "        )                                                                                                  "
         + "      ")
     IPage<MCompanyEntity> selectPage(Page page, @Param("p1") MCompanyVo searchCondition);
 

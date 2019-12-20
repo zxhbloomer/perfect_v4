@@ -38,7 +38,7 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + "    and (t.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)         "
         + "    and (t.id =#{p1.id,jdbcType=BIGINT} or #{p1.id,jdbcType=BIGINT} is null)                              "
         + "    and (                                                                                                 "
-        + "       case when #{p1.dataModel,jdbcType=VARCHAR} = '10' then                                            "
+        + "       case when #{p1.dataModel,jdbcType=VARCHAR} = '"+ PerfectDictConstant.DICT_ORG_USED_TYPE_SHOW_UNUSED +"' then   "
         + "           not exists(                                                                                    "
         + "                     select 1                                                                             "
         + "                       from m_org subt1                                                                   "
