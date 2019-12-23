@@ -55,17 +55,17 @@ public class MOrgTreeVo extends TreeNode implements Serializable {
     private String type_text;
 
     private String depth_id;
-    public List<Long> getDepth_id(){
-        List<Long> rtn = new ArrayList<>();
-        if(depth_id == null){
-            return null;
-        }
-        String[] split = depth_id.split(",");
-        for (int i = 0; i < split.length; i++) {
-            rtn.add(Long.valueOf(split[i]));
-        }
-        return rtn;
-    }
+//    public List<Long> getDepth_id(){
+//        List<Long> rtn = new ArrayList<>();
+//        if(depth_id == null){
+//            return null;
+//        }
+//        String[] split = depth_id.split(",");
+//        for (int i = 0; i < split.length; i++) {
+//            rtn.add(Long.valueOf(split[i]));
+//        }
+//        return rtn;
+//    }
 
     /**
      * 全称

@@ -160,4 +160,12 @@ public class MasterOrgController extends BaseController {
         Boolean rtn = service.deleteById(bean);
         return ResponseEntity.ok().body(ResultUtil.OK("删除成功"));
     }
+
+    @SysLog("组织架构主表数据更新保存，拖拽后，全量更新")
+    @ApiOperation("根据参数id，获取组织架构主表信息，拖拽后，全量更新")
+    @PostMapping("/dragsave")
+    @ResponseBody
+    public ResponseEntity<JsonResult<MOrgVo>> dragsave(@RequestBody(required = false) MOrgTreeVo bean) {
+        return  null;
+    }
 }
