@@ -15,6 +15,7 @@ import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
+import com.perfect.bean.vo.common.component.TreeNode;
 import com.perfect.bean.vo.master.org.*;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectDictConstant;
@@ -25,10 +26,13 @@ import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.common.ICommonComponentService;
 import com.perfect.core.service.master.org.IMOrgService;
 import com.perfect.core.utils.mybatis.PageUtil;
+import com.perfect.core.utils.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +52,8 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @Autowired
     ICommonComponentService iCommonComponentService;
 
+    /** 组织entity数组 */
+//    List<MOrgEntity> entities;
 
     /**
      * 获取所有数据，左侧树数据
@@ -385,6 +391,74 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         entity.setTenant_id(getUserSessionTenantId());
         List<MOrgEntity> rtnList = mapper.getDataByCode(entity);
         return rtnList;
+    }
+
+    /**
+     * 拖拽保存
+     * 未使用乐观锁，需要注意
+     * @param beans
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean dragsave(List<MOrgTreeVo> beans) {
+        List<MOrgEntity> entities = new ArrayList<>();
+        int code = 0;
+        List<MOrgEntity> rtnList = dragData2List(beans, null ,entities, code);
+        // 编号重置
+        for (MOrgEntity entity : rtnList) {
+            if(entity.getParent_id() != null){
+                setParentSonCount(rtnList, entity.getParent_id());
+            }
+        }
+        // 更新开始
+        for (MOrgEntity entity : rtnList) {
+            entity.setSon_count(entity.getSon_count() == null ? 0 : entity.getSon_count());
+            entity.setU_id(SecurityUtil.getLoginUser_id());
+            entity.setU_time(LocalDateTime.now());
+            mapper.updateDragSave(entity);
+        }
+        return true;
+    }
+
+    /**
+     * 设置儿子个数
+     * @return
+     */
+    private List<MOrgEntity> setParentSonCount(List<MOrgEntity> entities, Long parent_id) {
+        for(MOrgEntity entity : entities){
+            if(entity.getId().equals(parent_id)){
+                entity.setSon_count(entity.getSon_count() == null ? 1 : entity.getSon_count() + 1);
+            }
+        }
+        return entities;
+    }
+
+    /**
+     * 拖拽数据规整
+     * @param beans         ：循环的beans
+     * @param parent_bean   ：父亲bean
+     * @param entities      ：最终返回的list bean
+     * @param code          ：
+     * @return
+     */
+    private List<MOrgEntity> dragData2List(List<? extends TreeNode> beans, MOrgEntity parent_bean, List<MOrgEntity> entities, int code) {
+        for (TreeNode bean : beans) {
+            code = code + 1;
+            MOrgEntity entity = new MOrgEntity();
+            entity.setId(bean.getId());
+            entity.setParent_id(bean.getParent_id());
+            if(parent_bean == null) {
+                entity.setCode(String.format("%04d", code));
+            } else {
+                entity.setCode(parent_bean.getCode() + String.format("%04d", code));
+            }
+            entities.add(entity);
+            if(bean.getChildren().size() !=0){
+                dragData2List(bean.getChildren(), entity, entities, 0);
+            }
+        }
+        return entities;
     }
 
 }

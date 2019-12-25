@@ -33,7 +33,10 @@ public class TreeNode implements ITreeNode<TreeNode>, Comparable<TreeNode> {
     private boolean leaf = true;
     /** 序号 */
     private int sort;
-
+    /**
+     * 编号，00010001..
+     */
+    private String code;
 
 
     public TreeNode() {}

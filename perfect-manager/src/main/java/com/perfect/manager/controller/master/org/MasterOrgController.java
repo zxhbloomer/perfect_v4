@@ -165,7 +165,8 @@ public class MasterOrgController extends BaseController {
     @ApiOperation("根据参数id，获取组织架构主表信息，拖拽后，全量更新")
     @PostMapping("/dragsave")
     @ResponseBody
-    public ResponseEntity<JsonResult<MOrgVo>> dragsave(@RequestBody(required = false) List<MOrgTreeVo> bean) {
-        return  null;
+    public ResponseEntity<JsonResult<String>> dragsave(@RequestBody(required = false) List<MOrgTreeVo> beans) {
+        service.dragsave(beans);
+        return ResponseEntity.ok().body(ResultUtil.OK("拖拽更新成功"));
     }
 }

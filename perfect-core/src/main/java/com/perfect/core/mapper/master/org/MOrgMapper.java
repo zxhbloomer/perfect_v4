@@ -3,14 +3,13 @@ package com.perfect.core.mapper.master.org;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.perfect.bean.entity.master.org.MCompanyEntity;
-import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.*;
 import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -87,7 +86,8 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("    "
         + COMMON_TREE_SELECT
         + "  where true                                                                                              "
-        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)    "
+        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)       "
+        + "  order by t2.code                                                                                        "
         + "      ")
     List<MOrgTreeVo> getTreeList(@Param("p1") MOrgTreeVo searchCondition);
 
@@ -367,4 +367,16 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "           ),0)  as staff_count                                                                              "
         + "                                                                                                             ")
     MOrgCountsVo getAllOrgDataCount(@Param("p1") MOrgVo searchCondition);
+
+    @Update("                                                                        "
+        + "    update m_org t                                                        "
+        + "       set t.parent_id = #{p1.parent_id,jdbcType=BIGINT} ,                "
+        + "           t.code = #{p1.code,jdbcType=VARCHAR} ,                         "
+        + "           t.son_count = #{p1.son_count,jdbcType=INTEGER},                "
+        + "           t.u_id = #{p1.u_id,jdbcType=BIGINT},                           "
+        + "           t.u_time = #{p1.u_time,jdbcType=TIMESTAMP}                     "
+        + "     where t.id = #{p1.id,jdbcType=BIGINT}                                "
+        + "                                                                          "
+    )
+    int updateDragSave(@Param("p1")MOrgEntity entity);
 }

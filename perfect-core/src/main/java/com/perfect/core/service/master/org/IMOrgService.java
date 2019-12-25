@@ -124,4 +124,11 @@ public interface IMOrgService extends IService<MOrgEntity> {
      * @return
      */
     List<MOrgEntity> getDataByCode(MOrgEntity vo);
+
+    /**
+     * 拖拽保存
+     * @param bean
+     * @return
+     */
+    Boolean dragsave(List<MOrgTreeVo> bean);
 }
