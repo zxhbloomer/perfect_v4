@@ -91,12 +91,21 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
     @Override
     public void deleteByIdsIn(List<MCompanyVo> searchCondition) {
         List<MCompanyEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTenantId());
-        list.forEach(
-            bean -> {
-                bean.setIs_del(!bean.getIs_del());
-                bean.setTenant_id(getUserSessionTenantId());
+        for(MCompanyEntity entity : list) {
+            CheckResult cr;
+            if(entity.getIs_del()){
+                /** 如果逻辑删除为true，表示为：页面点击了复原操作 */
+                cr = checkLogic(entity, CheckResult.UNDELETE_CHECK_TYPE);
+            } else {
+                /** 如果逻辑删除为false，表示为：页面点击了删除操作 */
+                cr = checkLogic(entity, CheckResult.DELETE_CHECK_TYPE);
             }
-        );
+            if (cr.isSuccess() == false) {
+                throw new BusinessException(cr.getMessage());
+            }
+            entity.setIs_del(!entity.getIs_del());
+            entity.setTenant_id(getUserSessionTenantId());
+        }
         saveOrUpdateBatch(list, 500);
     }
 
@@ -210,6 +219,37 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
                 }
                 if (simple_name_updCheck.size() >= 1) {
                     return CheckResultUtil.NG("更新保存出错：集团简称称出现重复", entity.getSimple_name());
+                }
+                break;
+            case CheckResult.DELETE_CHECK_TYPE:
+                /** 如果逻辑删除为false，表示为：页面点击了删除操作 */
+                if(entity.getIs_del()) {
+                    return CheckResultUtil.OK();
+                }
+                // 是否被使用的check，如果被使用则不能删除
+                int count = mapper.isExistsInOrg(entity);
+                if(count > 0){
+                    return CheckResultUtil.NG("删除出错：企业【"+ entity.getSimple_name() +"】在组织机构中正在使用！", count);
+                }
+                break;
+            case CheckResult.UNDELETE_CHECK_TYPE:
+                /** 如果逻辑删除为true，表示为：页面点击了删除操作 */
+                if(!entity.getIs_del()) {
+                    return CheckResultUtil.OK();
+                }
+                // 更新场合，不能重复设置
+                List<MCompanyEntity> codeList_delCheck = selectByCode(entity.getCode(), null, entity.getId());
+                List<MCompanyEntity> nameList_delCheck = selectByName(entity.getName(), null, entity.getId());
+                List<MCompanyEntity> simple_name_delCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
+
+                if (codeList_delCheck.size() >= 1) {
+                    return CheckResultUtil.NG("复原出错：企业编号【"+ entity.getCode() +"】被启用的数据已经存在，出现重复！", entity.getCode());
+                }
+                if (nameList_delCheck.size() >= 1) {
+                    return CheckResultUtil.NG("复原出错：企业全称【"+ entity.getName() +"】被启用的数据已经存在，出现重复！", entity.getName());
+                }
+                if (simple_name_delCheck.size() >= 1) {
+                    return CheckResultUtil.NG("复原出错：企业简称【"+ entity.getSimple_name() +"】被启用的数据已经存在，出现重复！", entity.getSimple_name());
                 }
                 break;
             default:

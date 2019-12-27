@@ -3,6 +3,7 @@ package com.perfect.core.serviceimpl.master.org;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.sys.config.config.SConfigEntity;
 import com.perfect.bean.pojo.result.CheckResult;
@@ -96,12 +97,21 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @Override
     public void deleteByIdsIn(List<MGroupVo> searchCondition) {
         List<MGroupEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTenantId());
-        list.forEach(
-            bean -> {
-                bean.setIs_del(!bean.getIs_del());
-                bean.setTenant_id(getUserSessionTenantId());
+        for(MGroupEntity entity : list) {
+            CheckResult cr;
+            if(entity.getIs_del()){
+                /** 如果逻辑删除为true，表示为：页面点击了复原操作 */
+                cr = checkLogic(entity, CheckResult.UNDELETE_CHECK_TYPE);
+            } else {
+                /** 如果逻辑删除为false，表示为：页面点击了删除操作 */
+                cr = checkLogic(entity, CheckResult.DELETE_CHECK_TYPE);
             }
-        );
+            if (cr.isSuccess() == false) {
+                throw new BusinessException(cr.getMessage());
+            }
+            entity.setIs_del(!entity.getIs_del());
+            entity.setTenant_id(getUserSessionTenantId());
+        }
         saveOrUpdateBatch(list, 500);
     }
 
@@ -196,13 +206,13 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
                 List<MGroupEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
                 List<MGroupEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
                 if (codeList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：集团编号出现重复", entity.getCode());
+                    return CheckResultUtil.NG("新增保存出错：集团编号【"+ entity.getCode() +"】出现重复", entity.getCode());
                 }
                 if (nameList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：集团全称出现重复", entity.getName());
+                    return CheckResultUtil.NG("新增保存出错：集团全称【"+ entity.getName() +"】出现重复", entity.getName());
                 }
                 if (simple_name_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：集团简称称出现重复", entity.getSimple_name());
+                    return CheckResultUtil.NG("新增保存出错：集团简称【"+ entity.getSimple_name() +"】出现重复", entity.getSimple_name());
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
@@ -219,6 +229,37 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
                 }
                 if (simple_name_updCheck.size() >= 1) {
                     return CheckResultUtil.NG("更新保存出错：集团简称称出现重复", entity.getSimple_name());
+                }
+                break;
+            case CheckResult.DELETE_CHECK_TYPE:
+                /** 如果逻辑删除为false，表示为：页面点击了删除操作 */
+                if(entity.getIs_del()) {
+                    return CheckResultUtil.OK();
+                }
+                // 是否被使用的check，如果被使用则不能删除
+                int count = mapper.isExistsInOrg(entity);
+                if(count > 0){
+                    return CheckResultUtil.NG("删除出错：集团【"+ entity.getSimple_name() +"】在组织机构中正在使用！", count);
+                }
+                break;
+            case CheckResult.UNDELETE_CHECK_TYPE:
+                /** 如果逻辑删除为true，表示为：页面点击了删除操作 */
+                if(!entity.getIs_del()) {
+                    return CheckResultUtil.OK();
+                }
+                // 更新场合，不能重复设置
+                List<MGroupEntity> codeList_delCheck = selectByCode(entity.getCode(), null, entity.getId());
+                List<MGroupEntity> nameList_delCheck = selectByName(entity.getName(), null, entity.getId());
+                List<MGroupEntity> simple_name_delCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
+
+                if (codeList_delCheck.size() >= 1) {
+                    return CheckResultUtil.NG("复原出错：集团编号【"+ entity.getCode() +"】被启用的数据已经存在，出现重复！", entity.getCode());
+                }
+                if (nameList_delCheck.size() >= 1) {
+                    return CheckResultUtil.NG("复原出错：集团全称【"+ entity.getName() +"】被启用的数据已经存在，出现重复！", entity.getName());
+                }
+                if (simple_name_delCheck.size() >= 1) {
+                    return CheckResultUtil.NG("复原出错：集团简称【"+ entity.getSimple_name() +"】被启用的数据已经存在，出现重复！", entity.getSimple_name());
                 }
                 break;
             default:

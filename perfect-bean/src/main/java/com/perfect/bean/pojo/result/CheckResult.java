@@ -21,6 +21,8 @@ public class CheckResult implements Serializable {
     public static final String INSERT_CHECK_TYPE = "INSERT_CHECK_TYPE";
     public static final String UPDATE_CHECK_TYPE = "UPDATE_CHECK_TYPE";
     public static final String DELETE_CHECK_TYPE = "DELETE_CHECK_TYPE";
+    // 删除复原
+    public static final String UNDELETE_CHECK_TYPE = "UNDELETE_CHECK_TYPE";
     public static final String SELECT_CHECK_TYPE = "SELECT_CHECK_TYPE";
     public static final String COPY_INSERT_CHECK_TYPE = "COPY_INSERT_CHECK_TYPE";
     public static final String OTHER_CHECK_TYPE = "OTHER_CHECK_TYPE";

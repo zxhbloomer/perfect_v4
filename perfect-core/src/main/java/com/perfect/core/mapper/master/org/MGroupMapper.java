@@ -3,6 +3,7 @@ package com.perfect.core.mapper.master.org;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.vo.master.org.MGroupVo;
 import com.perfect.common.constant.PerfectDictConstant;
@@ -135,4 +136,18 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + "    and t.is_del =  0   "
         + "      ")
     List<MGroupEntity> selectBySimpleName(@Param("p1") String name, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id, @Param("p4")Long tenant_id);
+
+    /**
+     * 查询在组织架构中是否存在有被使用的数据
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                   "
+        + " select count(1)                                                                                     "
+        + "   from m_org t                                                                                      "
+        + "  where true                                                                                         "
+        + "    and t.serial_type = '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE + "'        "
+        + "    and t.serial_id = #{p1.id,jdbcType=BIGINT}                                                       "
+        + "                                                                                                     ")
+    int isExistsInOrg(@Param("p1") MGroupEntity searchCondition);
 }

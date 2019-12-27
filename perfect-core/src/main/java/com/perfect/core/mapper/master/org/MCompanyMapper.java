@@ -111,8 +111,8 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "  where true "
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)   "
         + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                  "
-        + "    and (t1.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)      "
-        + "      ")
+        + "    and (t1.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)           "
+        + "                                                                                                             ")
     List<MCompanyEntity> select(@Param("p1") MCompanyVo searchCondition);
 
     /**
@@ -122,9 +122,9 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
      */
     @Select("<script>                                                                                      "
         + " select t.*                                                                                     "
-        + "   from m_company t                                                                               "
+        + "   from m_company t                                                                             "
         + "  where true                                                                                    "
-        + "    and (t.tenant_id = #{p2} or #{p2} is null  )                                               "
+        + "    and (t.tenant_id = #{p2} or #{p2} is null  )                                                "
         + "    and t.id in                                                                                 "
         + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>    "
         + "         #{item.id}                                                                             "
@@ -137,16 +137,16 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
      * @param code
      * @return
      */
-    @Select("    "
-        + " select t.* "
-        + "   from m_company t "
-        + "  where true "
-        + "    and t.code =  #{p1}   "
-        + "    and (t.id  =  #{p2} or #{p2} is null)   "
-        + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "    and (t.tenant_id  = #{p4} or #{p4} is null)   "
-        + "    and t.is_del =  0   "
-        + "      ")
+    @Select("                                                                        "
+        + " select t.*                                                               "
+        + "   from m_company t                                                       "
+        + "  where true                                                              "
+        + "    and t.code =  #{p1}                                                   "
+        + "    and (t.id  =  #{p2} or #{p2} is null)                                 "
+        + "    and (t.id  <> #{p3} or #{p3} is null)                                 "
+        + "    and (t.tenant_id  = #{p4} or #{p4} is null)                           "
+        + "    and t.is_del =  0                                                     "
+        + "                                                                          ")
     List<MCompanyEntity> selectByCode(@Param("p1") String code,
         @Param("p2") Long equal_id,
         @Param("p3") Long not_equal_id,
@@ -158,16 +158,16 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
      * @param name
      * @return
      */
-    @Select("    "
-        + " select t.* "
-        + "   from m_company t "
-        + "  where true "
-        + "    and t.name =  #{p1}   "
-        + "    and (t.id  =  #{p2} or #{p2} is null)   "
-        + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "    and (t.tenant_id  = #{p4} or #{p4} is null)   "
-        + "    and t.is_del =  0   "
-        + "      ")
+    @Select("                                                                        "
+        + " select t.*                                                               "
+        + "   from m_company t                                                       "
+        + "  where true                                                              "
+        + "    and t.name =  #{p1}                                                   "
+        + "    and (t.id  =  #{p2} or #{p2} is null)                                 "
+        + "    and (t.id  <> #{p3} or #{p3} is null)                                 "
+        + "    and (t.tenant_id  = #{p4} or #{p4} is null)                           "
+        + "    and t.is_del =  0                                                     "
+        + "                                                                          ")
     List<MCompanyEntity> selectByName(@Param("p1") String name, @Param("p2") Long equal_id,
         @Param("p3") Long not_equal_id, @Param("p4")Long tenant_id);
 
@@ -176,16 +176,30 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
      * @param name
      * @return
      */
-    @Select("    "
-        + " select t.* "
-        + "   from m_company t "
-        + "  where true "
-        + "    and t.simple_name =  #{p1}   "
-        + "    and (t.id  =  #{p2} or #{p2} is null)   "
-        + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "    and (t.tenant_id  = #{p4} or #{p4} is null)   "
-        + "    and t.is_del =  0   "
-        + "      ")
+    @Select("                                                                      "
+        + " select t.*                                                             "
+        + "   from m_company t                                                     "
+        + "  where true                                                            "
+        + "    and t.simple_name =  #{p1}                                          "
+        + "    and (t.id  =  #{p2} or #{p2} is null)                               "
+        + "    and (t.id  <> #{p3} or #{p3} is null)                               "
+        + "    and (t.tenant_id  = #{p4} or #{p4} is null)                         "
+        + "    and t.is_del =  0                                                   "
+        + "                                                                        ")
     List<MCompanyEntity> selectBySimpleName(@Param("p1") String name, @Param("p2") Long equal_id,
         @Param("p3") Long not_equal_id, @Param("p4")Long tenant_id);
+
+    /**
+     * 查询在组织架构中是否存在有被使用的数据
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                   "
+        + " select count(1)                                                                                          "
+        + "   from m_org t                                                                                      "
+        + "  where true                                                                                         "
+        + "    and t.serial_type = '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE + "'      "
+        + "    and t.serial_id = #{p1.id,jdbcType=BIGINT}                                                       "
+        + "                                                                                                     ")
+    int isExistsInOrg(@Param("p1") MCompanyEntity searchCondition);
 }
