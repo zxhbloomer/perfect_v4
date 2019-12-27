@@ -3,6 +3,7 @@ package com.perfect.core.serviceimpl.master.user;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
@@ -300,6 +301,31 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
+                if(entity.getIs_enable()){
+                    List<MUserEntity> listValue_updCheck = selectLoginName(entity.getLogin_name(), null, entity.getId());
+                    // 更新场合，不能重复设置
+                    if (listValue_updCheck.size() >= 1) {
+                        // 模块编号不能重复
+                        return CheckResultUtil.NG("更新保存出错：登录用户名出现重复", listValue_updCheck);
+                    }
+                }
+                break;
+            case CheckResult.DELETE_CHECK_TYPE:
+                /** 如果逻辑删除为false，表示为：页面点击了删除操作 */
+                if(entity.getIs_del()) {
+                    return CheckResultUtil.OK();
+                }
+                // 是否被使用的check，如果被使用则不能删除
+                int count = mapper.isExistsInOrg(entity);
+                if(count > 0){
+                    return CheckResultUtil.NG("删除出错：集团【"+ entity.getSimple_name() +"】在组织机构中正在使用！", count);
+                }
+                break;
+            case CheckResult.UNDELETE_CHECK_TYPE:
+                /** 如果逻辑删除为true，表示为：页面点击了删除操作 */
+                if(!entity.getIs_del()) {
+                    return CheckResultUtil.OK();
+                }
                 if(entity.getIs_enable()){
                     List<MUserEntity> listValue_updCheck = selectLoginName(entity.getLogin_name(), null, entity.getId());
                     // 更新场合，不能重复设置

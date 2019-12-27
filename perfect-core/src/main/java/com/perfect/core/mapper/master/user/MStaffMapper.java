@@ -3,6 +3,7 @@ package com.perfect.core.mapper.master.user;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.vo.master.MAddressVo;
 import com.perfect.bean.vo.master.user.MStaffExportVo;
@@ -170,4 +171,17 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "                                                     ")
     MStaffEntity getDataByUser_id(@Param("p1") Long p1, @Param("p2")Long tenant_id);
 
+    /**
+     * 查询在组织架构中是否存在有被使用的数据
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                   "
+        + " select count(1)                                                                                     "
+        + "   from m_org t                                                                                      "
+        + "  where true                                                                                         "
+        + "    and t.serial_type = '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE + "'        "
+        + "    and t.serial_id = #{p1.id,jdbcType=BIGINT}                                                       "
+        + "                                                                                                     ")
+    int isExistsInOrg(@Param("p1") MUserEntity searchCondition);
 }
