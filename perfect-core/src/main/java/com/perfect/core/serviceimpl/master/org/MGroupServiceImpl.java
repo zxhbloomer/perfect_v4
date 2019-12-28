@@ -228,7 +228,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
                     return CheckResultUtil.NG("更新保存出错：集团全称出现重复", entity.getName());
                 }
                 if (simple_name_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：集团简称称出现重复", entity.getSimple_name());
+                    return CheckResultUtil.NG("更新保存出错：集团简称出现重复", entity.getSimple_name());
                 }
                 break;
             case CheckResult.DELETE_CHECK_TYPE:
@@ -253,13 +253,13 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
                 List<MGroupEntity> simple_name_delCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
 
                 if (codeList_delCheck.size() >= 1) {
-                    return CheckResultUtil.NG("复原出错：集团编号【"+ entity.getCode() +"】被启用的数据已经存在，出现重复！", entity.getCode());
+                    return CheckResultUtil.NG("复原出错：集团编号【"+ entity.getCode() +"】在组织机构数据中正在被使用，复原这条数据会造成数据重复！", entity.getCode());
                 }
                 if (nameList_delCheck.size() >= 1) {
-                    return CheckResultUtil.NG("复原出错：集团全称【"+ entity.getName() +"】被启用的数据已经存在，出现重复！", entity.getName());
+                    return CheckResultUtil.NG("复原出错：集团全称【"+ entity.getName() +"】在组织机构数据中正在被使用，复原这条数据会造成数据重复！", entity.getName());
                 }
                 if (simple_name_delCheck.size() >= 1) {
-                    return CheckResultUtil.NG("复原出错：集团简称【"+ entity.getSimple_name() +"】被启用的数据已经存在，出现重复！", entity.getSimple_name());
+                    return CheckResultUtil.NG("复原出错：集团简称【"+ entity.getSimple_name() +"】在组织机构数据中正在被使用，复原这条数据会造成数据重复！", entity.getSimple_name());
                 }
                 break;
             default:

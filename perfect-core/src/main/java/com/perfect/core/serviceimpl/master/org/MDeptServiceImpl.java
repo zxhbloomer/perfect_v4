@@ -211,7 +211,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
                     return CheckResultUtil.NG("新增保存出错：部门全称出现重复", entity.getName());
                 }
                 if (simple_name_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：部门简称称出现重复", entity.getSimple_name());
+                    return CheckResultUtil.NG("新增保存出错：部门简称出现重复", entity.getSimple_name());
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
@@ -227,7 +227,7 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
                     return CheckResultUtil.NG("更新保存出错：部门全称出现重复", entity.getName());
                 }
                 if (simple_name_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：部门简称称出现重复", entity.getSimple_name());
+                    return CheckResultUtil.NG("更新保存出错：部门简称出现重复", entity.getSimple_name());
                 }
                 break;
             default:

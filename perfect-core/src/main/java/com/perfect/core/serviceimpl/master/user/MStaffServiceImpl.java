@@ -3,10 +3,12 @@ package com.perfect.core.serviceimpl.master.user;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
+import com.perfect.bean.entity.sys.config.module.SModuleButtonEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
@@ -139,11 +141,12 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
         MStaffEntity mStaffEntity = (MStaffEntity) BeanUtilsSupport.copyProperties(vo, MStaffEntity.class);
         MUserEntity mUserEntity = (MUserEntity) BeanUtilsSupport.copyProperties(vo.getRealUser(), MUserEntity.class);
 
-        // 插入前check
+        // 插入前check，员工表check
         CheckResult cr1 = checkStaffEntity(mStaffEntity, CheckResult.INSERT_CHECK_TYPE);
         if (cr1.isSuccess() == false) {
             throw new BusinessException(cr1.getMessage());
         }
+        // 插入前check，账号表check
         CheckResult cr2 = checkUserEntity(mUserEntity, CheckResult.INSERT_CHECK_TYPE);
         if (cr2.isSuccess() == false) {
             throw new BusinessException(cr2.getMessage());
@@ -276,10 +279,85 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
     }
 
     /**
+     * 获取列表，查询所有数据
+     *
+     * @param name
+     * @return
+     */
+    public List<MStaffEntity> selectBySimpleName(String name, Long equal_id, Long not_equal_id) {
+        // 查询 数据
+        List<MStaffEntity> list = mapper.selectBySimpleName(name, equal_id, not_equal_id, getUserSessionTenantId());
+        return list;
+    }
+
+    /**
+     * 查询by name，返回结果
+     *
+     * @return
+     */
+    public List<MStaffEntity> selectByName(String val, Long equal_id, Long not_equal_id) {
+        // 查询 数据
+        List<MStaffEntity> list = mapper.selectByName(val, equal_id, not_equal_id, getUserSessionTenantId());
+        return list;
+    }
+
+    /**
      * check逻辑
      * @return
      */
     public CheckResult checkStaffEntity(MStaffEntity entity, String moduleType){
+        switch (moduleType) {
+            case CheckResult.INSERT_CHECK_TYPE:
+                // 员工姓名重复性check
+                List<MStaffEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
+                if (nameList_insertCheck.size() >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：员工姓名出现重复", nameList_insertCheck);
+                }
+
+                // 员工简称重复性check
+                List<MStaffEntity> _insertCheck = selectBySimpleName(entity.getName(), null, null);
+                if (_insertCheck.size() >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：员工姓名简称出现重复", _insertCheck);
+                }
+                break;
+            case CheckResult.UPDATE_CHECK_TYPE:
+                // 员工姓名重复性check
+                List<MStaffEntity> nameList_updCheck = selectByName(entity.getName(), null, entity.getId());
+                if (nameList_updCheck.size() >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：员工姓名出现重复", nameList_updCheck);
+                }
+
+                // 员工简称重复性check
+                List<MStaffEntity> simpleNameList_updCheck = selectBySimpleName(entity.getName(), null, null);
+                if (simpleNameList_updCheck.size() >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：员工姓名简称出现重复", simpleNameList_updCheck);
+                }
+                break;
+            case CheckResult.DELETE_CHECK_TYPE:
+                /** 如果逻辑删除为false，表示为：页面点击了删除操作 */
+                if(entity.getIs_del()) {
+                    return CheckResultUtil.OK();
+                }
+                // 是否被使用的check，如果被使用则不能删除
+                int count = mapper.isExistsInOrg(entity);
+                if(count > 0){
+                    return CheckResultUtil.NG("删除出错：该员工【"+ entity.getSimple_name() +"】在组织机构中正在使用！", count);
+                }
+                break;
+            case CheckResult.UNDELETE_CHECK_TYPE:
+                // 员工姓名重复性check
+                List<MStaffEntity> nameList_undelete_Check = selectByName(entity.getName(), null, entity.getId());
+                if (nameList_undelete_Check.size() >= 1) {
+                    CheckResultUtil.NG("复原出错：该员工【"+ entity.getName() +"】在组织机构数据中正在被使用，复原这条数据会造成数据重复！", entity.getName());
+                }
+
+                // 员工简称重复性check
+                List<MStaffEntity> simpleNameList_undelete_Check = selectBySimpleName(entity.getName(), null, null);
+                if (simpleNameList_undelete_Check.size() >= 1) {
+                    return CheckResultUtil.NG("复原出错：该员工【"+ entity.getSimple_name() +"】在组织机构数据中正在被使用，复原这条数据会造成数据重复！", entity.getName());
+                }
+                break;
+        }
         return CheckResultUtil.OK();
     }
 
@@ -311,15 +389,6 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
                 }
                 break;
             case CheckResult.DELETE_CHECK_TYPE:
-                /** 如果逻辑删除为false，表示为：页面点击了删除操作 */
-                if(entity.getIs_del()) {
-                    return CheckResultUtil.OK();
-                }
-                // 是否被使用的check，如果被使用则不能删除
-                int count = mapper.isExistsInOrg(entity);
-                if(count > 0){
-                    return CheckResultUtil.NG("删除出错：集团【"+ entity.getSimple_name() +"】在组织机构中正在使用！", count);
-                }
                 break;
             case CheckResult.UNDELETE_CHECK_TYPE:
                 /** 如果逻辑删除为true，表示为：页面点击了删除操作 */
