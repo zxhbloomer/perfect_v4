@@ -311,26 +311,26 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
                 // 员工姓名重复性check
                 List<MStaffEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
                 if (nameList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：员工姓名出现重复", nameList_insertCheck);
+                    return CheckResultUtil.NG("新增保存出错：员工姓名【"+ entity.getName() +"】出现重复", nameList_insertCheck);
                 }
 
                 // 员工简称重复性check
-                List<MStaffEntity> _insertCheck = selectBySimpleName(entity.getName(), null, null);
+                List<MStaffEntity> _insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
                 if (_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：员工姓名简称出现重复", _insertCheck);
+                    return CheckResultUtil.NG("新增保存出错：员工姓名简称【"+ entity.getSimple_name() +"】出现重复", _insertCheck);
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
                 // 员工姓名重复性check
                 List<MStaffEntity> nameList_updCheck = selectByName(entity.getName(), null, entity.getId());
                 if (nameList_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：员工姓名出现重复", nameList_updCheck);
+                    return CheckResultUtil.NG("更新保存出错：员工姓名【"+ entity.getName() +"】出现重复", nameList_updCheck);
                 }
 
                 // 员工简称重复性check
-                List<MStaffEntity> simpleNameList_updCheck = selectBySimpleName(entity.getName(), null, null);
+                List<MStaffEntity> simpleNameList_updCheck = selectBySimpleName(entity.getSimple_name(), null, null);
                 if (simpleNameList_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：员工姓名简称出现重复", simpleNameList_updCheck);
+                    return CheckResultUtil.NG("更新保存出错：员工姓名简称【"+ entity.getSimple_name() +"】出现重复", simpleNameList_updCheck);
                 }
                 break;
             case CheckResult.DELETE_CHECK_TYPE:
@@ -374,7 +374,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
                     // 新增场合，不能重复
                     if (listValue_insertCheck.size() >= 1) {
                         // 模块编号不能重复
-                        return CheckResultUtil.NG("新增保存出错：登录用户名出现重复", listValue_insertCheck);
+                        return CheckResultUtil.NG("新增保存出错：登录用户名【"+ entity.getLogin_name() +"】出现重复！", listValue_insertCheck);
                     }
                 }
                 break;
@@ -384,7 +384,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
                     // 更新场合，不能重复设置
                     if (listValue_updCheck.size() >= 1) {
                         // 模块编号不能重复
-                        return CheckResultUtil.NG("更新保存出错：登录用户名出现重复", listValue_updCheck);
+                        return CheckResultUtil.NG("更新保存出错：登录用户名【"+ entity.getLogin_name() +"】出现重复！", listValue_updCheck);
                     }
                 }
                 break;
@@ -400,7 +400,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
                     // 更新场合，不能重复设置
                     if (listValue_updCheck.size() >= 1) {
                         // 模块编号不能重复
-                        return CheckResultUtil.NG("更新保存出错：登录用户名出现重复", listValue_updCheck);
+                        return CheckResultUtil.NG("复原出错：登录用户名【"+ entity.getLogin_name() +"】出现重复！", listValue_updCheck);
                     }
                 }
                 break;

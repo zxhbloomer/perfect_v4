@@ -3,6 +3,7 @@ package com.perfect.core.mapper.master.org;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MDeptEntity;
 import com.perfect.bean.vo.master.org.MDeptVo;
 import com.perfect.common.constant.PerfectDictConstant;
@@ -163,7 +164,21 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
         + COMMON_SELECT
         + "  where true                                                              "
         + "    and (t1.id = #{p1})                                                   "
-        + "    and (t1.tenant_id = #{p2} or #{p2} is null  )                                                             "
+        + "    and (t1.tenant_id = #{p2} or #{p2} is null  )                         "
         + "                                                                          ")
     MDeptVo selectByid(@Param("p1") Long id, @Param("p2")Long tenant_id);
+
+    /**
+     * 查询在组织架构中是否存在有被使用的数据
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                   "
+            + " select count(1)                                                                                          "
+            + "   from m_org t                                                                                      "
+            + "  where true                                                                                         "
+            + "    and t.serial_type = '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT_SERIAL_TYPE + "'      "
+            + "    and t.serial_id = #{p1.id,jdbcType=BIGINT}                                                       "
+            + "                                                                                                     ")
+    int isExistsInOrg(@Param("p1") MDeptEntity searchCondition);
 }
