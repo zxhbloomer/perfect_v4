@@ -2,6 +2,7 @@ package com.perfect.framework.config.spring.aspect.v1;
 
 
 import com.alibaba.fastjson.JSON;
+import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.bo.sys.SysLogBo;
 import com.perfect.bean.entity.sys.SLogEntity;
 import com.perfect.common.annotation.SysLog;
@@ -9,12 +10,16 @@ import com.perfect.common.properies.PerfectConfigProperies;
 import com.perfect.common.utils.IPUtil;
 import com.perfect.core.service.sys.ISLogService;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.NamedThreadLocal;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -23,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author zxh
@@ -31,6 +37,19 @@ import java.time.LocalDateTime;
 @Component
 @Slf4j
 public class SysLogAspect {
+
+    private static final ThreadLocal<Date> beginTimeThreadLocal =
+            new NamedThreadLocal<Date>("ThreadLocal beginTime");
+    private static final ThreadLocal<SLogEntity> logThreadLocal =
+            new NamedThreadLocal<SLogEntity>("ThreadLocal log");
+
+    private static final ThreadLocal<UserSessionBo> currentUser=new NamedThreadLocal<>("ThreadLocal user");
+
+    @Autowired(required=false)
+    private HttpServletRequest request;
+
+    @Autowired
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Autowired
     private PerfectConfigProperies perfectConfigProperies;
@@ -139,5 +158,75 @@ public class SysLogAspect {
             log.debug("======================日志结束================================");
         }
         return sysLogBo;
+    }
+
+    /**
+     * 获取注解中对方法的描述信息 用于Controller层注解
+     *
+     * @param joinPoint 切点
+     * @return 方法描述
+     */
+    public static String getControllerMethodDescription2(JoinPoint joinPoint) {
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+        SysLog controllerLog = method
+                .getAnnotation(SysLog.class);
+        String discription = controllerLog.description();
+        return discription;
+    }
+
+    /**
+     *  异常通知
+     * @param joinPoint
+     * @param e
+     */
+    @AfterThrowing(pointcut = "sysLogAspect()", throwing = "e")
+    public  void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
+        SLogEntity sLogEntity = logThreadLocal.get();
+        if(sLogEntity != null){
+            sLogEntity.setType("error");
+            sLogEntity.setException(e.toString());
+            new UpdateLogThread(sLogEntity, iSLogService).start();
+        }
+    }
+
+    /**
+     * 保存日志线程
+     */
+    private static class SaveLogThread implements Runnable {
+        private SLogEntity log;
+
+        private ISLogService logService;
+
+        public SaveLogThread(SLogEntity log, ISLogService logService) {
+            this.log = log;
+            this.logService = logService;
+        }
+
+        @Override
+        public void run() {
+            logService.saveOrUpdate(log);
+        }
+    }
+
+    /**
+     * 日志更新线程
+     */
+    private static class UpdateLogThread extends Thread {
+
+        private SLogEntity log;
+
+        private ISLogService logService;
+
+        public UpdateLogThread(SLogEntity log, ISLogService logService) {
+            super(UpdateLogThread.class.getSimpleName());
+            this.log = log;
+            this.logService = logService;
+        }
+
+        @Override
+        public void run() {
+            this.logService.saveOrUpdate(log);
+        }
     }
 }
