@@ -2,26 +2,33 @@ package com.perfect.framework.base.controller.v1;
 
 import com.alibaba.fastjson.JSON;
 import com.perfect.bean.bo.session.user.UserSessionBo;
+import com.perfect.bean.bo.sys.SysInfoBo;
 import com.perfect.bean.pojo.fs.UploadFileResultPojo;
+import com.perfect.bean.vo.master.user.MStaffVo;
+import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.properies.PerfectConfigProperies;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.common.utils.servlet.ServletUtil;
+import com.perfect.core.service.client.user.IMUserService;
 import com.perfect.excel.bean.importconfig.template.ExcelTemplate;
 import com.perfect.excel.export.ExcelUtil;
 import com.perfect.excel.upload.PerfectExcelReader;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.poifs.filesystem.FileMagic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +41,7 @@ import java.util.Map;
  * @author zhangxh
  */
 @Slf4j
+@Component
 public class BaseController {
 
     @Autowired
@@ -41,6 +49,13 @@ public class BaseController {
 
     @Autowired
     private PerfectConfigProperies perfectConfigProperies;
+
+    @Autowired
+    private IMUserService service;
+
+    /** 开发者模式，可以跳过验证码 */
+    @Value("${perfect.security.develop-model}")
+    private Boolean developModel;
 
     /**
      * 通用文件上传
@@ -136,6 +151,16 @@ public class BaseController {
      * 获取当前登录用户的session数据
      * @return
      */
+    public void setStaffInUserSession(MStaffVo staff_info){
+        UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
+        bo.setStaff_info(staff_info);
+//        return bo;
+    }
+
+    /**
+     * 获取当前登录用户的session数据
+     * @return
+     */
     public UserSessionBo getUserSession(){
         UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
         return bo;
@@ -151,6 +176,24 @@ public class BaseController {
     }
 
     /**
+     * 获取当前登录用户的session数据:员工id
+     * @return
+     */
+    public Long getUserSessionStaffId(){
+        Long id = getUserSession().getStaff_Id();
+        return id;
+    }
+
+    /**
+     * 获取当前登录用户的session数据:账户id
+     * @return
+     */
+    public Long getUserSessionAccountId(){
+        Long id = getUserSession().getAccountId();
+        return id;
+    }
+
+    /**
      * 加密密码
      * @param psdOrignalCode
      * @return
@@ -162,4 +205,55 @@ public class BaseController {
         return encodePassword;
     }
 
+    /**
+     * 执行usersession往session中保存的逻辑
+     *
+     */
+    public void doResetUserSessionByLoginUserId(Long loginUser_id) {
+        // 如果更新的是当前登录的用户则，刷新当前登录用户，否则pass
+        if(loginUser_id.equals(this.getUserSessionAccountId())) {
+            this.resetUserSession(this.getUserSessionAccountId(), PerfectConstant.LOGINUSER_OR_STAFF_ID.LOGIN_USER_ID);
+        }
+    }
+
+    /**
+     * 执行usersession往session中保存的逻辑
+     *
+     */
+    public void doResetUserSessionByStaffId(Long staff_id) {
+        // 如果更新的是当前登录的用户则，刷新当前登录用户，否则pass
+        if(staff_id.equals(this.getUserSessionStaffId())) {
+            this.resetUserSession(this.getUserSessionAccountId(), PerfectConstant.LOGINUSER_OR_STAFF_ID.STAFF_ID);
+        }
+    }
+
+    /**
+     * 执行usersession往session中保存的逻辑
+     *
+     */
+    private void resetUserSession(Long id, String loginOrStaffId ) {
+        UserSessionBo userSessionBo = service.getUserBean(id, loginOrStaffId);
+        String sessionId = ServletUtil.getSession().getId();
+
+        // 设置系统信息
+        SysInfoBo sysInfoBo = new SysInfoBo();
+        sysInfoBo.setDevelopModel(developModel);
+        userSessionBo.setSys_Info(sysInfoBo);
+
+        // 设置session id
+        userSessionBo.setSession_id(sessionId);
+        userSessionBo.setAppKey("PC_APP");
+        userSessionBo.setTenant_Id(userSessionBo.getStaff_info().getTenant_id());
+        userSessionBo.setTenantAdmin(false);
+
+        // 保存到redis中
+        HttpSession session = ServletUtil.getSession();
+        String key = PerfectConstant.SESSION_PREFIX.SESSION_USER_PREFIX_PREFIX + "_" + sessionId;
+        if (ServletUtil.getUserSession() != null) {
+            session.removeAttribute(key);
+            session.setAttribute(key, userSessionBo);
+        } else {
+            session.setAttribute(key, userSessionBo);
+        }
+    }
 }

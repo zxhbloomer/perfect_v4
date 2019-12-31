@@ -8,8 +8,6 @@ public class PerfectConstant {
     private PerfectConstant() {
     }
 
-
-
     // excel
     public static final String XLSX_SUFFIX = ".xlsx";
     public static final String XLS_SUFFIX = ".xls";
@@ -113,10 +111,18 @@ public class PerfectConstant {
     }
 
     /**
-     * 注册时
+     * 日志分类
      */
     public class LOG_FLG {
         public static final String OK = "OK";
         public static final String NG = "NG";
+    }
+
+    /**
+     * 刷新session时使用loginuserid 还是 staffid
+     */
+    public class LOGINUSER_OR_STAFF_ID {
+        public static final String LOGIN_USER_ID = "LOGIN_USER_ID";
+        public static final String STAFF_ID = "STAFF_ID";
     }
 }

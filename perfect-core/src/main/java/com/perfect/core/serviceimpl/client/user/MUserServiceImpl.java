@@ -13,6 +13,7 @@ import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.bean.vo.master.user.MUserVo;
 import com.perfect.bean.vo.master.user.UserInfoVo;
 import com.perfect.bean.vo.sys.config.tenant.STenantVo;
+import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.client.user.MUserMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
@@ -102,13 +103,20 @@ public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> 
 
     /**
      * 获取userbean
-     * @param user_id
+     * @param loginOrStaffId
      * @return
      */
     @Override
-    public UserSessionBo getUserBean(long user_id){
-        MUserEntity mUserEntity = mUserMapper.selectById(user_id);
-        MStaffVo mStaffVo = imStaffService.selectByid(mUserEntity.getStaff_id());
+    public UserSessionBo getUserBean(Long id, String loginOrStaffId){
+        MUserEntity mUserEntity = null;
+        MStaffVo mStaffVo = null;
+        if(loginOrStaffId.equals(PerfectConstant.LOGINUSER_OR_STAFF_ID.LOGIN_USER_ID)){
+            mUserEntity = mUserMapper.selectById(id);
+            mStaffVo = imStaffService.selectByid(mUserEntity.getStaff_id());
+        } else {
+            mStaffVo = imStaffService.selectByid(id);
+            mUserEntity = mUserMapper.selectById(mStaffVo.getUser_id());
+        }
         STenantVo sTenantVo = iTenantService.selectByid(mStaffVo != null ? mStaffVo.getTenant_id() : null);
         UserSessionBo userSessionBo = new UserSessionBo();
         userSessionBo.setUser_info(mUserEntity);
@@ -117,6 +125,7 @@ public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> 
 
         // 设置basebean
         userSessionBo.setAccountId(mUserEntity.getId());
+        userSessionBo.setStaff_Id(mStaffVo.getId());
         userSessionBo.setTenant_Id(mStaffVo != null ? mStaffVo.getTenant_id() : null);
 
         return userSessionBo;

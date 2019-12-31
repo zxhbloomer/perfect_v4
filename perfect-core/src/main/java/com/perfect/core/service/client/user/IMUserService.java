@@ -29,10 +29,9 @@ public interface IMUserService extends IService<MUserEntity> , UserDetailsServic
 
     /**
      * 获取userbean
-     * @param user_id
      * @return
      */
-    UserSessionBo getUserBean(long user_id);
+    UserSessionBo getUserBean(Long id, String loginOrStaffId);
 
 
     /**

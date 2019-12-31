@@ -41,7 +41,7 @@ public class CommonComponentController extends BaseController {
 
     @SysLog("共通模块数据下载，下拉选项：删除类型下拉选项")
     @ApiOperation("共通模块数据下载，下拉选项：删除类型下拉选项：/deleteType/list")
-    @PostMapping("/select/deleteTypeNormal/list")
+    @PostMapping("/select/deletetypenormal/list")
     @ResponseBody
     public ResponseEntity<JsonResult<List<NameAndValueVo>>> deleteTypeListNormal(HttpServletResponse response) throws IOException {
         return ResponseEntity.ok().body(ResultUtil.OK(service.selectComponentDeleteMapNormal()));

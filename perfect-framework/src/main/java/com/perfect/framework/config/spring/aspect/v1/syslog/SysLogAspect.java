@@ -76,6 +76,7 @@ public class SysLogAspect {
                 if(session != null){
                     UserSessionBo userSession = (UserSessionBo)session;
                     userSessionJson = JSON.toJSONString(userSession);
+                    entity.setUser_name(userSession.getStaff_info().getName());
                 }
                 entity.setSession(userSessionJson);
                 entity.setException(null);

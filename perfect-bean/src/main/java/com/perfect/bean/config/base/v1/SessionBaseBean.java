@@ -24,6 +24,11 @@ public class SessionBaseBean implements Serializable {
     private Long accountId;
 
     /**
+     * staff_ID
+     */
+    private Long staff_Id;
+
+    /**
      * 应用标识
      */
     private String appKey;
