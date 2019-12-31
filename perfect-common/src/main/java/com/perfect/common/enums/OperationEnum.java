@@ -1,9 +1,13 @@
 package com.perfect.common.enums;
+
+/**
+ * 操作日志 枚举类型
+ */
 public enum OperationEnum {
-	ADD,
-	UPDATE,
-	DELETE,
-	LOGIC_DELETE;
+	ADD("ADD", "新增"),
+	UPDATE("UPDATE", "更新"),
+	DELETE("DELETE", "物理删除"),
+	LOGIC_DELETE("LOGIC_DELETE", "逻辑删除");
 
 	public String getType() {
 		if (this.equals(ADD)) {
@@ -20,4 +24,32 @@ public enum OperationEnum {
 		}
 		return null;
 	};
+
+
+	private String code;
+
+	private String name;
+
+	OperationEnum(String code, String name) {
+		this.code = code;
+		this.name = name;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public String getName(){
+		return name;
+	}
+
+	public static OperationEnum getByCode(String code){
+		for(OperationEnum type : values()){
+			if (type.getName().equals(code)) {
+				//获取指定的枚举
+				return type;
+			}
+		}
+		return null;
+	}
 }
