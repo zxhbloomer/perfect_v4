@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.common.component;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "下拉选项的数据", description = "下拉选项的数据")
-public class DictConditionVo implements Serializable {
+public class DictConditionVo extends BaseVo implements Serializable {
     private static final long serialVersionUID = 6697222826158984527L;
 
     /**

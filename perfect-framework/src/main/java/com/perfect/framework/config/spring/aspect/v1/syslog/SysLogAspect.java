@@ -4,6 +4,7 @@ package com.perfect.framework.config.spring.aspect.v1.syslog;
 import com.alibaba.fastjson.JSON;
 import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.bo.sys.SysLogBo;
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.entity.sys.SLogSysEntity;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.common.constant.PerfectConstant;
@@ -22,6 +23,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.InterruptedIOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -55,7 +57,7 @@ public class SysLogAspect {
         Object result = point.proceed();
         BigDecimal time =  new BigDecimal(System.currentTimeMillis() - beginTime);
         SLogSysEntity entity = new SLogSysEntity();
-        try {
+//        try {
             SysLogBo sysLogBo = printLog(point, time.longValue());
             if (perfectConfigProperies.isLogSaveDb()){
                 entity.setOperation(sysLogBo.getRemark());
@@ -78,13 +80,13 @@ public class SysLogAspect {
                 entity.setSession(userSessionJson);
                 entity.setException(null);
             }
-        } catch (Exception e) {
-            entity.setException(e.getMessage());
-            entity.setType(PerfectConstant.LOG_FLG.NG);
-            log.error("发生异常");
-            log.error(e.getMessage());
-
-        }
+//        } catch (Exception e) {
+//            entity.setException(e.getMessage());
+//            entity.setType(PerfectConstant.LOG_FLG.NG);
+//            log.error("发生异常");
+//            log.error(e.getMessage());
+//
+//        }
         iSLogService.saveOrUpdate(entity);
         return result;
     }
@@ -109,7 +111,7 @@ public class SysLogAspect {
             .className(joinPoint.getTarget().getClass().getName())
             .httpMethod(request.getMethod())
             .classMethod(((MethodSignature) joinPoint.getSignature()).getName())
-            .params( JSON.toJSONString(joinPoint.getArgs()))
+            .params( convertArgsToJsonString(joinPoint.getArgs()))
             .execTime(time)
             .remark(sysLog.value())
             .createDate(LocalDateTime.now())
@@ -130,5 +132,22 @@ public class SysLogAspect {
             log.debug("======================日志结束================================");
         }
         return sysLogBo;
+    }
+
+    /**
+     * 转换成json
+     * @param args
+     * @return
+     */
+    private String convertArgsToJsonString(Object[] args){
+        if (args == null) {
+            return null;
+        }
+        for (Object o : args) {
+            if(o instanceof BaseVo){
+                return JSON.toJSONString(o);
+            }
+        }
+        return null;
     }
 }

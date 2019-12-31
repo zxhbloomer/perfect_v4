@@ -1,6 +1,7 @@
 package com.perfect.bean.vo.quartz;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.entity.base.entity.v1.BaseEntity;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
@@ -23,7 +24,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "定时任务调度", description = "定时任务调度")
-public class SJobVo implements Serializable {
+public class SJobVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 7769270858273192316L;
 

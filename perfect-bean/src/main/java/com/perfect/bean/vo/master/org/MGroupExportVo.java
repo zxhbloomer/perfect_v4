@@ -2,6 +2,7 @@ package com.perfect.bean.vo.master.org;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import com.perfect.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "集团主表导出Bean", description = "集团主表导出Bean")
-public class MGroupExportVo implements Serializable {
+public class MGroupExportVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -7466167220853981131L;
 

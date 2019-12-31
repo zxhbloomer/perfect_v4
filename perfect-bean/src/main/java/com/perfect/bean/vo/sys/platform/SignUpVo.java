@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.sys.platform;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "注册相关bean", description = "注册相关bean")
-public class SignUpVo implements Serializable {
+public class SignUpVo extends BaseVo implements Serializable {
     private static final long serialVersionUID = -6155075974626444433L;
     /** 手机号码 */
     private String mobile;

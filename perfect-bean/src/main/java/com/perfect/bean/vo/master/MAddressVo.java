@@ -1,6 +1,7 @@
 package com.perfect.bean.vo.master;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -24,7 +25,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "地址簿", description = "地址簿")
-public class MAddressVo implements Serializable {
+public class MAddressVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -2,6 +2,7 @@ package com.perfect.bean.vo.sys.rabc.role;
 
 import java.io.Serializable;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -18,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "角色导出Bean", description = "角色导出Bean")
-public class SRoleExportVo implements Serializable {
+public class SRoleExportVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -7449124258332853610L;
 

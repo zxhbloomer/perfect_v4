@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.master.user;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import lombok.Builder;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "用户基本信息", description = "用户基本信息vo_bean")
-public class UserInfoVo implements Serializable {
+public class UserInfoVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 574627344179000681L;
 

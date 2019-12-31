@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.common.component;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "共通组件数据，下拉选项", description = "共通组件数据，下拉选项")
-public class PerfectComponentVo implements Serializable {
+public class PerfectComponentVo extends BaseVo implements Serializable {
     private static final long serialVersionUID = -5919960965277527060L;
 
     /**

@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.master.user;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import com.perfect.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "员工主表导出Bean", description = "员工主表导出Bean")
-public class MStaffExportVo implements Serializable {
+public class MStaffExportVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 4733748930234972849L;
 

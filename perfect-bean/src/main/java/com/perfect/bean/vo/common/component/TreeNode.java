@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.common.component;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.tree.ITreeNode;
 import lombok.Data;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * @date 2019年 10月03日 11:55:24
  */
 @Data
-public class TreeNode implements ITreeNode<TreeNode>, Comparable<TreeNode> {
+public class TreeNode extends BaseVo implements ITreeNode<TreeNode>, Comparable<TreeNode> {
 
     /** 级联value */
     private Long id;

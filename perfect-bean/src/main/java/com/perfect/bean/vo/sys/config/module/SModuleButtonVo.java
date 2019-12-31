@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -26,7 +27,7 @@ import lombok.experimental.Accessors;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "模块按钮信息", description = "模块按钮信息")
-public class SModuleButtonVo implements Serializable {
+public class SModuleButtonVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 3951235625344140283L;
 

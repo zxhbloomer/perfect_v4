@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,7 +25,7 @@ import lombok.experimental.Accessors;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "区", description = "区")
-public class SAreasVo implements Serializable {
+public class SAreasVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 4739803322473167883L;
 

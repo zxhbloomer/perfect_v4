@@ -1,5 +1,6 @@
 package com.perfect.bean.pojo.fs;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import lombok.Data;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ToString
 @Data
-public class UploadFileResultPojo
+public class UploadFileResultPojo extends BaseVo
 {
     /**
      * 文件ID

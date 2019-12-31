@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.perfect.bean.config.base.v1.BaseVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
  * @since 2019-12-09
  */
 @Data
-public class SSmsCodeVo implements Serializable {
+public class SSmsCodeVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -3343310432986309357L;
 

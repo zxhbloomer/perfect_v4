@@ -1,6 +1,7 @@
 package com.perfect.bean.vo.master.org;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "组织主表", description = "组织主表")
-public class MOrgVo implements Serializable {
+public class MOrgVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 6709627756368776224L;
     

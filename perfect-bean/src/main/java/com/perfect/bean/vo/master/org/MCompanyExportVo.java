@@ -1,6 +1,7 @@
 package com.perfect.bean.vo.master.org;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -24,7 +25,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "公司主表导出Bean", description = "公司主表导出Bean")
-public class MCompanyExportVo implements Serializable {
+public class MCompanyExportVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

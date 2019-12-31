@@ -1,5 +1,6 @@
 package com.perfect.bean.vo;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @ApiModel(value = "登录授权服务器类", description = "作为登录授权服务器数据bean")
-public class TokenLoginVo implements Serializable {
+public class TokenLoginVo extends BaseVo implements Serializable {
     private static final long serialVersionUID = -2008867352253446153L;
 
     @ApiModelProperty(value = "用户名")

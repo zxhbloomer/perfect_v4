@@ -1,6 +1,7 @@
 package com.perfect.bean.vo.sys.platform.syscode;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "编码控制表", description = "编码控制表")
-public class SCodeVo implements Serializable {
+public class SCodeVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 4617915261869763630L;
 

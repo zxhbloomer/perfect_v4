@@ -2,6 +2,7 @@ package com.perfect.bean.vo.sys.config.module;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("s_module")
-public class SModuleVo implements Serializable {
+public class SModuleVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -4793768968717402701L;
 

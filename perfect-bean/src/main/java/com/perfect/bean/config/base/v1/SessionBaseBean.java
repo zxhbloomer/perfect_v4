@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class SessionBean implements Serializable {
+public class SessionBaseBean implements Serializable {
 
     private static final long serialVersionUID = 6503859853529665708L;
 

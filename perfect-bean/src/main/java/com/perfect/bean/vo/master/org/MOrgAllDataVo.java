@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.master.org;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.vo.master.user.MStaffVo;
@@ -20,7 +21,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "组织架构下的所有数据", description = "组织架构下的所有数据")
-public class MOrgAllDataVo implements Serializable {
+public class MOrgAllDataVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -8339834808925135716L;
 

@@ -1,7 +1,6 @@
 package com.perfect.bean.vo.sys.config.tenant;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.perfect.bean.config.base.v1.BaseBean;
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -21,7 +20,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "租户信息", description = "租户信息")
-public class STenantVo implements Serializable {
+public class STenantVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 6408599988501466911L;
 

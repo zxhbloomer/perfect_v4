@@ -2,6 +2,7 @@ package com.perfect.bean.vo.sys.config.dict;
 
 import java.io.Serializable;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.common.annotation.Excel;
 
 import io.swagger.annotations.ApiModel;
@@ -19,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "字典类型导出Bean", description = "字典类型导出Bean")
-public class SDictTypeExportVo implements Serializable {
+public class SDictTypeExportVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -6942475112738825609L;
     private Long id;

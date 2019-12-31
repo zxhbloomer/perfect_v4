@@ -3,6 +3,7 @@ package com.perfect.bean.vo.sys.config.config;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.pojo.fs.UploadFileResultPojo;
 import com.perfect.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
@@ -16,7 +17,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "参数配置表导出Bean", description = "参数配置表导出Bean")
-public class SConfigDataExportVo implements Serializable {
+public class SConfigDataExportVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -21039960705170821L;
 

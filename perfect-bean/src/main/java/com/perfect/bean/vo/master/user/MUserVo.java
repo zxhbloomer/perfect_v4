@@ -1,6 +1,7 @@
 package com.perfect.bean.vo.master.user;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.entity.base.entity.v1.BaseEntity;
 import com.perfect.bean.entity.master.user.MUserEntity;
 import io.swagger.annotations.ApiModel;
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "员工主表", description = "员工主表")
-public class MUserVo  implements Serializable {
+public class MUserVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -6225833382087802641L;
 

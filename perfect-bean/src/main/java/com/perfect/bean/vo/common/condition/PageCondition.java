@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.common.condition;
 
+import com.perfect.bean.config.base.v1.BaseVo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "分页条件bean", description = "分页条件bean")
-public class PageCondition implements Serializable {
+public class PageCondition extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 7808161515093912080L;
 
