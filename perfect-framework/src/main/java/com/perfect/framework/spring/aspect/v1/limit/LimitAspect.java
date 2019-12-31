@@ -1,4 +1,4 @@
-package com.perfect.framework.config.spring.aspect.v1.limit;
+package com.perfect.framework.spring.aspect.v1.limit;
 
 import com.google.common.collect.ImmutableList;
 import com.perfect.common.annotation.Limit;

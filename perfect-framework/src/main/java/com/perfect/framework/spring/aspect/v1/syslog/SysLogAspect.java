@@ -1,4 +1,4 @@
-package com.perfect.framework.config.spring.aspect.v1.syslog;
+package com.perfect.framework.spring.aspect.v1.syslog;
 
 
 import com.alibaba.fastjson.JSON;

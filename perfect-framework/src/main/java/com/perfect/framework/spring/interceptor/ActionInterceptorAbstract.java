@@ -1,4 +1,4 @@
-package com.perfect.framework.config.spring.interceptor;
+package com.perfect.framework.spring.interceptor;
 
 import com.perfect.bean.result.utils.v1.ResponseResultUtil;
 import com.perfect.common.annotation.RepeatSubmit;
