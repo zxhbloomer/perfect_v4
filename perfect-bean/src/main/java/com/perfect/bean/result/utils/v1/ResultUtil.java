@@ -3,7 +3,7 @@ package com.perfect.bean.result.utils.v1;
 import javax.servlet.http.HttpServletRequest;
 
 import com.perfect.bean.pojo.result.JsonResult;
-import com.perfect.common.enumconfig.ResultEnum;
+import com.perfect.common.enums.ResultEnum;
 import org.springframework.http.HttpStatus;
 
 import com.perfect.common.utils.CommonUtil;

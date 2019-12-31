@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.perfect.bean.pojo.mqsender.MqMessagePojo;
 import com.perfect.bean.pojo.mqsender.MqSenderPojo;
 import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
-import com.perfect.common.enumconfig.MqSenderEnum;
-import com.perfect.common.enumconfig.quartz.QuartzEnum;
+import com.perfect.common.enums.MqSenderEnum;
+import com.perfect.common.enums.quartz.QuartzEnum;
 import com.perfect.common.utils.UuidUtil;
 
 /**

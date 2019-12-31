@@ -1,4 +1,4 @@
-package com.perfect.common.enumconfig;
+package com.perfect.common.enums;
 
 /**
  * @ClassName: mq发送枚举类

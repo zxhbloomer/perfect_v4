@@ -1,4 +1,4 @@
-package com.perfect.framework.config.spring.aspect.v2;
+package com.perfect.framework.config.spring.aspect.v1.syslog;
 
 
 import com.alibaba.fastjson.JSON;
@@ -130,15 +130,5 @@ public class SysLogAspect {
             log.debug("======================日志结束================================");
         }
         return sysLogBo;
-    }
-
-    /**
-     *  异常通知
-     * @param joinPoint
-     * @param e
-     */
-    @AfterThrowing(pointcut = "sysLogAspect()", throwing = "e")
-    public  void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
-
     }
 }

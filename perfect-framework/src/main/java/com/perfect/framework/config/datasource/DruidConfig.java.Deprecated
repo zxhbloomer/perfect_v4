@@ -10,7 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.sql.DataSource;
 
-import com.perfect.common.enumconfig.DataSourceTypeEnum;
+import com.perfect.common.enums.DataSourceTypeEnum;
 import com.perfect.framework.config.properties.DruidProperties;
 import com.perfect.framework.datasource.DynamicDataSource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

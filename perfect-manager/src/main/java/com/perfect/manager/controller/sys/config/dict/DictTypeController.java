@@ -9,7 +9,7 @@ import com.perfect.bean.vo.sys.config.dict.SDictTypeVo;
 import com.perfect.bean.vo.sys.config.resource.SResourceExportVo;
 import com.perfect.bean.vo.sys.rabc.role.SRoleVo;
 import com.perfect.common.annotation.SysLog;
-import com.perfect.common.enumconfig.ResultEnum;
+import com.perfect.common.enums.ResultEnum;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;

@@ -1,8 +1,8 @@
-package com.perfect.framework.config.spring.aspect.v1;
+package com.perfect.framework.config.spring.aspect.v1.limit;
 
 import com.google.common.collect.ImmutableList;
 import com.perfect.common.annotation.Limit;
-import com.perfect.common.enumconfig.LimitTypeEnum;
+import com.perfect.common.enums.LimitTypeEnum;
 import com.perfect.common.exception.redis.LimitAccessException;
 import com.perfect.common.utils.IPUtil;
 import lombok.extern.slf4j.Slf4j;

@@ -3,7 +3,7 @@ package com.perfect.manager.quartz.builder.sys.config.tenant;
 import com.alibaba.fastjson.JSON;
 import com.perfect.bean.entity.quartz.SJobEntity;
 import com.perfect.bean.vo.sys.config.tenant.STenantVo;
-import com.perfect.common.enumconfig.quartz.QuartzEnum;
+import com.perfect.common.enums.quartz.QuartzEnum;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
 
 /**

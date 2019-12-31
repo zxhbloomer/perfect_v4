@@ -1,7 +1,7 @@
 package com.perfect.bean.pojo.mqsender;
 
 import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
-import com.perfect.common.enumconfig.quartz.QuartzEnum;
+import com.perfect.common.enums.quartz.QuartzEnum;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;

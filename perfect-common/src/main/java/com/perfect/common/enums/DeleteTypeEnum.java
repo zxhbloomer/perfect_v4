@@ -1,4 +1,4 @@
-package com.perfect.common.enumconfig;
+package com.perfect.common.enums;
 
 /**
  * @author zxh

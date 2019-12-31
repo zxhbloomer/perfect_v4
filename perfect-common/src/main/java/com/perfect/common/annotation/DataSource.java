@@ -1,6 +1,6 @@
 package com.perfect.common.annotation;
 
-import com.perfect.common.enumconfig.DataSourceTypeEnum;
+import com.perfect.common.enums.DataSourceTypeEnum;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

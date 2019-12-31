@@ -1,6 +1,6 @@
 package com.perfect.framework.config.datasource;
 
-import com.perfect.common.enumconfig.DataSourceTypeEnum;
+import com.perfect.common.enums.DataSourceTypeEnum;
 import com.perfect.framework.config.properties.HikariProperties;
 import com.perfect.framework.datasource.DynamicDataSource;
 import com.zaxxer.hikari.HikariDataSource;

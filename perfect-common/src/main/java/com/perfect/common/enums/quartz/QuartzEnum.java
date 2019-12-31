@@ -1,4 +1,4 @@
-package com.perfect.common.enumconfig.quartz;
+package com.perfect.common.enums.quartz;
 
 import lombok.Getter;
 import lombok.Setter;

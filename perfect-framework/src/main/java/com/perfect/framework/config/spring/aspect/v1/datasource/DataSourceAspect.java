@@ -1,4 +1,4 @@
-package com.perfect.framework.config.spring.aspect.v1;
+package com.perfect.framework.config.spring.aspect.v1.datasource;
 
 import com.perfect.common.annotation.DataSource;
 import com.perfect.common.config.datasource.DynamicDataSourceContextHolder;

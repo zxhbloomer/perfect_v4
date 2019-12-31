@@ -12,7 +12,7 @@ import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.config.tenant.STenantTreeVo;
 import com.perfect.bean.vo.sys.config.tenant.STenantVo;
-import com.perfect.common.enumconfig.quartz.QuartzEnum;
+import com.perfect.common.enums.quartz.QuartzEnum;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.quartz.SJobLogMapper;

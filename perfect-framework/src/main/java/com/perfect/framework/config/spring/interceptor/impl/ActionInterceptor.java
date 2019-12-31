@@ -1,7 +1,7 @@
-package com.perfect.framework.config.interceptor.impl;
+package com.perfect.framework.config.spring.interceptor.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.perfect.framework.config.interceptor.ActionInterceptorAbstract;
+import com.perfect.framework.config.spring.interceptor.ActionInterceptorAbstract;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
