@@ -47,9 +47,6 @@ public class MasterGroupController extends BaseController {
     @ResponseBody
     public ResponseEntity<JsonResult<IPage<MGroupEntity>>> list(@RequestBody(required = false) MGroupVo searchCondition) {
         IPage<MGroupEntity> entity = service.selectPage(searchCondition);
-        if(true){
-            throw new BusinessException("xx");
-        }
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
