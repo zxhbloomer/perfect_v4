@@ -45,8 +45,8 @@ public class PerfectAuthenticationSucessHandler implements AuthenticationSuccess
         Map<String,String> token = new HashMap<String,String>();
         token.put("token",getSessionId(authentication, request.getSession().getId()));
 
-        // 处理缓存
-        baseController.doResetUserSessionByLoginUserId(SecurityUtil.getLoginUser_id());
+        // session
+        baseController.resetUserSession(SecurityUtil.getLoginUser_id(), PerfectConstant.LOGINUSER_OR_STAFF_ID.LOGIN_USER_ID);
 
         ResponseResultUtil.responseWriteOK(token, response);
     }

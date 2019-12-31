@@ -231,7 +231,7 @@ public class BaseController {
      * 执行usersession往session中保存的逻辑
      *
      */
-    private void resetUserSession(Long id, String loginOrStaffId ) {
+    public void resetUserSession(Long id, String loginOrStaffId ) {
         UserSessionBo userSessionBo = service.getUserBean(id, loginOrStaffId);
         String sessionId = ServletUtil.getSession().getId();
 
