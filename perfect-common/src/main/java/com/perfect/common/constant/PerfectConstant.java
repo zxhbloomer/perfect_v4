@@ -111,4 +111,12 @@ public class PerfectConstant {
     public class SIGN_UP {
         public static final String TENANT_SERIAL_NO = "0001";
     }
+
+    /**
+     * 注册时
+     */
+    public class LOG_FLG {
+        public static final String OK = "OK";
+        public static final String NG = "NG";
+    }
 }

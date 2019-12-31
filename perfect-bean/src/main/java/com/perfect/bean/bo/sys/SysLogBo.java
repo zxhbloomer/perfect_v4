@@ -1,5 +1,6 @@
 package com.perfect.bean.bo.sys;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,11 @@ public class SysLogBo implements Serializable {
 
     private static final long serialVersionUID = 3217907220556047829L;
 
+    /**
+     * 异常"NG"，正常"OK"
+     */
+    private String type;
+
     private String className;
 
     private String httpMethod;
@@ -35,5 +41,16 @@ public class SysLogBo implements Serializable {
     private String url;
 
     private String ip;
+
+    /**
+     * session json
+     */
+    private String session;
+
+
+    /**
+     * 异常信息
+     */
+    private String exception;
 
 }

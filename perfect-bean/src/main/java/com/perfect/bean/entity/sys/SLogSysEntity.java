@@ -17,13 +17,19 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("s_log")
-public class SLogEntity extends BaseEntity<SLogEntity> implements Serializable {
+@TableName("s_log_sys")
+public class SLogSysEntity extends BaseEntity<SLogSysEntity> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 异常"NG"，正常"OK"
+     */
+    @TableField("type")
+    private String type;
 
     /**
      * 操作用户
@@ -62,6 +68,12 @@ public class SLogEntity extends BaseEntity<SLogEntity> implements Serializable {
     private String params;
 
     /**
+     * session json
+     */
+    @TableField("session")
+    private String session;
+
+    /**
      * url
      */
     @TableField("url")
@@ -72,6 +84,12 @@ public class SLogEntity extends BaseEntity<SLogEntity> implements Serializable {
      */
     @TableField("ip")
     private String ip;
+
+    /**
+     * 异常信息
+     */
+    @TableField("exception")
+    private String exception;
 
     @TableField(value="c_time", fill = FieldFill.INSERT)
     private LocalDateTime c_time;

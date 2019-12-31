@@ -8,6 +8,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.perfect.common.constant.PerfectConstant;
 
+/**
+ * 获取session工具类
+ */
 public class ServletUtil {
 
     /**

@@ -1,7 +1,6 @@
 package com.perfect.core.serviceimpl.sys;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.perfect.bean.entity.sys.SLogEntity;
+import com.perfect.bean.entity.sys.SLogSysEntity;
 import com.perfect.core.mapper.sys.SLogMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.ISLogService;
@@ -16,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2019-07-04
  */
 @Service
-public class SLogServiceImpl extends BaseServiceImpl<SLogMapper, SLogEntity> implements ISLogService {
+public class SLogServiceImpl extends BaseServiceImpl<SLogMapper, SLogSysEntity> implements ISLogService {
 
 }

@@ -1,11 +1,8 @@
 package com.perfect.core.serviceimpl.sys;
 
-import com.perfect.bean.entity.sys.SLogEntity;
 import com.perfect.bean.entity.sys.SSmsCodeEntity;
-import com.perfect.core.mapper.sys.SLogMapper;
 import com.perfect.core.mapper.sys.SSmsCodeMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
-import com.perfect.core.service.sys.ISLogService;
 import com.perfect.core.service.sys.ISSmsCodeService;
 import org.springframework.stereotype.Service;
 

@@ -6,11 +6,8 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 
 import com.perfect.bean.entity.base.entity.v1.BaseEntity;
-import com.perfect.bean.entity.sys.SLogEntity;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 import lombok.experimental.Tolerate;
 
 /**
