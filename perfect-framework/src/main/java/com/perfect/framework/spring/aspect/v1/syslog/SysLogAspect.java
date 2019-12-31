@@ -3,7 +3,7 @@ package com.perfect.framework.spring.aspect.v1.syslog;
 
 import com.alibaba.fastjson.JSON;
 import com.perfect.bean.bo.session.user.UserSessionBo;
-import com.perfect.bean.bo.sys.SysLogBo;
+import com.perfect.bean.bo.log.sys.SysLogBo;
 import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.entity.log.sys.SLogSysEntity;
 import com.perfect.common.annotation.SysLog;

@@ -1,4 +1,4 @@
-package com.perfect.bean.bo.sys;
+package com.perfect.bean.bo.log.sys;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
