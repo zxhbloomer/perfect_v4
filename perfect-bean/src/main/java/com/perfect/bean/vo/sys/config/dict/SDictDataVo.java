@@ -104,6 +104,14 @@ public class SDictDataVo extends UploadFileResultPojo implements Serializable {
      */
     private Boolean dictTypeIsdel;
 
+    /**
+     * 额外配置1～4
+     */
+    private String extra1;
+    private String extra2;
+    private String extra3;
+    private String extra4;
+
 
     /**
      * 换页条件

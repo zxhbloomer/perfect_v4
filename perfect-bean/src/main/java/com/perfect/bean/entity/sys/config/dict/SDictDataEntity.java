@@ -59,6 +59,18 @@ public class SDictDataEntity extends BaseEntity<SDictDataEntity> implements Seri
     private String descr;
 
     /**
+     * 额外配置1～4
+     */
+    @TableField("extra1")
+    private String extra1;
+    @TableField("extra2")
+    private String extra2;
+    @TableField("extra3")
+    private String extra3;
+    @TableField("extra4")
+    private String extra4;
+
+    /**
      * 是否删除
      */
     @TableField(value = "is_del", fill = FieldFill.INSERT)

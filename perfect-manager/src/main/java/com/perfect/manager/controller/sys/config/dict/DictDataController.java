@@ -73,9 +73,9 @@ public class DictDataController extends BaseController {
     @ApiOperation("根据参数id，获取字典数据表信息")
     @PostMapping("/save")
     @ResponseBody
-    public ResponseEntity<JsonResult<SDictDataEntity>> save(@RequestBody(required = false) SDictDataEntity bean) {
+    public ResponseEntity<JsonResult<SDictDataVo>> save(@RequestBody(required = false) SDictDataEntity bean) {
         if(service.update(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"更新成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
