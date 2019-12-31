@@ -1,6 +1,6 @@
 package com.perfect.mq.rabbitmq.config;
 
-import com.perfect.mq.rabbitmq.mqenum.MQEnum;
+import com.perfect.mq.rabbitmq.enums.MQEnum;
 import com.perfect.mq.rabbitmq.properties.MQProperties;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;

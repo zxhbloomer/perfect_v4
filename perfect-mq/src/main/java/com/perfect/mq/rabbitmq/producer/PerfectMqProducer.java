@@ -8,7 +8,7 @@ import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.utils.redis.RedisUtil;
 import com.perfect.common.utils.string.convert.Convert;
 import com.perfect.core.service.log.mq.ISLogMqService;
-import com.perfect.mq.rabbitmq.mqenum.MQEnum;
+import com.perfect.mq.rabbitmq.enums.MQEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;

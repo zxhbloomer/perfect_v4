@@ -9,7 +9,7 @@ import com.perfect.common.enums.quartz.QuartzEnum;
 import com.perfect.core.service.quartz.ISJobService;
 import com.perfect.core.service.sys.config.tenant.ITenantService;
 import com.perfect.manager.quartz.builder.sys.config.tenant.TenantTaskBuilder;
-import com.perfect.mq.rabbitmq.mqenum.MQEnum;
+import com.perfect.mq.rabbitmq.enums.MQEnum;
 import com.perfect.mq.rabbitmq.producer.PerfectMqProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

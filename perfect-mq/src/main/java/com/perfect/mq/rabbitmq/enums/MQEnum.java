@@ -1,7 +1,4 @@
-/**
- *
- */
-package com.perfect.mq.rabbitmq.mqenum;
+package com.perfect.mq.rabbitmq.enums;
 
 /**
  * mq重要配置
