@@ -60,7 +60,6 @@ public class MasterStaffController extends BaseController {
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<JsonResult<MStaffVo>> save(@RequestBody(required = false) MStaffVo bean, HttpServletRequest request) {
-
         if(service.update(bean, request.getSession()).isSuccess()){
             super.doResetUserSessionByStaffId(bean.getId());
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));

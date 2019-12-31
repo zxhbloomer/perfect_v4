@@ -9,6 +9,7 @@ import com.perfect.bean.entity.sys.SLogSysEntity;
 import com.perfect.common.annotation.SysLog;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.properies.PerfectConfigProperies;
+import com.perfect.common.utils.ExceptionUtil;
 import com.perfect.common.utils.IPUtil;
 import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.service.sys.ISLogService;
@@ -23,7 +24,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InterruptedIOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -57,7 +57,7 @@ public class SysLogAspect {
         Object result = point.proceed();
         BigDecimal time =  new BigDecimal(System.currentTimeMillis() - beginTime);
         SLogSysEntity entity = new SLogSysEntity();
-//        try {
+        try {
             SysLogBo sysLogBo = printLog(point, time.longValue());
             if (perfectConfigProperies.isLogSaveDb()){
                 entity.setOperation(sysLogBo.getRemark());
@@ -81,18 +81,56 @@ public class SysLogAspect {
                 entity.setSession(userSessionJson);
                 entity.setException(null);
             }
-//        } catch (Exception e) {
-//            entity.setException(e.getMessage());
-//            entity.setType(PerfectConstant.LOG_FLG.NG);
-//            log.error("发生异常");
-//            log.error(e.getMessage());
-//
-//        }
-        iSLogService.saveOrUpdate(entity);
+        } catch (Exception e) {
+            entity.setException(e.getMessage());
+            entity.setType(PerfectConstant.LOG_FLG.NG);
+            log.error("发生异常");
+            log.error(e.getMessage());
+
+        }
+        iSLogService.save(entity);
         return result;
     }
 
+    /**
+     *  异常通知
+     * @param joinPoint
+     * @param e
+     */
+    @AfterThrowing(pointcut = "sysLogAspect()", throwing = "e")
+    public  void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
+        // 获取request
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
 
+        SLogSysEntity entity = new SLogSysEntity();
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+        SysLog sysLog = method.getAnnotation(SysLog.class);
+        if (perfectConfigProperies.isLogSaveDb()){
+            entity.setOperation(sysLog.value());
+            entity.setUrl(request.getRequestURL().toString());
+            entity.setTime(null);
+            entity.setHttp_method(request.getMethod());
+            entity.setClass_name(joinPoint.getTarget().getClass().getName());
+            entity.setClass_method(((MethodSignature) joinPoint.getSignature()).getName());
+            entity.setIp(IPUtil.getIpAdd());
+            entity.setParams(convertArgsToJsonString(joinPoint.getArgs()));
+            entity.setC_time(LocalDateTime.now());
+            entity.setType(PerfectConstant.LOG_FLG.NG);
+            // 获取session
+            Object session = ServletUtil.getUserSession();
+            String userSessionJson = null;
+            if(session != null){
+                UserSessionBo userSession = (UserSessionBo)session;
+                userSessionJson = JSON.toJSONString(userSession);
+                entity.setUser_name(userSession.getStaff_info().getName());
+            }
+            entity.setSession(userSessionJson);
+            entity.setException(ExceptionUtil.getException(e));
+        }
+        iSLogService.save(entity);
+    }
 
     /**
      * 打印日志
@@ -100,7 +138,6 @@ public class SysLogAspect {
      * @param time
      */
     private SysLogBo printLog(ProceedingJoinPoint joinPoint, Long time) {
-
         // 获取request
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
