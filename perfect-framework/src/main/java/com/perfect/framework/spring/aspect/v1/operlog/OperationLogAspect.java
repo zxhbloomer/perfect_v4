@@ -5,28 +5,33 @@ import com.perfect.bean.entity.log.operate.SLogOperDetailEntity;
 import com.perfect.bean.entity.log.operate.SLogOperEntity;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
 import com.perfect.common.annotation.OperationLog;
+import com.perfect.common.annotation.SysLog;
 import com.perfect.common.enums.OperationEnum;
 import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.mapper.log.operate.SLogOperMapper;
 import com.perfect.core.service.log.operate.ISLogOperDetailService;
 import com.perfect.core.service.log.operate.ISLogOperService;
 import com.perfect.core.service.sys.config.dict.ISDictDataService;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Aspect
 @Component
+@Slf4j
 public class OperationLogAspect {
 
 	@Autowired
@@ -50,8 +55,11 @@ public class OperationLogAspect {
 	}
 
 	@Around("pointcut()")
-	public void logAround(final ProceedingJoinPoint p,final OperationLog operationlog) throws
-        Throwable {
+	public void logAround(final ProceedingJoinPoint p) throws Throwable {
+		MethodSignature signature = (MethodSignature) p.getSignature();
+		Method method = signature.getMethod();
+		OperationLog operationlog = method.getAnnotation(OperationLog.class);
+
 		OperationEnum type = operationlog.type();
 		if (OperationEnum.UPDATE.equals(type)) {
 			update(p, operationlog);
