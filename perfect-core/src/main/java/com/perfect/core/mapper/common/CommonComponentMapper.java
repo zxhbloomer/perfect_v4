@@ -20,10 +20,6 @@ import java.util.List;
 @Repository
 public interface CommonComponentMapper extends BaseMapper<NameAndValueVo> {
 
-    String common_select_column = "  "
-
-        + "    ";
-
     @Select( "   "
         + "  SELECT                                                              "
         + "       t2.label as `name`,                                            "

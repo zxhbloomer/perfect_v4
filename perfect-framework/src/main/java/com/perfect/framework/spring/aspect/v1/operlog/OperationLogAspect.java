@@ -1,9 +1,13 @@
 package com.perfect.framework.spring.aspect.v1.operlog;
 
-import com.perfect.bean.bo.log.operate.ColumnCommentBo;
+import com.perfect.bean.bo.session.user.UserSessionBo;
+import com.perfect.bean.entity.log.operate.SLogOperDetailEntity;
+import com.perfect.bean.entity.log.operate.SLogOperEntity;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
 import com.perfect.common.annotation.OperationLog;
 import com.perfect.common.enums.OperationEnum;
+import com.perfect.common.utils.servlet.ServletUtil;
+import com.perfect.core.mapper.log.operate.SLogOperMapper;
 import com.perfect.core.service.log.operate.ISLogOperDetailService;
 import com.perfect.core.service.log.operate.ISLogOperService;
 import com.perfect.core.service.sys.config.dict.ISDictDataService;
@@ -18,11 +22,15 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Aspect
 @Component
 public class OperationLogAspect {
+
+	@Autowired
+	SLogOperMapper sLogOperMapper;
 
     @Autowired
     ISLogOperService isLogOperService;
@@ -59,12 +67,17 @@ public class OperationLogAspect {
 		}
 	}
 
-	public void delete(final ProceedingJoinPoint p,final com.csp.operationlog.aspect.annotation.OperationLog operationlog) {
+	/**
+	 * 物理删除
+	 * @param p
+	 * @param operationlog
+	 */
+	public void delete(final ProceedingJoinPoint p,final OperationLog operationlog) {
 		txTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				StringBuilder sql = new StringBuilder();
-				OperationType type = operationlog.type();
+				OperationEnum type = operationlog.type();
 				Object[] args = p.getArgs();
 				String logName = operationlog.name();
 				String logTable = operationlog.table();
@@ -73,14 +86,15 @@ public class OperationLogAspect {
 				}
 				String id = args[operationlog.idRef()].toString();
 				String[] cloum = operationlog.cloum();
-				String operatorId = args[operationlog.operatorIdRef()].toString();
-				String operatorName = args[operationlog.operatorNameRef()].toString();
 
 				Map<String, Object> columnCommentMap = new HashMap<String, Object>();
-				List<ColumnComment> columnCommentList = operationLogMapper.selectColumnCommentByTable(logTable);
+				SDictDataVo searchCondition = new SDictDataVo();
+				searchCondition.setIs_del(false);
+				searchCondition.setTable_name(logTable);
+				List<SDictDataVo> columnCommentList = isDictDataService.selectColumnComment(searchCondition);
 
-				for (ColumnComment cc : columnCommentList) {
-					columnCommentMap.put(cc.getColumn(), cc.getComment());
+				for (SDictDataVo col : columnCommentList) {
+					columnCommentMap.put(col.getColumn_name(), col.getColumn_comment());
 				}
 				if (cloum.length == 0) {
 					Set<String> keySet = columnCommentMap.keySet();
@@ -99,7 +113,7 @@ public class OperationLogAspect {
 					}
 				}
 				sql.append(" FROM " + logTable + " WHERE id=" + id);
-				Map<String, Object> oldMap = operationLogMapper.selectAnyTalbe(sql.toString());
+				Map<String, Object> oldMap = sLogOperMapper.selectAnyTalbe(sql.toString());
 
 				try {
 					p.proceed();
@@ -108,28 +122,29 @@ public class OperationLogAspect {
 				}
 
 				if (oldMap!=null) {
-					OperationLog op = new OperationLog();
+					SLogOperEntity op = new SLogOperEntity();
 					op.setName(logName);
-					op.setTableName(logTable);
-					op.setTableId(id);
+					op.setTable(logTable);
 					op.setType(type.getType());
-					op.setOperatorId(operatorId);
-					op.setOperatorName(operatorName);
-					op.setOperationTime(new Timestamp(System.currentTimeMillis()));
-					operationLogMapper.insertOperationLog(op);
-					List<OperationLogDetail> opds = new ArrayList<OperationLogDetail>();
+					UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
+					op.setOper_id(bo.getStaff_Id());
+					op.setOper_name(bo.getStaff_info().getName());
+					op.setOper_time(LocalDateTime.now());
+					isLogOperService.save(op);
+
+					List<SLogOperDetailEntity> opds = new ArrayList<SLogOperDetailEntity>();
 					for (String clm : cloum) {
 						Object oldclm = oldMap.get(clm);
-						OperationLogDetail opd = new OperationLogDetail();
-						opd.setOldString(oldclm.toString());
-						opd.setNewString("");
-						opd.setClmName(clm);
-						opd.setClmComment(columnCommentMap.get(clm).toString());
-						opd.setOperationLogId(op.getId());
+						SLogOperDetailEntity opd = new SLogOperDetailEntity();
+						opd.setOld_val(oldclm.toString());
+						opd.setNew_val("");
+						opd.setClm_name(clm);
+						opd.setClm_comment(columnCommentMap.get(clm).toString());
+						opd.setOper_id(op.getId());
 						opds.add(opd);
 					}
 					if (!opds.isEmpty()) {
-						operationLogDetailMapper.insertOperationLogDetail(opds);
+						isLogOperDetailService.saveBatch(opds);
 					}
 				}
 			}
@@ -159,7 +174,7 @@ public class OperationLogAspect {
 				List<SDictDataVo> columnCommentList = isDictDataService.selectColumnComment(searchCondition);
 
 				for (SDictDataVo col : columnCommentList) {
-					columnCommentMap.put(col.getColumn_name(, col.getColumn_comment());
+					columnCommentMap.put(col.getColumn_name(), col.getColumn_comment());
 				}
 				if (cloum.length == 0) {
 					Set<String> keySet = columnCommentMap.keySet();
@@ -178,38 +193,38 @@ public class OperationLogAspect {
 					}
 				}
 				sql.append(" FROM " + logTable + " ORDER BY id DESC LIMIT 1");
-				Map<String, Object> oldMap = operationLogMapper.selectAnyTalbe(sql.toString());
+				Map<String, Object> oldMap = sLogOperMapper.selectAnyTalbe(sql.toString());
 				try {
 					p.proceed();
 				} catch (Throwable e) {
 					throw new RuntimeException(e);
 				}
-				Map<String, Object> newMap = operationLogMapper.selectAnyTalbe(sql.toString());
+				Map<String, Object> newMap = sLogOperMapper.selectAnyTalbe(sql.toString());
 				if ((oldMap==null)||(!oldMap.get("id").toString().equals(newMap.get("id").toString()))) {
-
-					OperationLog op = new OperationLog();
+					SLogOperEntity op = new SLogOperEntity();
 					op.setName(logName);
-					op.setTableName(logTable);
-					op.setTableId("");
+					op.setTable(logTable);
 					op.setType(type.getType());
-					op.setOperatorId(operatorId);
-					op.setOperatorName(operatorName);
-					op.setOperationTime(new Timestamp(System.currentTimeMillis()));
-					operationLogMapper.insertOperationLog(op);
-					List<OperationLogDetail> opds = new ArrayList<OperationLogDetail>();
+					UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
+					op.setOper_id(bo.getStaff_Id());
+					op.setOper_name(bo.getStaff_info().getName());
+					op.setOper_time(LocalDateTime.now());
+					isLogOperService.save(op);
+
+					List<SLogOperDetailEntity> opds = new ArrayList<SLogOperDetailEntity>();
 					for (String clm : cloum) {
 						Object oldclm = "";
 						Object newclm = newMap.get(clm);
-						OperationLogDetail opd = new OperationLogDetail();
-						opd.setOldString(oldclm.toString());
-						opd.setNewString(newclm.toString());
-						opd.setClmName(clm);
-						opd.setClmComment(columnCommentMap.get(clm).toString());
-						opd.setOperationLogId(op.getId());
+						SLogOperDetailEntity opd = new SLogOperDetailEntity();
+						opd.setOld_val(oldclm.toString());
+						opd.setNew_val(newclm.toString());
+						opd.setClm_name(clm);
+						opd.setClm_comment(columnCommentMap.get(clm).toString());
+						opd.setOper_id(op.getId());
 						opds.add(opd);
 					}
 					if (!opds.isEmpty()) {
-						operationLogDetailMapper.insertOperationLogDetail(opds);
+						isLogOperDetailService.saveBatch(opds);
 					}
 
 				}
@@ -217,12 +232,17 @@ public class OperationLogAspect {
 		});
 	}
 
-	public void update(final ProceedingJoinPoint p,final com.csp.operationlog.aspect.annotation.OperationLog operationlog) {
+	/**
+	 * 更新
+	 * @param p
+	 * @param operationlog
+	 */
+	public void update(final ProceedingJoinPoint p,final OperationLog operationlog) {
 		txTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				StringBuilder sql = new StringBuilder();
-				OperationType type = operationlog.type();
+				OperationEnum type = operationlog.type();
 				Object[] args = p.getArgs();
 				String logName = operationlog.name();
 				String logTable = operationlog.table();
@@ -231,14 +251,15 @@ public class OperationLogAspect {
 				}
 				String id = args[operationlog.idRef()].toString();
 				String[] cloum = operationlog.cloum();
-				String operatorId = args[operationlog.operatorIdRef()].toString();
-				String operatorName = args[operationlog.operatorNameRef()].toString();
 
 				Map<String, Object> columnCommentMap = new HashMap<String, Object>();
-				List<ColumnComment> columnCommentList = operationLogMapper.selectColumnCommentByTable(logTable);
+				SDictDataVo searchCondition = new SDictDataVo();
+				searchCondition.setIs_del(false);
+				searchCondition.setTable_name(logTable);
+				List<SDictDataVo> columnCommentList = isDictDataService.selectColumnComment(searchCondition);
 
-				for (ColumnComment cc : columnCommentList) {
-					columnCommentMap.put(cc.getColumn(), cc.getComment());
+				for (SDictDataVo col : columnCommentList) {
+					columnCommentMap.put(col.getColumn_name(), col.getColumn_comment());
 				}
 				if (cloum.length == 0) {
 					Set<String> keySet = columnCommentMap.keySet();
@@ -257,7 +278,7 @@ public class OperationLogAspect {
 					}
 				}
 				sql.append(" FROM " + logTable + " WHERE id=" + id);
-				Map<String, Object> oldMap = operationLogMapper.selectAnyTalbe(sql.toString());
+				Map<String, Object> oldMap = sLogOperMapper.selectAnyTalbe(sql.toString());
 
 				try {
 					p.proceed();
@@ -265,31 +286,118 @@ public class OperationLogAspect {
 					throw new RuntimeException(e);
 				}
 
-				Map<String, Object> newMap = operationLogMapper.selectAnyTalbe(sql.toString());
+				Map<String, Object> newMap = sLogOperMapper.selectAnyTalbe(sql.toString());
 				if (oldMap!=null&&newMap!=null) {
-					OperationLog op = new OperationLog();
+					SLogOperEntity op = new SLogOperEntity();
 					op.setName(logName);
-					op.setTableName(logTable);
-					op.setTableId(id);
+					op.setTable(logTable);
 					op.setType(type.getType());
-					op.setOperatorId(operatorId);
-					op.setOperatorName(operatorName);
-					op.setOperationTime(new Timestamp(System.currentTimeMillis()));
-					operationLogMapper.insertOperationLog(op);
-					List<OperationLogDetail> opds = new ArrayList<OperationLogDetail>();
+					UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
+					op.setOper_id(bo.getStaff_Id());
+					op.setOper_name(bo.getStaff_info().getName());
+					op.setOper_time(LocalDateTime.now());
+					isLogOperService.save(op);
+
+					List<SLogOperDetailEntity> opds = new ArrayList<SLogOperDetailEntity>();
 					for (String clm : cloum) {
 						Object oldclm = oldMap.get(clm);
 						Object newclm = newMap.get(clm);
-						OperationLogDetail opd = new OperationLogDetail();
-						opd.setOldString(oldclm.toString());
-						opd.setNewString(newclm.toString());
-						opd.setClmName(clm);
-						opd.setClmComment(columnCommentMap.get(clm).toString());
-						opd.setOperationLogId(op.getId());
+						SLogOperDetailEntity opd = new SLogOperDetailEntity();
+						opd.setOld_val(oldclm.toString());
+						opd.setNew_val(newclm.toString());
+						opd.setClm_name(clm);
+						opd.setClm_comment(columnCommentMap.get(clm).toString());
+						opd.setOper_id(op.getId());
 						opds.add(opd);
 					}
 					if (!opds.isEmpty()) {
-						operationLogDetailMapper.insertOperationLogDetail(opds);
+						isLogOperDetailService.saveBatch(opds);
+					}
+				}
+			}
+		});
+	}
+
+	/**
+	 * 逻辑删除
+	 * @param p
+	 * @param operationlog
+	 */
+	public void logic_delete(final ProceedingJoinPoint p,final OperationLog operationlog) {
+		txTemplate.execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				StringBuilder sql = new StringBuilder();
+				OperationEnum type = operationlog.type();
+				Object[] args = p.getArgs();
+				String logName = operationlog.name();
+				String logTable = operationlog.table();
+				if (operationlog.idRef()==-1) {
+					throw new RuntimeException();
+				}
+				String id = args[operationlog.idRef()].toString();
+				String[] cloum = operationlog.cloum();
+
+				Map<String, Object> columnCommentMap = new HashMap<String, Object>();
+				SDictDataVo searchCondition = new SDictDataVo();
+				searchCondition.setIs_del(false);
+				searchCondition.setTable_name(logTable);
+				List<SDictDataVo> columnCommentList = isDictDataService.selectColumnComment(searchCondition);
+
+				for (SDictDataVo col : columnCommentList) {
+					columnCommentMap.put(col.getColumn_name(), col.getColumn_comment());
+				}
+				if (cloum.length == 0) {
+					Set<String> keySet = columnCommentMap.keySet();
+					List<String> list = new ArrayList<String>();
+					for (String o : keySet) {
+						list.add(o.toString());
+					}
+					cloum = list.toArray(new String[list.size()]);
+				}
+				sql.append("SELECT ");
+				for (int i = 0; i < cloum.length; i++) {
+					if (i == 0) {
+						sql.append("`" + cloum[i] + "` ");
+					} else {
+						sql.append(",`" + cloum[i] + "` ");
+					}
+				}
+				sql.append(" FROM " + logTable + " WHERE id=" + id);
+				Map<String, Object> oldMap = sLogOperMapper.selectAnyTalbe(sql.toString());
+
+				try {
+					p.proceed();
+				} catch (Throwable e) {
+					throw new RuntimeException(e);
+				}
+
+				Map<String, Object> newMap = sLogOperMapper.selectAnyTalbe(sql.toString());
+				if (oldMap!=null&&newMap!=null) {
+					SLogOperEntity op = new SLogOperEntity();
+					op.setName(logName);
+					op.setTable(logTable);
+					op.setType(type.getType());
+					UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
+					op.setOper_id(bo.getStaff_Id());
+					op.setOper_name(bo.getStaff_info().getName());
+					op.setOper_time(LocalDateTime.now());
+					isLogOperService.save(op);
+
+					List<SLogOperDetailEntity> opds = new ArrayList<SLogOperDetailEntity>();
+					for (String clm : cloum) {
+						Object oldclm = oldMap.get(clm);
+						Object newclm = newMap.get(clm);
+						SLogOperDetailEntity opd = new SLogOperDetailEntity();
+						opd.setOld_val(oldclm.toString());
+						opd.setNew_val(newclm.toString());
+						opd.setClm_name(clm);
+						opd.setClm_comment(columnCommentMap.get(clm).toString());
+						opd.setOper_id(op.getId());
+						opds.add(opd);
+					}
+					if (!opds.isEmpty()) {
+						isLogOperDetailService.saveBatch(opds);
 					}
 				}
 			}

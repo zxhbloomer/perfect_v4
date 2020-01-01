@@ -45,10 +45,10 @@ public class SLogOperEntity implements Serializable {
     private String table;
 
     /**
-     * 业务类型（0其它 1新增 2修改 3逻辑删除 4物理删除）
+     * 业务类型（其它、新增、修改、逻辑删除、物理删除）
      */
     @TableField("type")
-    private Integer type;
+    private String type;
 
     /**
      * 操作类别（0其它 1后台用户 2手机端用户）
