@@ -254,4 +254,14 @@ public class SDictDataServiceImpl extends BaseServiceImpl<SDictDataMapper, SDict
         }
         return UpdateResultUtil.OK(resultList);
     }
+
+    /**
+     * 获取表名称，通过字典表
+     *
+     */
+    @Override
+    public List<SDictDataVo> selectColumnComment(SDictDataVo searchCondition) {
+        List<SDictDataVo> resultList = mapper.selectColumnComment(searchCondition);
+        return resultList;
+    }
 }

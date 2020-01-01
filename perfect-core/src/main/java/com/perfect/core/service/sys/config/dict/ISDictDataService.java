@@ -71,5 +71,12 @@ public interface ISDictDataService extends IService<SDictDataEntity> {
      * sort保存
      *
      */
-    UpdateResult<List<SDictDataVo>>  saveList(List<SDictDataVo> data);
+    UpdateResult<List<SDictDataVo>> saveList(List<SDictDataVo> data);
+
+    /**
+     *
+     * @param searchCondition
+     * @return
+     */
+    List<SDictDataVo> selectColumnComment(SDictDataVo searchCondition);
 }

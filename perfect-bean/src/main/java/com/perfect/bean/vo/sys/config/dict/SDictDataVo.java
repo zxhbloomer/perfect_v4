@@ -112,6 +112,11 @@ public class SDictDataVo extends UploadFileResultPojo implements Serializable {
     private String extra3;
     private String extra4;
 
+    private String table_name;
+    private String table_comment;
+    private String column_name;
+    private String column_comment;
+
 
     /**
      * 换页条件

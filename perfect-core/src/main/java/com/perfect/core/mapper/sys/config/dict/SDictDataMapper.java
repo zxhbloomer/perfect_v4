@@ -45,7 +45,11 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
         + "       t2.descr dict_type_descr,                                         "
         + "       t2.is_del dictTypeIsdel,                                          "
         + "       t3.max_sort,                                                      "
-        + "       t3.min_sort                                                       "
+        + "       t3.min_sort,                                                      "
+        + "       t1.dict_value as table_name,                                      "
+        + "       t1.label as table_comment,                                        "
+        + "       t1.extra1 as column_name,                                         "
+        + "       t1.extra2 as column_comment                                       "
         + "  FROM                                                                   "
         + "  	s_dict_data AS t1                                                   "
         + "  	LEFT JOIN s_dict_type AS t2 ON t1.dict_type_id = t2.id              "
@@ -161,4 +165,19 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
         + " GROUP BY t.dict_type_id"
         + "      ")
     SDictDataEntity getSortNum(@Param("p1") Long dict_type_id);
+
+    /**
+     * 页面查询列表
+     * @param searchCondition
+     * @return
+     */
+    @Select("    "
+            + common_select
+            + "  where true "
+            + "    and (t2.code like CONCAT ('%',#{p1.dictTypeCode,jdbcType=VARCHAR},'%') or #{p1.dictTypeCode,jdbcType=VARCHAR} is null) "
+            + "    and (t2.name like CONCAT ('%',#{p1.dictTypeName,jdbcType=VARCHAR},'%') or #{p1.dictTypeName,jdbcType=VARCHAR} is null) "
+            + "    and (t2.dict_value = #{p1.table_name,jdbcType=VARCHAR} or #{p1.table_name,jdbcType=VARCHAR} is null) "
+            + "    and (t2.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
+            + "                ")
+    List<SDictDataVo> selectColumnComment(@Param("p1") SDictDataVo searchCondition );
 }
