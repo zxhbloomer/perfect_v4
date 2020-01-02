@@ -25,7 +25,7 @@ public @interface OperationDetailLog {
 	/** 需要记录的字段 */
 	String[] cloums() default {};
 	/** id字段的值 */
-	long id() default 0;
+	String id() default "";
 
 //	/** 业务名 */
 //	String name();
