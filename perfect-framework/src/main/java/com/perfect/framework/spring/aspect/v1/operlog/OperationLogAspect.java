@@ -9,6 +9,7 @@ import com.perfect.common.annotation.OperationDetailLog;
 import com.perfect.common.annotation.OperationLog;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.enums.OperationEnum;
+import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.annotation.AnnotationResolverUtil;
 import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.mapper.log.operate.SLogOperMapper;
@@ -60,7 +61,7 @@ public class OperationLogAspect {
 	}
 
 	@Around("pointcut()")
-	public void logAround(final ProceedingJoinPoint p) throws Throwable {
+	public Object logAround(final ProceedingJoinPoint p) throws Throwable {
 		MethodSignature signature = (MethodSignature) p.getSignature();
 		Method method = signature.getMethod();
 		OperationLog operationlog = method.getAnnotation(OperationLog.class);
@@ -68,20 +69,21 @@ public class OperationLogAspect {
 		OperationEnum type = operationlog.type();
 		// 更新
 		if (OperationEnum.UPDATE.equals(type)) {
-			update(p, operationlog);
+			return doOperationProcess(p, operationlog);
 		}
 		// 新增
 		if (OperationEnum.ADD.equals(type)) {
-			update(p, operationlog);
+			return doOperationProcess(p, operationlog);
 		}
 		// 逻辑删除
 		if (OperationEnum.LOGIC_DELETE.equals(type)) {
-			update(p, operationlog);
+			return doOperationProcess(p, operationlog);
 		}
 		// 物理删除
 		if (OperationEnum.DELETE.equals(type)) {
-			update(p, operationlog);
+			return doOperationProcess(p, operationlog);
 		}
+		return null;
 	}
 
 	/**
@@ -89,7 +91,7 @@ public class OperationLogAspect {
 	 * @param p
 	 * @param operationlog
 	 */
-	public void update(final ProceedingJoinPoint p,final OperationLog operationlog) {
+	public Object doOperationProcess(final ProceedingJoinPoint p,final OperationLog operationlog) {
 		// 主表
 		SLogOperEntity operEntity = new SLogOperEntity();
 		operEntity.setName(operationlog.name());
@@ -161,10 +163,11 @@ public class OperationLogAspect {
 		/**
 		 * 执行逻辑
 		 */
+		Object result = null;
 		try {
-			p.proceed();
+			result = p.proceed();
 		} catch (Throwable e) {
-			throw new RuntimeException(e);
+			throw new BusinessException(e);
 		}
 
 		/**
@@ -189,6 +192,13 @@ public class OperationLogAspect {
 				Object oldclm = oldMap.get(clm);
 				Object newclm = newMap.get(clm);
 
+				/**
+				 * 	更新场合：只记录不相同的数据，否则数据量太大
+ 				 */
+				if (oldclm.equals(newclm)) {
+					continue;
+				}
+
 				// 从表设置
 				SLogOperDetailEntity opd = new SLogOperDetailEntity();
 				opd.setOper_id(operEntity.getId());
@@ -205,7 +215,8 @@ public class OperationLogAspect {
 			if (!opds.isEmpty()) {
 				isLogOperDetailService.saveBatch(opds, opds.size());
 			}
-
 		}
+
+		return result;
 	}
 }

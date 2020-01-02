@@ -15,6 +15,7 @@ import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.org.MGroupVo;
 import com.perfect.common.annotation.OperationDetailLog;
 import com.perfect.common.annotation.OperationLog;
+import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.enums.OperationEnum;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.string.StringUtil;
@@ -123,6 +124,13 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @param entity 实体对象
      * @return
      */
+    @OperationLog(
+        name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT,
+        type = OperationEnum.ADD,
+        operationDetails = @OperationDetailLog(
+            name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT, type = OperationEnum.UPDATE, oper_info = "", table_name = "m_group", id = "#{entity.id}"
+        )
+    )
     @Transactional(rollbackFor = Exception.class)
     @Override
     public InsertResult<Integer> insert(MGroupEntity entity) {
@@ -147,11 +155,11 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @return
      */
     @OperationLog(
-        name = "集团更新",
+        name = PerfectConstant.OPERATION.TABLE_M_GROUP_UPDATE,
         type = OperationEnum.UPDATE,
         operationDetails = @OperationDetailLog(
-            name = "集团更新", type = OperationEnum.UPDATE, oper_info = "", table_name = "m_group", id = "#{entity.id}"
-            )
+            name = PerfectConstant.OPERATION.TABLE_M_GROUP_UPDATE, type = OperationEnum.UPDATE, oper_info = "", table_name = "m_group", id = "#{entity.id}"
+        )
     )
     @Transactional(rollbackFor = Exception.class)
     @Override

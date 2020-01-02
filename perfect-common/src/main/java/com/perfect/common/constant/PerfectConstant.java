@@ -127,11 +127,20 @@ public class PerfectConstant {
     }
 
     /**
-     * 刷新session时使用loginuserid 还是 staffid
+     *  平台类型
      */
     public class PLATFORM {
         public static final int OTHER = 0;
         public static final int PC = 1;
         public static final int APP = 2;
+    }
+
+    /**
+     * 操作日志内容
+     */
+    public class OPERATION {
+        public static final String TABLE_M_GROUP_INSERT = "集团主表新增";
+        public static final String TABLE_M_GROUP_UPDATE = "集团主表更新";
+        public static final String TABLE_M_GROUP_LOGIC_DELETE = "集团主表逻辑删除";
     }
 }

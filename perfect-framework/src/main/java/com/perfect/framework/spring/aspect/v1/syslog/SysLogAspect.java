@@ -98,7 +98,7 @@ public class SysLogAspect {
      * @param e
      */
     @AfterThrowing(pointcut = "sysLogAspect()", throwing = "e")
-    public  void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
+    public void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
         // 获取request
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
