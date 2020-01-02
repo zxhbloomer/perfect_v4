@@ -25,16 +25,5 @@ public @interface OperationDetailLog {
 	/** 需要记录的字段 */
 	String[] cloums() default {};
 	/** id字段的值 */
-	String id() default "";
-
-//	/** 业务名 */
-//	String name();
-//	/** 表名 */
-//	String table();
-//	/** id 在函数的字段名 */
-//	int idRef() default -1;
-//	/** 需要记录的字段 */
-//	String[] cloum() default {};
-//	/** 操作类型 */
-//	OperationEnum type();
+	String id();
 }
