@@ -34,7 +34,7 @@ public class OperationDataBo implements Serializable {
     private String table_name;
 
     /** 查询的sql */
-    private String sql;
+    private String sqlTemplate;
 
     /** 表字段 */
     private Map<String, Object> columnCommentMap;

@@ -128,7 +128,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
         name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT,
         type = OperationEnum.ADD,
         operationDetails = @OperationDetailLog(
-            name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT, type = OperationEnum.UPDATE, oper_info = "", table_name = "m_group", id = "#{entity.id}"
+            name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT, type = OperationEnum.ADD, oper_info = "", table_name = "m_group", id = "#{entity.id}"
         )
     )
     @Transactional(rollbackFor = Exception.class)

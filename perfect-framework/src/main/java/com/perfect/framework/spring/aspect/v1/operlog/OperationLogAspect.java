@@ -114,6 +114,7 @@ public class OperationLogAspect {
 
 			String[] cloum = operationDetail.cloums();
 			StringBuilder sql = new StringBuilder();
+			String sqlTemplate = "";
 			String logTable = operationDetail.table_name();
 			Long id = (Long)paraId;
 			/**
@@ -144,6 +145,7 @@ public class OperationLogAspect {
 					sql.append(",`" + cloum[i] + "` ");
 				}
 			}
+			sqlTemplate = sql.toString();
 			sql.append(" FROM " + logTable + " WHERE id=" + id );
 			Map<String, Object> oldMap = sLogOperMapper.selectAnyTalbe(sql.toString());
 
@@ -153,7 +155,7 @@ public class OperationLogAspect {
 			obo.setOper_info(operationDetail.oper_info());
 			obo.setCloums(cloum);
 			obo.setTable_name(logTable);
-			obo.setSql(sql.toString());
+			obo.setSqlTemplate(sqlTemplate);
 			obo.setColumnCommentMap(columnCommentMap);
 			obo.setArgs(args);
 			obo.setOldData(oldMap);
@@ -175,27 +177,32 @@ public class OperationLogAspect {
 		 */
 		isLogOperService.save(operEntity);
 
+		// 定义计数器
+		int i = 0;
 		/**
 		 * 再获取新值，进行比较
 		 */
 		for(OperationDataBo obo : operationDataBoList) {
-			String sql = obo.getSql();
+			String sqlTemplate = obo.getSqlTemplate();
 			String[] cloum = obo.getCloums();
 			Map<String, Object> oldMap = obo.getOldData();
 			Map<String, Object> columnCommentMap = obo.getColumnCommentMap();
 
 			// 查询新值
-			Map<String, Object> newMap = sLogOperMapper.selectAnyTalbe(sql.toString());
+			// 再取一次参数，考虑新增场合
+			Object paraId = AnnotationResolverUtil.newInstance().resolver(p, operationlog.operationDetails()[i].id());
+			String sql = sqlTemplate + " FROM " + obo.getTable_name() + " WHERE id=" + paraId ;
+			Map<String, Object> newMap = sLogOperMapper.selectAnyTalbe(sql);
 
 			List<SLogOperDetailEntity> opds = new ArrayList<>();
 			for (String clm : cloum) {
-				Object oldclm = oldMap.get(clm);
+				Object oldclm = (oldMap == null ? null : oldMap.get(clm));
 				Object newclm = newMap.get(clm);
 
 				/**
 				 * 	更新场合：只记录不相同的数据，否则数据量太大
  				 */
-				if (oldclm.equals(newclm)) {
+				if (oldclm != null && oldclm.equals(newclm)) {
 					continue;
 				}
 
@@ -206,7 +213,7 @@ public class OperationLogAspect {
 				opd.setType(obo.getType().getName());
 				opd.setOper_info(obo.getOper_info());
 				opd.setTable_name(obo.getTable_name());
-				opd.setOld_val(oldclm.toString());
+				opd.setOld_val((oldMap == null ? null : oldclm.toString()));
 				opd.setNew_val(newclm.toString());
 				opd.setClm_name(clm);
 				opd.setClm_comment(columnCommentMap.get(clm).toString());
@@ -215,6 +222,7 @@ public class OperationLogAspect {
 			if (!opds.isEmpty()) {
 				isLogOperDetailService.saveBatch(opds, opds.size());
 			}
+			i = i + 1;
 		}
 
 		return result;
