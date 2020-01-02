@@ -31,7 +31,7 @@ public class OperationDataBo implements Serializable {
     private String[] cloums;
 
     /** 表名 */
-    private String table;
+    private String table_name;
 
     /** 查询的sql */
     private String sql;

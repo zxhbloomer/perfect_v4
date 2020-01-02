@@ -58,8 +58,8 @@ public class SLogOperDetailEntity implements Serializable {
     /**
      * 表名
      */
-    @TableField("table")
-    private String table;
+    @TableField("table_name")
+    private String table_name;
 
     /**
      * 列英文名称

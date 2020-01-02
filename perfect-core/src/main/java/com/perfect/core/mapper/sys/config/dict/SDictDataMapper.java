@@ -77,6 +77,7 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
         + "  where true "
         + "    and (t2.code like CONCAT ('%',#{p1.dictTypeCode,jdbcType=VARCHAR},'%') or #{p1.dictTypeCode,jdbcType=VARCHAR} is null) "
         + "    and (t2.name like CONCAT ('%',#{p1.dictTypeName,jdbcType=VARCHAR},'%') or #{p1.dictTypeName,jdbcType=VARCHAR} is null) "
+        + "    and (t1.label like CONCAT ('%',#{p1.label,jdbcType=VARCHAR},'%') or #{p1.label,jdbcType=VARCHAR} is null) "
         + "    and (t2.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
         + "      ")
     IPage<SDictDataVo> selectPage(Page page, @Param("p1") SDictDataVo searchCondition );
@@ -91,6 +92,7 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
         + "  where true "
         + "    and (t2.code like CONCAT ('%',#{p1.dictTypeCode,jdbcType=VARCHAR},'%') or #{p1.dictTypeCode,jdbcType=VARCHAR} is null) "
         + "    and (t2.name like CONCAT ('%',#{p1.dictTypeName,jdbcType=VARCHAR},'%') or #{p1.dictTypeName,jdbcType=VARCHAR} is null) "
+        + "    and (t1.label like CONCAT ('%',#{p1.label,jdbcType=VARCHAR},'%') or #{p1.label,jdbcType=VARCHAR} is null) "
         + "    and (t2.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
         + "      ")
     List<SDictDataVo> select(@Param("p1") SDictDataVo searchCondition );
@@ -176,8 +178,8 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
             + "  where true "
             + "    and (t2.code like CONCAT ('%',#{p1.dictTypeCode,jdbcType=VARCHAR},'%') or #{p1.dictTypeCode,jdbcType=VARCHAR} is null) "
             + "    and (t2.name like CONCAT ('%',#{p1.dictTypeName,jdbcType=VARCHAR},'%') or #{p1.dictTypeName,jdbcType=VARCHAR} is null) "
-            + "    and (t2.dict_value = #{p1.table_name,jdbcType=VARCHAR} or #{p1.table_name,jdbcType=VARCHAR} is null) "
+            + "    and (t1.dict_value = #{p1.table_name,jdbcType=VARCHAR} or #{p1.table_name,jdbcType=VARCHAR} is null) "
             + "    and (t2.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
-            + "                ")
+            + "   order by t1.sort             ")
     List<SDictDataVo> selectColumnComment(@Param("p1") SDictDataVo searchCondition );
 }

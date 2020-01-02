@@ -150,7 +150,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
         name = "集团更新",
         type = OperationEnum.UPDATE,
         operationDetails = @OperationDetailLog(
-            name = "集团更新", type = OperationEnum.UPDATE, oper_info = "", table = "m_group", id = "#{entity.id}"
+            name = "集团更新", type = OperationEnum.UPDATE, oper_info = "", table_name = "m_group", id = "#{entity.id}"
             )
     )
     @Transactional(rollbackFor = Exception.class)
