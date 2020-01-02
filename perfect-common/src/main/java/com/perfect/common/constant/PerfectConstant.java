@@ -125,4 +125,13 @@ public class PerfectConstant {
         public static final String LOGIN_USER_ID = "LOGIN_USER_ID";
         public static final String STAFF_ID = "STAFF_ID";
     }
+
+    /**
+     * 刷新session时使用loginuserid 还是 staffid
+     */
+    public class PLATFORM {
+        public static final int OTHER = 0;
+        public static final int PC = 1;
+        public static final int APP = 2;
+    }
 }

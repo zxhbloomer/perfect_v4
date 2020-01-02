@@ -1,11 +1,13 @@
 package com.perfect.framework.spring.aspect.v1.operlog;
 
+import com.perfect.bean.bo.log.operate.OperationDataBo;
 import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.entity.log.operate.SLogOperDetailEntity;
 import com.perfect.bean.entity.log.operate.SLogOperEntity;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
+import com.perfect.common.annotation.OperationDetailLog;
 import com.perfect.common.annotation.OperationLog;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.enums.OperationEnum;
 import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.mapper.log.operate.SLogOperMapper;
@@ -25,7 +27,6 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.lang.reflect.Method;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -61,183 +62,22 @@ public class OperationLogAspect {
 		OperationLog operationlog = method.getAnnotation(OperationLog.class);
 
 		OperationEnum type = operationlog.type();
+		// 更新
 		if (OperationEnum.UPDATE.equals(type)) {
 			update(p, operationlog);
 		}
+		// 新增
 		if (OperationEnum.ADD.equals(type)) {
-			add(p, operationlog);
+			update(p, operationlog);
 		}
+		// 逻辑删除
 		if (OperationEnum.LOGIC_DELETE.equals(type)) {
-			logic_delete(p, operationlog);
+			update(p, operationlog);
 		}
-		if (OperationEnum.LOGIC_DELETE.equals(type)) {
-			delete(p, operationlog);
+		// 物理删除
+		if (OperationEnum.DELETE.equals(type)) {
+			update(p, operationlog);
 		}
-	}
-
-	/**
-	 * 物理删除
-	 * @param p
-	 * @param operationlog
-	 */
-	public void delete(final ProceedingJoinPoint p,final OperationLog operationlog) {
-		txTemplate.execute(new TransactionCallbackWithoutResult() {
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				StringBuilder sql = new StringBuilder();
-				OperationEnum type = operationlog.type();
-				Object[] args = p.getArgs();
-				String logName = operationlog.name();
-				String logTable = operationlog.table();
-				if (operationlog.idRef()==-1) {
-					throw new RuntimeException();
-				}
-				String id = args[operationlog.idRef()].toString();
-				String[] cloum = operationlog.cloum();
-
-				Map<String, Object> columnCommentMap = new HashMap<String, Object>();
-				SDictDataVo searchCondition = new SDictDataVo();
-				searchCondition.setIs_del(false);
-				searchCondition.setTable_name(logTable);
-				List<SDictDataVo> columnCommentList = isDictDataService.selectColumnComment(searchCondition);
-
-				for (SDictDataVo col : columnCommentList) {
-					columnCommentMap.put(col.getColumn_name(), col.getColumn_comment());
-				}
-				if (cloum.length == 0) {
-					Set<String> keySet = columnCommentMap.keySet();
-					List<String> list = new ArrayList<String>();
-					for (String o : keySet) {
-						list.add(o.toString());
-					}
-					cloum = list.toArray(new String[list.size()]);
-				}
-				sql.append("SELECT ");
-				for (int i = 0; i < cloum.length; i++) {
-					if (i == 0) {
-						sql.append("`" + cloum[i] + "` ");
-					} else {
-						sql.append(",`" + cloum[i] + "` ");
-					}
-				}
-				sql.append(" FROM " + logTable + " WHERE id=" + id);
-				Map<String, Object> oldMap = sLogOperMapper.selectAnyTalbe(sql.toString());
-
-				try {
-					p.proceed();
-				} catch (Throwable e) {
-					throw new RuntimeException(e);
-				}
-
-				if (oldMap!=null) {
-					SLogOperEntity op = new SLogOperEntity();
-					op.setName(logName);
-					op.setTable(logTable);
-					op.setType(type.getType());
-					UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
-					op.setOper_id(bo.getStaff_Id());
-					op.setOper_name(bo.getStaff_info().getName());
-					op.setOper_time(LocalDateTime.now());
-					isLogOperService.save(op);
-
-					List<SLogOperDetailEntity> opds = new ArrayList<SLogOperDetailEntity>();
-					for (String clm : cloum) {
-						Object oldclm = oldMap.get(clm);
-						SLogOperDetailEntity opd = new SLogOperDetailEntity();
-						opd.setOld_val(oldclm.toString());
-						opd.setNew_val("");
-						opd.setClm_name(clm);
-						opd.setClm_comment(columnCommentMap.get(clm).toString());
-						opd.setOper_id(op.getId());
-						opds.add(opd);
-					}
-					if (!opds.isEmpty()) {
-						isLogOperDetailService.saveBatch(opds);
-					}
-				}
-			}
-		});
-	}
-
-	/**
-	 * 新增
-	 * @param p
-	 * @param operationlog
-	 */
-	private void add(final ProceedingJoinPoint p,final OperationLog operationlog) {
-		txTemplate.execute(new TransactionCallbackWithoutResult() {
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				StringBuilder sql = new StringBuilder();
-				OperationEnum type = operationlog.type();
-				Object[] args = p.getArgs();
-				String logName = operationlog.name();
-				String logTable = operationlog.table();
-				String[] cloum = operationlog.cloum();
-
-				Map<String, Object> columnCommentMap = new HashMap<String, Object>();
-                SDictDataVo searchCondition = new SDictDataVo();
-                searchCondition.setIs_del(false);
-                searchCondition.setTable_name(logTable);
-				List<SDictDataVo> columnCommentList = isDictDataService.selectColumnComment(searchCondition);
-
-				for (SDictDataVo col : columnCommentList) {
-					columnCommentMap.put(col.getColumn_name(), col.getColumn_comment());
-				}
-				if (cloum.length == 0) {
-					Set<String> keySet = columnCommentMap.keySet();
-					List<String> list = new ArrayList<String>();
-					for (String o : keySet) {
-						list.add(o.toString());
-					}
-					cloum = list.toArray(new String[list.size()]);
-				}
-				sql.append("SELECT ");
-				for (int i = 0; i < cloum.length; i++) {
-					if (i == 0) {
-						sql.append("`" + cloum[i] + "` ");
-					} else {
-						sql.append(",`" + cloum[i] + "` ");
-					}
-				}
-				sql.append(" FROM " + logTable + " ORDER BY id DESC LIMIT 1");
-				Map<String, Object> oldMap = sLogOperMapper.selectAnyTalbe(sql.toString());
-				try {
-					p.proceed();
-				} catch (Throwable e) {
-					throw new RuntimeException(e);
-				}
-				Map<String, Object> newMap = sLogOperMapper.selectAnyTalbe(sql.toString());
-				if ((oldMap==null)||(!oldMap.get("id").toString().equals(newMap.get("id").toString()))) {
-					SLogOperEntity op = new SLogOperEntity();
-					op.setName(logName);
-					op.setTable(logTable);
-					op.setType(type.getType());
-					UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
-					op.setOper_id(bo.getStaff_Id());
-					op.setOper_name(bo.getStaff_info().getName());
-					op.setOper_time(LocalDateTime.now());
-					isLogOperService.save(op);
-
-					List<SLogOperDetailEntity> opds = new ArrayList<SLogOperDetailEntity>();
-					for (String clm : cloum) {
-						Object oldclm = "";
-						Object newclm = newMap.get(clm);
-						SLogOperDetailEntity opd = new SLogOperDetailEntity();
-						opd.setOld_val(oldclm.toString());
-						opd.setNew_val(newclm.toString());
-						opd.setClm_name(clm);
-						opd.setClm_comment(columnCommentMap.get(clm).toString());
-						opd.setOper_id(op.getId());
-						opds.add(opd);
-					}
-					if (!opds.isEmpty()) {
-						isLogOperDetailService.saveBatch(opds);
-					}
-
-				}
-			}
-		});
 	}
 
 	/**
@@ -249,164 +89,121 @@ public class OperationLogAspect {
 		txTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				StringBuilder sql = new StringBuilder();
-				OperationEnum type = operationlog.type();
-				Object[] args = p.getArgs();
-				String logName = operationlog.name();
-				String logTable = operationlog.table();
-				if (operationlog.idRef()==-1) {
-					throw new RuntimeException();
-				}
-				String id = args[operationlog.idRef()].toString();
-				String[] cloum = operationlog.cloum();
+				// 主表
+				SLogOperEntity operEntity = new SLogOperEntity();
+				operEntity.setName(operationlog.name());
+				operEntity.setType(operationlog.type().getName());
+				operEntity.setPlatform(PerfectConstant.PLATFORM.PC);
+				UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
+				operEntity.setOper_id(bo.getStaff_Id());
+				operEntity.setOper_name(bo.getStaff_info().getName());
+				operEntity.setOper_time(LocalDateTime.now());
 
-				Map<String, Object> columnCommentMap = new HashMap<String, Object>();
-				SDictDataVo searchCondition = new SDictDataVo();
-				searchCondition.setIs_del(false);
-				searchCondition.setTable_name(logTable);
-				List<SDictDataVo> columnCommentList = isDictDataService.selectColumnComment(searchCondition);
+				/** new 操作日志，执行过程bean */
+				List<OperationDataBo> operationDataBoList = new ArrayList<>();
+				/**
+				 * 先获取旧值
+				 */
+				for(OperationDetailLog operationDetail : operationlog.operationDetails()){
+					// 参数
+					Object[] args = p.getArgs();
 
-				for (SDictDataVo col : columnCommentList) {
-					columnCommentMap.put(col.getColumn_name(), col.getColumn_comment());
-				}
-				if (cloum.length == 0) {
-					Set<String> keySet = columnCommentMap.keySet();
-					List<String> list = new ArrayList<String>();
-					for (String o : keySet) {
-						list.add(o.toString());
+					String[] cloum = operationDetail.cloums();
+					StringBuilder sql = new StringBuilder();
+					String logTable = operationDetail.table();
+//					String id = args[operationDetail.id()].toString();
+					/**
+					 * 获取表字段
+					 */
+					Map<String, Object> columnCommentMap = new HashMap<String, Object>();
+					SDictDataVo searchCondition = new SDictDataVo();
+					searchCondition.setIs_del(false);
+					searchCondition.setTable_name(logTable);
+					List<SDictDataVo> columnCommentList = isDictDataService.selectColumnComment(searchCondition);
+					for (SDictDataVo col : columnCommentList) {
+						columnCommentMap.put(col.getColumn_name(), col.getColumn_comment());
 					}
-					cloum = list.toArray(new String[list.size()]);
-				}
-				sql.append("SELECT ");
-				for (int i = 0; i < cloum.length; i++) {
-					if (i == 0) {
-						sql.append("`" + cloum[i] + "` ");
-					} else {
-						sql.append(",`" + cloum[i] + "` ");
+					// 获取更新前数据
+					if (cloum.length == 0) {
+						Set<String> keySet = columnCommentMap.keySet();
+						List<String> list = new ArrayList<String>();
+						for (String o : keySet) {
+							list.add(o.toString());
+						}
+						cloum = list.toArray(new String[list.size()]);
 					}
-				}
-				sql.append(" FROM " + logTable + " WHERE id=" + id);
-				Map<String, Object> oldMap = sLogOperMapper.selectAnyTalbe(sql.toString());
+					sql.append("SELECT ");
+					for (int i = 0; i < cloum.length; i++) {
+						if (i == 0) {
+							sql.append("`" + cloum[i] + "` ");
+						} else {
+							sql.append(",`" + cloum[i] + "` ");
+						}
+					}
+					sql.append(" FROM " + logTable + " WHERE id=1" );
+					Map<String, Object> oldMap = sLogOperMapper.selectAnyTalbe(sql.toString());
 
+					OperationDataBo obo = new OperationDataBo();
+					obo.setName(operationDetail.name());
+					obo.setType(operationDetail.type());
+					obo.setOper_info(operationDetail.oper_info());
+					obo.setCloums(operationDetail.cloums());
+					obo.setTable(logTable);
+					obo.setSql(sql.toString());
+					obo.setColumnCommentMap(columnCommentMap);
+					obo.setArgs(args);
+					obo.setOldData(oldMap);
+					operationDataBoList.add(obo);
+				}
+
+				/**
+				 * 执行逻辑
+				 */
 				try {
 					p.proceed();
 				} catch (Throwable e) {
 					throw new RuntimeException(e);
 				}
 
-				Map<String, Object> newMap = sLogOperMapper.selectAnyTalbe(sql.toString());
-				if (oldMap!=null&&newMap!=null) {
-					SLogOperEntity op = new SLogOperEntity();
-					op.setName(logName);
-					op.setTable(logTable);
-					op.setType(type.getType());
-					UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
-					op.setOper_id(bo.getStaff_Id());
-					op.setOper_name(bo.getStaff_info().getName());
-					op.setOper_time(LocalDateTime.now());
-					isLogOperService.save(op);
+				/**
+				 * 保存主表
+				 */
+				isLogOperService.save(operEntity);
 
-					List<SLogOperDetailEntity> opds = new ArrayList<SLogOperDetailEntity>();
+				/**
+				 * 再获取新值，进行比较
+				 */
+				for(OperationDataBo obo : operationDataBoList) {
+					String sql = obo.getSql();
+					String[] cloum = obo.getCloums();
+					Map<String, Object> oldMap = obo.getOldData();
+					Map<String, Object> columnCommentMap = obo.getColumnCommentMap();
+
+					// 查询新值
+					Map<String, Object> newMap = sLogOperMapper.selectAnyTalbe(sql.toString());
+
+					List<SLogOperDetailEntity> opds = new ArrayList<>();
 					for (String clm : cloum) {
 						Object oldclm = oldMap.get(clm);
 						Object newclm = newMap.get(clm);
+
+						// 从表设置
 						SLogOperDetailEntity opd = new SLogOperDetailEntity();
+						opd.setOper_id(operEntity.getId());
+						opd.setName(obo.getName());
+						opd.setType(obo.getType().getName());
+						opd.setOper_info(obo.getOper_info());
+						opd.setTable(obo.getTable());
 						opd.setOld_val(oldclm.toString());
 						opd.setNew_val(newclm.toString());
 						opd.setClm_name(clm);
 						opd.setClm_comment(columnCommentMap.get(clm).toString());
-						opd.setOper_id(op.getId());
 						opds.add(opd);
 					}
 					if (!opds.isEmpty()) {
 						isLogOperDetailService.saveBatch(opds);
 					}
-				}
-			}
-		});
-	}
 
-	/**
-	 * 逻辑删除
-	 * @param p
-	 * @param operationlog
-	 */
-	public void logic_delete(final ProceedingJoinPoint p,final OperationLog operationlog) {
-		txTemplate.execute(new TransactionCallbackWithoutResult() {
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				StringBuilder sql = new StringBuilder();
-				OperationEnum type = operationlog.type();
-				Object[] args = p.getArgs();
-				String logName = operationlog.name();
-				String logTable = operationlog.table();
-				if (operationlog.idRef()==-1) {
-					throw new RuntimeException();
-				}
-				String id = args[operationlog.idRef()].toString();
-				String[] cloum = operationlog.cloum();
-
-				Map<String, Object> columnCommentMap = new HashMap<String, Object>();
-				SDictDataVo searchCondition = new SDictDataVo();
-				searchCondition.setIs_del(false);
-				searchCondition.setTable_name(logTable);
-				List<SDictDataVo> columnCommentList = isDictDataService.selectColumnComment(searchCondition);
-
-				for (SDictDataVo col : columnCommentList) {
-					columnCommentMap.put(col.getColumn_name(), col.getColumn_comment());
-				}
-				if (cloum.length == 0) {
-					Set<String> keySet = columnCommentMap.keySet();
-					List<String> list = new ArrayList<String>();
-					for (String o : keySet) {
-						list.add(o.toString());
-					}
-					cloum = list.toArray(new String[list.size()]);
-				}
-				sql.append("SELECT ");
-				for (int i = 0; i < cloum.length; i++) {
-					if (i == 0) {
-						sql.append("`" + cloum[i] + "` ");
-					} else {
-						sql.append(",`" + cloum[i] + "` ");
-					}
-				}
-				sql.append(" FROM " + logTable + " WHERE id=" + id);
-				Map<String, Object> oldMap = sLogOperMapper.selectAnyTalbe(sql.toString());
-
-				try {
-					p.proceed();
-				} catch (Throwable e) {
-					throw new RuntimeException(e);
-				}
-
-				Map<String, Object> newMap = sLogOperMapper.selectAnyTalbe(sql.toString());
-				if (oldMap!=null&&newMap!=null) {
-					SLogOperEntity op = new SLogOperEntity();
-					op.setName(logName);
-					op.setTable(logTable);
-					op.setType(type.getType());
-					UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
-					op.setOper_id(bo.getStaff_Id());
-					op.setOper_name(bo.getStaff_info().getName());
-					op.setOper_time(LocalDateTime.now());
-					isLogOperService.save(op);
-
-					List<SLogOperDetailEntity> opds = new ArrayList<SLogOperDetailEntity>();
-					for (String clm : cloum) {
-						Object oldclm = oldMap.get(clm);
-						Object newclm = newMap.get(clm);
-						SLogOperDetailEntity opd = new SLogOperDetailEntity();
-						opd.setOld_val(oldclm.toString());
-						opd.setNew_val(newclm.toString());
-						opd.setClm_name(clm);
-						opd.setClm_comment(columnCommentMap.get(clm).toString());
-						opd.setOper_id(op.getId());
-						opds.add(opd);
-					}
-					if (!opds.isEmpty()) {
-						isLogOperDetailService.saveBatch(opds);
-					}
 				}
 			}
 		});

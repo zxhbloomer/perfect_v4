@@ -13,6 +13,9 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.org.MGroupVo;
+import com.perfect.common.annotation.OperationDetailLog;
+import com.perfect.common.annotation.OperationLog;
+import com.perfect.common.enums.OperationEnum;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.master.org.MGroupMapper;
@@ -143,6 +146,13 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @param entity 实体对象
      * @return
      */
+    @OperationLog(
+        name = "集团更新",
+        type = OperationEnum.UPDATE,
+        operationDetails = @OperationDetailLog(
+            name = "集团更新", type = OperationEnum.UPDATE, oper_info = "", table = "m_group"
+            )
+    )
     @Transactional(rollbackFor = Exception.class)
     @Override
     public UpdateResult<Integer> update(MGroupEntity entity) {

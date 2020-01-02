@@ -32,28 +32,46 @@ public class SLogOperDetailEntity implements Serializable {
     private Long id;
 
     /**
-     * 操作业务名
+     * 操作日志主表id
      */
     @TableField("oper_id")
     private Long oper_id;
 
     /**
-     * 业务类型（0其它 1新增 2修改 3逻辑删除 4物理删除）
+     * 操作业务名
      */
-    @TableField("clm_name")
-    private String clm_name;
+    @TableField("name")
+    private String name;
 
     /**
-     * 操作类别（0其它 1后台用户 2手机端用户）
+     * 业务类型（其它、新增、修改、逻辑删除、物理删除）
      */
-    @TableField("clm_comment")
-    private String clm_comment;
+    @TableField("type")
+    private String type;
+
+    /**
+     * 操作描述
+     */
+    @TableField("oper_info")
+    private String oper_info;
 
     /**
      * 表名
      */
     @TableField("table")
     private String table;
+
+    /**
+     * 列英文名称
+     */
+    @TableField("clm_name")
+    private String clm_name;
+
+    /**
+     * 列中文名称
+     */
+    @TableField("clm_comment")
+    private String clm_comment;
 
     /**
      * 旧值
@@ -66,6 +84,4 @@ public class SLogOperDetailEntity implements Serializable {
      */
     @TableField("new_val")
     private String new_val;
-
-
 }

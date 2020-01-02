@@ -34,9 +34,15 @@ public class AnnotationResolverUtil {
             return null;
         }
         Object value = null;
-        if (str.matches("#\\{\\D*\\}")) {// 如果name匹配上了#{},则把内容当作变量
+        /**
+         *  如果name匹配上了#{},则把内容当作变量
+         */
+        if (str.matches("#\\{\\D*\\}")) {
             String newStr = str.replaceAll("#\\{", "").replaceAll("\\}", "");
-            if (newStr.contains(".")) { // 复杂类型
+            /**
+             * 复杂类型
+             */
+            if (newStr.contains(".")) {
                 try {
                     value = complexResolver(joinPoint, newStr);
                 } catch (Exception e) {
@@ -51,6 +57,13 @@ public class AnnotationResolverUtil {
         return value;
     }
 
+    /**
+     * 复杂值解析
+     * @param joinPoint
+     * @param str
+     * @return
+     * @throws Exception
+     */
     private Object complexResolver(JoinPoint joinPoint, String str) throws Exception {
 
         MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();
@@ -67,11 +80,16 @@ public class AnnotationResolverUtil {
                 return getValue(value, 1, strs);
             }
         }
-
         return null;
-
     }
 
+    /**
+     * 获取值
+     * @param obj
+     * @param index
+     * @param strs
+     * @return
+     */
     private Object getValue(Object obj, int index, String[] strs) {
 
         try {
@@ -89,10 +107,21 @@ public class AnnotationResolverUtil {
         }
     }
 
+    /**
+     * 方法名
+     * @param name
+     * @return
+     */
     private String getMethodName(String name) {
         return "get" + name.replaceFirst(name.substring(0, 1), name.substring(0, 1).toUpperCase());
     }
 
+    /**
+     * 简易解析
+     * @param joinPoint
+     * @param str
+     * @return
+     */
     private Object simpleResolver(JoinPoint joinPoint, String str) {
         MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();
         String[] names = methodSignature.getParameterNames();

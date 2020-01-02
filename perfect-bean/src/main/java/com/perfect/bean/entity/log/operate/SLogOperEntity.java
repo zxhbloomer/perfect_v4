@@ -39,12 +39,6 @@ public class SLogOperEntity implements Serializable {
     private String name;
 
     /**
-     * 表名
-     */
-    @TableField("table")
-    private String table;
-
-    /**
      * 业务类型（其它、新增、修改、逻辑删除、物理删除）
      */
     @TableField("type")
