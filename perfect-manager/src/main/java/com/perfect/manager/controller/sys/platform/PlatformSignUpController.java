@@ -5,7 +5,7 @@ import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.sys.config.tenant.STenantVo;
 import com.perfect.bean.vo.sys.platform.SignUpVo;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.core.service.sys.config.tenant.ITenantService;
 import com.perfect.core.service.sys.platform.ISignUpService;
 import com.perfect.framework.base.controller.v1.BaseController;
@@ -36,7 +36,7 @@ public class PlatformSignUpController extends BaseController {
     @Autowired
     TenantMq tenantMq;
 
-    @SysLog("注册根据手机号码，租户名称，管理员，密码，生成注册信息")
+    @SysLogAnnotion("注册根据手机号码，租户名称，管理员，密码，生成注册信息")
     @ApiOperation("注册根据手机号码，租户名称，管理员，密码，生成注册信息")
     @PostMapping("/mobile")
     @ResponseBody
@@ -52,7 +52,7 @@ public class PlatformSignUpController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 
-    @SysLog("check手机号码是否已经被使用")
+    @SysLogAnnotion("check手机号码是否已经被使用")
     @ApiOperation("check手机号码是否已经被使用")
     @PostMapping("/check/mobile")
     @ResponseBody
