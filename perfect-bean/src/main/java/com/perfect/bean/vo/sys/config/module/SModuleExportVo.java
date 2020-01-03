@@ -3,7 +3,7 @@ package com.perfect.bean.vo.sys.config.module;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
-import com.perfect.common.annotation.Excel;
+import com.perfect.common.annotations.ExcelAnnotion;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -32,31 +32,31 @@ public class SModuleExportVo extends BaseVo implements Serializable {
     /**
      * 模块编号
      */
-    @Excel(name = "模块编号")
+    @ExcelAnnotion(name = "模块编号")
     private String code;
 
     /**
      * 类型
      */
-    @Excel(name = "模块类型")
+    @ExcelAnnotion(name = "模块类型")
     private String type;
 
     /**
      * 名称
      */
-    @Excel(name = "模块名称")
+    @ExcelAnnotion(name = "模块名称")
     private String name;
 
     /**
      * 描述
      */
-    @Excel(name = "模块类型")
+    @ExcelAnnotion(name = "模块类型")
     private String descr;
 
     /**
      * 是否删除
      */
-    @Excel(name = "是否删除")
+    @ExcelAnnotion(name = "是否删除")
     private Boolean isdel;
 
     /**

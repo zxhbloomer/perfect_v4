@@ -3,7 +3,7 @@ package com.perfect.bean.vo.sys.config.dict;
 import java.io.Serializable;
 
 import com.perfect.bean.config.base.v1.BaseVo;
-import com.perfect.common.annotation.Excel;
+import com.perfect.common.annotations.ExcelAnnotion;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -25,16 +25,16 @@ public class SDictTypeExportVo extends BaseVo implements Serializable {
     private static final long serialVersionUID = -6942475112738825609L;
     private Long id;
 
-    @Excel(name = "字典类型")
+    @ExcelAnnotion(name = "字典类型")
     private String code;
 
-    @Excel(name = "字典名称")
+    @ExcelAnnotion(name = "字典名称")
     private String name;
 
-    @Excel(name = "描述")
+    @ExcelAnnotion(name = "描述")
     private String descr;
 
-    @Excel(name = "是否删除")
+    @ExcelAnnotion(name = "是否删除")
     private String is_del;
 
 }

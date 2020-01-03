@@ -1,4 +1,4 @@
-package com.perfect.common.annotation;
+package com.perfect.common.annotations;
 
 import com.perfect.common.enums.LimitTypeEnum;
 
@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Limit {
+public @interface LimitAnnotion {
 
     /**
      * 资源名称，用于描述接口功能

@@ -5,8 +5,8 @@ import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.entity.log.operate.SLogOperDetailEntity;
 import com.perfect.bean.entity.log.operate.SLogOperEntity;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
-import com.perfect.common.annotation.OperationDetailLog;
-import com.perfect.common.annotation.OperationLog;
+import com.perfect.common.annotations.OperationDetailLogAnnotion;
+import com.perfect.common.annotations.OperationLogAnnotion;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.enums.OperationEnum;
 import com.perfect.common.exception.BusinessException;
@@ -52,10 +52,7 @@ public class OperationLogAspect {
     @Autowired
     ISLogOperDetailService isLogOperDetailService;
 
-	@Autowired
-	private TransactionTemplate txTemplate;
-
-	@Pointcut("@annotation(com.perfect.common.annotation.OperationLog)")
+	@Pointcut("@annotation(com.perfect.common.annotations.OperationLogAnnotion)")
 	public void pointcut() {
 		// do nothing
 	}
@@ -64,7 +61,7 @@ public class OperationLogAspect {
 	public Object logAround(final ProceedingJoinPoint p) throws Throwable {
 		MethodSignature signature = (MethodSignature) p.getSignature();
 		Method method = signature.getMethod();
-		OperationLog operationlog = method.getAnnotation(OperationLog.class);
+		OperationLogAnnotion operationlog = method.getAnnotation(OperationLogAnnotion.class);
 
 		OperationEnum type = operationlog.type();
 		// 更新
@@ -91,7 +88,7 @@ public class OperationLogAspect {
 	 * @param p
 	 * @param operationlog
 	 */
-	public Object doOperationProcess(final ProceedingJoinPoint p,final OperationLog operationlog) {
+	public Object doOperationProcess(final ProceedingJoinPoint p,final OperationLogAnnotion operationlog) {
 		// 主表
 		SLogOperEntity operEntity = new SLogOperEntity();
 		operEntity.setName(operationlog.name());
@@ -107,7 +104,7 @@ public class OperationLogAspect {
 		/**
 		 * 先获取旧值
 		 */
-		for(OperationDetailLog operationDetail : operationlog.operationDetails()){
+		for(OperationDetailLogAnnotion operationDetail : operationlog.operationDetails()){
 			// 参数
 			Object paraId = AnnotationResolverUtil.newInstance().resolver(p, operationDetail.id());
 			Object[] args = p.getArgs();

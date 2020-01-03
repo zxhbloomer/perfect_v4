@@ -1,7 +1,7 @@
 package com.perfect.framework.spring.interceptor;
 
 import com.perfect.bean.result.utils.v1.ResponseResultUtil;
-import com.perfect.common.annotation.RepeatSubmit;
+import com.perfect.common.annotations.RepeatSubmitAnnotion;
 import com.perfect.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -68,7 +68,7 @@ public abstract class ActionInterceptorAbstract extends HandlerInterceptorAdapte
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod)handler;
             Method method = handlerMethod.getMethod();
-            RepeatSubmit annotation = method.getAnnotation(RepeatSubmit.class);
+            RepeatSubmitAnnotion annotation = method.getAnnotation(RepeatSubmitAnnotion.class);
             if (annotation != null ) {
                 if (this.isRepeatSubmit(request)) {
                     ResponseResultUtil.responseWriteError(

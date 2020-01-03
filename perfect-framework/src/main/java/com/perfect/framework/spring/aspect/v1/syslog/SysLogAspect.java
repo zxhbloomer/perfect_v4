@@ -6,7 +6,7 @@ import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.bo.log.sys.SysLogBo;
 import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.entity.log.sys.SLogSysEntity;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.properies.PerfectConfigProperies;
 import com.perfect.common.utils.ExceptionUtil;
@@ -42,7 +42,7 @@ public class SysLogAspect {
     @Autowired
     private ISLogService iSLogService;
 
-    @Pointcut("@annotation(com.perfect.common.annotation.SysLog)")
+    @Pointcut("@annotation(com.perfect.common.annotations.SysLogAnnotion)")
     public void sysLogAspect(){}
 
     /**
@@ -106,7 +106,7 @@ public class SysLogAspect {
         SLogSysEntity entity = new SLogSysEntity();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        SysLog sysLog = method.getAnnotation(SysLog.class);
+        SysLogAnnotion sysLog = method.getAnnotation(SysLogAnnotion.class);
         if (perfectConfigProperies.isLogSaveDb()){
             entity.setOperation(sysLog.value());
             entity.setUrl(request.getRequestURL().toString());
@@ -144,7 +144,7 @@ public class SysLogAspect {
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        SysLog sysLog = method.getAnnotation(SysLog.class);
+        SysLogAnnotion sysLog = method.getAnnotation(SysLogAnnotion.class);
         SysLogBo sysLogBo = SysLogBo.builder()
             .className(joinPoint.getTarget().getClass().getName())
             .httpMethod(request.getMethod())

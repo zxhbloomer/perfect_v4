@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.core.service.sys.config.dict.ISDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,6 @@ import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.sys.config.dict.SDictTypeExportVo;
 import com.perfect.bean.vo.sys.config.resource.SResourceExportVo;
 import com.perfect.bean.vo.sys.rabc.role.SRoleVo;
-import com.perfect.common.annotation.SysLog;
 import com.perfect.common.enums.ResultEnum;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
@@ -48,7 +48,7 @@ public class DictDataController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据参数id，获取字典数据表信息")
+    @SysLogAnnotion("根据参数id，获取字典数据表信息")
     @ApiOperation("根据参数id，获取字典数据表信息")
     @PostMapping("{ id }")
     @ResponseBody
@@ -60,7 +60,7 @@ public class DictDataController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("根据查询条件，获取字典数据表信息")
+    @SysLogAnnotion("根据查询条件，获取字典数据表信息")
     @ApiOperation("根据参数id，获取字典数据表信息")
     @PostMapping("/list")
     @ResponseBody
@@ -69,7 +69,7 @@ public class DictDataController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("字典数据表数据更新保存")
+    @SysLogAnnotion("字典数据表数据更新保存")
     @ApiOperation("根据参数id，获取字典数据表信息")
     @PostMapping("/save")
     @ResponseBody
@@ -81,7 +81,7 @@ public class DictDataController extends BaseController {
         }
     }
 
-    @SysLog("字典数据表数据新增保存")
+    @SysLogAnnotion("字典数据表数据新增保存")
     @ApiOperation("根据参数id，获取字典数据表信息")
     @PostMapping("/insert")
     @ResponseBody
@@ -93,7 +93,7 @@ public class DictDataController extends BaseController {
         }
     }
 
-    @SysLog("字典数据表数据导出")
+    @SysLogAnnotion("字典数据表数据导出")
     @ApiOperation("根据选择的数据，字典数据表数据导出")
     @PostMapping("/export_all")
     public void exportAll(@RequestBody(required = false) SDictDataVo searchCondition, HttpServletResponse response) throws IOException {
@@ -103,7 +103,7 @@ public class DictDataController extends BaseController {
         util.exportExcel("字典数据表数据导出", "字典数据表数据", rtnList, response);
     }
 
-    @SysLog("字典数据表数据导出")
+    @SysLogAnnotion("字典数据表数据导出")
     @ApiOperation("根据选择的数据，字典数据表数据导出")
     @PostMapping("/export_selection")
     public void exportSelection(@RequestBody(required = false) List<SDictDataVo> searchConditionList, HttpServletResponse response) throws IOException {
@@ -113,7 +113,7 @@ public class DictDataController extends BaseController {
         util.exportExcel("字典数据表数据导出", "字典数据表数据", rtnList, response);
     }
 
-    @SysLog("字典数据表数据逻辑删除复原")
+    @SysLogAnnotion("字典数据表数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
     @PostMapping("/delete")
     @ResponseBody
@@ -122,7 +122,7 @@ public class DictDataController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 
-    @SysLog("字典数据导入")
+    @SysLogAnnotion("字典数据导入")
     @ApiOperation("字典数据模板导入")
     @PostMapping("/import")
     public ResponseEntity<JsonResult<Object>> importData(@RequestBody(required = false) SDictDataVo uploadData,
@@ -151,7 +151,7 @@ public class DictDataController extends BaseController {
         }
     }
 
-    @SysLog("字典数据表排序后保存")
+    @SysLogAnnotion("字典数据表排序后保存")
     @ApiOperation("list数据的保存")
     @PostMapping("/save_list")
     @ResponseBody

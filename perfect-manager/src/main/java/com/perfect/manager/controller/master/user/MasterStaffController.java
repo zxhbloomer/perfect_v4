@@ -6,10 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.vo.master.user.MStaffExportVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
-import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.core.service.master.user.IMStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import org.springframework.web.client.RestTemplate;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
-import com.perfect.common.annotation.SysLog;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
@@ -45,7 +43,7 @@ public class MasterStaffController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据查询条件，获取员工主表信息")
+    @SysLogAnnotion("根据查询条件，获取员工主表信息")
     @ApiOperation("根据参数id，获取员工主表信息")
     @PostMapping("/list")
     @ResponseBody
@@ -55,7 +53,7 @@ public class MasterStaffController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("员工主表数据更新保存")
+    @SysLogAnnotion("员工主表数据更新保存")
     @ApiOperation("根据参数id，获取员工主表信息")
     @PostMapping("/save")
     @ResponseBody
@@ -68,7 +66,7 @@ public class MasterStaffController extends BaseController {
         }
     }
 
-    @SysLog("员工主表数据新增保存")
+    @SysLogAnnotion("员工主表数据新增保存")
     @ApiOperation("根据参数id，获取员工主表信息")
     @PostMapping("/insert")
     @ResponseBody
@@ -80,7 +78,7 @@ public class MasterStaffController extends BaseController {
         }
     }
 
-    @SysLog("员工主表数据导出")
+    @SysLogAnnotion("员工主表数据导出")
     @ApiOperation("根据选择的数据，员工主表数据导出")
     @PostMapping("/export_all")
     public void exportAll(@RequestBody(required = false) MStaffVo searchCondition, HttpServletResponse response)
@@ -91,7 +89,7 @@ public class MasterStaffController extends BaseController {
         util.exportExcel("员工主表数据导出", "员工主表数据", rtnList, response);
     }
 
-    @SysLog("员工主表数据导出")
+    @SysLogAnnotion("员工主表数据导出")
     @ApiOperation("根据选择的数据，员工主表数据导出")
     @PostMapping("/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MStaffVo> searchConditionList,
@@ -101,7 +99,7 @@ public class MasterStaffController extends BaseController {
         util.exportExcel("员工主表数据导出", "员工主表数据", searchResult, response);
     }
 
-    @SysLog("员工主表数据逻辑删除复原")
+    @SysLogAnnotion("员工主表数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
     @PostMapping("/delete")
     @ResponseBody

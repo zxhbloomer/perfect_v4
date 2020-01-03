@@ -1,7 +1,7 @@
 package com.perfect.manager.controller.sys.config.template;
 
 import com.perfect.bean.vo.sys.config.module.SModuleVo;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.core.service.sys.config.module.IModuleService;
 import com.perfect.excel.bean.importconfig.template.ExcelTemplate;
 import com.perfect.excel.export.ExcelUtil;
@@ -31,7 +31,7 @@ public class TemplateController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("excel上传模板下载")
+    @SysLogAnnotion("excel上传模板下载")
     @ApiOperation("根据页面id，获取相应的下载模板")
     @GetMapping
     @ResponseBody

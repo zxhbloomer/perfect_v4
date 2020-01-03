@@ -1,6 +1,6 @@
 package com.perfect.framework.spring.aspect.v1.datasource;
 
-import com.perfect.common.annotation.DataSource;
+import com.perfect.common.annotations.DataSourceAnnotion;
 import com.perfect.common.config.datasource.DynamicDataSourceContextHolder;
 import com.perfect.common.utils.string.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 @Slf4j
 public class DataSourceAspect {
 
-    @Pointcut("@annotation(com.perfect.common.annotation.DataSource)")
+    @Pointcut("@annotation(com.perfect.common.annotations.DataSourceAnnotion)")
     public void dsPointCut() {
 
     }
@@ -36,7 +36,7 @@ public class DataSourceAspect {
 
         Method method = signature.getMethod();
 
-        DataSource dataSource = method.getAnnotation(DataSource.class);
+        DataSourceAnnotion dataSource = method.getAnnotation(DataSourceAnnotion.class);
 
         if (StringUtil.isNotNull(dataSource)) {
             DynamicDataSourceContextHolder.setDataSourceType(dataSource.value().name());

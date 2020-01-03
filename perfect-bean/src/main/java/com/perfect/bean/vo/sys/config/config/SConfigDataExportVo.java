@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.pojo.fs.UploadFileResultPojo;
-import com.perfect.common.annotation.Excel;
+import com.perfect.common.annotations.ExcelAnnotion;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,31 +26,31 @@ public class SConfigDataExportVo extends BaseVo implements Serializable {
     /**
      * 参数名称
      */
-    @Excel(name = "参数名称")
+    @ExcelAnnotion(name = "参数名称")
     private String name;
 
     /**
      * 参数键名
      */
-    @Excel(name = "参数键名")
+    @ExcelAnnotion(name = "参数键名")
     private String config_key;
 
     /**
      * 参数键值
      */
-    @Excel(name = "参数键值")
+    @ExcelAnnotion(name = "参数键值")
     private String value;
 
     /**
      * 是否禁用(1:false-未启用,0:true-已启用)
      */
-    @Excel(name = "是否禁用")
+    @ExcelAnnotion(name = "是否禁用")
     private Boolean isenable;
 
     /**
      * 描述
      */
-    @Excel(name = "描述")
+    @ExcelAnnotion(name = "描述")
     private String descr;
 
     private Long c_id;

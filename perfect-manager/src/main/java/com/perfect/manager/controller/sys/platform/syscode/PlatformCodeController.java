@@ -5,8 +5,8 @@ import com.perfect.bean.entity.sys.platform.syscode.SCodeEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.sys.platform.syscode.SCodeVo;
-import com.perfect.common.annotation.RepeatSubmit;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.RepeatSubmitAnnotion;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.core.service.sys.platform.syscode.ISCodeService;
@@ -35,7 +35,7 @@ public class PlatformCodeController extends BaseController {
     private RestTemplate restTemplate;
 
 
-    @SysLog("根据查询条件，获取系统参数信息")
+    @SysLogAnnotion("根据查询条件，获取系统参数信息")
     @ApiOperation("根据参数id，获取系统参数信息")
     @PostMapping("/list")
     @ResponseBody
@@ -44,11 +44,11 @@ public class PlatformCodeController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("系统参数数据更新保存")
+    @SysLogAnnotion("系统参数数据更新保存")
     @ApiOperation("根据参数id，获取系统参数信息")
     @PostMapping("/save")
     @ResponseBody
-    @RepeatSubmit
+    @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<SCodeVo>> save(@RequestBody(required = false) SCodeEntity bean) {
 
         if(service.update(bean).isSuccess()){
@@ -58,11 +58,11 @@ public class PlatformCodeController extends BaseController {
         }
     }
 
-    @SysLog("系统参数数据新增保存")
+    @SysLogAnnotion("系统参数数据新增保存")
     @ApiOperation("根据参数id，获取系统参数信息")
     @PostMapping("/insert")
     @ResponseBody
-    @RepeatSubmit
+    @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<SCodeVo>> insert(@RequestBody(required = false) SCodeEntity bean) {
         if(service.insert(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));

@@ -1,4 +1,4 @@
-package com.perfect.common.annotation;
+package com.perfect.common.annotations;
 
 import com.perfect.common.enums.OperationEnum;
 
@@ -8,22 +8,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 具体的操作，日志中需要保存的内容
+ * 用来标注需要进行操作日志的服务函数上
  * @author zxh
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OperationDetailLog {
-	/** 业务名 */
+public @interface OperationLogAnnotion {
+	/** 操作业务名 */
 	String name();
 	/** 操作类型 */
 	OperationEnum type();
-	/** 业务操作描述 */
-	String oper_info();
-	/** 表名 */
-	String table_name();
-	/** 需要记录的字段 */
-	String[] cloums() default {};
-	/** id字段的值 */
-	String id();
+	/** 具体的操作，日志中需要保存的内容 */
+	OperationDetailLogAnnotion[] operationDetails() default {};
 }

@@ -1,7 +1,7 @@
 package com.perfect.quartz.util;
 
 import com.perfect.bean.entity.quartz.SJobEntity;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.constant.ScheduleConstants;
 import com.perfect.common.exception.job.TaskException;
 import com.perfect.common.utils.LocalDateTimeUtils;
@@ -35,7 +35,7 @@ public class ScheduleUtils {
     /**
      * 创建定时任务:SimpleTrigger
      */
-    @SysLog("创建定时任务SimpleTrigger")
+    @SysLogAnnotion("创建定时任务SimpleTrigger")
     public static boolean createScheduleJobSimpleTrigger(Scheduler scheduler, SJobEntity job, Class<? extends Job> jobClass) throws SchedulerException, TaskException {
         log.debug("创建定时任务开始SimpleTrigger");
         // 构建job信息
@@ -98,7 +98,7 @@ public class ScheduleUtils {
     /**
      * 创建定时任务:Cron表达式
      */
-    @SysLog("创建定时任务CroTrigger")
+    @SysLogAnnotion("创建定时任务CroTrigger")
     public static boolean createScheduleJobCron(Scheduler scheduler, SJobEntity job, Class<? extends Job> jobClass) throws SchedulerException, TaskException {
         log.debug("创建定时任务开始CronTrigger");
         // 构建job信息

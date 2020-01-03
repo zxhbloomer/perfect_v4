@@ -228,12 +228,16 @@ public final class CommonUtil {
 
         for (PropertyDescriptor var1 : desSf) {
             // 如果该属性名是class 并且类型为Class 则跳过
-            if (var1.getName().equals("class") && var1.getPropertyType().getSimpleName().equals("Class")) continue;
+            if (var1.getName().equals("class") && var1.getPropertyType().getSimpleName().equals("Class")) {
+                continue;
+            }
 
             for (PropertyDescriptor var2 : desTf) {
 
                 // 如果该属性名是class 并且类型为Class 则跳过
-                if (var1.getName().equals("class") && var2.getPropertyType().getSimpleName().equals("Class")) continue;
+                if (var1.getName().equals("class") && var2.getPropertyType().getSimpleName().equals("Class")) {
+                    continue;
+                }
 
                 if (var1.getName().equals(var2.getName())) {
 
@@ -260,10 +264,11 @@ public final class CommonUtil {
      */
     public static boolean isPhoneNo(String phoneNo) {
         String regex = "[1]\\d{10}";
-        if (StringUtils.isBlank(phoneNo))
+        if (StringUtils.isBlank(phoneNo)) {
             return false;
-        else
+        } else {
             return phoneNo.matches(regex);
+        }
     }
 
     /**
@@ -289,8 +294,9 @@ public final class CommonUtil {
             BufferedReader streamReader = new BufferedReader( new InputStreamReader(request.getInputStream(), "UTF-8"));
             StringBuilder responseStrBuilder = new StringBuilder();
             String inputStr;
-            while ((inputStr = streamReader.readLine()) != null)
+            while ((inputStr = streamReader.readLine()) != null) {
                 responseStrBuilder.append(inputStr);
+            }
             if(StringUtils.isBlank(responseStrBuilder.toString())){
                 return request;
             }

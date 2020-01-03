@@ -1,7 +1,7 @@
 package com.perfect.excel.export;
 
-import com.perfect.common.annotation.Excel;
-import com.perfect.common.annotation.Excels;
+import com.perfect.common.annotations.ExcelAnnotion;
+import com.perfect.common.annotations.ExcelsAnnotion;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.DateTimeUtil;
@@ -193,7 +193,7 @@ public class ExcelUtil<T> {
                 int column = 0;
                 // 写入各个字段的列头名称
                 for (Object[] os : fields) {
-                    Excel excel = (Excel)os[1];
+                    ExcelAnnotion excel = (ExcelAnnotion)os[1];
                     this.createRowHeadCell(excel, row, column++);
                 }
                 fillExcelData(index, row);
@@ -289,7 +289,7 @@ public class ExcelUtil<T> {
             int column = 0;
             for (Object[] os : fields) {
                 Field field = (Field)os[0];
-                Excel excel = (Excel)os[1];
+                ExcelAnnotion excel = (ExcelAnnotion)os[1];
                 // 设置实体类私有属性可访问
                 field.setAccessible(true);
                 this.addCell(excel, row, vo, field, column++, cs);
@@ -300,7 +300,7 @@ public class ExcelUtil<T> {
     /**
      * 创建head单元格
      */
-    public Cell createRowHeadCell(Excel attr, Row row, int column) {
+    public Cell createRowHeadCell(ExcelAnnotion attr, Row row, int column) {
         // 创建列
         Cell cell = row.createCell(column);
         // 设置列中写入内容为String类型
@@ -330,7 +330,7 @@ public class ExcelUtil<T> {
     /**
      * 创建head表格样式
      */
-    public CellStyle createHeadStyle(Excel attr, Row row, int column) {
+    public CellStyle createHeadStyle(ExcelAnnotion attr, Row row, int column) {
         CellStyle cellStyle = wb.createCellStyle();
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -420,7 +420,7 @@ public class ExcelUtil<T> {
     /**
      * 添加单元格
      */
-    public Cell addCell(Excel attr, Row row, T vo, Field field, int column, CellStyle cs) {
+    public Cell addCell(ExcelAnnotion attr, Row row, T vo, Field field, int column, CellStyle cs) {
         Cell cell = null;
         try {
             // 设置行高
@@ -531,15 +531,15 @@ public class ExcelUtil<T> {
         tempFields.addAll(Arrays.asList(clazz.getDeclaredFields()));
         for (Field field : tempFields) {
             // 单注解
-            if (field.isAnnotationPresent(Excel.class)) {
-                putToField(field, field.getAnnotation(Excel.class));
+            if (field.isAnnotationPresent(ExcelAnnotion.class)) {
+                putToField(field, field.getAnnotation(ExcelAnnotion.class));
             }
 
             // 多注解
-            if (field.isAnnotationPresent(Excels.class)) {
-                Excels attrs = field.getAnnotation(Excels.class);
-                Excel[] excels = attrs.value();
-                for (Excel excel : excels) {
+            if (field.isAnnotationPresent(ExcelsAnnotion.class)) {
+                ExcelsAnnotion attrs = field.getAnnotation(ExcelsAnnotion.class);
+                ExcelAnnotion[] excels = attrs.value();
+                for (ExcelAnnotion excel : excels) {
                     putToField(field, excel);
                 }
             }
@@ -549,7 +549,7 @@ public class ExcelUtil<T> {
     /**
      * 放到字段集合中
      */
-    private void putToField(Field field, Excel attr) {
+    private void putToField(Field field, ExcelAnnotion attr) {
         if (attr != null) {
             this.fields.add(new Object[] {field, attr});
         }

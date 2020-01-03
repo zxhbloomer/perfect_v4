@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
-import com.perfect.common.annotation.Excel;
+import com.perfect.common.annotations.ExcelAnnotion;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,31 +32,31 @@ public class MGroupExportVo extends BaseVo implements Serializable {
     /**
      * 集团编码
      */
-    @Excel(name = "集团编码")
+    @ExcelAnnotion(name = "集团编码")
     private String code;
 
     /**
      * 集团名称
      */
-    @Excel(name = "集团名称")
+    @ExcelAnnotion(name = "集团名称")
     private String name;
 
     /**
      * 简称
      */
-    @Excel(name = "集团简称")
+    @ExcelAnnotion(name = "集团简称")
     private String simple_name;
 
     /**
      * 描述
      */
-    @Excel(name = "集团描述")
+    @ExcelAnnotion(name = "集团描述")
     private String descr;
 
     /**
      * 是否删除
      */
-    @Excel(name = "是否删除")
+    @ExcelAnnotion(name = "是否删除")
     private Boolean is_del;
 
     /**

@@ -7,7 +7,7 @@ import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.master.org.MDeptExportVo;
 import com.perfect.bean.vo.master.org.MGroupExportVo;
 import com.perfect.bean.vo.master.org.MDeptVo;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
@@ -42,7 +42,7 @@ public class MasterDeptController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据查询条件，获取部门主表信息")
+    @SysLogAnnotion("根据查询条件，获取部门主表信息")
     @ApiOperation("根据参数id，获取部门主表信息")
     @PostMapping("/list")
     @ResponseBody
@@ -52,7 +52,7 @@ public class MasterDeptController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("部门主表数据更新保存")
+    @SysLogAnnotion("部门主表数据更新保存")
     @ApiOperation("根据参数id，获取部门主表信息")
     @PostMapping("/save")
     @ResponseBody
@@ -65,7 +65,7 @@ public class MasterDeptController extends BaseController {
         }
     }
 
-    @SysLog("部门主表数据新增保存")
+    @SysLogAnnotion("部门主表数据新增保存")
     @ApiOperation("根据参数id，获取部门主表信息")
     @PostMapping("/insert")
     @ResponseBody
@@ -77,7 +77,7 @@ public class MasterDeptController extends BaseController {
         }
     }
 
-    @SysLog("部门主表数据导出")
+    @SysLogAnnotion("部门主表数据导出")
     @ApiOperation("根据选择的数据，部门主表数据导出")
     @PostMapping("/export_all")
     public void exportAll(@RequestBody(required = false) MDeptVo searchCondition, HttpServletResponse response) throws IOException {
@@ -87,7 +87,7 @@ public class MasterDeptController extends BaseController {
         util.exportExcel("部门主表数据导出", "部门主表数据", rtnList, response);
     }
 
-    @SysLog("部门主表数据导出")
+    @SysLogAnnotion("部门主表数据导出")
     @ApiOperation("根据选择的数据，部门主表数据导出")
     @PostMapping("/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MDeptVo> searchConditionList, HttpServletResponse response) throws IOException {
@@ -97,7 +97,7 @@ public class MasterDeptController extends BaseController {
         util.exportExcel("部门主表数据导出", "部门主表数据", rtnList, response);
     }
 
-    @SysLog("部门主表数据逻辑删除复原")
+    @SysLogAnnotion("部门主表数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
     @PostMapping("/delete")
     @ResponseBody

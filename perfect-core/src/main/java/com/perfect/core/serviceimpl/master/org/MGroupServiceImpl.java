@@ -13,8 +13,8 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.org.MGroupVo;
-import com.perfect.common.annotation.OperationDetailLog;
-import com.perfect.common.annotation.OperationLog;
+import com.perfect.common.annotations.OperationDetailLogAnnotion;
+import com.perfect.common.annotations.OperationLogAnnotion;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.enums.OperationEnum;
 import com.perfect.common.exception.BusinessException;
@@ -97,6 +97,17 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @param searchCondition
      * @return
      */
+    @OperationLogAnnotion(
+        name = PerfectConstant.OPERATION.TABLE_M_GROUP_LOGIC_DELETE,
+        type = OperationEnum.LOGIC_DELETE,
+        operationDetails = @OperationDetailLogAnnotion(
+            name = PerfectConstant.OPERATION.TABLE_M_GROUP_LOGIC_DELETE,
+            type = OperationEnum.LOGIC_DELETE,
+            oper_info = "",
+            table_name = "m_group",
+            id = "#{entity.id}"
+        )
+    )
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteByIdsIn(List<MGroupVo> searchCondition) {
@@ -124,10 +135,10 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @param entity 实体对象
      * @return
      */
-    @OperationLog(
+    @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT,
         type = OperationEnum.ADD,
-        operationDetails = @OperationDetailLog(
+        operationDetails = @OperationDetailLogAnnotion(
             name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT, type = OperationEnum.ADD, oper_info = "", table_name = "m_group", id = "#{entity.id}"
         )
     )
@@ -154,10 +165,10 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @param entity 实体对象
      * @return
      */
-    @OperationLog(
+    @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.TABLE_M_GROUP_UPDATE,
         type = OperationEnum.UPDATE,
-        operationDetails = @OperationDetailLog(
+        operationDetails = @OperationDetailLogAnnotion(
             name = PerfectConstant.OPERATION.TABLE_M_GROUP_UPDATE, type = OperationEnum.UPDATE, oper_info = "", table_name = "m_group", id = "#{entity.id}"
         )
     )

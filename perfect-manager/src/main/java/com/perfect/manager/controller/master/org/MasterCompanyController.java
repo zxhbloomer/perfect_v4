@@ -6,7 +6,7 @@ import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.master.org.MCompanyExportVo;
 import com.perfect.bean.vo.master.org.MCompanyVo;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
@@ -40,7 +40,7 @@ public class MasterCompanyController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据查询条件，获取公司主表信息")
+    @SysLogAnnotion("根据查询条件，获取公司主表信息")
     @ApiOperation("根据参数id，获取公司主表信息")
     @PostMapping("/company/list")
     @ResponseBody
@@ -49,7 +49,7 @@ public class MasterCompanyController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("公司主表数据更新保存")
+    @SysLogAnnotion("公司主表数据更新保存")
     @ApiOperation("根据参数id，获取公司主表信息")
     @PostMapping("/company/save")
     @ResponseBody
@@ -62,7 +62,7 @@ public class MasterCompanyController extends BaseController {
         }
     }
 
-    @SysLog("公司主表数据新增保存")
+    @SysLogAnnotion("公司主表数据新增保存")
     @ApiOperation("根据参数id，获取公司主表信息")
     @PostMapping("/company/insert")
     @ResponseBody
@@ -74,7 +74,7 @@ public class MasterCompanyController extends BaseController {
         }
     }
 
-    @SysLog("公司主表数据导出")
+    @SysLogAnnotion("公司主表数据导出")
     @ApiOperation("根据选择的数据，公司主表数据导出")
     @PostMapping("/company/export_all")
     public void exportAll(@RequestBody(required = false) MCompanyVo searchCondition, HttpServletResponse response) throws IOException {
@@ -84,7 +84,7 @@ public class MasterCompanyController extends BaseController {
         util.exportExcel("公司主表数据导出", "公司主表数据", rtnList, response);
     }
 
-    @SysLog("公司主表数据导出")
+    @SysLogAnnotion("公司主表数据导出")
     @ApiOperation("根据选择的数据，公司主表数据导出")
     @PostMapping("/company/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MCompanyVo> searchConditionList, HttpServletResponse response) throws IOException {
@@ -94,7 +94,7 @@ public class MasterCompanyController extends BaseController {
         util.exportExcel("公司主表数据导出", "公司主表数据", rtnList, response);
     }
 
-    @SysLog("公司主表数据逻辑删除复原")
+    @SysLogAnnotion("公司主表数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
     @PostMapping("/company/delete")
     @ResponseBody

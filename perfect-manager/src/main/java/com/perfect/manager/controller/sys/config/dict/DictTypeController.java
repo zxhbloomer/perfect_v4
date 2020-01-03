@@ -8,7 +8,7 @@ import com.perfect.bean.vo.sys.config.dict.SDictTypeExportVo;
 import com.perfect.bean.vo.sys.config.dict.SDictTypeVo;
 import com.perfect.bean.vo.sys.config.resource.SResourceExportVo;
 import com.perfect.bean.vo.sys.rabc.role.SRoleVo;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.enums.ResultEnum;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
@@ -45,7 +45,7 @@ public class DictTypeController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据参数id，获取字典主表信息")
+    @SysLogAnnotion("根据参数id，获取字典主表信息")
     @ApiOperation("根据参数id，获取字典主表信息")
     @PostMapping("{ id }")
     @ResponseBody
@@ -57,7 +57,7 @@ public class DictTypeController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("根据查询条件，获取字典主表信息")
+    @SysLogAnnotion("根据查询条件，获取字典主表信息")
     @ApiOperation("根据参数id，获取字典主表信息")
     @PostMapping("/list")
     @ResponseBody
@@ -66,7 +66,7 @@ public class DictTypeController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("字典主表数据更新保存")
+    @SysLogAnnotion("字典主表数据更新保存")
     @ApiOperation("根据参数id，获取字典主表信息")
     @PostMapping("/save")
     @ResponseBody
@@ -79,7 +79,7 @@ public class DictTypeController extends BaseController {
         }
     }
 
-    @SysLog("字典主表数据新增保存")
+    @SysLogAnnotion("字典主表数据新增保存")
     @ApiOperation("根据参数id，获取字典主表信息")
     @PostMapping("/insert")
     @ResponseBody
@@ -91,7 +91,7 @@ public class DictTypeController extends BaseController {
         }
     }
 
-    @SysLog("字典主表数据导出")
+    @SysLogAnnotion("字典主表数据导出")
     @ApiOperation("根据选择的数据，字典主表数据导出")
     @PostMapping("/export_all")
     public void exportAll(@RequestBody(required = false) SDictTypeVo searchCondition, HttpServletResponse response) throws IOException {
@@ -101,7 +101,7 @@ public class DictTypeController extends BaseController {
         util.exportExcel("字典主表数据导出", "字典主表数据", rtnList, response);
     }
 
-    @SysLog("字典主表数据导出")
+    @SysLogAnnotion("字典主表数据导出")
     @ApiOperation("根据选择的数据，字典主表数据导出")
     @PostMapping("/export_selection")
     public void exportSelection(@RequestBody(required = false) List<SDictTypeVo> searchConditionList, HttpServletResponse response) throws IOException {
@@ -111,7 +111,7 @@ public class DictTypeController extends BaseController {
         util.exportExcel("字典主表数据导出", "字典主表数据", rtnList, response);
     }
 
-    @SysLog("字典主表数据逻辑删除复原")
+    @SysLogAnnotion("字典主表数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
     @PostMapping("/delete")
     @ResponseBody
@@ -120,7 +120,7 @@ public class DictTypeController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 
-    @SysLog("字典类型数据导入")
+    @SysLogAnnotion("字典类型数据导入")
     @ApiOperation("字典类型数据模板导入")
     @PostMapping("/import")
     public ResponseEntity<JsonResult<Object>> importData(@RequestBody(required = false) SDictTypeVo uploadData,

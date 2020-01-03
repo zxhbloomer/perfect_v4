@@ -8,8 +8,8 @@ import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.sys.config.config.SConfigVo;
 import com.perfect.bean.vo.sys.config.tenant.STenantTreeVo;
 import com.perfect.bean.vo.sys.config.tenant.STenantVo;
-import com.perfect.common.annotation.RepeatSubmit;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.RepeatSubmitAnnotion;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.core.service.sys.config.tenant.ITenantService;
@@ -42,7 +42,7 @@ public class TenantController extends BaseController implements TenantMqCallback
 
 
 
-    @SysLog("根据查询条件，获取租户信息")
+    @SysLogAnnotion("根据查询条件，获取租户信息")
     @ApiOperation("获取租户树数据")
     @PostMapping("/tree/list")
     @ResponseBody
@@ -52,7 +52,7 @@ public class TenantController extends BaseController implements TenantMqCallback
         return ResponseEntity.ok().body(ResultUtil.OK(rtnVo));
     }
 
-    @SysLog("根据查询条件，获取租户信息")
+    @SysLogAnnotion("根据查询条件，获取租户信息")
     @ApiOperation("获取级联数据")
     @PostMapping("/cascader/list")
     @ResponseBody
@@ -62,7 +62,7 @@ public class TenantController extends BaseController implements TenantMqCallback
         return ResponseEntity.ok().body(ResultUtil.OK(rtnVo,true));
     }
 
-    @SysLog("根据参数id，获取租户信息")
+    @SysLogAnnotion("根据参数id，获取租户信息")
     @ApiOperation("根据参数id，获取租户信息")
     @PostMapping("{ id }")
     @ResponseBody
@@ -71,7 +71,7 @@ public class TenantController extends BaseController implements TenantMqCallback
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("根据查询条件，获取租户信息")
+    @SysLogAnnotion("根据查询条件，获取租户信息")
     @ApiOperation("根据参数id，获取租户信息")
     @PostMapping("/list")
     @ResponseBody
@@ -80,11 +80,11 @@ public class TenantController extends BaseController implements TenantMqCallback
             return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("租户数据更新保存")
+    @SysLogAnnotion("租户数据更新保存")
     @ApiOperation("租户数据更新保存")
     @PostMapping("/save")
     @ResponseBody
-    @RepeatSubmit
+    @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<STenantVo>> save(@RequestBody(required = false) STenantEntity bean) {
 
         if(service.update(bean).isSuccess()){
@@ -98,11 +98,11 @@ public class TenantController extends BaseController implements TenantMqCallback
         }
     }
 
-    @SysLog("租户数据新增保存")
+    @SysLogAnnotion("租户数据新增保存")
     @ApiOperation("租户数据新增保存")
     @PostMapping("/insert")
     @ResponseBody
-    @RepeatSubmit
+    @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<STenantVo>> insert(@RequestBody(required = false) STenantEntity bean) {
         // 默认启用
         bean.setIs_enable(true);

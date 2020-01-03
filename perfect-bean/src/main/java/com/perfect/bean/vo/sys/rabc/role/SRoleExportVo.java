@@ -3,7 +3,7 @@ package com.perfect.bean.vo.sys.rabc.role;
 import java.io.Serializable;
 
 import com.perfect.bean.config.base.v1.BaseVo;
-import com.perfect.common.annotation.Excel;
+import com.perfect.common.annotations.ExcelAnnotion;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,31 +28,31 @@ public class SRoleExportVo extends BaseVo implements Serializable {
     /**
      * 角色类型
      */
-    @Excel(name = "角色类型")
+    @ExcelAnnotion(name = "角色类型")
     private String type;
 
     /**
      * 角色编码
      */
-    @Excel(name = "角色编码")
+    @ExcelAnnotion(name = "角色编码")
     private String code;
 
     /**
      * 角色名称
      */
-    @Excel(name = "角色名称")
+    @ExcelAnnotion(name = "角色名称")
     private String name;
 
     /**
      * 描述
      */
-    @Excel(name = "描述")
+    @ExcelAnnotion(name = "描述")
     private String descr;
 
     /**
      * 简称
      */
-    @Excel(name = "简称")
+    @ExcelAnnotion(name = "简称")
     private String simple_name;
 
 }

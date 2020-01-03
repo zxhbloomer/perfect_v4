@@ -3,21 +3,18 @@ package com.perfect.manager.controller.master.user;
 import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.vo.master.user.MUserVo;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.PasswordException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.string.StringUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.master.user.UserInfoVo;
-import com.perfect.common.annotation.SysLog;
 import com.perfect.core.service.client.user.IMUserService;
 import com.perfect.framework.base.controller.v1.BaseController;
 
@@ -40,7 +37,7 @@ public class UserController extends BaseController {
     @Autowired
     private IMUserService service;
 
-    @SysLog("获取用户信息")
+    @SysLogAnnotion("获取用户信息")
     @ApiOperation("获取用户信息")
     @GetMapping("/info")
     @ResponseBody
@@ -52,7 +49,7 @@ public class UserController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(userInfoVo));
     }
 
-    @SysLog("登出")
+    @SysLogAnnotion("登出")
     @ApiOperation("登出")
     @PostMapping("/logout")
     @ResponseBody
@@ -61,7 +58,7 @@ public class UserController extends BaseController {
     }
 
 
-    @SysLog("员工主表数据更新保存")
+    @SysLogAnnotion("员工主表数据更新保存")
     @ApiOperation("根据参数id，获取员工主表信息")
     @PostMapping("/save")
     @ResponseBody
@@ -74,7 +71,7 @@ public class UserController extends BaseController {
         }
     }
 
-    @SysLog("员工主表数据新增保存")
+    @SysLogAnnotion("员工主表数据新增保存")
     @ApiOperation("根据参数id，获取员工主表信息")
     @PostMapping("/insert")
     @ResponseBody
@@ -86,7 +83,7 @@ public class UserController extends BaseController {
         }
     }
 
-    @SysLog("获取用户信息")
+    @SysLogAnnotion("获取用户信息")
     @ApiOperation("获取用户信息")
     @PostMapping("/list")
     @ResponseBody
@@ -95,7 +92,7 @@ public class UserController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(mUserVo));
     }
 
-    @SysLog("获取用户信息")
+    @SysLogAnnotion("获取用户信息")
     @ApiOperation("获取用户信息")
     @PostMapping("/getpsd")
     @ResponseBody

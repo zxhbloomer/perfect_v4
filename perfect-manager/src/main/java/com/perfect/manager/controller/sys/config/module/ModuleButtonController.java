@@ -4,6 +4,7 @@ import com.perfect.bean.entity.sys.config.module.SModuleButtonEntity;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
 import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.core.service.sys.config.module.IModuleButtonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
-import com.perfect.common.annotation.SysLog;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.framework.base.controller.v1.BaseController;
@@ -39,7 +39,7 @@ public class ModuleButtonController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据查询条件，获取模块按钮表信息")
+    @SysLogAnnotion("根据查询条件，获取模块按钮表信息")
     @ApiOperation("根据参数id，获取模块按钮表信息")
     @PostMapping("/list")
     @ResponseBody
@@ -48,7 +48,7 @@ public class ModuleButtonController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("模块按钮表数据更新保存")
+    @SysLogAnnotion("模块按钮表数据更新保存")
     @ApiOperation("根据参数id，获取模块按钮表信息")
     @PostMapping("/save")
     @ResponseBody
@@ -61,7 +61,7 @@ public class ModuleButtonController extends BaseController {
         }
     }
 
-    @SysLog("模块按钮表数据新增保存")
+    @SysLogAnnotion("模块按钮表数据新增保存")
     @ApiOperation("根据参数id，获取模块按钮表信息")
     @PostMapping("/insert")
     @ResponseBody
@@ -73,7 +73,7 @@ public class ModuleButtonController extends BaseController {
         }
     }
 
-    @SysLog("模块按钮表数据逻辑物理删除，部分数据")
+    @SysLogAnnotion("模块按钮表数据逻辑物理删除，部分数据")
     @ApiOperation("根据参数id，逻辑删除数据")
     @PostMapping("/delete")
     @ResponseBody
@@ -82,7 +82,7 @@ public class ModuleButtonController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 
-    @SysLog("模块按钮表排序后保存")
+    @SysLogAnnotion("模块按钮表排序后保存")
     @ApiOperation("list数据的保存")
         @PostMapping("/save_list")
     @ResponseBody

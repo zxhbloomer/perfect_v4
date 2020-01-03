@@ -2,12 +2,10 @@ package com.perfect.bean.vo.master.org;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.perfect.bean.config.base.v1.BaseVo;
-import com.perfect.common.annotation.Excel;
+import com.perfect.common.annotations.ExcelAnnotion;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -34,19 +32,19 @@ public class MCompanyExportVo extends BaseVo implements Serializable {
     /**
      * 社会信用代码
      */
-    @Excel(name = "社会信用代码")
+    @ExcelAnnotion(name = "社会信用代码")
     private String code;
 
     /**
      * 企业全称
      */
-    @Excel(name = "企业全称")
+    @ExcelAnnotion(name = "企业全称")
     private String name;
 
     /**
      * 企业简称
      */
-    @Excel(name = "企业简称")
+    @ExcelAnnotion(name = "企业简称")
     private String simple_name;
 
     @TableField("address_id")

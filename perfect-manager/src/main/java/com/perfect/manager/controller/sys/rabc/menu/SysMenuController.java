@@ -4,7 +4,7 @@ import com.perfect.bean.entity.sys.rabc.menu.SMenuEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.core.service.sys.rabc.menu.ISMenuService;
@@ -34,7 +34,7 @@ public class SysMenuController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据查询条件，获取菜单主表信息")
+    @SysLogAnnotion("根据查询条件，获取菜单主表信息")
     @ApiOperation("根据参数id，获取菜单主表信息")
     @PostMapping("/list")
     @ResponseBody
@@ -43,7 +43,7 @@ public class SysMenuController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("根据查询条件，获取级联信息")
+    @SysLogAnnotion("根据查询条件，获取级联信息")
     @ApiOperation("获取级联数据")
     @PostMapping("/cascader/list")
     @ResponseBody
@@ -52,7 +52,7 @@ public class SysMenuController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(vo,true));
     }
 
-    @SysLog("系统菜单数据更新保存")
+    @SysLogAnnotion("系统菜单数据更新保存")
     @ApiOperation("根据参数id，获取系统菜单信息")
     @PostMapping("/save")
     @ResponseBody
@@ -65,7 +65,7 @@ public class SysMenuController extends BaseController {
         }
     }
 
-    @SysLog("系统菜单数据新增菜单组")
+    @SysLogAnnotion("系统菜单数据新增菜单组")
     @ApiOperation("新增菜单组")
     @PostMapping("/addmenugroup")
     @ResponseBody
@@ -77,7 +77,7 @@ public class SysMenuController extends BaseController {
         }
     }
 
-    @SysLog("系统菜单数据新增菜单组")
+    @SysLogAnnotion("系统菜单数据新增菜单组")
     @ApiOperation("新增菜单组")
     @PostMapping("/addsubmenu")
     @ResponseBody
@@ -89,7 +89,7 @@ public class SysMenuController extends BaseController {
         }
     }
 
-    @SysLog("模块按钮表数据逻辑物理删除，部分数据")
+    @SysLogAnnotion("模块按钮表数据逻辑物理删除，部分数据")
     @ApiOperation("根据参数id，逻辑删除数据")
     @PostMapping("/realdelete")
     @ResponseBody

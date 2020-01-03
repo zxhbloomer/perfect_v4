@@ -6,7 +6,7 @@ import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.sys.rabc.role.SRoleExportVo;
 import com.perfect.bean.vo.sys.rabc.role.SRoleVo;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.enums.ResultEnum;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
@@ -43,7 +43,7 @@ public class RoleController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据参数id，获取角色信息")
+    @SysLogAnnotion("根据参数id，获取角色信息")
     @ApiOperation("根据参数id，获取角色信息")
     @PostMapping("{ id }")
     @ResponseBody
@@ -55,7 +55,7 @@ public class RoleController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(sRoleEntity));
     }
 
-    @SysLog("根据查询条件，获取角色信息")
+    @SysLogAnnotion("根据查询条件，获取角色信息")
     @ApiOperation("根据参数id，获取角色信息")
     @PostMapping("/list")
     @ResponseBody
@@ -64,7 +64,7 @@ public class RoleController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(sRoleEntity));
     }
 
-    @SysLog("角色数据更新保存")
+    @SysLogAnnotion("角色数据更新保存")
     @ApiOperation("根据参数id，获取角色信息")
     @PostMapping("/save")
     @ResponseBody
@@ -78,7 +78,7 @@ public class RoleController extends BaseController {
         }
     }
 
-    @SysLog("角色数据新增保存")
+    @SysLogAnnotion("角色数据新增保存")
     @ApiOperation("根据参数id，获取角色信息")
     @PostMapping("/insert")
     @ResponseBody
@@ -90,7 +90,7 @@ public class RoleController extends BaseController {
         }
     }
 
-    @SysLog("角色数据导出")
+    @SysLogAnnotion("角色数据导出")
     @ApiOperation("根据选择的数据，角色数据导出")
     @PostMapping("/export_all")
     public void exportAll(@RequestBody(required = false) SRoleVo searchCondition, HttpServletResponse response) throws IOException {
@@ -101,7 +101,7 @@ public class RoleController extends BaseController {
         util.exportExcel("角色数据导出", "角色数据", rtnList, response);
     }
 
-    @SysLog("角色数据导出")
+    @SysLogAnnotion("角色数据导出")
     @ApiOperation("根据选择的数据，角色数据导出")
     @PostMapping("/export_selection")
     public void exportSelection(@RequestBody(required = false) List<SRoleVo> searchConditionList, HttpServletResponse response) throws IOException {
@@ -111,7 +111,7 @@ public class RoleController extends BaseController {
         util.exportExcel("角色数据导出", "角色数据", rtnList, response);
     }
 
-    @SysLog("角色数据导入")
+    @SysLogAnnotion("角色数据导入")
     @ApiOperation("角色数据模板导入")
     @PostMapping("/import")
     public ResponseEntity<JsonResult<Object>> importData(@RequestBody(required = false) SRoleVo uploadData,
@@ -140,7 +140,7 @@ public class RoleController extends BaseController {
         }
     }
 
-    @SysLog("角色数据逻辑删除复原")
+    @SysLogAnnotion("角色数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
     @PostMapping("/delete")
     @ResponseBody
@@ -149,7 +149,7 @@ public class RoleController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 
-    @SysLog("角色数据逻辑启用禁用")
+    @SysLogAnnotion("角色数据逻辑启用禁用")
     @ApiOperation("根据参数id，启用禁用数据")
     @PostMapping("/enable")
     @ResponseBody

@@ -1,7 +1,7 @@
 package com.perfect.framework.spring.aspect.v1.limit;
 
 import com.google.common.collect.ImmutableList;
-import com.perfect.common.annotation.Limit;
+import com.perfect.common.annotations.LimitAnnotion;
 import com.perfect.common.enums.LimitTypeEnum;
 import com.perfect.common.exception.redis.LimitAccessException;
 import com.perfect.common.utils.IPUtil;
@@ -40,7 +40,7 @@ public class LimitAspect {
         this.limitRedisTemplate = limitRedisTemplate;
     }
 
-    @Pointcut("@annotation(com.perfect.common.annotation.Limit)")
+    @Pointcut("@annotation(com.perfect.common.annotations.LimitAnnotion)")
     public void pointcut() {
         // do nothing
     }
@@ -51,7 +51,7 @@ public class LimitAspect {
 
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
-        Limit limitAnnotation = method.getAnnotation(Limit.class);
+        LimitAnnotion limitAnnotation = method.getAnnotation(LimitAnnotion.class);
         LimitTypeEnum limitType = limitAnnotation.limitType();
         String name = limitAnnotation.name();
         String key;

@@ -6,8 +6,7 @@ import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.master.org.MGroupExportVo;
 import com.perfect.bean.vo.master.org.MGroupVo;
-import com.perfect.common.annotation.SysLog;
-import com.perfect.common.exception.BusinessException;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
@@ -41,7 +40,7 @@ public class MasterGroupController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据查询条件，获取集团主表信息")
+    @SysLogAnnotion("根据查询条件，获取集团主表信息")
     @ApiOperation("根据参数id，获取集团主表信息")
     @PostMapping("/group/list")
     @ResponseBody
@@ -50,7 +49,7 @@ public class MasterGroupController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("集团主表数据更新保存")
+    @SysLogAnnotion("集团主表数据更新保存")
     @ApiOperation("根据参数id，获取集团主表信息")
     @PostMapping("/group/save")
     @ResponseBody
@@ -63,7 +62,7 @@ public class MasterGroupController extends BaseController {
         }
     }
 
-    @SysLog("集团主表数据新增保存")
+    @SysLogAnnotion("集团主表数据新增保存")
     @ApiOperation("根据参数id，获取集团主表信息")
     @PostMapping("/group/insert")
     @ResponseBody
@@ -75,7 +74,7 @@ public class MasterGroupController extends BaseController {
         }
     }
 
-    @SysLog("集团主表数据导出")
+    @SysLogAnnotion("集团主表数据导出")
     @ApiOperation("根据选择的数据，集团主表数据导出")
     @PostMapping("/group/export_all")
     public void exportAll(@RequestBody(required = false) MGroupVo searchCondition, HttpServletResponse response) throws IOException {
@@ -85,7 +84,7 @@ public class MasterGroupController extends BaseController {
         util.exportExcel("集团主表数据导出", "集团主表数据", rtnList, response);
     }
 
-    @SysLog("集团主表数据导出")
+    @SysLogAnnotion("集团主表数据导出")
     @ApiOperation("根据选择的数据，集团主表数据导出")
     @PostMapping("/group/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MGroupVo> searchConditionList, HttpServletResponse response) throws IOException {
@@ -95,7 +94,7 @@ public class MasterGroupController extends BaseController {
         util.exportExcel("集团主表数据导出", "集团主表数据", rtnList, response);
     }
 
-    @SysLog("集团主表数据逻辑删除复原")
+    @SysLogAnnotion("集团主表数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
     @PostMapping("/group/delete")
     @ResponseBody

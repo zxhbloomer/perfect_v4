@@ -1,15 +1,13 @@
 package com.perfect.manager.controller.master.org;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.perfect.bean.entity.master.org.MCompanyEntity;
-import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.*;
 import com.perfect.bean.vo.master.user.MStaffVo;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.core.service.master.org.IMOrgService;
@@ -39,7 +37,7 @@ public class MasterOrgController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据查询条件，获取组织机构信息")
+    @SysLogAnnotion("根据查询条件，获取组织机构信息")
     @ApiOperation("获取组织机构树数据")
     @PostMapping("/tree/list")
     @ResponseBody
@@ -52,7 +50,7 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(vo));
     }
 
-    @SysLog("根据查询条件，获取所有的组织以及子组织数量，仅仅是数量")
+    @SysLogAnnotion("根据查询条件，获取所有的组织以及子组织数量，仅仅是数量")
     @ApiOperation("根据查询条件，获取所有的组织以及子组织数量，仅仅是数量")
     @PostMapping("/count")
     @ResponseBody
@@ -61,7 +59,7 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(vo));
     }
 
-    @SysLog("根据查询条件，获取组织架构主表信息")
+    @SysLogAnnotion("根据查询条件，获取组织架构主表信息")
     @ApiOperation("根据查询条件，获取组织架构主表信息")
     @PostMapping("/list")
     @ResponseBody
@@ -70,7 +68,7 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
-    @SysLog("根据查询条件，获取集团信息")
+    @SysLogAnnotion("根据查询条件，获取集团信息")
     @ApiOperation("根据查询条件，获取集团信息")
     @PostMapping("/groups")
     @ResponseBody
@@ -79,7 +77,7 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
-    @SysLog("根据查询条件，获取企业信息")
+    @SysLogAnnotion("根据查询条件，获取企业信息")
     @ApiOperation("根据查询条件，获取企业信息")
     @PostMapping("/companies")
     @ResponseBody
@@ -88,7 +86,7 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
-    @SysLog("根据查询条件，获取部门信息")
+    @SysLogAnnotion("根据查询条件，获取部门信息")
     @ApiOperation("根据查询条件，获取部门信息")
     @PostMapping("/depts")
     @ResponseBody
@@ -97,7 +95,7 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
-    @SysLog("根据查询条件，获取岗位信息")
+    @SysLogAnnotion("根据查询条件，获取岗位信息")
     @ApiOperation("根据查询条件，获取岗位信息")
     @PostMapping("/positions")
     @ResponseBody
@@ -106,7 +104,7 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
-    @SysLog("根据查询条件，获取员工信息")
+    @SysLogAnnotion("根据查询条件，获取员工信息")
     @ApiOperation("根据查询条件，获取员工信息")
     @PostMapping("/staffs")
     @ResponseBody
@@ -115,7 +113,7 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(list));
     }
 
-    @SysLog("组织架构主表数据更新保存")
+    @SysLogAnnotion("组织架构主表数据更新保存")
     @ApiOperation("根据参数id，获取组织架构主表信息")
     @PostMapping("/save")
     @ResponseBody
@@ -128,7 +126,7 @@ public class MasterOrgController extends BaseController {
         }
     }
 
-    @SysLog("组织架构主表数据新增保存")
+    @SysLogAnnotion("组织架构主表数据新增保存")
     @ApiOperation("根据参数id，获取组织架构主表信息")
     @PostMapping("/insert")
     @ResponseBody
@@ -140,7 +138,7 @@ public class MasterOrgController extends BaseController {
         }
     }
 
-    @SysLog("新增模式下，可新增子节点得类型")
+    @SysLogAnnotion("新增模式下，可新增子节点得类型")
     @ApiOperation("新增模式下，可新增子节点得类型")
     @PostMapping("/get_type")
     @ResponseBody
@@ -152,7 +150,7 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(rtn));
     }
 
-    @SysLog("新增模式下，可新增子节点得类型")
+    @SysLogAnnotion("新增模式下，可新增子节点得类型")
     @ApiOperation("新增模式下，可新增子节点得类型")
     @PostMapping("/delete")
     @ResponseBody
@@ -161,7 +159,7 @@ public class MasterOrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK("删除成功"));
     }
 
-    @SysLog("组织架构主表数据更新保存，拖拽后，全量更新")
+    @SysLogAnnotion("组织架构主表数据更新保存，拖拽后，全量更新")
     @ApiOperation("根据参数id，获取组织架构主表信息，拖拽后，全量更新")
     @PostMapping("/dragsave")
     @ResponseBody

@@ -5,8 +5,7 @@ import com.perfect.bean.entity.master.MAddressEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.master.MAddressVo;
-import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.core.service.master.IMAddressService;
@@ -36,7 +35,7 @@ public class MasterAddressController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据查询条件，获取地址簿主表信息")
+    @SysLogAnnotion("根据查询条件，获取地址簿主表信息")
     @ApiOperation("根据参数id，获取地址簿主表信息")
     @PostMapping("/address/list")
     @ResponseBody
@@ -45,7 +44,7 @@ public class MasterAddressController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("地址簿主表数据更新保存")
+    @SysLogAnnotion("地址簿主表数据更新保存")
     @ApiOperation("根据参数id，获取地址簿主表信息")
     @PostMapping("/address/save")
     @ResponseBody
@@ -58,7 +57,7 @@ public class MasterAddressController extends BaseController {
         }
     }
 
-    @SysLog("地址簿主表数据新增保存")
+    @SysLogAnnotion("地址簿主表数据新增保存")
     @ApiOperation("根据参数id，获取地址簿主表信息")
     @PostMapping("/address/insert")
     @ResponseBody
@@ -70,7 +69,7 @@ public class MasterAddressController extends BaseController {
         }
     }
 
-    @SysLog("地址簿主表数据逻辑删除复原")
+    @SysLogAnnotion("地址簿主表数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
     @PostMapping("/address/delete")
     @ResponseBody
@@ -79,7 +78,7 @@ public class MasterAddressController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 
-    @SysLog("地址簿主表数据逻辑删除复原")
+    @SysLogAnnotion("地址簿主表数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
     @PostMapping("/address/get")
     @ResponseBody

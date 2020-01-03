@@ -7,8 +7,8 @@ import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.sys.config.config.SConfigDataExportVo;
 import com.perfect.bean.vo.sys.config.config.SConfigVo;
 import com.perfect.bean.vo.sys.config.resource.SResourceExportVo;
-import com.perfect.common.annotation.RepeatSubmit;
-import com.perfect.common.annotation.SysLog;
+import com.perfect.common.annotations.RepeatSubmitAnnotion;
+import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
@@ -42,7 +42,7 @@ public class ConfigController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLog("根据参数id，获取系统参数信息")
+    @SysLogAnnotion("根据参数id，获取系统参数信息")
     @ApiOperation("根据参数id，获取系统参数信息")
     @PostMapping("{ id }")
     @ResponseBody
@@ -54,7 +54,7 @@ public class ConfigController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("根据查询条件，获取系统参数信息")
+    @SysLogAnnotion("根据查询条件，获取系统参数信息")
     @ApiOperation("根据参数id，获取系统参数信息")
     @PostMapping("/list")
     @ResponseBody
@@ -63,11 +63,11 @@ public class ConfigController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLog("系统参数数据更新保存")
+    @SysLogAnnotion("系统参数数据更新保存")
     @ApiOperation("根据参数id，获取系统参数信息")
     @PostMapping("/save")
     @ResponseBody
-    @RepeatSubmit
+    @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<SConfigEntity>> save(@RequestBody(required = false) SConfigEntity bean) {
 
         if(service.update(bean).isSuccess()){
@@ -77,11 +77,11 @@ public class ConfigController extends BaseController {
         }
     }
 
-    @SysLog("系统参数数据新增保存")
+    @SysLogAnnotion("系统参数数据新增保存")
     @ApiOperation("根据参数id，获取系统参数信息")
     @PostMapping("/insert")
     @ResponseBody
-    @RepeatSubmit
+    @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<SConfigEntity>> insert(@RequestBody(required = false) SConfigEntity bean) {
         // 默认启用
         bean.setIsenable(true);
@@ -92,7 +92,7 @@ public class ConfigController extends BaseController {
         }
     }
 
-    @SysLog("系统参数数据导出")
+    @SysLogAnnotion("系统参数数据导出")
     @ApiOperation("根据选择的数据，系统参数数据导出")
     @PostMapping("/export_all")
     public void exportAll(@RequestBody(required = false) SConfigVo searchCondition, HttpServletResponse response) throws IOException {
@@ -102,7 +102,7 @@ public class ConfigController extends BaseController {
         util.exportExcel("系统参数数据导出", "系统参数数据", rtnList, response);
     }
 
-    @SysLog("系统参数数据导出")
+    @SysLogAnnotion("系统参数数据导出")
     @ApiOperation("根据选择的数据，系统参数数据导出")
     @PostMapping("/export_selection")
     public void exportSelection(@RequestBody(required = false) List<SConfigVo> searchConditionList, HttpServletResponse response) throws IOException {

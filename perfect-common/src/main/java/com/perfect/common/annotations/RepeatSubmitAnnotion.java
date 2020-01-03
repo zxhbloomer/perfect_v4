@@ -1,4 +1,4 @@
-package com.perfect.common.annotation;
+package com.perfect.common.annotations;
 
 import java.lang.annotation.*;
 
@@ -12,6 +12,6 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface RepeatSubmit {
+public @interface RepeatSubmitAnnotion {
 
 }

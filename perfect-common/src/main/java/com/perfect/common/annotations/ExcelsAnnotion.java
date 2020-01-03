@@ -1,4 +1,4 @@
-package com.perfect.common.annotation;
+package com.perfect.common.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Excels
+public @interface ExcelsAnnotion
 {
-    Excel[] value();
+    ExcelAnnotion[] value();
 }
