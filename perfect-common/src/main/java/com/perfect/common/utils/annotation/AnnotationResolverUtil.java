@@ -24,6 +24,41 @@ public class AnnotationResolverUtil {
 
     /**
      * 解析注解上的值
+     *
+     * @param joinPoint
+     * @param ids 需要解析的字符串
+     * @return
+     */
+    public Object resolverIds(JoinPoint joinPoint, String ids) {
+        if (ids == null) {
+            return null;
+        }
+        Object value = null;
+        /**
+         *  如果name匹配上了#{},则把内容当作变量
+         */
+        if (ids.matches("#\\{\\D*\\}")) {
+            String newStr = ids.replaceAll("#\\{", "").replaceAll("\\}", "");
+            /**
+             * 复杂类型
+             */
+            if (newStr.contains(".")) {
+                try {
+                    value = complexResolverIds(joinPoint, newStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                value = simpleResolver(joinPoint, newStr);
+            }
+        } else { // 非变量
+            value = ids;
+        }
+        return value;
+    }
+
+    /**
+     * 解析注解上的值
      * 
      * @param joinPoint
      * @param str 需要解析的字符串
@@ -56,6 +91,33 @@ public class AnnotationResolverUtil {
         }
         return value;
     }
+
+    /**
+     * 复杂值解析
+     * @param joinPoint
+     * @param str
+     * @return
+     * @throws Exception
+     */
+    private Object complexResolverIds(JoinPoint joinPoint, String str) throws Exception {
+
+        MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();
+
+        String[] names = methodSignature.getParameterNames();
+        Object[] args = joinPoint.getArgs();
+        String[] strs = str.split("\\.");
+
+        for (int i = 0; i < names.length; i++) {
+            if (strs[0].equals(names[i])) {
+                Object obj = args[i];
+                Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(strs[1]), null);
+                Object value = dmethod.invoke(args[i]);
+                return getValue(value, 1, strs);
+            }
+        }
+        return null;
+    }
+
 
     /**
      * 复杂值解析

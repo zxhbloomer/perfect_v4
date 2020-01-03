@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OperationDetailLogAnnotion {
+public @interface OperationDetailLogByIdAnnotion {
 	/** 业务名 */
 	String name();
 	/** 操作类型 */
@@ -25,5 +25,5 @@ public @interface OperationDetailLogAnnotion {
 	/** 需要记录的字段 */
 	String[] cloums() default {};
 	/** id字段的值 */
-	String id();
+	String id() default "";
 }

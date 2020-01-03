@@ -44,4 +44,9 @@ public class OperationDataBo implements Serializable {
 
     /** 旧值 */
     private Map<String, Object> oldData;
+
+    /** 参数的位置 */
+    private int para_position;
+    /** id的位置 */
+    private int ids_index;
 }

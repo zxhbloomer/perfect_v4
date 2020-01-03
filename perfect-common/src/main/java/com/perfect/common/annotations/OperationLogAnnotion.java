@@ -18,6 +18,8 @@ public @interface OperationLogAnnotion {
 	String name();
 	/** 操作类型 */
 	OperationEnum type();
-	/** 具体的操作，日志中需要保存的内容 */
-	OperationDetailLogAnnotion[] operationDetails() default {};
+	/** 具体的操作，日志中需要保存的内容：单一id */
+	OperationDetailLogByIdAnnotion[] operationDetailsById() default {};
+	/** 具体的操作，日志中需要保存的内容：多id，通过参数 List<Bean>中的Bean.id来 */
+	OperationDetailLogByIdsAnnotion[] operationDetailsByIds() default {};
 }

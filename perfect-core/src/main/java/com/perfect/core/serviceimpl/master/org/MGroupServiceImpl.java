@@ -13,17 +13,18 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.org.MGroupVo;
-import com.perfect.common.annotations.OperationDetailLogAnnotion;
+import com.perfect.common.annotations.OperationDetailLogByIdAnnotion;
+import com.perfect.common.annotations.OperationDetailLogByIdsAnnotion;
 import com.perfect.common.annotations.OperationLogAnnotion;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.enums.OperationEnum;
+import com.perfect.common.enums.ParameterEnum;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.master.org.MGroupMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.org.IMGroupService;
 import com.perfect.core.serviceimpl.common.autocode.MGroupAutoCodeImpl;
-import com.perfect.core.serviceimpl.common.autocode.TenantAutoCodeImpl;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,12 +101,13 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.TABLE_M_GROUP_LOGIC_DELETE,
         type = OperationEnum.LOGIC_DELETE,
-        operationDetails = @OperationDetailLogAnnotion(
+        operationDetailsByIds = @OperationDetailLogByIdsAnnotion(
             name = PerfectConstant.OPERATION.TABLE_M_GROUP_LOGIC_DELETE,
             type = OperationEnum.LOGIC_DELETE,
             oper_info = "",
             table_name = "m_group",
-            id = "#{entity.id}"
+            id_position = ParameterEnum.FIRST,
+            ids = "#{searchCondition.id}"
         )
     )
     @Transactional(rollbackFor = Exception.class)
@@ -138,8 +140,12 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT,
         type = OperationEnum.ADD,
-        operationDetails = @OperationDetailLogAnnotion(
-            name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT, type = OperationEnum.ADD, oper_info = "", table_name = "m_group", id = "#{entity.id}"
+        operationDetailsById = @OperationDetailLogByIdAnnotion(
+            name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT,
+            type = OperationEnum.ADD,
+            oper_info = "",
+            table_name = "m_group",
+            id = "#{entity.id}"
         )
     )
     @Transactional(rollbackFor = Exception.class)
@@ -168,7 +174,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.TABLE_M_GROUP_UPDATE,
         type = OperationEnum.UPDATE,
-        operationDetails = @OperationDetailLogAnnotion(
+        operationDetailsById = @OperationDetailLogByIdAnnotion(
             name = PerfectConstant.OPERATION.TABLE_M_GROUP_UPDATE, type = OperationEnum.UPDATE, oper_info = "", table_name = "m_group", id = "#{entity.id}"
         )
     )
