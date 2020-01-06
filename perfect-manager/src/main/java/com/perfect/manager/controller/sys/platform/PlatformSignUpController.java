@@ -5,6 +5,7 @@ import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.sys.config.tenant.STenantVo;
 import com.perfect.bean.vo.sys.platform.SignUpVo;
+import com.perfect.common.annotations.RepeatSubmitAnnotion;
 import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.core.service.sys.config.tenant.ITenantService;
 import com.perfect.core.service.sys.platform.ISignUpService;
@@ -40,6 +41,7 @@ public class PlatformSignUpController extends BaseController {
     @ApiOperation("注册根据手机号码，租户名称，管理员，密码，生成注册信息")
     @PostMapping("/mobile")
     @ResponseBody
+    @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<String>> signUp(@RequestBody(required = false) SignUpVo bean) {
         // 1:check
         if(service.check(bean)) {
