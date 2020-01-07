@@ -26,7 +26,7 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping(value = "/api/v1/code")
 @Slf4j
 @Api("自动生成编码")
-public class PlatformCodeController extends BaseController {
+public class PlatformSysCodeController extends BaseController {
 
     @Autowired
     private ISCodeService service;

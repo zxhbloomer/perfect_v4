@@ -134,4 +134,9 @@ public class PerfectDictConstant {
     public static final String DICT_ORG_USED_TYPE_SHOW_UNUSED  = "10";
     /** 显示所有  */
     public static final String DICT_ORG_USED_TYPE_SHOW_ALL  = null;
+
+    /**
+     * 操作日志服务
+     */
+    public static final String DICT_SYS_TABLE_TYPE = "sys_table_type";
 }

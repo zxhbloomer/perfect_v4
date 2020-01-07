@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
+import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -180,6 +181,7 @@ public interface SDictDataMapper extends BaseMapper<SDictDataEntity> {
             + "    and (t2.name like CONCAT ('%',#{p1.dictTypeName,jdbcType=VARCHAR},'%') or #{p1.dictTypeName,jdbcType=VARCHAR} is null) "
             + "    and (t1.dict_value = #{p1.table_name,jdbcType=VARCHAR} or #{p1.table_name,jdbcType=VARCHAR} is null) "
             + "    and (t2.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
+            + "    and (t2.code = '" + PerfectDictConstant.DICT_SYS_TABLE_TYPE + "') "
             + "   order by t1.sort             ")
     List<SDictDataVo> selectColumnComment(@Param("p1") SDictDataVo searchCondition );
 }

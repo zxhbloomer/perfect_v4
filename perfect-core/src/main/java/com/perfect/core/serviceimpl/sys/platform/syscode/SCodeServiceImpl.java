@@ -2,6 +2,7 @@ package com.perfect.core.serviceimpl.sys.platform.syscode;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.entity.sys.platform.syscode.SCodeEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
@@ -14,6 +15,7 @@ import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.CodeGenerator;
 import com.perfect.common.utils.DateTimeUtil;
+import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.mapper.sys.platform.SCodeMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.platform.syscode.ISCodeService;
@@ -200,13 +202,16 @@ public class SCodeServiceImpl extends BaseServiceImpl<SCodeMapper, SCodeEntity> 
                 // 获取随机码两位
                 String second_radomchar = CodeGenerator.randomAlphabet(2);
                 // 自增编号
-                long days = ChronoUnit.DAYS.between(entity.getC_time(), LocalDateTime.now());
+                long days = ChronoUnit.DAYS.between(entity.getU_time(), LocalDateTime.now());
                 if(days >= 1) {
                     entity.setAuto_create((long)1);
                 } else {
                     entity.setAuto_create((entity.getAuto_create() == null ? 0 : entity.getAuto_create()) + 1);
                 }
                 String suffix = CodeGenerator.addLeftZeroForNum(3, entity.getAuto_create());
+                // 设置更新时间和更新id
+                entity.setU_time(LocalDateTime.now());
+                entity.setU_id(((UserSessionBo)ServletUtil.getUserSession()).getStaff_Id());
                 // 合并并设置到entity
                 entity.setCode(entity.getPrefex() == null ? "" : entity.getPrefex().toUpperCase() + first + second_radomchar + suffix);
             break;
