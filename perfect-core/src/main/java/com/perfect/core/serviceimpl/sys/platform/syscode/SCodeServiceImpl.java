@@ -211,7 +211,7 @@ public class SCodeServiceImpl extends BaseServiceImpl<SCodeMapper, SCodeEntity> 
                 String suffix = CodeGenerator.addLeftZeroForNum(3, entity.getAuto_create());
                 // 设置更新时间和更新id
                 entity.setU_time(LocalDateTime.now());
-                entity.setU_id(((UserSessionBo)ServletUtil.getUserSession()).getStaff_Id());
+                entity.setU_id(((UserSessionBo)ServletUtil.getUserSession()).getAccountId());
                 // 合并并设置到entity
                 entity.setCode(entity.getPrefex() == null ? "" : entity.getPrefex().toUpperCase() + first + second_radomchar + suffix);
             break;

@@ -119,7 +119,7 @@ public class OperationLogAspect {
 		operEntity.setType(operationlog.type().getName());
 		operEntity.setPlatform(PerfectConstant.PLATFORM.PC);
 		UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
-		operEntity.setOper_id(bo.getStaff_Id());
+		operEntity.setOper_id(bo.getAccountId());
 		operEntity.setOper_name(bo.getStaff_info().getName());
 		operEntity.setOper_time(LocalDateTime.now());
 		Object[] args = p.getArgs();
@@ -262,7 +262,7 @@ public class OperationLogAspect {
 		operEntity.setType(operationlog.type().getName());
 		operEntity.setPlatform(PerfectConstant.PLATFORM.PC);
 		UserSessionBo bo = (UserSessionBo)ServletUtil.getUserSession();
-		operEntity.setOper_id(bo.getStaff_Id());
+		operEntity.setOper_id(bo.getAccountId());
 		operEntity.setOper_name(bo.getStaff_info().getName());
 		operEntity.setOper_time(LocalDateTime.now());
 		Object[] args = p.getArgs();
