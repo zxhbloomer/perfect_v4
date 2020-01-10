@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.*;
+import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -368,6 +369,11 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "                                                                                                             ")
     MOrgCountsVo getAllOrgDataCount(@Param("p1") MOrgVo searchCondition);
 
+    /**
+     * 拖拽的保存
+     * @param entity
+     * @return
+     */
     @Update("                                                                        "
         + "    update m_org t                                                        "
         + "       set t.parent_id = #{p1.parent_id,jdbcType=BIGINT} ,                "
@@ -379,4 +385,41 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "                                                                          "
     )
     int updateDragSave(@Param("p1")MOrgEntity entity);
+
+    /**
+     * 获取全部员工
+     * @param condition
+     * @return
+     */
+    @Select("                                                                        "
+        + "     SELECT                                                               "
+        + "             t1.id AS `key`,                                              "
+        + "             t1.NAME AS label,                                            "
+        + "             t1.tenant_id                                                 "
+        + "       FROM  m_staff t1                                                   "
+        + "      WHERE                                                               "
+        + "             t1.is_del = 0                                                "
+        + "        AND  t1.tenant_id = (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null) "
+        + "   order by  t1.name                                                      "
+        + "                                                                          ")
+    List<MStaffTransferVo> getAllStaffTransferList(@Param("p1")MStaffTransferVo condition);
+
+    /**
+     * 获取全部员工
+     * @param condition
+     * @return
+     */
+    @Select("                                                                                                         "
+        + "     SELECT                                                                                                "
+        + "             t1.serial_id AS `key`,                                                                        "
+        + "             t2.`name` as label,                                                                           "
+        + "             t1.tenant_id                                                                                  "
+        + "       FROM  m_user_org t1                                                                                 "
+        + "  LEFT JOIN  m_staff t2 ON t1.staff_id = t2.id                                                             "
+        + "      where  t1.serial_id = #{p1.position_id,jdbcType=BIGINT}                                              "
+        + "        AND  t1.serial_type = '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE + "'     "
+        + "        AND  t1.tenant_id = (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null) "
+        + "   order by  t2.`name`                                                                                     "
+        + "                                                                                                           ")
+    List<MStaffTransferVo> getUsedStaffTransferList(@Param("p1")MStaffTransferVo condition);
 }

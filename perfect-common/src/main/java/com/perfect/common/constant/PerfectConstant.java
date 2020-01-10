@@ -139,8 +139,28 @@ public class PerfectConstant {
      * 操作日志内容
      */
     public class OPERATION {
-        public static final String TABLE_M_GROUP_INSERT = "集团主表新增";
-        public static final String TABLE_M_GROUP_UPDATE = "集团主表更新";
-        public static final String TABLE_M_GROUP_LOGIC_DELETE = "集团主表逻辑删除";
+
+        /**
+         * 集团
+         */
+        public class M_GROUP {
+            public static final String TABLE_NAME = "m_group";
+
+            public static final String OPER_INSERT = "集团主表新增";
+            public static final String OPER_UPDATE = "集团主表更新";
+            public static final String OPER_LOGIC_DELETE = "集团主表逻辑删除";
+        }
+
+        /**
+         * 组织机构
+         */
+        public class M_ORG {
+            public static final String TABLE_NAME = "m_org";
+
+            public static final String OPER_INSERT = "组织主表新增";
+            public static final String OPER_UPDATE = "组织主表更新";
+            public static final String OPER_DELETE = "组织主表物理删除";
+            public static final String OPER_DRAG_DROP = "组织主表拖拽操作";
+        }
     }
 }

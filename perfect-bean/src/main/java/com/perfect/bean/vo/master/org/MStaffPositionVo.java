@@ -1,0 +1,33 @@
+package com.perfect.bean.vo.master.org;
+
+import com.perfect.bean.config.base.v1.BaseVo;
+import io.swagger.annotations.ApiModel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * @ClassName: MStaffPosition
+ * @Description: 员工岗位vo
+ * @Author: zxh
+ * @date: 2020/1/10
+ * @Version: 1.0
+ */
+@Data
+@NoArgsConstructor
+@ApiModel(value = "员工bean，为穿梭框服务", description = "员工bean，为穿梭框服务")
+public class MStaffPositionVo extends BaseVo implements Serializable {
+    private static final long serialVersionUID = -8892463566681169124L;
+
+    /**
+     * 穿梭框：全部员工
+     */
+    List<MStaffTransferVo> staff_all;
+
+    /**
+     * 穿梭框：该岗位下，全部员工
+     */
+    List<MStaffTransferVo> staff_position;
+}

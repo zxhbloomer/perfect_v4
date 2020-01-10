@@ -7,7 +7,9 @@ public enum OperationEnum {
 	ADD("ADD", "新增"),
 	UPDATE("UPDATE", "更新"),
 	DELETE("DELETE", "物理删除"),
-	LOGIC_DELETE("LOGIC_DELETE", "逻辑删除");
+	LOGIC_DELETE("LOGIC_DELETE", "逻辑删除"),
+	DRAG_DROP("DRAG_DROP", "拖拽操作"),
+	;
 
 	public String getType() {
 		if (this.equals(ADD)) {

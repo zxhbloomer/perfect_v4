@@ -99,13 +99,13 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @return
      */
     @OperationLogAnnotion(
-        name = PerfectConstant.OPERATION.TABLE_M_GROUP_LOGIC_DELETE,
+        name = PerfectConstant.OPERATION.M_GROUP.OPER_LOGIC_DELETE,
         type = OperationEnum.LOGIC_DELETE,
         operationDetailsByIds = @OperationDetailLogByIdsAnnotion(
-            name = PerfectConstant.OPERATION.TABLE_M_GROUP_LOGIC_DELETE,
+            name = PerfectConstant.OPERATION.M_GROUP.OPER_LOGIC_DELETE,
             type = OperationEnum.LOGIC_DELETE,
             oper_info = "",
-            table_name = "m_group",
+            table_name = PerfectConstant.OPERATION.M_GROUP.TABLE_NAME,
             id_position = ParameterEnum.FIRST,
             ids = "#{searchCondition.id}"
         )
@@ -138,13 +138,13 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @return
      */
     @OperationLogAnnotion(
-        name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT,
+        name = PerfectConstant.OPERATION.M_GROUP.OPER_INSERT,
         type = OperationEnum.ADD,
         operationDetailsById = @OperationDetailLogByIdAnnotion(
-            name = PerfectConstant.OPERATION.TABLE_M_GROUP_INSERT,
+            name = PerfectConstant.OPERATION.M_GROUP.OPER_INSERT,
             type = OperationEnum.ADD,
             oper_info = "",
-            table_name = "m_group",
+            table_name = PerfectConstant.OPERATION.M_GROUP.TABLE_NAME,
             id = "#{entity.id}"
         )
     )
@@ -172,10 +172,14 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @return
      */
     @OperationLogAnnotion(
-        name = PerfectConstant.OPERATION.TABLE_M_GROUP_UPDATE,
+        name = PerfectConstant.OPERATION.M_GROUP.OPER_UPDATE,
         type = OperationEnum.UPDATE,
         operationDetailsById = @OperationDetailLogByIdAnnotion(
-            name = PerfectConstant.OPERATION.TABLE_M_GROUP_UPDATE, type = OperationEnum.UPDATE, oper_info = "", table_name = "m_group", id = "#{entity.id}"
+            name = PerfectConstant.OPERATION.M_GROUP.OPER_UPDATE,
+            type = OperationEnum.UPDATE,
+            oper_info = "",
+            table_name = PerfectConstant.OPERATION.M_GROUP.TABLE_NAME,
+            id = "#{entity.id}"
         )
     )
     @Transactional(rollbackFor = Exception.class)

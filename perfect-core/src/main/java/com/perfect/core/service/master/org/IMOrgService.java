@@ -131,4 +131,10 @@ public interface IMOrgService extends IService<MOrgEntity> {
      * @return
      */
     Boolean dragsave(List<MOrgTreeVo> bean);
+
+    /**
+     * 获取员工清单，为穿梭框服务
+     * @return
+     */
+    MStaffPositionVo getStaffTransferList(MStaffTransferVo condition);
 }

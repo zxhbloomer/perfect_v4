@@ -18,7 +18,13 @@ import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.common.component.TreeNode;
 import com.perfect.bean.vo.master.org.*;
 import com.perfect.bean.vo.master.user.MStaffVo;
+import com.perfect.common.annotations.OperationDetailLogByIdAnnotion;
+import com.perfect.common.annotations.OperationDetailLogByIdsAnnotion;
+import com.perfect.common.annotations.OperationLogAnnotion;
+import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.constant.PerfectDictConstant;
+import com.perfect.common.enums.OperationEnum;
+import com.perfect.common.enums.ParameterEnum;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.mapper.master.org.MOrgMapper;
@@ -184,6 +190,17 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @param entity 实体对象
      * @return
      */
+    @OperationLogAnnotion(
+        name = PerfectConstant.OPERATION.M_ORG.OPER_INSERT,
+        type = OperationEnum.ADD,
+        operationDetailsById = @OperationDetailLogByIdAnnotion(
+            name = PerfectConstant.OPERATION.M_ORG.OPER_INSERT,
+            type = OperationEnum.ADD,
+            oper_info = "",
+            table_name = PerfectConstant.OPERATION.M_ORG.TABLE_NAME,
+            id = "#{entity.id}"
+        )
+    )
     @Transactional(rollbackFor = Exception.class)
     @Override
     public InsertResult<Integer> insert(MOrgEntity entity) {
@@ -245,6 +262,17 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @param entity 实体对象
      * @return
      */
+    @OperationLogAnnotion(
+        name = PerfectConstant.OPERATION.M_ORG.OPER_UPDATE,
+        type = OperationEnum.UPDATE,
+        operationDetailsById = @OperationDetailLogByIdAnnotion(
+            name = PerfectConstant.OPERATION.M_ORG.OPER_UPDATE,
+            type = OperationEnum.UPDATE,
+            oper_info = "",
+            table_name = PerfectConstant.OPERATION.M_ORG.TABLE_NAME,
+            id = "#{entity.id}"
+        )
+    )
     @Transactional(rollbackFor = Exception.class)
     @Override
     public UpdateResult<Integer> update(MOrgEntity entity) {
@@ -369,6 +397,17 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @param entity
      * @return
      */
+    @OperationLogAnnotion(
+        name = PerfectConstant.OPERATION.M_ORG.OPER_DELETE,
+        type = OperationEnum.DELETE,
+        operationDetailsById = @OperationDetailLogByIdAnnotion(
+            name = PerfectConstant.OPERATION.M_ORG.OPER_DELETE,
+            type = OperationEnum.DELETE,
+            oper_info = "",
+            table_name = PerfectConstant.OPERATION.M_ORG.TABLE_NAME,
+            id = "#{entity.id}"
+        )
+    )
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean deleteById(MOrgEntity entity) {
@@ -399,6 +438,18 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @param beans
      * @return
      */
+    @OperationLogAnnotion(
+        name = PerfectConstant.OPERATION.M_ORG.OPER_DRAG_DROP,
+        type = OperationEnum.DRAG_DROP,
+        operationDetailsByIds = @OperationDetailLogByIdsAnnotion(
+            name = PerfectConstant.OPERATION.M_ORG.OPER_DRAG_DROP,
+            type = OperationEnum.DRAG_DROP,
+            oper_info = "",
+            table_name = PerfectConstant.OPERATION.M_ORG.TABLE_NAME,
+            id_position = ParameterEnum.FIRST,
+            ids = "#{beans.id}"
+        )
+    )
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean dragsave(List<MOrgTreeVo> beans) {
@@ -461,4 +512,18 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         return entities;
     }
 
+    /**
+     * 获取员工清单，为穿梭框服务
+     * @return
+     */
+    @Override
+    public MStaffPositionVo getStaffTransferList(MStaffTransferVo condition) {
+
+        MStaffPositionVo rtn = new MStaffPositionVo();
+        // 获取全部用户
+        rtn.setStaff_all(mapper.getAllStaffTransferList(condition));
+        // 获取该岗位已经设置过得用户
+        rtn.setStaff_position(mapper.getUsedStaffTransferList(condition));
+        return rtn;
+    }
 }
