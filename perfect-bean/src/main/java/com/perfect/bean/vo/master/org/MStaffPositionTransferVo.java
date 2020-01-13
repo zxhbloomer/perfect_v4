@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "员工bean，为穿梭框服务", description = "员工bean，为穿梭框服务")
-public class MStaffPositionVo extends BaseVo implements Serializable {
+public class MStaffPositionTransferVo extends BaseVo implements Serializable {
     private static final long serialVersionUID = -8892463566681169124L;
 
     /**

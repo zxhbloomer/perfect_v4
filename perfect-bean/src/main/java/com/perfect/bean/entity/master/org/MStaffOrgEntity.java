@@ -19,8 +19,8 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("m_user_org")
-public class MUserOrgEntity implements Serializable {
+@TableName("m_staff_org")
+public class MStaffOrgEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

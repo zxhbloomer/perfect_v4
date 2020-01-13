@@ -32,4 +32,5 @@ public class MStaffTransferVo extends BaseVo implements Serializable {
 
     /** 岗位ID */
     private Long position_id;
+
 }

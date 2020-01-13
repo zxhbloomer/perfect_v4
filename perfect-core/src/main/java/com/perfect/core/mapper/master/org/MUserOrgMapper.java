@@ -1,14 +1,7 @@
 package com.perfect.core.mapper.master.org;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.perfect.bean.entity.master.org.MPositionEntity;
-import com.perfect.bean.entity.master.org.MUserOrgEntity;
-import com.perfect.bean.vo.master.org.MPositionVo;
-import com.perfect.common.constant.PerfectDictConstant;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.perfect.bean.entity.master.org.MStaffOrgEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,6 +15,6 @@ import java.util.List;
  * @since 2019-08-23
  */
 @Repository
-public interface MUserOrgMapper extends BaseMapper<MUserOrgEntity> {
+public interface MUserOrgMapper extends BaseMapper<MStaffOrgEntity> {
 
 }

@@ -532,13 +532,26 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @return
      */
     @Override
-    public MStaffPositionVo getStaffTransferList(MStaffTransferVo condition) {
+    public MStaffPositionTransferVo getStaffTransferList(MStaffTransferVo condition) {
 
-        MStaffPositionVo rtn = new MStaffPositionVo();
+        MStaffPositionTransferVo rtn = new MStaffPositionTransferVo();
         // 获取全部用户
         rtn.setStaff_all(mapper.getAllStaffTransferList(condition));
         // 获取该岗位已经设置过得用户
         rtn.setStaff_position(mapper.getUsedStaffTransferList(condition));
         return rtn;
+    }
+
+    /**
+     * 设置员工关系
+     * @param staff_ids 员工id list
+     * @return
+     */
+    @Override
+    public MStaffPositionTransferVo setStaffTransfer(List<Long> staff_ids) {
+        for( Long staff_id : staff_ids ) {
+
+        }
+        return null;
     }
 }

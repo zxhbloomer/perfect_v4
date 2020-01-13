@@ -414,7 +414,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "             t1.serial_id AS `key`,                                                                        "
         + "             t2.`name` as label,                                                                           "
         + "             t1.tenant_id                                                                                  "
-        + "       FROM  m_user_org t1                                                                                 "
+        + "       FROM  m_staff_org t1                                                                                "
         + "  LEFT JOIN  m_staff t2 ON t1.staff_id = t2.id                                                             "
         + "      where  t1.serial_id = #{p1.position_id,jdbcType=BIGINT}                                              "
         + "        AND  t1.serial_type = '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE + "'     "

@@ -1,9 +1,7 @@
 package com.perfect.core.service.master.org;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.perfect.bean.entity.master.org.MUserOrgEntity;
-
-import java.util.List;
+import com.perfect.bean.entity.master.org.MStaffOrgEntity;
 
 /**
  * <p>
@@ -13,6 +11,6 @@ import java.util.List;
  * @author zxh
  * @since 2019-08-23
  */
-public interface IMUserOrgService extends IService<MUserOrgEntity> {
+public interface IMUserOrgService extends IService<MStaffOrgEntity> {
 
 }
