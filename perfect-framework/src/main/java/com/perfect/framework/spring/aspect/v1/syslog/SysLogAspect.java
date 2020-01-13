@@ -156,7 +156,7 @@ public class SysLogAspect {
             .url(request.getRequestURL().toString())
             .ip(IPUtil.getIpAdd())
             .build();
-        if(perfectConfigProperies.isOpenAopLog()){
+        if(perfectConfigProperies.isSysLog()){
             log.debug("======================日志开始================================");
             log.debug("日志名称         : " + sysLogBo.getRemark());
             log.debug("URL             : " + sysLogBo.getUrl());

@@ -220,6 +220,8 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     # 关闭驼峰
     map-underscore-to-camel-case: false
+    # null 也返回
+    call-setters-on-nulls: true
   global-config:
     db-config:
       id-type: AUTO
@@ -230,8 +232,6 @@ mybatis-plus:
 
 #-----------------------Perfect  Configuration---------
 perfect:
-  # AOP记录用户操作日志，true开启，false关闭
-  open-aop-log: true
   config:
     # 文件上传路径
     fs-appid: 0
@@ -240,7 +240,13 @@ perfect:
     fs-username: PERFECT
     log-print: true
     log-save-db: true
-    open-aop-log: true
+    # AOP记录用户系统日志，true开启，false关闭
+    sys-log: true
+    # AOP记录用户操作日志，true开启，false关闭
+    operate-log: true
+    # AOP记录用户操作日志: true详细日志，不区分更改前更改后，数据量较大，false简单日志，只记录当前变更过的数据，数据量较小
+    operate-log-all: true
+
     # 错误日志输出简单模式
     simple-model: true
     # redis 缓存过期时间min

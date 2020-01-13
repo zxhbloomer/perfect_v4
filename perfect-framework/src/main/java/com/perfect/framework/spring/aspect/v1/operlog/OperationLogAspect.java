@@ -10,10 +10,9 @@ import com.perfect.common.annotations.OperationDetailLogByIdsAnnotion;
 import com.perfect.common.annotations.OperationLogAnnotion;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.enums.OperationEnum;
-import com.perfect.common.enums.ParameterEnum;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.properies.PerfectConfigProperies;
 import com.perfect.common.utils.annotation.AnnotationResolverUtil;
-import com.perfect.common.utils.reflect.ReflectUtils;
 import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.mapper.log.operate.SLogOperMapper;
 import com.perfect.core.service.log.operate.ISLogOperDetailService;
@@ -27,11 +26,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
-
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
@@ -56,6 +50,9 @@ public class OperationLogAspect {
 
     @Autowired
     ISLogOperDetailService isLogOperDetailService;
+
+	@Autowired
+	private PerfectConfigProperies perfectConfigProperies;
 
 	@Pointcut("@annotation(com.perfect.common.annotations.OperationLogAnnotion)")
 	public void pointcut() {
@@ -86,6 +83,10 @@ public class OperationLogAspect {
 			if (OperationEnum.DELETE.equals(type)) {
 				return doOperationLogByIdsProcess(p, operationlog);
 			}
+			// 拖拽
+			if (OperationEnum.DRAG_DROP.equals(type)) {
+				return doOperationLogByIdsProcess(p, operationlog);
+			}
 		} else {
 			// 更新
 			if (OperationEnum.UPDATE.equals(type)) {
@@ -103,8 +104,12 @@ public class OperationLogAspect {
 			if (OperationEnum.DELETE.equals(type)) {
 				return doOperationLogByIdProcess(p, operationlog);
 			}
+			// 拖拽
+			if (OperationEnum.DRAG_DROP.equals(type)) {
+				return doOperationLogByIdProcess(p, operationlog);
+			}
 		}
-		return null;
+		throw new BusinessException("操作日志发生错误：未找到相应的操作日志逻辑【"+ type.getName() + "、" + type.getCode()  +"】");
 	}
 
 	/**
@@ -217,14 +222,21 @@ public class OperationLogAspect {
 
 			List<SLogOperDetailEntity> opds = new ArrayList<>();
 			for (String clm : cloum) {
-				Object oldclm = (oldMap == null ? null : oldMap.get(clm));
-				Object newclm = newMap.get(clm);
+				Object oldValue = (oldMap == null ? null : oldMap.get(clm));
+				Object newValue = newMap.get(clm);
 
 				/**
-				 * 	更新场合：只记录不相同的数据，否则数据量太大
- 				 */
-				if (oldclm != null && oldclm.equals(newclm)) {
-					continue;
+				 * 	更新场合：根据配置文件，判断是否开启了全操作日志
+				 * 	oldValue     |    newVlaue
+				 * 	  null             null         =  相同
+				 * 	  object           null         =  不同
+				 * 	  null             object       =  不同
+				 * 	  object           object       =   equals 比较
+				 */
+				if(!perfectConfigProperies.isOperateLogAll()){
+					if(Objects.equals(oldValue, newValue)){
+						continue;
+					}
 				}
 
 				// 从表设置
@@ -234,14 +246,19 @@ public class OperationLogAspect {
 				opd.setType(obo.getType().getName());
 				opd.setOper_info(obo.getOper_info());
 				opd.setTable_name(obo.getTable_name());
-				opd.setOld_val((oldMap == null ? null : oldclm.toString()));
-				opd.setNew_val(newclm.toString());
+				opd.setOld_val((oldMap == null ? null : ( oldValue == null ? null : oldValue.toString() )));
+				opd.setNew_val(newValue == null ? null : newValue.toString());
 				opd.setClm_name(clm);
 				opd.setClm_comment(columnCommentMap.get(clm).toString());
 				opds.add(opd);
 			}
 			if (!opds.isEmpty()) {
-				isLogOperDetailService.saveBatch(opds, opds.size());
+				/**
+				 * 判断是否开启了操作日志
+				 */
+				if(perfectConfigProperies.isOperateLog()){
+					isLogOperDetailService.saveBatch(opds, opds.size());
+				}
 			}
 			i = i + 1;
 		}
@@ -274,8 +291,6 @@ public class OperationLogAspect {
 		 */
 		for(OperationDetailLogByIdsAnnotion operationDetail : operationlog.operationDetailsByIds()){
 			String[] cloum = operationDetail.cloums();
-			StringBuilder sql = new StringBuilder();
-			String sqlTemplate = "";
 			String logTable = operationDetail.table_name();
 			/**
 			 * 获取表字段
@@ -309,6 +324,9 @@ public class OperationLogAspect {
 			 *  循环一下，ids
 			 * */
 			for (int j = 0; j < sizeValue; j++) {
+				StringBuilder sql = new StringBuilder();
+				String sqlTemplate = "";
+
 				// 获取list中的值
 				Method getMethod = argsClass.getDeclaredMethod("get", int.class);
 				Object bean = getMethod.invoke(args[operationDetail.id_position().getCode()],j);
@@ -388,14 +406,21 @@ public class OperationLogAspect {
 
 			List<SLogOperDetailEntity> opds = new ArrayList<>();
 			for (String clm : cloum) {
-				Object oldclm = (oldMap == null ? null : oldMap.get(clm));
-				Object newclm = newMap.get(clm);
+				Object oldValue = (oldMap == null ? null : oldMap.get(clm));
+				Object newValue = newMap.get(clm);
 
 				/**
-				 * 	更新场合：只记录不相同的数据，否则数据量太大
+				 * 	更新场合：根据配置文件，判断是否开启了全操作日志
+				 * 	oldValue     |    newVlaue
+				 * 	  null             null         =  相同
+				 * 	  object           null         =  不同
+				 * 	  null             object       =  不同
+				 * 	  object           object       =   equals 比较
 				 */
-				if (oldclm != null && oldclm.equals(newclm)) {
-					continue;
+				if(!perfectConfigProperies.isOperateLogAll()){
+					if(Objects.equals(oldValue, newValue)){
+						continue;
+					}
 				}
 
 				// 从表设置
@@ -405,13 +430,16 @@ public class OperationLogAspect {
 				opd.setType(obo.getType().getName());
 				opd.setOper_info(obo.getOper_info());
 				opd.setTable_name(obo.getTable_name());
-				opd.setOld_val((oldMap == null ? null : oldclm.toString()));
-				opd.setNew_val(newclm.toString());
+				opd.setOld_val((oldMap == null ? null : ( oldValue == null ? null : oldValue.toString())));
+				opd.setNew_val(newValue == null ? null : newValue.toString());
 				opd.setClm_name(clm);
 				opd.setClm_comment(columnCommentMap.get(clm).toString());
 				opds.add(opd);
 			}
-			if (!opds.isEmpty()) {
+			/**
+			 * 判断是否开启了操作日志
+			 */
+			if(perfectConfigProperies.isOperateLog()){
 				isLogOperDetailService.saveBatch(opds, opds.size());
 			}
 			i = i + 1;

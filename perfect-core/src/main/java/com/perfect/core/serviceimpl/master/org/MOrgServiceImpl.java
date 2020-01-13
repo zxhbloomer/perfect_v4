@@ -58,6 +58,9 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @Autowired
     ICommonComponentService iCommonComponentService;
 
+    @Autowired
+    private MOrgServiceImpl self;
+
     /** 组织entity数组 */
 //    List<MOrgEntity> entities;
 
@@ -438,6 +441,22 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @param beans
      * @return
      */
+    @Override
+    public Boolean dragsave(List<MOrgTreeVo> beans) {
+        List<MOrgEntity> entities = new ArrayList<>();
+        int code = 0;
+        List<MOrgEntity> beanList = dragData2List(beans, null ,entities, code);
+        /**
+         * 注意调用方法，必须使用外部调用，激活aop，内部调用不能激活aop和注解
+         */
+        return self.dragsave2Db(beanList);
+    }
+
+    /**
+     * 拖拽保存
+     * @param list
+     * @return
+     */
     @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.M_ORG.OPER_DRAG_DROP,
         type = OperationEnum.DRAG_DROP,
@@ -451,19 +470,15 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         )
     )
     @Transactional(rollbackFor = Exception.class)
-    @Override
-    public Boolean dragsave(List<MOrgTreeVo> beans) {
-        List<MOrgEntity> entities = new ArrayList<>();
-        int code = 0;
-        List<MOrgEntity> rtnList = dragData2List(beans, null ,entities, code);
+    public Boolean dragsave2Db(List<MOrgEntity> list){
         // 编号重置
-        for (MOrgEntity entity : rtnList) {
+        for (MOrgEntity entity : list) {
             if(entity.getParent_id() != null){
-                setParentSonCount(rtnList, entity.getParent_id());
+                setParentSonCount(list, entity.getParent_id());
             }
         }
         // 更新开始
-        for (MOrgEntity entity : rtnList) {
+        for (MOrgEntity entity : list) {
             entity.setSon_count(entity.getSon_count() == null ? 0 : entity.getSon_count());
             entity.setU_id(SecurityUtil.getLoginUser_id());
             entity.setU_time(LocalDateTime.now());

@@ -176,4 +176,13 @@ public class MasterOrgController extends BaseController {
         MStaffPositionVo rtn = service.getStaffTransferList(beans);
         return ResponseEntity.ok().body(ResultUtil.OK(rtn));
     }
+
+    @SysLogAnnotion("保存穿梭框数据，员工岗位设置")
+    @ApiOperation("保存穿梭框数据，员工岗位设置")
+    @PostMapping("/staff/transfer/save")
+    @ResponseBody
+    public ResponseEntity<JsonResult<MStaffPositionVo>> setStaffTransferList(@RequestBody(required = false) MStaffTransferVo beans) {
+        MStaffPositionVo rtn = service.getStaffTransferList(beans);
+        return ResponseEntity.ok().body(ResultUtil.OK(rtn));
+    }
 }
