@@ -92,17 +92,11 @@ import java.util.List;
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int pauseJob(SJobEntity job) throws SchedulerException {
-        Long jobId = job.getId();
-        String jobGroup = job.getJob_group_code();
+    public int pauseJob(SJobEntity job) {
         job.setIs_effected(ScheduleConstants.Status.PAUSE.getValue());
-
         job.setC_id(null);
         job.setC_time(null);
         int rows = jobMapper.updateById(job);
-//        if (rows > 0) {
-//            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-//        }
         return rows;
     }
 
@@ -113,17 +107,12 @@ import java.util.List;
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int resumeJob(SJobEntity job) throws SchedulerException {
-        Long jobId = job.getId();
-        String jobGroup = job.getJob_group_code();
+    public int resumeJob(SJobEntity job) {
         job.setIs_effected(ScheduleConstants.Status.NORMAL.getValue());
 
         job.setC_id(null);
         job.setC_time(null);
         int rows = jobMapper.updateById(job);
-//        if (rows > 0) {
-//            scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-//        }
         return rows;
     }
 
@@ -134,17 +123,12 @@ import java.util.List;
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int deleteJob(SJobEntity job) throws SchedulerException {
-        Long jobId = job.getId();
-        String jobGroup = job.getJob_group_code();
+    public int deleteJob(SJobEntity job) {
         job.setIs_effected(ScheduleConstants.Status.PAUSE.getValue());
         job.setIs_del(true);
         job.setC_id(null);
         job.setC_time(null);
         int rows = jobMapper.updateById(job);
-//        if (rows > 0) {
-//            scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-//        }
         return rows;
     }
 
@@ -156,7 +140,7 @@ import java.util.List;
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteJobByIds(String ids) throws SchedulerException {
+    public void deleteJobByIds(String ids) {
         Long[] jobIds = Convert.toLongArray(ids);
         for (Long jobId : jobIds) {
             SJobEntity job = jobMapper.selectJobById(jobId);
@@ -206,12 +190,9 @@ import java.util.List;
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int insertJob(SJobEntity job) throws SchedulerException, TaskException {
+    public int insertJob(SJobEntity job) {
         job.setIs_effected(ScheduleConstants.Status.PAUSE.getValue());
         int rows = jobMapper.insert(job);
-//        if (rows > 0) {
-//            ScheduleUtils.createScheduleJob(scheduler, job);
-//        }
         return rows;
     }
 

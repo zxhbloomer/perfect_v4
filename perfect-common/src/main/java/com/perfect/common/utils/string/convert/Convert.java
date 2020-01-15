@@ -641,51 +641,51 @@ public class Convert {
         return toBigDecimal(value, null);
     }
 
-    /**
-     * 将对象转为字符串<br>
-     * 1、Byte数组和ByteBuffer会被转换为对应字符串的数组 2、对象数组会调用Arrays.toString方法
-     *
-     * @param obj 对象
-     * @return 字符串
-     */
-    public static String utf8Str(Object obj) {
-        return str(obj, CharsetUtil.CHARSET_UTF_8);
-    }
+//    /**
+//     * 将对象转为字符串<br>
+//     * 1、Byte数组和ByteBuffer会被转换为对应字符串的数组 2、对象数组会调用Arrays.toString方法
+//     *
+//     * @param obj 对象
+//     * @return 字符串
+//     */
+//    public static String utf8Str(Object obj) {
+//        return str(obj, CharsetUtil.CHARSET_UTF_8);
+//    }
 
-    /**
-     * 将对象转为字符串<br>
-     * 1、Byte数组和ByteBuffer会被转换为对应字符串的数组 2、对象数组会调用Arrays.toString方法
-     *
-     * @param obj         对象
-     * @param charsetName 字符集
-     * @return 字符串
-     */
-    public static String str(Object obj, String charsetName) {
-        return str(obj, Charset.forName(charsetName));
-    }
+//    /**
+//     * 将对象转为字符串<br>
+//     * 1、Byte数组和ByteBuffer会被转换为对应字符串的数组 2、对象数组会调用Arrays.toString方法
+//     *
+//     * @param obj         对象
+//     * @param charsetName 字符集
+//     * @return 字符串
+//     */
+//    public static String str(Object obj, String charsetName) {
+//        return str(obj, Charset.forName(charsetName));
+//    }
 
-    /**
-     * 将对象转为字符串<br>
-     * 1、Byte数组和ByteBuffer会被转换为对应字符串的数组 2、对象数组会调用Arrays.toString方法
-     *
-     * @param obj     对象
-     * @param charset 字符集
-     * @return 字符串
-     */
-    public static String str(Object obj, Charset charset) {
-        if (null == obj) {
-            return null;
-        }
-
-        if (obj instanceof String) {
-            return (String)obj;
-        } else if (obj instanceof byte[] || obj instanceof Byte[]) {
-            return str((Byte[])obj, charset);
-        } else if (obj instanceof ByteBuffer) {
-            return str((ByteBuffer)obj, charset);
-        }
-        return obj.toString();
-    }
+//    /**
+//     * 将对象转为字符串<br>
+//     * 1、Byte数组和ByteBuffer会被转换为对应字符串的数组 2、对象数组会调用Arrays.toString方法
+//     *
+//     * @param obj     对象
+//     * @param charset 字符集
+//     * @return 字符串
+//     */
+//    public static String str(Object obj, Charset charset) {
+//        if (null == obj) {
+//            return null;
+//        }
+//
+//        if (obj instanceof String) {
+//            return (String)obj;
+//        } else if (obj instanceof byte[] || obj instanceof Byte[]) {
+//            return str((Byte[])obj, charset);
+//        } else if (obj instanceof ByteBuffer) {
+//            return str((ByteBuffer)obj, charset);
+//        }
+//        return obj.toString();
+//    }
 
     /**
      * 将byte数组转为字符串

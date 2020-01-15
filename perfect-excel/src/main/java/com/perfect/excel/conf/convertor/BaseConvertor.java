@@ -19,7 +19,7 @@ public abstract class BaseConvertor implements Convertor {
     protected abstract String doConvert(Object input);
 
     private boolean isEmptyObj(Object input) {
-        return input == null || input.toString() == "";
+        return input == null || "".equals(input.toString());
     }
 
     @Override

@@ -65,7 +65,7 @@ public enum MQEnum {
 		 * @author zxh
 		 * @date 2019年 10月12日 23:34:54
 		 */
-		public class task {
+		public class Task {
 			public static final String queueCode = "perfect-task";
 			public static final String name = "平台任务类";
 			public static final String exchange = "perfect-task-exchange";

@@ -44,7 +44,7 @@ public class RedisLimitUtil {
 
     public static Boolean limit(String keyPrefix, String limit){
         String key = keyPrefix + ":" + System.currentTimeMillis() / 1000;
-        DefaultRedisScript<Long> redisScript1 = new DefaultRedisScript<>(LUA_LIMIT_SCRIPT, Long.class);
+//        DefaultRedisScript<Long> redisScript1 = new DefaultRedisScript<>(LUA_LIMIT_SCRIPT, Long.class);
 
         DefaultRedisScript<String> redisScript2 = new DefaultRedisScript<>(LUA_LIMIT_SCRIPT2, String.class);
 

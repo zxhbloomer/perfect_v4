@@ -55,7 +55,6 @@ public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        MUserEntity user = mUserMapper.getDataByName(username);
         MUserEntity user = getDataByName(username);
 
         if (user == null) {
@@ -125,7 +124,7 @@ public class MUserServiceImpl extends BaseServiceImpl<MUserMapper, MUserEntity> 
 
         // 设置basebean
         userSessionBo.setAccountId(mUserEntity.getId());
-        userSessionBo.setStaff_Id(mStaffVo.getId());
+        userSessionBo.setStaff_Id(mStaffVo != null ? mStaffVo.getId() : null);
         userSessionBo.setTenant_Id(mStaffVo != null ? mStaffVo.getTenant_id() : null);
 
         return userSessionBo;

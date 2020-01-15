@@ -28,7 +28,7 @@ public class RowValidateResult implements Serializable {
         for (ColValidateResult colValidateResult : colValidateResults) {
             String rowTitle = titleRows.get(0).getCol(colValidateResult.getDataCol().getIndex()).getTitle();
             String error = colValidateResult.getErrorMsg();
-            rtn = rtn + String.format("第%s列\"%s\"：%s\n", colValidateResult.getDataCol().getIndex(), rowTitle, error);
+            rtn = rtn + String.format("第%s列 %s ：%s ", colValidateResult.getDataCol().getIndex(), rowTitle, error);
         }
 
         return rtn;

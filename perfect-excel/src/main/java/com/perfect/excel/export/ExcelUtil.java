@@ -116,10 +116,6 @@ public class ExcelUtil<T> {
         /** 循环读取 */
         byte[] buff = new byte[1024];
         int len = 0;
-//        while ((len = fis.read(buff)) > 0) {
-//            out.write(buff, 0, len);
-//            out.flush();
-//        }
         while((len=fis.read(buff))!=-1){
             out.write(buff,0,len);
         }
@@ -129,9 +125,10 @@ public class ExcelUtil<T> {
         fis.close();
         out.close();
         // 删除服务器端生成的下载文件,减轻服务器的压力
-        // File file = new File(serverFile);
         if (file.exists()) {
-            file.delete();
+            if(!file.delete()) {
+                throw new BusinessException("文件删除失败");
+            }
         }
     }
 

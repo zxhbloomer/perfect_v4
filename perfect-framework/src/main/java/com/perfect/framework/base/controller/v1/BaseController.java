@@ -85,7 +85,9 @@ public class BaseController {
         // 判断文件是否存在
         File file = new File(fileUrl);
         if (file.exists()) {
-            file.delete();
+            if(!file.delete()) {
+                throw new RuntimeException("文件删除失败");
+            }
         }
         // 复制UploadFileResultPojo类中的属性到，返回的bean中
         T rtnBean = classOfT.newInstance();

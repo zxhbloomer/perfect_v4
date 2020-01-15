@@ -116,7 +116,7 @@ public class SignUpServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
         if(mUserEntity != null){
             throw new BusinessException("该手机号码在系统中已经被注册使用，请更换手机号！");
         }
-        return null;
+        return true;
     }
 
     /**

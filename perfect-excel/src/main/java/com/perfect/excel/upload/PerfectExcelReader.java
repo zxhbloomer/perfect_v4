@@ -1,6 +1,7 @@
 package com.perfect.excel.upload;
 
 import com.perfect.common.constant.PerfectConstant;
+import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.DateTimeUtil;
 import com.perfect.common.utils.string.StringUtil;
 import com.perfect.excel.bean.importconfig.template.ExcelTemplate;
@@ -90,7 +91,9 @@ public class PerfectExcelReader extends PerfectExcelBase {
         }
         try {
             if(errorFile != null && errorFile.exists()){
-                errorFile.delete();
+                if(!errorFile.delete()) {
+                    throw new BusinessException("文件删除失败");
+                }
             }
         } catch (Exception e) {
         }
@@ -357,7 +360,7 @@ public class PerfectExcelReader extends PerfectExcelBase {
                     String value = getCellValue(row, col, sheet).trim();
                     if (!value.equals(titleCol.getTitle())) {
                         errorMsg.append(
-                            String.format("第%s行第%s列期望[%s]，实际为[%s]\n", row + 1, col + 1, titleCol.getTitle(), value));
+                            String.format("第%s行第%s列期望[%s]，实际为[%s]", row + 1, col + 1, titleCol.getTitle(), value));
                     }
                 }
             }

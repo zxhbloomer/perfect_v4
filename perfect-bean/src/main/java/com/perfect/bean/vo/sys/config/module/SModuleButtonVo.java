@@ -27,6 +27,7 @@ import lombok.experimental.Accessors;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "模块按钮信息", description = "模块按钮信息")
+@EqualsAndHashCode(callSuper=false)
 public class SModuleButtonVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 3951235625344140283L;
