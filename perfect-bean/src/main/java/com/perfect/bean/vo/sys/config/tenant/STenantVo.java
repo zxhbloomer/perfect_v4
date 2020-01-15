@@ -4,6 +4,7 @@ import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "租户信息", description = "租户信息")
+@EqualsAndHashCode(callSuper=false)
 public class STenantVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 6408599988501466911L;

@@ -5,7 +5,9 @@ import com.perfect.bean.config.base.v1.SessionBaseBean;
 import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.bean.vo.sys.config.tenant.STenantVo;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -17,6 +19,8 @@ import java.io.Serializable;
  * @Version: 1.0
  */
 @Data
+@ApiModel(value = "用户信息", description = "用户信息")
+@EqualsAndHashCode(callSuper=false)
 public class UserSessionBo extends SessionBaseBean implements Serializable {
 
     private static final long serialVersionUID = 4115465265205543377L;

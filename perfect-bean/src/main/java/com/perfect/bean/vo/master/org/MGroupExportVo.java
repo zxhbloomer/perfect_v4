@@ -7,6 +7,7 @@ import com.perfect.bean.vo.common.condition.PageCondition;
 import com.perfect.common.annotations.ExcelAnnotion;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "集团主表导出Bean", description = "集团主表导出Bean")
+@EqualsAndHashCode(callSuper=false)
 public class MGroupExportVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -7466167220853981131L;

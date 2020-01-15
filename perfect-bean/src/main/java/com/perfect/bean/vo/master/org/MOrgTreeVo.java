@@ -2,7 +2,9 @@ package com.perfect.bean.vo.master.org;
 
 import com.perfect.bean.vo.common.component.TreeNode;
 import com.perfect.bean.vo.common.condition.PageCondition;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,6 +18,8 @@ import java.util.List;
  * @date 2019年 10月03日 11:55:24
  */
 @Data
+@ApiModel(value = "生成组织架构数据的接收类", description = "生成组织架构数据的接收类")
+@EqualsAndHashCode(callSuper=false)
 public class MOrgTreeVo extends TreeNode implements Serializable {
 
     private static final long serialVersionUID = -3350299230362690901L;

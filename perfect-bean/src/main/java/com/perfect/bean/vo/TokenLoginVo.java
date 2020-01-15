@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -19,6 +20,7 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @ApiModel(value = "登录授权服务器类", description = "作为登录授权服务器数据bean")
+@EqualsAndHashCode(callSuper=false)
 public class TokenLoginVo extends BaseVo implements Serializable {
     private static final long serialVersionUID = -2008867352253446153L;
 

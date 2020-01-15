@@ -25,6 +25,7 @@ import lombok.experimental.Accessors;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "市", description = "市")
+@EqualsAndHashCode(callSuper=false)
 public class SAreaCitiesVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -1579651769183614222L;

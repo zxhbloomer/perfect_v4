@@ -25,6 +25,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "地址簿", description = "地址簿")
+@EqualsAndHashCode(callSuper=false)
 public class MAddressVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 1L;

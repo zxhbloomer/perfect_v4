@@ -5,11 +5,13 @@ import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @ApiModel(value = "用户基本信息", description = "用户基本信息vo_bean")
+@EqualsAndHashCode(callSuper=false)
 public class UserInfoVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 574627344179000681L;

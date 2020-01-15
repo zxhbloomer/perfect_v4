@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "编码控制表", description = "编码控制表")
+@EqualsAndHashCode(callSuper=false)
 public class SCodeVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 4617915261869763630L;

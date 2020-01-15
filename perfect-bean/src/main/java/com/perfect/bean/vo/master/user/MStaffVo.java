@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "员工主表", description = "员工主表")
+@EqualsAndHashCode(callSuper=false)
 public class MStaffVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 1245522329833935707L;

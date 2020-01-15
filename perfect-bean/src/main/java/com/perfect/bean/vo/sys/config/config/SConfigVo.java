@@ -5,6 +5,7 @@ import com.perfect.bean.pojo.fs.UploadFileResultPojo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "参数数据信息", description = "参数数据信息")
+@EqualsAndHashCode(callSuper=false)
 public class SConfigVo extends UploadFileResultPojo implements Serializable {
     private static final long serialVersionUID = -21039960705170821L;
 

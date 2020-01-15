@@ -3,6 +3,7 @@ package com.perfect.bean.vo.master.org;
 import com.perfect.bean.config.base.v1.BaseVo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "员工bean，为穿梭框服务", description = "员工bean，为穿梭框服务")
+@EqualsAndHashCode(callSuper=false)
 public class MStaffPositionTransferVo extends BaseVo implements Serializable {
     private static final long serialVersionUID = -8892463566681169124L;
 

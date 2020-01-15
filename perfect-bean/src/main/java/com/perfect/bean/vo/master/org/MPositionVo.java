@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "岗位主表", description = "岗位主表")
+@EqualsAndHashCode(callSuper=false)
 public class MPositionVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 3554363110752008984L;

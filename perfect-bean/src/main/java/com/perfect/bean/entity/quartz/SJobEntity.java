@@ -8,6 +8,7 @@ import java.io.Serializable;
 import com.perfect.bean.entity.base.entity.v1.BaseEntity;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Tolerate;
 
 /**
@@ -21,6 +22,7 @@ import lombok.experimental.Tolerate;
 @Data
 @TableName("s_job")
 @Builder
+@EqualsAndHashCode(callSuper=false)
 public class SJobEntity extends BaseEntity<SJobEntity> implements Serializable {
 
     private static final long serialVersionUID = -1825371696489602370L;

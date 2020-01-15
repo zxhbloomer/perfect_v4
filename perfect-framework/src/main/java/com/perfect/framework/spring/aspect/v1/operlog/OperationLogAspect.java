@@ -285,7 +285,7 @@ public class OperationLogAspect {
 			 * 获取参数 List<Bean>
 			 */
 			Class argsClass = args[operationDetail.id_position().getCode()].getClass();
-			Method sizeMethod = argsClass.getDeclaredMethod("size", null);
+			Method sizeMethod = argsClass.getDeclaredMethod("size", new Class[0]);
 			// list的size
 			int sizeValue = (int)sizeMethod.invoke(args[operationDetail.id_position().getCode()]);
 

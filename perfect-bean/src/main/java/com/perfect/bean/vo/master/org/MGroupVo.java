@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "集团主表", description = "集团主表")
+@EqualsAndHashCode(callSuper=false)
 public class MGroupVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -7466167220853981131L;

@@ -3,6 +3,7 @@ package com.perfect.bean.vo.common.component;
 import com.perfect.bean.config.base.v1.BaseVo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "下拉选项的数据", description = "下拉选项的数据")
+@EqualsAndHashCode(callSuper=false)
 public class NameAndValueVo extends BaseVo implements Serializable {
     private static final long serialVersionUID = 6697222826158984527L;
 

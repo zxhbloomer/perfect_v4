@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "定时任务调度", description = "定时任务调度")
+@EqualsAndHashCode(callSuper=false)
 public class SJobVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = 7769270858273192316L;

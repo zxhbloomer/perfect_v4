@@ -4,6 +4,7 @@ import com.perfect.bean.pojo.fs.UploadFileResultPojo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "资源返回信息", description = "资源返回vo_bean")
+@EqualsAndHashCode(callSuper=false)
 public class SResourceVo extends UploadFileResultPojo implements Serializable {
 
     private static final long serialVersionUID = 2443084812232177470L;

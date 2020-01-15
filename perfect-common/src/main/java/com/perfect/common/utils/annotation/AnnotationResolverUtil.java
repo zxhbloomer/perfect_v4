@@ -110,7 +110,7 @@ public class AnnotationResolverUtil {
         for (int i = 0; i < names.length; i++) {
             if (strs[0].equals(names[i])) {
                 Object obj = args[i];
-                Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(strs[1]), null);
+                Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(strs[1]), new Class[0]);
                 Object value = dmethod.invoke(args[i]);
                 return getValue(value, 1, strs);
             }
@@ -137,7 +137,7 @@ public class AnnotationResolverUtil {
         for (int i = 0; i < names.length; i++) {
             if (strs[0].equals(names[i])) {
                 Object obj = args[i];
-                Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(strs[1]), null);
+                Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(strs[1]), new Class[0]);
                 Object value = dmethod.invoke(args[i]);
                 return getValue(value, 1, strs);
             }
@@ -156,7 +156,7 @@ public class AnnotationResolverUtil {
 
         try {
             if (obj != null && index < strs.length - 1) {
-                Method method = obj.getClass().getDeclaredMethod(getMethodName(strs[index + 1]), null);
+                Method method = obj.getClass().getDeclaredMethod(getMethodName(strs[index + 1]), new Class[0]);
                 obj = method.invoke(obj);
                 getValue(obj, index + 1, strs);
             }

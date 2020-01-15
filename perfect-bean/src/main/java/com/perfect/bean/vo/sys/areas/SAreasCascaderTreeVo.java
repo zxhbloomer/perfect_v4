@@ -3,6 +3,7 @@ package com.perfect.bean.vo.sys.areas;
 import com.perfect.bean.vo.common.component.TreeNode;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "省市区", description = "省市区")
+@EqualsAndHashCode(callSuper=false)
 public class SAreasCascaderTreeVo extends TreeNode implements Serializable {
 
     private static final long serialVersionUID = 8330843713725719097L;

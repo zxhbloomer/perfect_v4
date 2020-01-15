@@ -1,7 +1,10 @@
 package com.perfect.bean.vo.sys.config.tenant;
 
 import com.perfect.bean.vo.common.component.TreeNode;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -12,6 +15,8 @@ import java.time.LocalDateTime;
  * @date 2019年 10月03日 11:55:24
  */
 @Data
+@ApiModel(value = "生成租户树数据的接收类", description = "生成租户树数据的接收类")
+@EqualsAndHashCode(callSuper=false)
 public class STenantTreeVo extends TreeNode implements Serializable {
 
     private static final long serialVersionUID = -7928187114619523854L;

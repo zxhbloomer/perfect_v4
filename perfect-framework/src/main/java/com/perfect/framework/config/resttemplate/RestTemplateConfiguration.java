@@ -68,7 +68,7 @@ public class RestTemplateConfiguration {
         CallbackMappingJackson2HttpMessageConverter fastJsonConvert = new CallbackMappingJackson2HttpMessageConverter();
         List<MediaType> supportMediaTypeList = new ArrayList<>();
         supportMediaTypeList.add(MediaType.APPLICATION_JSON);
-        supportMediaTypeList.add(MediaType.APPLICATION_JSON_UTF8);
+//        supportMediaTypeList.add(MediaType.APPLICATION_JSON_UTF8);
         supportMediaTypeList.add(MediaType.valueOf("application/*+json"));
         supportMediaTypeList.add(MediaType.valueOf("application/*+json;charset=UTF-8"));
         fastJsonConvert.setSupportedMediaTypes(supportMediaTypeList);

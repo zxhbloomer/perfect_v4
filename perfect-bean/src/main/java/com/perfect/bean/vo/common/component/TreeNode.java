@@ -2,7 +2,10 @@ package com.perfect.bean.vo.common.component;
 
 import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.tree.ITreeNode;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +19,8 @@ import java.util.List;
  * @date 2019年 10月03日 11:55:24
  */
 @Data
+@ApiModel(value = "生成租户树数据的接收类", description = "生成租户树数据的接收类")
+@EqualsAndHashCode(callSuper=false)
 public class TreeNode extends BaseVo implements ITreeNode<TreeNode>, Comparable<TreeNode> {
 
     /** 级联value */

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.perfect.bean.vo.common.component.TreeNode;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -22,6 +23,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "菜单信息", description = "菜单信息")
+@EqualsAndHashCode(callSuper=false)
 public class SMenuVo extends TreeNode implements Serializable {
 
     private static final long serialVersionUID = -8144262156342458120L;
