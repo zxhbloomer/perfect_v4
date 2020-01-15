@@ -2,10 +2,7 @@ package com.perfect.core.serviceimpl.master.org;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
-import com.perfect.bean.entity.sys.config.config.SConfigEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
@@ -13,8 +10,8 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.org.MGroupVo;
-import com.perfect.common.annotations.OperationDetailLogByIdAnnotion;
-import com.perfect.common.annotations.OperationDetailLogByIdsAnnotion;
+import com.perfect.common.annotations.LogByIdAnnotion;
+import com.perfect.common.annotations.LogByIdsAnnotion;
 import com.perfect.common.annotations.OperationLogAnnotion;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.enums.OperationEnum;
@@ -101,7 +98,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.M_GROUP.OPER_LOGIC_DELETE,
         type = OperationEnum.LOGIC_DELETE,
-        operationDetailsByIds = @OperationDetailLogByIdsAnnotion(
+        logByIds = @LogByIdsAnnotion(
             name = PerfectConstant.OPERATION.M_GROUP.OPER_LOGIC_DELETE,
             type = OperationEnum.LOGIC_DELETE,
             oper_info = "",
@@ -140,7 +137,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.M_GROUP.OPER_INSERT,
         type = OperationEnum.ADD,
-        operationDetailsById = @OperationDetailLogByIdAnnotion(
+        logById = @LogByIdAnnotion(
             name = PerfectConstant.OPERATION.M_GROUP.OPER_INSERT,
             type = OperationEnum.ADD,
             oper_info = "",
@@ -174,7 +171,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
     @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.M_GROUP.OPER_UPDATE,
         type = OperationEnum.UPDATE,
-        operationDetailsById = @OperationDetailLogByIdAnnotion(
+        logById = @LogByIdAnnotion(
             name = PerfectConstant.OPERATION.M_GROUP.OPER_UPDATE,
             type = OperationEnum.UPDATE,
             oper_info = "",

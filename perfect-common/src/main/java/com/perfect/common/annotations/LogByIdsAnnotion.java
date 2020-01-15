@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OperationDetailLogByIdsAnnotion {
+public @interface LogByIdsAnnotion {
 	/** 业务名 */
 	String name();
 	/** 操作类型 */

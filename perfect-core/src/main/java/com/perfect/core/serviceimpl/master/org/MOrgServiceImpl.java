@@ -3,7 +3,6 @@ package com.perfect.core.serviceimpl.master.org;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.bo.session.user.UserSessionBo;
-import com.perfect.bean.entity.master.MAddressEntity;
 import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
@@ -18,8 +17,8 @@ import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.common.component.TreeNode;
 import com.perfect.bean.vo.master.org.*;
 import com.perfect.bean.vo.master.user.MStaffVo;
-import com.perfect.common.annotations.OperationDetailLogByIdAnnotion;
-import com.perfect.common.annotations.OperationDetailLogByIdsAnnotion;
+import com.perfect.common.annotations.LogByIdAnnotion;
+import com.perfect.common.annotations.LogByIdsAnnotion;
 import com.perfect.common.annotations.OperationLogAnnotion;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.constant.PerfectDictConstant;
@@ -196,7 +195,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.M_ORG.OPER_INSERT,
         type = OperationEnum.ADD,
-        operationDetailsById = @OperationDetailLogByIdAnnotion(
+        logById = @LogByIdAnnotion(
             name = PerfectConstant.OPERATION.M_ORG.OPER_INSERT,
             type = OperationEnum.ADD,
             oper_info = "",
@@ -268,7 +267,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.M_ORG.OPER_UPDATE,
         type = OperationEnum.UPDATE,
-        operationDetailsById = @OperationDetailLogByIdAnnotion(
+        logById = @LogByIdAnnotion(
             name = PerfectConstant.OPERATION.M_ORG.OPER_UPDATE,
             type = OperationEnum.UPDATE,
             oper_info = "",
@@ -403,7 +402,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.M_ORG.OPER_DELETE,
         type = OperationEnum.DELETE,
-        operationDetailsById = @OperationDetailLogByIdAnnotion(
+        logById = @LogByIdAnnotion(
             name = PerfectConstant.OPERATION.M_ORG.OPER_DELETE,
             type = OperationEnum.DELETE,
             oper_info = "",
@@ -460,7 +459,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @OperationLogAnnotion(
         name = PerfectConstant.OPERATION.M_ORG.OPER_DRAG_DROP,
         type = OperationEnum.DRAG_DROP,
-        operationDetailsByIds = @OperationDetailLogByIdsAnnotion(
+        logByIds = @LogByIdsAnnotion(
             name = PerfectConstant.OPERATION.M_ORG.OPER_DRAG_DROP,
             type = OperationEnum.DRAG_DROP,
             oper_info = "",
@@ -543,7 +542,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     }
 
     /**
-     * 设置员工关系
+     * 设置员工关系，删除剔除的员工，增加选择的员工
      * @param staff_ids 员工id list
      * @return
      */

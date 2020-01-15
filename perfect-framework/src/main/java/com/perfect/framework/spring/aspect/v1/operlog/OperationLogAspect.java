@@ -5,8 +5,8 @@ import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.entity.log.operate.SLogOperDetailEntity;
 import com.perfect.bean.entity.log.operate.SLogOperEntity;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
-import com.perfect.common.annotations.OperationDetailLogByIdAnnotion;
-import com.perfect.common.annotations.OperationDetailLogByIdsAnnotion;
+import com.perfect.common.annotations.LogByIdAnnotion;
+import com.perfect.common.annotations.LogByIdsAnnotion;
 import com.perfect.common.annotations.OperationLogAnnotion;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.enums.OperationEnum;
@@ -66,48 +66,17 @@ public class OperationLogAspect {
 		OperationLogAnnotion operationlog = method.getAnnotation(OperationLogAnnotion.class);
 
 		OperationEnum type = operationlog.type();
-		if(operationlog.operationDetailsByIds().length > 0){
-			// 更新
-			if (OperationEnum.UPDATE.equals(type)) {
-				return doOperationLogByIdsProcess(p, operationlog);
-			}
-			// 新增
-			if (OperationEnum.ADD.equals(type)) {
-				return doOperationLogByIdsProcess(p, operationlog);
-			}
-			// 逻辑删除
-			if (OperationEnum.LOGIC_DELETE.equals(type)) {
-				return doOperationLogByIdsProcess(p, operationlog);
-			}
-			// 物理删除
-			if (OperationEnum.DELETE.equals(type)) {
-				return doOperationLogByIdsProcess(p, operationlog);
-			}
-			// 拖拽
-			if (OperationEnum.DRAG_DROP.equals(type)) {
-				return doOperationLogByIdsProcess(p, operationlog);
-			}
-		} else {
-			// 更新
-			if (OperationEnum.UPDATE.equals(type)) {
-				return doOperationLogByIdProcess(p, operationlog);
-			}
-			// 新增
-			if (OperationEnum.ADD.equals(type)) {
-				return doOperationLogByIdProcess(p, operationlog);
-			}
-			// 逻辑删除
-			if (OperationEnum.LOGIC_DELETE.equals(type)) {
-				return doOperationLogByIdProcess(p, operationlog);
-			}
-			// 物理删除
-			if (OperationEnum.DELETE.equals(type)) {
-				return doOperationLogByIdProcess(p, operationlog);
-			}
-			// 拖拽
-			if (OperationEnum.DRAG_DROP.equals(type)) {
-				return doOperationLogByIdProcess(p, operationlog);
-			}
+		if(operationlog.logByIds().length > 0){
+			/**
+			 * 更新、新增、逻辑删除、物理删除、拖拽
+			 */
+			return doOperationLogByIdsProcess(p, operationlog);
+		}
+		if(operationlog.logById().length > 0){
+			/**
+			 * 更新、新增、逻辑删除、物理删除、拖拽
+			 */
+			return doOperationLogByIdProcess(p, operationlog);
 		}
 		throw new BusinessException("操作日志发生错误：未找到相应的操作日志逻辑【"+ type.getName() + "、" + type.getCode()  +"】");
 	}
@@ -135,7 +104,7 @@ public class OperationLogAspect {
 		/**
 		 * 先获取旧值
 		 */
-		for(OperationDetailLogByIdAnnotion operationDetail : operationlog.operationDetailsById()){
+		for(LogByIdAnnotion operationDetail : operationlog.logById()){
 			// 参数
 			Object paraId = AnnotationResolverUtil.newInstance().resolver(p, operationDetail.id());
 
@@ -216,7 +185,7 @@ public class OperationLogAspect {
 
 			// 查询新值
 			// 再取一次参数，考虑新增场合
-			Object paraId = AnnotationResolverUtil.newInstance().resolver(p, operationlog.operationDetailsById()[i].id());
+			Object paraId = AnnotationResolverUtil.newInstance().resolver(p, operationlog.logById()[i].id());
 			String sql = sqlTemplate + " FROM " + obo.getTable_name() + " WHERE id=" + paraId ;
 			Map<String, Object> newMap = sLogOperMapper.selectAnyTalbe(sql);
 
@@ -289,7 +258,7 @@ public class OperationLogAspect {
 		/**
 		 * 先获取旧值
 		 */
-		for(OperationDetailLogByIdsAnnotion operationDetail : operationlog.operationDetailsByIds()){
+		for(LogByIdsAnnotion operationDetail : operationlog.logByIds()){
 			String[] cloum = operationDetail.cloums();
 			String logTable = operationDetail.table_name();
 			/**
