@@ -9,6 +9,7 @@ public enum OperationEnum {
 	DELETE("DELETE", "物理删除"),
 	LOGIC_DELETE("LOGIC_DELETE", "逻辑删除"),
 	DRAG_DROP("DRAG_DROP", "拖拽操作"),
+	BATCH_UPDATE_INSERT_DELETE("BATCH_UPDATE_INSERT_DELETE", "批量操作")
 	;
 
 	public String getType() {

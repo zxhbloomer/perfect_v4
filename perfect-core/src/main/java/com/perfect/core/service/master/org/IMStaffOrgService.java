@@ -11,6 +11,6 @@ import com.perfect.bean.entity.master.org.MStaffOrgEntity;
  * @author zxh
  * @since 2019-08-23
  */
-public interface IMUserOrgService extends IService<MStaffOrgEntity> {
+public interface IMStaffOrgService extends IService<MStaffOrgEntity> {
 
 }

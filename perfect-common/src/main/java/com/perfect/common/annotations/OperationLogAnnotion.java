@@ -22,5 +22,7 @@ public @interface OperationLogAnnotion {
 	LogByIdAnnotion[] logById() default {};
 	/** 具体的操作，日志中需要保存的内容：多id，通过参数 List<Bean>中的Bean.id来 */
 	LogByIdsAnnotion[] logByIds() default {};
+	/** 具体的操作，日志中需要保存的内容：自定义key ，多keys，通过参数 List<Bean>中的Bean.自定义key来 */
+	LogByCustomKeysAnnotion[] logByCustomKeys() default {};
 
 }

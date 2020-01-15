@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @ClassName: MStaffVo
@@ -34,5 +35,8 @@ public class MStaffTransferVo extends BaseVo implements Serializable {
 
     /** 岗位ID */
     private Long position_id;
+
+    /** 穿梭框已经选择的员工id */
+    Long [] staff_positions;
 
 }

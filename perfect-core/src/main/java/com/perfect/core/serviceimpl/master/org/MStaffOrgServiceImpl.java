@@ -1,9 +1,9 @@
 package com.perfect.core.serviceimpl.master.org;
 
 import com.perfect.bean.entity.master.org.MStaffOrgEntity;
-import com.perfect.core.mapper.master.org.MUserOrgMapper;
+import com.perfect.core.mapper.master.org.MStaffOrgMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
-import com.perfect.core.service.master.org.IMUserOrgService;
+import com.perfect.core.service.master.org.IMStaffOrgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
  * @since 2019-08-23
  */
 @Service
-public class MUserOrgServiceImpl extends BaseServiceImpl<MUserOrgMapper, MStaffOrgEntity> implements IMUserOrgService {
+public class MStaffOrgServiceImpl extends BaseServiceImpl<MStaffOrgMapper, MStaffOrgEntity> implements IMStaffOrgService {
 
     @Autowired
-    private MUserOrgMapper mapper;
+    private MStaffOrgMapper mapper;
 
 }

@@ -15,6 +15,6 @@ import java.util.List;
  * @since 2019-08-23
  */
 @Repository
-public interface MUserOrgMapper extends BaseMapper<MStaffOrgEntity> {
+public interface MStaffOrgMapper extends BaseMapper<MStaffOrgEntity> {
 
 }

@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.master.org.MOrgEntity;
+import com.perfect.bean.entity.master.org.MStaffOrgEntity;
+import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.*;
-import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectDictConstant;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -422,4 +424,74 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "   order by  t2.`name`                                                                                     "
         + "                                                                                                           ")
     List<MStaffTransferVo> getUsedStaffTransferList(@Param("p1")MStaffTransferVo condition);
+
+    @Select("  <script>                                                                                              "
+        + "       select t.id                                                                                             "
+        + "         from                                                                                             "
+        + "               m_staff_org t1                                                                             "
+        + "        where                                                                                             "
+        + "               t1.serial_id =  #{p1.position_id,jdbcType=BIGINT}                                          "
+        + "          and  t1.serial_type =  '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE + "' "
+        + "          and  t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT}                                             "
+        + "   <if test='p1.staff_positions != null and p1.staff_positions.length!=0' >                               "
+        + "         and t1.staff_id not in                                                                           "
+        + "        <foreach collection='p1.staff_positions' item='item' index='index' open='(' separator=',' close=')'>  "
+        + "         #{item}                                                                                          "
+        + "        </foreach>                                                                                        "
+        + "   </if>                                                                                                  "
+        + "   </script>                                                                                              ")
+    List<MStaffOrgEntity> selete_delete_member(@Param("p1") MStaffTransferVo bean);
+
+    @Select("  <script>                                                                                              "
+        + "       select t.id                                                                                        "
+        + "         from                                                                                             "
+        + "               m_staff t1                                                                                 "
+        + "        where                                                                                             "
+        + "               t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT}                                             "
+        + "		      and not exists (                                                                               "
+        + "		   			select t.id                                                                              "
+        + "		   			  from m_staff_org t                                                                     "
+        + "		   			 where true                                                                              "
+        + "              <choose>                                                                                    "
+        + "                <when test='p1.staff_positions != null and p1.staff_positions.length!=0'                  "
+        + "                  and t1.staff_id in                                                                      "
+        + "                  <foreach collection='p1.staff_positions' item='item' index='index' open='(' separator=',' close=')'>  "
+        + "                    #{item}                                                                               "
+        + "                  </foreach>                                                                              "
+        + "                </when>                                                                                   "
+        + "                <otherwise>                                                                               "
+        + "                  and false                                                                               "
+        + "                </otherwise>                                                                              "
+        + "              </choose>                                                                                   "
+        + "                       )                                                                                  "
+        + "     <choose>                                                                                             "
+        + "       <when test='p1.staff_positions != null and p1.staff_positions.length!=0'                           "
+        + "           and t1.staff_id in                                                                             "
+        + "          <foreach collection='p1.staff_positions' item='item' index='index' open='(' separator=',' close=')'>  "
+        + "           #{item}                                                                                        "
+        + "          </foreach>                                                                                      "
+        + "       </when>                                                                                            "
+        + "       <otherwise>                                                                                        "
+        + "           and false                                                                                      "
+        + "       </otherwise>                                                                                       "
+        + "     </choose>                                                                                            "
+        + "   </script>                                                                                              ")
+    List<MStaffEntity> selete_insert_member(@Param("p1") MStaffTransferVo bean);
+
+    @Delete("  <script>                                                                                              "
+        + "       delete                                                                                             "
+        + "         from                                                                                             "
+        + "               m_staff_org t1                                                                             "
+        + "        where                                                                                             "
+        + "               t1.serial_id =  #{p1.position_id,jdbcType=BIGINT}                                          "
+        + "          and  t1.serial_type =  '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE + "' "
+        + "          and  t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT}                                             "
+        + "   <if test='p1.staff_positions != null and p1.staff_positions.length!=0' >                               "
+        + "         and t1.staff_id not in                                                                           "
+        + "        <foreach collection='p1.staff_positions' item='item' index='index' open='(' separator=',' close=')'>  "
+        + "         #{item}                                                                                          "
+        + "        </foreach>                                                                                        "
+        + "   </if>                                                                                                  "
+        + "   </script>                                                                                              ")
+    int delete_not_member(@Param("p1") MStaffTransferVo bean);
 }

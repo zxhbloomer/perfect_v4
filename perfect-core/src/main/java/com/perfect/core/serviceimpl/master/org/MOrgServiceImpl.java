@@ -6,6 +6,8 @@ import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
+import com.perfect.bean.entity.master.org.MStaffOrgEntity;
+import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
@@ -17,6 +19,7 @@ import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.common.component.TreeNode;
 import com.perfect.bean.vo.master.org.*;
 import com.perfect.bean.vo.master.user.MStaffVo;
+import com.perfect.common.annotations.LogByCustomKeysAnnotion;
 import com.perfect.common.annotations.LogByIdAnnotion;
 import com.perfect.common.annotations.LogByIdsAnnotion;
 import com.perfect.common.annotations.OperationLogAnnotion;
@@ -30,6 +33,7 @@ import com.perfect.core.mapper.master.org.MOrgMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.common.ICommonComponentService;
 import com.perfect.core.service.master.org.IMOrgService;
+import com.perfect.core.service.master.org.IMStaffOrgService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import com.perfect.core.utils.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +63,9 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
 
     @Autowired
     private MOrgServiceImpl self;
+
+    @Autowired
+    private IMStaffOrgService imStaffOrgService;
 
     /** 组织entity数组 */
 //    List<MOrgEntity> entities;
@@ -537,20 +544,72 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         // 获取全部用户
         rtn.setStaff_all(mapper.getAllStaffTransferList(condition));
         // 获取该岗位已经设置过得用户
-        rtn.setStaff_position(mapper.getUsedStaffTransferList(condition));
+        rtn.setStaff_positions(mapper.getUsedStaffTransferList(condition));
         return rtn;
     }
 
     /**
      * 设置员工关系，删除剔除的员工，增加选择的员工
-     * @param staff_ids 员工id list
+     * @param bean 员工id list
      * @return
      */
-    @Override
-    public MStaffPositionTransferVo setStaffTransfer(List<Long> staff_ids) {
-        for( Long staff_id : staff_ids ) {
 
+    @Override
+    public MStaffPositionTransferVo setStaffTransfer(MStaffTransferVo bean) {
+        // 查询出需要剔除的员工list
+        List<MStaffOrgEntity> deleteMemgerList = mapper.selete_delete_member(bean);
+        // 查询出需要添加的员工list
+        List<MStaffEntity> insertMemgerList = mapper.selete_insert_member(bean);
+
+        self.saveMemberList(deleteMemgerList, insertMemgerList, bean);
+        return null;
+    }
+
+    /**
+     * 保存员工关系，删除剔除的员工，增加选择的员工
+     * @param deleteMemgerList
+     * @param insertMemgerList
+     * @param bean
+     * @return
+     */
+    @OperationLogAnnotion(
+        name = PerfectConstant.OPERATION.M_STAFF_ORG.OPER_POSITION_STAFF,
+        type = OperationEnum.BATCH_UPDATE_INSERT_DELETE,
+        logByIds = @LogByIdsAnnotion(
+            name = PerfectConstant.OPERATION.M_STAFF_ORG.OPER_POSITION_STAFF,
+            type = OperationEnum.DELETE,
+            oper_info = "",
+            table_name = PerfectConstant.OPERATION.M_STAFF_ORG.TABLE_NAME,
+            id_position = ParameterEnum.FIRST,
+            ids = "#{beans.id}"
+        ),
+        logByCustomKeys =  @LogByCustomKeysAnnotion(
+            name = PerfectConstant.OPERATION.M_STAFF_ORG.OPER_POSITION_STAFF,
+            type = OperationEnum.DELETE,
+            oper_info = "",
+            table_name = PerfectConstant.OPERATION.M_STAFF_ORG.TABLE_NAME,
+            key_position = ParameterEnum.SECOND,
+            keys = "#{beans.id}",
+            keys_sql = "staff_id"
+        )
+    )
+    @Transactional(rollbackFor = Exception.class)
+    public MStaffPositionTransferVo saveMemberList(List<MStaffOrgEntity> deleteMemgerList, List<MStaffEntity> insertMemgerList, MStaffTransferVo bean) {
+
+        // 删除剔除的员工
+        int counter = mapper.deleteBatchIds(deleteMemgerList);
+
+        // 增加选择的员工
+        List<MStaffOrgEntity> mStaffOrgEntities = new ArrayList<>();
+        for( MStaffEntity mStaffEntity : insertMemgerList ) {
+            MStaffOrgEntity mStaffOrgEntity = new MStaffOrgEntity();
+            mStaffOrgEntity.setStaff_id(mStaffEntity.getId());
+            mStaffOrgEntity.setSerial_id(bean.getPosition_id());
+            mStaffOrgEntity.setSerial_type(PerfectDictConstant.DICT_SYS_CODE_TYPE_M_POSITION);
+            mStaffOrgEntity.setTenant_id(bean.getTenant_id());
+            mStaffOrgEntities.add(mStaffOrgEntity);
         }
+        imStaffOrgService.saveBatch(mStaffOrgEntities);
         return null;
     }
 }

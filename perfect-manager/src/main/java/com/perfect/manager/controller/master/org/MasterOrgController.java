@@ -172,8 +172,8 @@ public class MasterOrgController extends BaseController {
     @ApiOperation("获取所有员工的数据，为穿梭框服务")
     @PostMapping("/staff/transfer/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<MStaffPositionTransferVo>> getStaffTransferList(@RequestBody(required = false) MStaffTransferVo beans) {
-        MStaffPositionTransferVo rtn = service.getStaffTransferList(beans);
+    public ResponseEntity<JsonResult<MStaffPositionTransferVo>> getStaffTransferList(@RequestBody(required = false) MStaffTransferVo bean) {
+        MStaffPositionTransferVo rtn = service.getStaffTransferList(bean);
         return ResponseEntity.ok().body(ResultUtil.OK(rtn));
     }
 
@@ -181,7 +181,9 @@ public class MasterOrgController extends BaseController {
     @ApiOperation("保存穿梭框数据，员工岗位设置")
     @PostMapping("/staff/transfer/save")
     @ResponseBody
-    public ResponseEntity<JsonResult<String>> setStaffTransferList(@RequestBody(required = false) List<Long> staff_ids) {
+    public ResponseEntity<JsonResult<String>> setStaffTransferList(@RequestBody(required = false) MStaffTransferVo bean) {
+        bean.setTenant_id(super.getUserSessionTenantId());
+        service.setStaffTransfer(bean);
         return ResponseEntity.ok().body(ResultUtil.OK("ok"));
     }
 }

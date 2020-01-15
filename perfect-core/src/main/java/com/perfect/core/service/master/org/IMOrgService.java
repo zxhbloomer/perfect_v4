@@ -142,6 +142,6 @@ public interface IMOrgService extends IService<MOrgEntity> {
      * 获取员工清单，为穿梭框服务
      * @return
      */
-    MStaffPositionTransferVo setStaffTransfer(List<Long> staff_ids);
+    MStaffPositionTransferVo setStaffTransfer(MStaffTransferVo bean);
 
 }

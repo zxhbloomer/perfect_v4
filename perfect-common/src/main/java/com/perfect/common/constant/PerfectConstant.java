@@ -161,6 +161,19 @@ public class PerfectConstant {
             public static final String OPER_UPDATE = "组织主表更新";
             public static final String OPER_DELETE = "组织主表物理删除";
             public static final String OPER_DRAG_DROP = "组织主表拖拽操作";
+            public static final String OPER_POSITION_STAFF = "用户组织机构关系表，成员维护";
+        }
+
+        /**
+         * 组织机构
+         */
+        public class M_STAFF_ORG {
+            public static final String TABLE_NAME = "m_staff_org";
+
+            public static final String OPER_INSERT = "用户组织机构关系表新增";
+            public static final String OPER_UPDATE = "用户组织机构关系表更新";
+            public static final String OPER_DELETE = "用户组织机构关系表物理删除";
+            public static final String OPER_POSITION_STAFF = "用户组织机构关系表，成员维护";
         }
     }
 }
