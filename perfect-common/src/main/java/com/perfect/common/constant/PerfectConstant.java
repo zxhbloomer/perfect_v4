@@ -165,7 +165,7 @@ public class PerfectConstant {
         }
 
         /**
-         * 组织机构
+         * 用户组织机构关系表
          */
         public class M_STAFF_ORG {
             public static final String TABLE_NAME = "m_staff_org";

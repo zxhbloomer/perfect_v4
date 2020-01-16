@@ -36,6 +36,7 @@ import com.perfect.core.service.master.org.IMStaffOrgService;
 import com.perfect.core.serviceimpl.log.operate.SLogOperServiceImpl;
 import com.perfect.core.utils.mybatis.PageUtil;
 import com.perfect.core.utils.security.SecurityUtil;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -596,6 +599,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             CustomOperateDetailBo<MStaffPositionOperationVo> bo = new CustomOperateDetailBo<>();
             bo.setName(cobo.getName());
             bo.setType(OperationEnum.DELETE);
+            bo.setTable_name(PerfectConstant.OPERATION.M_STAFF_ORG.TABLE_NAME);
             bo.setNewData(null);
             bo.setOldData(vo);
             detail.add(bo);
@@ -633,8 +637,10 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             CustomOperateDetailBo<MStaffPositionOperationVo> bo = new CustomOperateDetailBo<>();
             bo.setName(cobo.getName());
             bo.setType(OperationEnum.ADD);
+            bo.setTable_name(PerfectConstant.OPERATION.M_STAFF_ORG.TABLE_NAME);
             bo.setNewData(vo);
             bo.setOldData(null);
+            setColumnsMap(bo);
             detail.add(bo);
         }
         cobo.setDetail(detail);
@@ -644,6 +650,20 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
 
         // 查询最新数据并返回
         return null;
+    }
+
+    /**
+     * 设置列相对应的列名称
+     */
+    private void setColumnsMap(CustomOperateDetailBo<MStaffPositionOperationVo> bean){
+        Map<String, String> columns = new ConcurrentHashMap<>();
+        columns.put("staff_name", "员工名称");
+        columns.put("position_name", "岗位名称");
+        columns.put("c_id", "新增人id");
+        columns.put("c_time", "新增时间");
+        columns.put("u_id", "更新人id");
+        columns.put("u_time", "更新时间");
+        bean.setColumns(columns);
     }
 
 

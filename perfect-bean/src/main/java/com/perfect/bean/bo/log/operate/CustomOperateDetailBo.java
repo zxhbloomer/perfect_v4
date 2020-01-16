@@ -4,6 +4,7 @@ import com.perfect.common.enums.OperationEnum;
 import lombok.Data;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * @ClassName: CustomOperateDetailBo
@@ -24,10 +25,16 @@ public class CustomOperateDetailBo<T> {
     /** 业务操作描述 */
     private String oper_info;
 
+    /** 表名 */
+    private String table_name;
+
     /** 旧值 */
     private T oldData;
 
     /** 新值 */
     private T newData;
+
+    /** 列名称 */
+    private Map<String, String> columns;
 
 }
