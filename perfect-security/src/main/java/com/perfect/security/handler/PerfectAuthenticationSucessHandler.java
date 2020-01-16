@@ -1,17 +1,10 @@
 package com.perfect.security.handler;
 
-import com.alibaba.fastjson.JSON;
-import com.perfect.bean.bo.session.user.UserSessionBo;
-import com.perfect.bean.bo.sys.SysInfoBo;
-import com.perfect.bean.pojo.redis.user.UserInSessionPojo;
 import com.perfect.bean.result.utils.v1.ResponseResultUtil;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.utils.redis.RedisUtil;
-import com.perfect.common.utils.servlet.ServletUtil;
-import com.perfect.core.service.client.user.IMUserService;
 import com.perfect.core.utils.security.SecurityUtil;
 import com.perfect.framework.base.controller.v1.BaseController;
-import com.perfect.security.properties.PerfectSecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
@@ -20,7 +13,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

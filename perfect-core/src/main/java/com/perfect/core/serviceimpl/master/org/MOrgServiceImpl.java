@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.bo.log.operate.CustomOperateBo;
 import com.perfect.bean.bo.log.operate.CustomOperateDetailBo;
-import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.entity.master.org.MStaffOrgEntity;
-import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
@@ -17,11 +15,11 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
+import com.perfect.bean.utils.servlet.ServletUtil;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.common.component.TreeNode;
 import com.perfect.bean.vo.master.org.*;
 import com.perfect.bean.vo.master.user.MStaffVo;
-import com.perfect.common.annotations.LogByCustomKeysAnnotion;
 import com.perfect.common.annotations.LogByIdAnnotion;
 import com.perfect.common.annotations.LogByIdsAnnotion;
 import com.perfect.common.annotations.OperationLogAnnotion;
@@ -30,12 +28,12 @@ import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.enums.OperationEnum;
 import com.perfect.common.enums.ParameterEnum;
 import com.perfect.common.exception.BusinessException;
-import com.perfect.common.utils.servlet.ServletUtil;
 import com.perfect.core.mapper.master.org.MOrgMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.common.ICommonComponentService;
 import com.perfect.core.service.master.org.IMOrgService;
 import com.perfect.core.service.master.org.IMStaffOrgService;
+import com.perfect.core.serviceimpl.log.operate.SLogOperServiceImpl;
 import com.perfect.core.utils.mybatis.PageUtil;
 import com.perfect.core.utils.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +66,9 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
 
     @Autowired
     private IMStaffOrgService imStaffOrgService;
+
+    @Autowired
+    private SLogOperServiceImpl sLogOperService;
 
     /** 组织entity数组 */
 //    List<MOrgEntity> entities;
@@ -288,7 +289,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @Override
     public UpdateResult<Integer> update(MOrgEntity entity) {
         // 设置entity
-        entity.setTenant_id(((UserSessionBo) ServletUtil.getUserSession()).getTenant_Id());
+        entity.setTenant_id((ServletUtil.getUserSession()).getTenant_Id());
         switch (entity.getType()) {
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT:
                 entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
@@ -576,14 +577,14 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
 
     /**
      * 保存员工关系，删除剔除的员工，增加选择的员工
-     * @param deleteMemgerList
+     * @param deleteMemberList
      * @param insertMemgerList
      * @param cobo
      * @param bean
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public MStaffPositionTransferVo saveMemberList(List<MStaffPositionOperationVo> deleteMemgerList,
+    public MStaffPositionTransferVo saveMemberList(List<MStaffPositionOperationVo> deleteMemberList,
         List<MStaffPositionOperationVo> insertMemgerList,
         CustomOperateBo cobo,
         MStaffTransferVo bean) {
@@ -591,7 +592,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         List<CustomOperateDetailBo> detail = new ArrayList<>();
 
         // 操作日志：记录删除前数据
-        for(MStaffPositionOperationVo vo : deleteMemgerList) {
+        for(MStaffPositionOperationVo vo : deleteMemberList) {
             CustomOperateDetailBo<MStaffPositionOperationVo> bo = new CustomOperateDetailBo<>();
             bo.setName(cobo.getName());
             bo.setType(OperationEnum.DELETE);
@@ -601,7 +602,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         }
 
         // 删除剔除的员工
-        boolean removeRtn =imStaffOrgService.removeByIds(deleteMemgerList);
+        boolean removeRtn =imStaffOrgService.removeByIds(deleteMemberList);
 
         // 增加选择的员工
         Long[] staff_positions = new Long[insertMemgerList.size()];
@@ -638,6 +639,8 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         }
         cobo.setDetail(detail);
 
+        // 保存操作日志
+        sLogOperService.save(cobo);
 
         // 查询最新数据并返回
         return null;
