@@ -2,6 +2,8 @@ package com.perfect.core.serviceimpl.master.org;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.perfect.bean.bo.log.operate.CustomOperateBo;
+import com.perfect.bean.bo.log.operate.CustomOperateDetailBo;
 import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
@@ -544,7 +546,8 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         // 获取全部用户
         rtn.setStaff_all(mapper.getAllStaffTransferList(condition));
         // 获取该岗位已经设置过得用户
-        rtn.setStaff_positions(mapper.getUsedStaffTransferList(condition));
+        List<Long> rtnList = mapper.getUsedStaffTransferList(condition);
+        rtn.setStaff_positions(rtnList.toArray(new Long[rtnList.size()]));
         return rtn;
     }
 
@@ -553,15 +556,21 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @param bean 员工id list
      * @return
      */
-
     @Override
     public MStaffPositionTransferVo setStaffTransfer(MStaffTransferVo bean) {
-        // 查询出需要剔除的员工list
-        List<MStaffOrgEntity> deleteMemgerList = mapper.selete_delete_member(bean);
-        // 查询出需要添加的员工list
-        List<MStaffEntity> insertMemgerList = mapper.selete_insert_member(bean);
+        // 操作日志bean初始化
+        CustomOperateBo cobo = new CustomOperateBo();
+        cobo.setName(PerfectConstant.OPERATION.M_STAFF_ORG.OPER_POSITION_STAFF);
+        cobo.setPlatform(PerfectConstant.PLATFORM.PC);
+        cobo.setType(OperationEnum.BATCH_UPDATE_INSERT_DELETE);
 
-        self.saveMemberList(deleteMemgerList, insertMemgerList, bean);
+
+        // 查询出需要剔除的员工list
+        List<MStaffPositionOperationVo> deleteMemgerList = mapper.selete_delete_member(bean);
+        // 查询出需要添加的员工list
+        List<MStaffPositionOperationVo> insertMemgerList = mapper.selete_insert_member(bean);
+
+        self.saveMemberList(deleteMemgerList, insertMemgerList, cobo, bean);
         return null;
     }
 
@@ -569,47 +578,70 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * 保存员工关系，删除剔除的员工，增加选择的员工
      * @param deleteMemgerList
      * @param insertMemgerList
+     * @param cobo
      * @param bean
      * @return
      */
-    @OperationLogAnnotion(
-        name = PerfectConstant.OPERATION.M_STAFF_ORG.OPER_POSITION_STAFF,
-        type = OperationEnum.BATCH_UPDATE_INSERT_DELETE,
-        logByIds = @LogByIdsAnnotion(
-            name = PerfectConstant.OPERATION.M_STAFF_ORG.OPER_POSITION_STAFF,
-            type = OperationEnum.DELETE,
-            oper_info = "",
-            table_name = PerfectConstant.OPERATION.M_STAFF_ORG.TABLE_NAME,
-            id_position = ParameterEnum.FIRST,
-            ids = "#{beans.id}"
-        ),
-        logByCustomKeys =  @LogByCustomKeysAnnotion(
-            name = PerfectConstant.OPERATION.M_STAFF_ORG.OPER_POSITION_STAFF,
-            type = OperationEnum.DELETE,
-            oper_info = "",
-            table_name = PerfectConstant.OPERATION.M_STAFF_ORG.TABLE_NAME,
-            key_position = ParameterEnum.SECOND,
-            keys = "#{beans.id}",
-            keys_sql = "staff_id"
-        )
-    )
     @Transactional(rollbackFor = Exception.class)
-    public MStaffPositionTransferVo saveMemberList(List<MStaffOrgEntity> deleteMemgerList, List<MStaffEntity> insertMemgerList, MStaffTransferVo bean) {
+    public MStaffPositionTransferVo saveMemberList(List<MStaffPositionOperationVo> deleteMemgerList,
+        List<MStaffPositionOperationVo> insertMemgerList,
+        CustomOperateBo cobo,
+        MStaffTransferVo bean) {
+
+        List<CustomOperateDetailBo> detail = new ArrayList<>();
+
+        // 操作日志：记录删除前数据
+        for(MStaffPositionOperationVo vo : deleteMemgerList) {
+            CustomOperateDetailBo<MStaffPositionOperationVo> bo = new CustomOperateDetailBo<>();
+            bo.setName(cobo.getName());
+            bo.setType(OperationEnum.DELETE);
+            bo.setNewData(null);
+            bo.setOldData(vo);
+            detail.add(bo);
+        }
 
         // 删除剔除的员工
-        int counter = mapper.deleteBatchIds(deleteMemgerList);
+        boolean removeRtn =imStaffOrgService.removeByIds(deleteMemgerList);
 
         // 增加选择的员工
+        Long[] staff_positions = new Long[insertMemgerList.size()];
+        int i = 0;
         List<MStaffOrgEntity> mStaffOrgEntities = new ArrayList<>();
-        for( MStaffEntity mStaffEntity : insertMemgerList ) {
+        for( MStaffPositionOperationVo vo : insertMemgerList ) {
             MStaffOrgEntity mStaffOrgEntity = new MStaffOrgEntity();
-            mStaffOrgEntity.setStaff_id(mStaffEntity.getId());
+            mStaffOrgEntity.setStaff_id(vo.getId());
             mStaffOrgEntity.setSerial_id(bean.getPosition_id());
             mStaffOrgEntity.setSerial_type(PerfectDictConstant.DICT_SYS_CODE_TYPE_M_POSITION);
             mStaffOrgEntity.setTenant_id(bean.getTenant_id());
             mStaffOrgEntities.add(mStaffOrgEntity);
+
+            staff_positions[i] = vo.getId();
+            i = i + 1;
         }
+
         imStaffOrgService.saveBatch(mStaffOrgEntities);
+
+        // 记录更新后数据
+        MStaffTransferVo condition = new MStaffTransferVo();
+        condition.setTenant_id(bean.getTenant_id());
+        condition.setPosition_id(bean.getPosition_id());
+        condition.setStaff_positions(staff_positions);
+        List<MStaffPositionOperationVo> seleteMemgerList = mapper.selete_member(bean);
+        for(MStaffPositionOperationVo vo: seleteMemgerList) {
+            // 操作日志：记录新增数据
+            CustomOperateDetailBo<MStaffPositionOperationVo> bo = new CustomOperateDetailBo<>();
+            bo.setName(cobo.getName());
+            bo.setType(OperationEnum.ADD);
+            bo.setNewData(vo);
+            bo.setOldData(null);
+            detail.add(bo);
+        }
+        cobo.setDetail(detail);
+
+
+        // 查询最新数据并返回
         return null;
     }
+
+
 }

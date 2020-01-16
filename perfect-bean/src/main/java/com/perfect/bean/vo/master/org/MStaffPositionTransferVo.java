@@ -21,6 +21,7 @@ import java.util.List;
 @ApiModel(value = "员工bean，为穿梭框服务", description = "员工bean，为穿梭框服务")
 @EqualsAndHashCode(callSuper=false)
 public class MStaffPositionTransferVo extends BaseVo implements Serializable {
+
     private static final long serialVersionUID = -8892463566681169124L;
 
     /**
@@ -31,5 +32,5 @@ public class MStaffPositionTransferVo extends BaseVo implements Serializable {
     /**
      * 穿梭框：该岗位下，全部员工
      */
-    List<MStaffTransferVo> staff_positions;
+    Long [] staff_positions;
 }

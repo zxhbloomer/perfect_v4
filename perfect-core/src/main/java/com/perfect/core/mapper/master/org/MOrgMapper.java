@@ -413,9 +413,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
      */
     @Select("                                                                                                         "
         + "     SELECT                                                                                                "
-        + "             t1.serial_id AS `key`,                                                                        "
-        + "             t2.`name` as label,                                                                           "
-        + "             t1.tenant_id                                                                                  "
+        + "             t1.staff_id AS `key`                                                                          "
         + "       FROM  m_staff_org t1                                                                                "
         + "  LEFT JOIN  m_staff t2 ON t1.staff_id = t2.id                                                             "
         + "      where  t1.serial_id = #{p1.position_id,jdbcType=BIGINT}                                              "
@@ -423,12 +421,16 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "        AND  t1.tenant_id = (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null) "
         + "   order by  t2.`name`                                                                                     "
         + "                                                                                                           ")
-    List<MStaffTransferVo> getUsedStaffTransferList(@Param("p1")MStaffTransferVo condition);
+    List<Long> getUsedStaffTransferList(@Param("p1")MStaffTransferVo condition);
 
     @Select("  <script>                                                                                              "
-        + "       select t.id                                                                                             "
+        + "       select t1.id ,                                                                                     "
+        + "              t2.name as staff_name ,                                                                     "
+        + "              t3.name as position_name                                                                    "
         + "         from                                                                                             "
         + "               m_staff_org t1                                                                             "
+        + "    left join  m_staff t2 on t1.staff_id = t2.id                                                                            "
+        + "    left join  m_position t3 on t3.id = t1.serial_id                                                                            "
         + "        where                                                                                             "
         + "               t1.serial_id =  #{p1.position_id,jdbcType=BIGINT}                                          "
         + "          and  t1.serial_type =  '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE + "' "
@@ -440,12 +442,15 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "        </foreach>                                                                                        "
         + "   </if>                                                                                                  "
         + "   </script>                                                                                              ")
-    List<MStaffOrgEntity> selete_delete_member(@Param("p1") MStaffTransferVo bean);
+    List<MStaffPositionOperationVo> selete_delete_member(@Param("p1") MStaffTransferVo bean);
 
     @Select("  <script>                                                                                              "
-        + "       select t.id                                                                                        "
+        + "       select t1.id ,                                                                                     "
+        + "              t1.name as staff_name ,                                                                     "
+        + "              t2.name as position_name                                                                    "
         + "         from                                                                                             "
         + "               m_staff t1                                                                                 "
+        + "    left join  m_position t2 on t2.id = #{p1.position_id,jdbcType=BIGINT}                                 "
         + "        where                                                                                             "
         + "               t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT}                                             "
         + "		      and not exists (                                                                               "
@@ -453,8 +458,8 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "		   			  from m_staff_org t                                                                     "
         + "		   			 where true                                                                              "
         + "              <choose>                                                                                    "
-        + "                <when test='p1.staff_positions != null and p1.staff_positions.length!=0'                  "
-        + "                  and t1.staff_id in                                                                      "
+        + "                <when test='p1.staff_positions != null and p1.staff_positions.length!=0'>                 "
+        + "                  and t1.id in                                                                      "
         + "                  <foreach collection='p1.staff_positions' item='item' index='index' open='(' separator=',' close=')'>  "
         + "                    #{item}                                                                               "
         + "                  </foreach>                                                                              "
@@ -465,8 +470,8 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "              </choose>                                                                                   "
         + "                       )                                                                                  "
         + "     <choose>                                                                                             "
-        + "       <when test='p1.staff_positions != null and p1.staff_positions.length!=0'                           "
-        + "           and t1.staff_id in                                                                             "
+        + "       <when test='p1.staff_positions != null and p1.staff_positions.length!=0'>                          "
+        + "           and t1.id in                                                                             "
         + "          <foreach collection='p1.staff_positions' item='item' index='index' open='(' separator=',' close=')'>  "
         + "           #{item}                                                                                        "
         + "          </foreach>                                                                                      "
@@ -476,22 +481,26 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "       </otherwise>                                                                                       "
         + "     </choose>                                                                                            "
         + "   </script>                                                                                              ")
-    List<MStaffEntity> selete_insert_member(@Param("p1") MStaffTransferVo bean);
+    List<MStaffPositionOperationVo> selete_insert_member(@Param("p1") MStaffTransferVo bean);
 
-    @Delete("  <script>                                                                                              "
-        + "       delete                                                                                             "
+    @Select("  <script>                                                                                              "
+        + "       select t1.id ,                                                                                     "
+        + "              t2.name as staff_name ,                                                                     "
+        + "              t3.name as position_name                                                                    "
         + "         from                                                                                             "
         + "               m_staff_org t1                                                                             "
+        + "    left join  m_staff t2 on t1.staff_id = t2.id                                                                            "
+        + "    left join  m_position t3 on t3.id = t1.serial_id                                                                            "
         + "        where                                                                                             "
         + "               t1.serial_id =  #{p1.position_id,jdbcType=BIGINT}                                          "
         + "          and  t1.serial_type =  '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE + "' "
         + "          and  t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT}                                             "
         + "   <if test='p1.staff_positions != null and p1.staff_positions.length!=0' >                               "
-        + "         and t1.staff_id not in                                                                           "
+        + "         and t1.staff_id in                                                                           "
         + "        <foreach collection='p1.staff_positions' item='item' index='index' open='(' separator=',' close=')'>  "
         + "         #{item}                                                                                          "
         + "        </foreach>                                                                                        "
         + "   </if>                                                                                                  "
         + "   </script>                                                                                              ")
-    int delete_not_member(@Param("p1") MStaffTransferVo bean);
+    List<MStaffPositionOperationVo> selete_member(@Param("p1") MStaffTransferVo bean);
 }
