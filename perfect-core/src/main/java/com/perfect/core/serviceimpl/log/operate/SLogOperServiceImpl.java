@@ -75,7 +75,6 @@ public class SLogOperServiceImpl extends BaseServiceImpl<SLogOperMapper, SLogOpe
                 sLogOperDetailEntity.setClm_comment(entry.getValue());
             }
 
-            xxxxx
 
             SLogOperDetailEntity sLogOperDetailEntity = (SLogOperDetailEntity)BeanUtilsSupport.copyProperties(cobo, SLogOperDetailEntity.class);;
             sLogOperDetailEntity.setOper_id(sLogOperEntity.getId());

@@ -20,6 +20,7 @@ import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.common.component.TreeNode;
 import com.perfect.bean.vo.master.org.*;
 import com.perfect.bean.vo.master.user.MStaffVo;
+import com.perfect.bean.vo.sys.config.dict.SDictTypeExportVo;
 import com.perfect.common.annotations.LogByIdAnnotion;
 import com.perfect.common.annotations.LogByIdsAnnotion;
 import com.perfect.common.annotations.OperationLogAnnotion;
@@ -28,7 +29,9 @@ import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.enums.OperationEnum;
 import com.perfect.common.enums.ParameterEnum;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.master.org.MOrgMapper;
+import com.perfect.core.mapper.master.org.MStaffOrgMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.common.ICommonComponentService;
 import com.perfect.core.service.master.org.IMOrgService;
@@ -68,7 +71,10 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     private MOrgServiceImpl self;
 
     @Autowired
-    private IMStaffOrgService imStaffOrgService;
+    private MStaffOrgServiceImpl mStaffOrgService;
+
+    @Autowired
+    private MStaffOrgMapper mStaffOrgMapper;
 
     @Autowired
     private SLogOperServiceImpl sLogOperService;
@@ -606,7 +612,9 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         }
 
         // 删除剔除的员工
-        boolean removeRtn =imStaffOrgService.removeByIds(deleteMemberList);
+        List<MStaffOrgEntity> delete_list = BeanUtilsSupport.copyProperties(deleteMemberList, MStaffOrgEntity.class, new String[]{"c_time", "u_time"});
+        mStaffOrgMapper.deleteBatchIds(delete_list);
+        boolean removeRtn = mStaffOrgService.removeByIds(delete_list);
 
         // 增加选择的员工
         Long[] staff_positions = new Long[insertMemgerList.size()];
@@ -624,7 +632,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             i = i + 1;
         }
 
-        imStaffOrgService.saveBatch(mStaffOrgEntities);
+        mStaffOrgService.saveBatch(mStaffOrgEntities);
 
         // 记录更新后数据
         MStaffTransferVo condition = new MStaffTransferVo();
