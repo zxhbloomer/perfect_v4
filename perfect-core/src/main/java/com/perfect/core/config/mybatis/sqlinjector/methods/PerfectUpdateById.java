@@ -26,7 +26,7 @@ public class PerfectUpdateById extends UpdateById {
         String method = "perfectUpdateById";
         boolean logicDelete = tableInfo.isLogicDelete();
         SqlMethod sqlMethod = SqlMethod.UPDATE_BY_ID;
-        final String additional = optlockVersion() + tableInfo.getLogicDeleteSql(true, false);
+        final String additional = optlockVersion(tableInfo) + tableInfo.getLogicDeleteSql(true, false);
         String sql = String.format(sqlMethod.getSql(), tableInfo.getTableName(),
             sqlSet(logicDelete, false, tableInfo, false, ENTITY, ENTITY_DOT),
             tableInfo.getKeyColumn(), ENTITY_DOT + tableInfo.getKeyProperty(), additional);
