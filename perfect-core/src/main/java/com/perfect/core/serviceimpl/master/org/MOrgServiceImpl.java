@@ -29,6 +29,7 @@ import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.enums.OperationEnum;
 import com.perfect.common.enums.ParameterEnum;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.utils.ArrayPfUtil;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.master.org.MOrgMapper;
 import com.perfect.core.mapper.master.org.MStaffOrgMapper;
@@ -613,7 +614,9 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
 
         // 删除剔除的员工
         List<MStaffOrgEntity> delete_list = BeanUtilsSupport.copyProperties(deleteMemberList, MStaffOrgEntity.class, new String[]{"c_time", "u_time"});
-        mStaffOrgMapper.deleteBatchIds(delete_list);
+        if(ArrayPfUtil.isNotEmpty(delete_list)) {
+            mStaffOrgMapper.deleteBatchIds(delete_list);
+        }
         boolean removeRtn = mStaffOrgService.removeByIds(delete_list);
 
         // 增加选择的员工
