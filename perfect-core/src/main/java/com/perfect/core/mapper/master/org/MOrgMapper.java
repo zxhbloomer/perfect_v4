@@ -423,7 +423,12 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "                                                                                                           ")
     List<Long> getUsedStaffTransferList(@Param("p1")MStaffTransferVo condition);
 
-    @Select("  <script>                                                                                              "
+    /**
+     * 获取要删除，员工岗位数据
+     * @param bean
+     * @return
+     */
+    @Select("  <script>        "
         + "       select t1.id ,                                                                                     "
         + "              t2.name as staff_name ,                                                                     "
         + "              t3.name as position_name ,                                                                  "
@@ -448,6 +453,11 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "   </script>                                                                                              ")
     List<MStaffPositionOperationVo> selete_delete_member(@Param("p1") MStaffTransferVo bean);
 
+    /**
+     * 获取要新增的员工岗位数据
+     * @param bean
+     * @return
+     */
     @Select("  <script>                                                                                              "
         + "       select t1.id ,                                                                                     "
         + "              t1.name as staff_name ,                                                                     "
@@ -457,22 +467,6 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "    left join  m_position t2 on t2.id = #{p1.position_id,jdbcType=BIGINT}                                 "
         + "        where                                                                                             "
         + "               t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT}                                             "
-        + "		      and not exists (                                                                               "
-        + "		   			select t.id                                                                              "
-        + "		   			  from m_staff_org t                                                                     "
-        + "		   			 where true                                                                              "
-        + "              <choose>                                                                                    "
-        + "                <when test='p1.staff_positions != null and p1.staff_positions.length!=0'>                 "
-        + "                  and t1.id in                                                                      "
-        + "                  <foreach collection='p1.staff_positions' item='item' index='index' open='(' separator=',' close=')'>  "
-        + "                    #{item}                                                                               "
-        + "                  </foreach>                                                                              "
-        + "                </when>                                                                                   "
-        + "                <otherwise>                                                                               "
-        + "                  and false                                                                               "
-        + "                </otherwise>                                                                              "
-        + "              </choose>                                                                                   "
-        + "                       )                                                                                  "
         + "     <choose>                                                                                             "
         + "       <when test='p1.staff_positions != null and p1.staff_positions.length!=0'>                          "
         + "           and t1.id in                                                                             "
@@ -487,6 +481,11 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "   </script>                                                                                              ")
     List<MStaffPositionOperationVo> selete_insert_member(@Param("p1") MStaffTransferVo bean);
 
+    /**
+     * 查询员工岗位数据
+     * @param bean
+     * @return
+     */
     @Select("  <script>                                                                                              "
         + "       select t1.id ,                                                                                     "
         + "              t2.name as staff_name ,                                                                     "

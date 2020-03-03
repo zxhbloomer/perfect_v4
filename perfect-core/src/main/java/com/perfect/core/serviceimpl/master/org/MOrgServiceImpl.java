@@ -614,9 +614,9 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
 
         // 删除剔除的员工
         List<MStaffOrgEntity> delete_list = BeanUtilsSupport.copyProperties(deleteMemberList, MStaffOrgEntity.class, new String[]{"c_time", "u_time"});
-        if(ArrayPfUtil.isNotEmpty(delete_list)) {
-            mStaffOrgMapper.deleteBatchIds(delete_list);
-        }
+//        if(ArrayPfUtil.isNotEmpty(delete_list)) {
+//            mStaffOrgMapper.deleteBatchIds(delete_list);
+//        }
         boolean removeRtn = mStaffOrgService.removeByIds(delete_list);
 
         // 增加选择的员工
