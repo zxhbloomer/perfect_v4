@@ -2,6 +2,7 @@ package com.perfect.core.serviceimpl.master.org;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.Lists;
 import com.perfect.bean.bo.log.operate.CustomOperateBo;
 import com.perfect.bean.bo.log.operate.CustomOperateDetailBo;
 import com.perfect.bean.entity.master.org.MCompanyEntity;
@@ -32,15 +33,12 @@ import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.ArrayPfUtil;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.master.org.MOrgMapper;
-import com.perfect.core.mapper.master.org.MStaffOrgMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.common.ICommonComponentService;
 import com.perfect.core.service.master.org.IMOrgService;
-import com.perfect.core.service.master.org.IMStaffOrgService;
 import com.perfect.core.serviceimpl.log.operate.SLogOperServiceImpl;
 import com.perfect.core.utils.mybatis.PageUtil;
 import com.perfect.core.utils.security.SecurityUtil;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,9 +71,6 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
 
     @Autowired
     private MStaffOrgServiceImpl mStaffOrgService;
-
-    @Autowired
-    private MStaffOrgMapper mStaffOrgMapper;
 
     @Autowired
     private SLogOperServiceImpl sLogOperService;
@@ -613,11 +608,15 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         }
 
         // 删除剔除的员工
-        List<MStaffOrgEntity> delete_list = BeanUtilsSupport.copyProperties(deleteMemberList, MStaffOrgEntity.class, new String[]{"c_time", "u_time"});
-//        if(ArrayPfUtil.isNotEmpty(delete_list)) {
-//            mStaffOrgMapper.deleteBatchIds(delete_list);
-//        }
-        boolean removeRtn = mStaffOrgService.removeByIds(delete_list);
+        List<MStaffOrgEntity> delete_list =
+            BeanUtilsSupport.copyProperties(deleteMemberList, MStaffOrgEntity.class, new String[] {"c_time", "u_time"});
+        List<Long> ids = Lists.newArrayList();
+        delete_list.forEach(beans -> {
+            ids.add(beans.getId());
+        });
+        if (ArrayPfUtil.isNotEmpty(ids)) {
+            mStaffOrgService.removeByIds(ids);
+        }
 
         // 增加选择的员工
         Long[] staff_positions = new Long[insertMemgerList.size()];
