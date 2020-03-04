@@ -8,9 +8,8 @@ import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.utils.servlet.ServletUtil;
 import com.perfect.common.constant.PerfectConstant;
-import com.perfect.common.constant.PerfectDictConstant;
+import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
-import com.perfect.core.mapper.log.operate.SLogOperDetailMapper;
 import com.perfect.core.mapper.log.operate.SLogOperMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.log.operate.ISLogOperService;
@@ -18,11 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -47,12 +44,12 @@ public class SLogOperServiceImpl extends BaseServiceImpl<SLogOperMapper, SLogOpe
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<Integer> save(CustomOperateBo cobo) {
+    public InsertResult<Boolean> save(CustomOperateBo cobo) {
         SLogOperEntity sLogOperEntity = (SLogOperEntity)BeanUtilsSupport.copyProperties(cobo, SLogOperEntity.class);
         sLogOperEntity.setOper_name(ServletUtil.getUserSession().getStaff_info().getName());
         sLogOperEntity.setOper_time(LocalDateTime.now());
         sLogOperEntity.setOper_id(ServletUtil.getUserSession().getAccountId());
-
+        sLogOperEntity.setType(cobo.getType().getName());
         mapper.insert(sLogOperEntity);
 
         // 定义子表的bean
@@ -63,7 +60,6 @@ public class SLogOperServiceImpl extends BaseServiceImpl<SLogOperMapper, SLogOpe
             Iterator<Map.Entry<String, String>> entries = bo.getColumns().entrySet().iterator();
             while (entries.hasNext()) {
                 Map.Entry<String, String> entry = entries.next();
-                System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 
                 SLogOperDetailEntity sLogOperDetailEntity = new SLogOperDetailEntity();
                 sLogOperDetailEntity.setOper_id(sLogOperEntity.getId());
@@ -73,16 +69,45 @@ public class SLogOperServiceImpl extends BaseServiceImpl<SLogOperMapper, SLogOpe
                 sLogOperDetailEntity.setTable_name(bo.getTable_name());
                 sLogOperDetailEntity.setClm_name(entry.getKey());
                 sLogOperDetailEntity.setClm_comment(entry.getValue());
+
+                // set old value
+                if (Objects.isNull(bo.getOldData())) {
+                    sLogOperDetailEntity.setOld_val(null);
+                } else {
+                    try {
+                        Field field = bo.getOldData().getClass().getDeclaredField(entry.getKey());
+                        field.setAccessible(true);
+                        Object value = field.get(bo.getOldData());
+                        sLogOperDetailEntity.setOld_val(value.toString());
+                    } catch (NoSuchFieldException e) {
+                        throw new BusinessException("执行操作日志记录出错，未找到方法：" + entry.getKey() + "(" + entry.getValue() + ")");
+                    } catch (IllegalAccessException e) {
+                        throw new BusinessException("执行操作日志记录出错，未找到方法：" + entry.getKey() + "(" + entry.getValue() + ")");
+                    }
+                }
+
+                // set new value
+                if (Objects.isNull(bo.getNewData())) {
+                    sLogOperDetailEntity.setNew_val(null);
+                } else {
+                    try {
+                        Field field = bo.getNewData().getClass().getDeclaredField(entry.getKey());
+                        field.setAccessible(true);
+                        Object value = field.get(bo.getNewData());
+                        sLogOperDetailEntity.setNew_val(value.toString());
+                    } catch (NoSuchFieldException e) {
+                        throw new BusinessException("执行操作日志记录出错，未找到方法：" + entry.getKey() + "(" + entry.getValue() + ")");
+                    } catch (IllegalAccessException e) {
+                        throw new BusinessException("执行操作日志记录出错，未找到方法：" + entry.getKey() + "(" + entry.getValue() + ")");
+                    }
+                }
+
+                sLogOperDetailEntity.setTable_name(PerfectConstant.OPERATION.M_STAFF_ORG.TABLE_NAME);
+                sLogOperDetailEntities.add(sLogOperDetailEntity);
             }
-
-
-            SLogOperDetailEntity sLogOperDetailEntity = (SLogOperDetailEntity)BeanUtilsSupport.copyProperties(cobo, SLogOperDetailEntity.class);;
-            sLogOperDetailEntity.setOper_id(sLogOperEntity.getId());
-            sLogOperDetailEntity.setTable_name(PerfectConstant.OPERATION.M_STAFF_ORG.TABLE_NAME);
-            sLogOperDetailEntities.add(sLogOperDetailEntity);
         }
         sLogOperDetailService.saveBatch(sLogOperDetailEntities);
 
-        return InsertResultUtil.OK(mapper.insert(sLogOperEntity));
+        return InsertResultUtil.OK(true);
     }
 }

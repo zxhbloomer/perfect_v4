@@ -20,5 +20,5 @@ public interface ISLogOperService extends IService<SLogOperEntity> {
      * 插入一条记录
      * @return
      */
-    InsertResult<Integer> save(CustomOperateBo cobo);
+    InsertResult<Boolean> save(CustomOperateBo cobo) ;
 }

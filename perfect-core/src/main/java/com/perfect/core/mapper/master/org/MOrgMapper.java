@@ -332,6 +332,8 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "  where true                                                                                                 "
         + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
         + "                                                                                                             ";
+
+
     /**
      * 岗位查询列表
      * @param searchCondition

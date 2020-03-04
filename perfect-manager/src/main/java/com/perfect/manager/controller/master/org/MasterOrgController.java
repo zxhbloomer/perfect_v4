@@ -173,6 +173,7 @@ public class MasterOrgController extends BaseController {
     @PostMapping("/staff/transfer/list")
     @ResponseBody
     public ResponseEntity<JsonResult<MStaffPositionTransferVo>> getStaffTransferList(@RequestBody(required = false) MStaffTransferVo bean) {
+        bean.setTenant_id(super.getUserSessionTenantId());
         MStaffPositionTransferVo rtn = service.getStaffTransferList(bean);
         return ResponseEntity.ok().body(ResultUtil.OK(rtn));
     }
@@ -181,9 +182,8 @@ public class MasterOrgController extends BaseController {
     @ApiOperation("保存穿梭框数据，员工岗位设置")
     @PostMapping("/staff/transfer/save")
     @ResponseBody
-    public ResponseEntity<JsonResult<String>> setStaffTransferList(@RequestBody(required = false) MStaffTransferVo bean) {
+    public ResponseEntity<JsonResult<MStaffPositionTransferVo>> setStaffTransferList(@RequestBody(required = false) MStaffTransferVo bean) {
         bean.setTenant_id(super.getUserSessionTenantId());
-        service.setStaffTransfer(bean);
-        return ResponseEntity.ok().body(ResultUtil.OK("ok"));
+        return ResponseEntity.ok().body(ResultUtil.OK(service.setStaffTransfer(bean)));
     }
 }

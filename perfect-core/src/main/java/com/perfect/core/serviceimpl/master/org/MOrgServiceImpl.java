@@ -576,8 +576,8 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         // 查询出需要添加的员工list
         List<MStaffPositionOperationVo> insertMemgerList = mapper.selete_insert_member(bean);
 
-        self.saveMemberList(deleteMemgerList, insertMemgerList, cobo, bean);
-        return null;
+        // 执行保存逻辑，并返回员工数量
+        return self.saveMemberList(deleteMemgerList, insertMemgerList, cobo, bean);
     }
 
     /**
@@ -596,6 +596,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
 
         List<CustomOperateDetailBo> detail = new ArrayList<>();
 
+        // ---------------------------------操作日志 新增 start-----------------------------------------------------
         // 操作日志：记录删除前数据
         for(MStaffPositionOperationVo vo : deleteMemberList) {
             CustomOperateDetailBo<MStaffPositionOperationVo> bo = new CustomOperateDetailBo<>();
@@ -604,8 +605,10 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             bo.setTable_name(PerfectConstant.OPERATION.M_STAFF_ORG.TABLE_NAME);
             bo.setNewData(null);
             bo.setOldData(vo);
+            setColumnsMap(bo);
             detail.add(bo);
         }
+        // ---------------------------------操作日志 新增 end-----------------------------------------------------
 
         // 删除剔除的员工
         List<MStaffOrgEntity> delete_list =
@@ -636,6 +639,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
 
         mStaffOrgService.saveBatch(mStaffOrgEntities);
 
+        // ---------------------------------操作日志 新增 start-----------------------------------------------------
         // 记录更新后数据
         MStaffTransferVo condition = new MStaffTransferVo();
         condition.setTenant_id(bean.getTenant_id());
@@ -654,12 +658,17 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             detail.add(bo);
         }
         cobo.setDetail(detail);
+        // ---------------------------------操作日志 新增 end-----------------------------------------------------
 
         // 保存操作日志
         sLogOperService.save(cobo);
 
         // 查询最新数据并返回
-        return null;
+        // 获取该岗位已经设置过得用户
+        List<Long> rtnList = mapper.getUsedStaffTransferList(condition);
+        MStaffPositionTransferVo mStaffPositionTransferVo = new MStaffPositionTransferVo();
+        mStaffPositionTransferVo.setStaff_positions_count(rtnList.size());
+        return mStaffPositionTransferVo;
     }
 
     /**

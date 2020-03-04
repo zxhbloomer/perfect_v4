@@ -33,4 +33,9 @@ public class MStaffPositionTransferVo extends BaseVo implements Serializable {
      * 穿梭框：该岗位下，全部员工
      */
     Long [] staff_positions;
+
+    /**
+     * 该岗位下，员工数量
+     */
+    int staff_positions_count;
 }
