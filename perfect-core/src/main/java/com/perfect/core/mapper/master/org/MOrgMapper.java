@@ -323,12 +323,22 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "               t2.parent_serial_type,                                                                        "
         + "               t2.parent_name,                                                                               "
         + "               t2.parent_simple_name,                                                                        "
-        + "               t2.parent_type_text                                                                           "
+        + "               t2.parent_type_text,                                                                          "
+        + "               t3.staff_count                                                                                "
         + "           FROM                                                                                              "
         + "           	m_position t1                                                                                   "
-        + "    inner JOIN v_org_relation t2 ON t2.type = '50'                                                            "
+        + "    inner join v_org_relation t2 ON t2.type = '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION + "'    "
         + "           and (t2.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
-        + "           and t1.id = t2.serial_id                                                                           "
+        + "           and t1.id = t2.serial_id                                                                          "
+        + "     left join (                                                                                             "
+        + "                  select count(1) staff_count,                                                                          "
+        + "                         subt.serial_id,                                                                     "
+        + "                         subt.serial_type                                                                    "
+        + "                    from m_staff_org subt                                                                    "
+        + "                   where (subt.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)   "
+        + "                group by subt.serial_id, subt.serial_type                                                    "
+        + "                )  t3 on t3.serial_id = t1.id                                                                "
+        + "           and t3.serial_type = '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE + "'     "
         + "  where true                                                                                                 "
         + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
         + "                                                                                                             ";
@@ -409,7 +419,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     List<MStaffTransferVo> getAllStaffTransferList(@Param("p1")MStaffTransferVo condition);
 
     /**
-     * 获取全部员工
+     * 获取该岗位下，全部员工
      * @param condition
      * @return
      */
@@ -440,8 +450,8 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "              t1.u_time                                                                                   "
         + "         from                                                                                             "
         + "               m_staff_org t1                                                                             "
-        + "    left join  m_staff t2 on t1.staff_id = t2.id                                                                            "
-        + "    left join  m_position t3 on t3.id = t1.serial_id                                                                            "
+        + "    left join  m_staff t2 on t1.staff_id = t2.id                                                          "
+        + "    left join  m_position t3 on t3.id = t1.serial_id                                                      "
         + "        where                                                                                             "
         + "               t1.serial_id =  #{p1.position_id,jdbcType=BIGINT}                                          "
         + "          and  t1.serial_type =  '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE + "' "
@@ -461,14 +471,17 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
      * @return
      */
     @Select("  <script>                                                                                              "
-        + "       select t1.id ,                                                                                     "
-        + "              t1.name as staff_name ,                                                                     "
-        + "              t2.name as position_name                                                                    "
-        + "         from                                                                                             "
-        + "               m_staff t1                                                                                 "
-        + "    left join  m_position t2 on t2.id = #{p1.position_id,jdbcType=BIGINT}                                 "
-        + "        where                                                                                             "
-        + "               t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT}                                             "
+        + "       select  t1.id                                                                                      "
+        + "         from  m_staff t1                                                                                 "
+        + "        where  not exists (                                                                               "
+        + "                 select true                                                                              "
+        + "                   from m_staff_org t2                                                                    "
+        + "                  where t2.serial_id = #{p1.position_id,jdbcType=BIGINT}                                  "
+        + "                    and t2.serial_type = '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE + "' "
+        + "                    and t1.id = t2.staff_id                                                               "
+        + "                    and t1.tenant_id = t2.tenant_id                                                       "
+        + "              )                                                      "
+        + "           and  t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT}                                             "
         + "     <choose>                                                                                             "
         + "       <when test='p1.staff_positions != null and p1.staff_positions.length!=0'>                          "
         + "           and t1.id in                                                                             "

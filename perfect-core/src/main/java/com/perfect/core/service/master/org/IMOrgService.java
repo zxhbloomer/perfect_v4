@@ -139,7 +139,7 @@ public interface IMOrgService extends IService<MOrgEntity> {
     MStaffPositionTransferVo getStaffTransferList(MStaffTransferVo condition);
 
     /**
-     * 获取员工清单，为穿梭框服务
+     * 保存穿梭框数据，员工岗位设置
      * @return
      */
     MStaffPositionTransferVo setStaffTransfer(MStaffTransferVo bean);

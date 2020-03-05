@@ -87,6 +87,11 @@ public class MPositionVo extends BaseVo implements Serializable {
     private String parent_type_text;
 
     /**
+     * 该岗位向下，员工数量
+     */
+    private int staff_count;
+
+    /**
      * 弹出框模式：空：普通模式；10：组织使用，需要排除已经选择的数据；
      */
     private String dataModel;
