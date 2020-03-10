@@ -67,7 +67,6 @@ public class MUserEntity extends BaseEntity<MUserEntity> implements Serializable
 
     /**
      * 是否禁用
-
      */
     @TableField("is_enable")
     private Boolean is_enable;

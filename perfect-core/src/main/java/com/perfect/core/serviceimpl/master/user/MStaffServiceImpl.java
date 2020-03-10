@@ -2,13 +2,8 @@ package com.perfect.core.serviceimpl.master.user;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.perfect.bean.entity.master.org.MCompanyEntity;
-import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.entity.master.user.MUserEntity;
-import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
-import com.perfect.bean.entity.sys.config.module.SModuleButtonEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
@@ -19,20 +14,15 @@ import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.user.MStaffExportVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
-import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
-import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.client.user.MUserMapper;
-import com.perfect.core.mapper.master.MAddressMapper;
 import com.perfect.core.mapper.master.user.MStaffMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.user.IMStaffService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -379,7 +369,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
-                if(entity.getIs_enable()){
+                if(entity.getIs_enable() == null || entity.getIs_enable()){
                     List<MUserEntity> listValue_updCheck = selectLoginName(entity.getLogin_name(), null, entity.getId());
                     // 更新场合，不能重复设置
                     if (listValue_updCheck.size() >= 1) {
