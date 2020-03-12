@@ -137,11 +137,15 @@ public class MStaffVo extends BaseVo implements Serializable {
      * 所属公司
      */
     private Long company_id;
+    private String company_name;
+    private String company_simple_name;
 
     /**
      * 默认部门
      */
     private Long dept_id;
+    private String dept_name;
+    private String dept_simple_name;
 
     /**
      * 是否删除
