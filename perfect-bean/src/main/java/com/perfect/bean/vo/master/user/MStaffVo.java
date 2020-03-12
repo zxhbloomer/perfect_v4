@@ -1,8 +1,6 @@
 package com.perfect.bean.vo.master.user;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.perfect.bean.config.base.v1.BaseVo;
-import com.perfect.bean.entity.base.entity.v1.BaseEntity;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -134,6 +132,16 @@ public class MStaffVo extends BaseVo implements Serializable {
      */
     private String degree;
     private String degree_text;
+
+    /**
+     * 所属公司
+     */
+    private Long company_id;
+
+    /**
+     * 默认部门
+     */
+    private Long dept_id;
 
     /**
      * 是否删除

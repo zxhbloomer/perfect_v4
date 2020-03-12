@@ -148,6 +148,18 @@ public class MStaffEntity extends BaseEntity<MStaffEntity> implements Serializab
     private String degree;
 
     /**
+     * 所属公司
+     */
+    @TableField("company_id")
+    private Long company_id;
+
+    /**
+     * 默认部门
+     */
+    @TableField("dept_id")
+    private Long dept_id;
+
+    /**
      * 是否删除
      */
     @TableField("is_del")
