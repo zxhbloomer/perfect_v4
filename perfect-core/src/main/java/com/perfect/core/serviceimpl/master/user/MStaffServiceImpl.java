@@ -318,7 +318,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
                 }
 
                 // 员工简称重复性check
-                List<MStaffEntity> simpleNameList_updCheck = selectBySimpleName(entity.getSimple_name(), null, null);
+                List<MStaffEntity> simpleNameList_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
                 if (simpleNameList_updCheck.size() >= 1) {
                     return CheckResultUtil.NG("更新保存出错：员工姓名简称【"+ entity.getSimple_name() +"】出现重复", simpleNameList_updCheck);
                 }

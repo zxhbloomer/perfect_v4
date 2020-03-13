@@ -61,7 +61,7 @@ spring:
         has-open: false
         default-queue: test_queue
   profiles:
-    # 数据库设置
+    # 数据库设置x`
     active: druid
   # REDIS设置
   redis:
