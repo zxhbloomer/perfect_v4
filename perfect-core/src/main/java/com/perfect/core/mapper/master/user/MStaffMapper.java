@@ -3,9 +3,7 @@ package com.perfect.core.mapper.master.user;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.user.MStaffEntity;
-import com.perfect.bean.vo.master.MAddressVo;
 import com.perfect.bean.vo.master.user.MStaffExportVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectDictConstant;
@@ -32,13 +30,19 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "            	t2.label as sex_text,                                                                                   "
         + "            	t3.label as service_text,                                                                               "
         + "            	t4.label as degree_text,                                                                                "
-        + "            	t5.label as is_wed_text                                                                                 "
+        + "            	t5.label as is_wed_text,                                                                                "
+        + "            	t6.name as company_name,                                                                                "
+        + "            	t6.simple_name as company_simple_name,                                                                  "
+        + "            	t7.name as dept_name,                                                                                   "
+        + "            	t7.simple_name as dept_simple_name                                                                      "
         + "        FROM                                                                                                         "
         + "            	m_staff t1                                                                                              "
         + "            	LEFT JOIN v_dict_info AS t2 ON t2.code = '" + PerfectDictConstant.DICT_SYS_SEX_TYPE + "' and t2.dict_value = t1.sex                      "
         + "            	LEFT JOIN v_dict_info AS t3 ON t3.code = '" + PerfectDictConstant.DICT_USR_SERVICE_TYPE + "' and t3.dict_value = t1.service              "
         + "            	LEFT JOIN v_dict_info AS t4 ON t4.code = '" + PerfectDictConstant.DICT_USR_DEGREE_TYPE + "' and t4.dict_value = t1.degree                "
         + "             LEFT JOIN v_dict_info AS t5 ON t5.code = '" + PerfectDictConstant.DICT_USR_WED_TYPE + "' and t5.dict_value = t1.is_wed                   "
+        + "             LEFT JOIN m_company AS t6 ON t6.id = t1.company_id                                                      "
+        + "             LEFT JOIN m_dept AS t7 ON t7.id = t1.dept_id                                                            "
         + "       where true                                                                                                    "
         + "                    ";
 
