@@ -26,7 +26,7 @@ import java.util.List;
  * @author zhangxh
  */
 @RestController
-@RequestMapping(value = "/api/v1/org/")
+@RequestMapping(value = "/api/v1/org")
 @Slf4j
 @Api("组织架构主表相关")
 public class MasterOrgController extends BaseController {

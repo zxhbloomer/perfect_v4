@@ -4,12 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.master.org.MOrgEntity;
-import com.perfect.bean.entity.master.org.MStaffOrgEntity;
-import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.*;
 import com.perfect.common.constant.PerfectDictConstant;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -55,16 +52,18 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
             + "                 t2.parent_id = t1.id                                                                        "
             + "               )                                                                                             "
             + "                  select t1.* ,                                                                              "
-            + "                     t2.code,                                                                                "
-            + "                     t3.name as label,                                                                       "
-            + "                     t3.name,                                                                                "
-            + "                     t3.simple_name,                                                                         "
-            + "                     t2.type,                                                                                "
-            + "                     t4.label as type_text,                                                                  "
-            + "                     t2.son_count,                                                                           "
-            + "                     t2.u_time,                                                                              "
-            + "                     t2.dbversion                                                                            "
-            + "                        from cte t1                                                                          "
+            + "                         t2.code,                                                                            "
+            + "                         t3.name as label,                                                                   "
+            + "                         t3.name,                                                                            "
+            + "                         t3.simple_name,                                                                     "
+            + "                         t2.type,                                                                            "
+            + "                         t4.label as type_text,                                                              "
+            + "                         t2.son_count,                                                                       "
+            + "                         t2.u_time,                                                                          "
+            + "                         t2.dbversion ,                                                                      "
+            + "                         t2.serial_id ,                                                                      "
+            + "                         t2.serial_type                                                                      "
+            + "                    from cte t1                                                                              "
             + "          inner join m_org t2 on t1.id = t2.id                                                               "
             + "           left join                                                                                         "
             + "           (                                                                                                 "
