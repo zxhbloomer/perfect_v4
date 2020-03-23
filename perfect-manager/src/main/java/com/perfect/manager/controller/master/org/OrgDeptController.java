@@ -33,8 +33,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/v1/org/dept")
 @Slf4j
-@Api("部门主表相关")
-public class MasterDeptController extends BaseController {
+@Api("部门表相关")
+public class OrgDeptController extends BaseController {
 
     @Autowired
     private IMDeptService service;

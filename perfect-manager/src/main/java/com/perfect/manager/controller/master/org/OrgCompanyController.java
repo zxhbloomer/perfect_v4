@@ -31,8 +31,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/v1/org")
 @Slf4j
-@Api("公司主表相关")
-public class MasterCompanyController extends BaseController {
+@Api("公司表相关")
+public class OrgCompanyController extends BaseController {
 
     @Autowired
     private IMCompanyService service;

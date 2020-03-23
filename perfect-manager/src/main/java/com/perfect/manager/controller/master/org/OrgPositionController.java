@@ -32,8 +32,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/v1/org/position")
 @Slf4j
-@Api("岗位主表相关")
-public class MasterPositionController extends BaseController {
+@Api("岗位表相关")
+public class OrgPositionController extends BaseController {
 
     @Autowired
     private IMPositionService service;

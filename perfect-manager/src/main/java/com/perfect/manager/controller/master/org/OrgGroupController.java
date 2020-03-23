@@ -31,8 +31,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/v1/org")
 @Slf4j
-@Api("集团主表相关")
-public class MasterGroupController extends BaseController {
+@Api("集团表相关")
+public class OrgGroupController extends BaseController {
 
     @Autowired
     private IMGroupService service;
