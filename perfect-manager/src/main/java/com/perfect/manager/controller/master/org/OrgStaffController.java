@@ -3,9 +3,9 @@ package com.perfect.manager.controller.master.org;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
-import com.perfect.bean.vo.master.user.MStaffVo;
+import com.perfect.bean.vo.master.org.MStaffTabVo;
 import com.perfect.common.annotations.SysLogAnnotion;
-import com.perfect.core.service.master.user.IMStaffService;
+import com.perfect.core.service.master.org.IMStaffOrgService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +25,7 @@ import org.springframework.web.client.RestTemplate;
 public class OrgStaffController extends BaseController {
 
     @Autowired
-    private IMStaffService service;
+    private IMStaffOrgService service;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -34,9 +34,9 @@ public class OrgStaffController extends BaseController {
     @ApiOperation("根据参数id，获取员工主表信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<MStaffVo>>> list(@RequestBody(required = false)
-        MStaffVo searchCondition) {
-        IPage<MStaffVo> entity = service.selectPage(searchCondition);
+    public ResponseEntity<JsonResult<IPage<MStaffTabVo>>> list(@RequestBody(required = false)
+        MStaffTabVo searchCondition) {
+        IPage<MStaffTabVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 }

@@ -3,9 +3,7 @@ package com.perfect.core.service.master.org;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfect.bean.entity.master.org.MStaffOrgEntity;
-import com.perfect.bean.vo.master.user.MStaffVo;
-
-import java.util.List;
+import com.perfect.bean.vo.master.org.MStaffTabVo;
 
 /**
  * <p>
@@ -19,10 +17,5 @@ public interface IMStaffOrgService extends IService<MStaffOrgEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<MStaffVo> selectPage(MStaffVo searchCondition) ;
-
-    /**
-     * 获取所有数据
-     */
-    List<MStaffVo> select(MStaffVo searchCondition);
+    IPage<MStaffTabVo> selectPage(MStaffTabVo searchCondition) ;
 }
