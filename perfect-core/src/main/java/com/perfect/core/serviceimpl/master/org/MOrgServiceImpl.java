@@ -692,13 +692,8 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @return
      */
     @Override
-    public IPage<MStaffTabVo> selectStaffPage(MStaffTabVo searchCondition) {
+    public List<MStaffTabVo> selectStaff(MStaffTabVo searchCondition) {
         searchCondition.setTenant_id(getUserSessionTenantId());
-        // 分页条件
-        Page<MStaffEntity> pageCondition =
-            new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
-        // 通过page进行排序
-        PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
-        return mapper.selectStaffPage(pageCondition, searchCondition);
+        return mapper.selectStaff(searchCondition);
     }
 }

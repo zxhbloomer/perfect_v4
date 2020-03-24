@@ -192,9 +192,9 @@ public class OrgController extends BaseController {
     @ApiOperation("根据参数id，获取员工主表信息")
     @PostMapping("/staff/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<MStaffTabVo>>> list(@RequestBody(required = false)
+    public ResponseEntity<JsonResult<List<MStaffTabVo>>> list(@RequestBody(required = false)
         MStaffTabVo searchCondition) {
-        IPage<MStaffTabVo> entity = service.selectStaffPage(searchCondition);
+        List<MStaffTabVo> entity = service.selectStaff(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 }

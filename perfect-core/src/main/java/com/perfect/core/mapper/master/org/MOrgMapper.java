@@ -603,7 +603,6 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
 
     /**
      * 页面查询列表
-     * @param page
      * @param searchCondition
      * @return
      */
@@ -611,6 +610,6 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + staffListSql
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)           "
         + "      ")
-    IPage<MStaffTabVo> selectStaffPage(Page page, @Param("p1") MStaffTabVo searchCondition);
+    List<MStaffTabVo> selectStaff(@Param("p1") MStaffTabVo searchCondition);
 
 }

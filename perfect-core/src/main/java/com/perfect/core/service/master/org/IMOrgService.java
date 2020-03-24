@@ -143,6 +143,6 @@ public interface IMOrgService extends IService<MOrgEntity> {
     /**
      * 获取员工列表，页面查询
      */
-    IPage<MStaffTabVo> selectStaffPage(MStaffTabVo searchCondition) ;
+    List<MStaffTabVo> selectStaff(MStaffTabVo searchCondition) ;
 
 }
