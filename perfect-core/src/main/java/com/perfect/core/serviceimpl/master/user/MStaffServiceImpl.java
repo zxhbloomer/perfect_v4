@@ -223,6 +223,7 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
         }
 
         mUserEntity.setStaff_id(mStaffEntity.getId());
+        mUserEntity.setTenant_id(getUserSessionTenantId());
         if(mStaffEntity.getUser_id() == null){
             mUserMapper.insert(mUserEntity);
         } else {

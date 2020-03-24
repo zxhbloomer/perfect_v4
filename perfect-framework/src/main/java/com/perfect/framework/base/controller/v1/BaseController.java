@@ -225,7 +225,7 @@ public class BaseController {
     public void doResetUserSessionByStaffId(Long staff_id) {
         // 如果更新的是当前登录的用户则，刷新当前登录用户，否则pass
         if(staff_id.equals(this.getUserSessionStaffId())) {
-            this.resetUserSession(this.getUserSessionAccountId(), PerfectConstant.LOGINUSER_OR_STAFF_ID.STAFF_ID);
+            this.resetUserSession(this.getUserSessionStaffId(), PerfectConstant.LOGINUSER_OR_STAFF_ID.STAFF_ID);
         }
     }
 
