@@ -377,7 +377,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "            select count(1) from ( " + positionListSql +")  tab5                                             "
         + "           ),0)  as position_count,                                                                          "
         + "           IFNULL((                                                                                          "
-        + "               null                                                                                          " //todo：待定
+        + "            select count(1) from ( " + staffListSql + ")  tab6                                               "
         + "           ),0)  as staff_count                                                                              "
         + "                                                                                                             ")
     MOrgCountsVo getAllOrgDataCount(@Param("p1") MOrgVo searchCondition);
@@ -528,7 +528,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     /**
      * 和 MOrgMapper.java 的COMMON_TREE_SELECT相同
      */
-    String MORGMAPPER_CLASS_COMMON_TREE_SELECT = "                                                                                                "
+    String MORGMAPPER_CLASS_COMMON_TREE_SELECT = "                                                                      "
         + "         WITH recursive cte AS (                                                                             "
         + "               SELECT                                                                                        "
         + "                      t0.id,                                                                                 "
@@ -563,14 +563,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "          inner join m_org t2 on t1.id = t2.id                                                               "
         + "                                                                                                             ";
 
-
-    /**
-     * 页面查询列表
-     * @param page
-     * @param searchCondition
-     * @return
-     */
-    @Select("    "
+    String staffListSql = "                                                                      "
         + "      SELECT                                                                                                         "
         + "            	t1.* ,                                                                                                  "
         + "            	t2.label as sex_text,                                                                                   "
@@ -601,12 +594,22 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "                                                from (" + MORGMAPPER_CLASS_COMMON_TREE_SELECT + ") subtab2           "
         + "                                               where subtab2.type = '"+ PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION +"'  "
         + "                                                 and subtab2.tenant_id = t1.tenant_id                                "
-        + "                                                 and subtab2.code > #{p1.org_code,jdbcType=VARCHAR}                    "
+        + "                                                 and subtab2.code > #{p1.code,jdbcType=VARCHAR}                    "
         + "                                            )                                                                        "
         + "                    )                                                                                                "
-        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)           "
-        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                          "
+//        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                          "
         + "    and (t1.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)                   "
+        + "                                                                                                                     ";
+
+    /**
+     * 页面查询列表
+     * @param page
+     * @param searchCondition
+     * @return
+     */
+    @Select("    "
+        + staffListSql
+        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)           "
         + "      ")
     IPage<MStaffTabVo> selectStaffPage(Page page, @Param("p1") MStaffTabVo searchCondition);
 

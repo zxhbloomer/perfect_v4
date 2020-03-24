@@ -169,7 +169,7 @@ public class MStaffTabVo extends BaseVo implements Serializable {
     /**
      * 编号，00010001..
      */
-    private String org_code;
+    private String code;
 
 
     /**
