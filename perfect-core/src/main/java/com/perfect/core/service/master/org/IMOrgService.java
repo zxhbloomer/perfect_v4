@@ -2,17 +2,13 @@ package com.perfect.core.service.master.org;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.perfect.bean.entity.master.org.MCompanyEntity;
-import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.master.org.*;
 import com.perfect.bean.vo.master.user.MStaffVo;
-import org.apache.ibatis.annotations.Param;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -143,5 +139,10 @@ public interface IMOrgService extends IService<MOrgEntity> {
      * @return
      */
     MStaffPositionTransferVo setStaffTransfer(MStaffTransferVo bean);
+
+    /**
+     * 获取员工列表，页面查询
+     */
+    IPage<MStaffTabVo> selectStaffPage(MStaffTabVo searchCondition) ;
 
 }

@@ -186,4 +186,15 @@ public class OrgController extends BaseController {
         bean.setTenant_id(super.getUserSessionTenantId());
         return ResponseEntity.ok().body(ResultUtil.OK(service.setStaffTransfer(bean)));
     }
+
+
+    @SysLogAnnotion("根据查询条件，获取员工主表信息")
+    @ApiOperation("根据参数id，获取员工主表信息")
+    @PostMapping("/staff/list")
+    @ResponseBody
+    public ResponseEntity<JsonResult<IPage<MStaffTabVo>>> list(@RequestBody(required = false)
+        MStaffTabVo searchCondition) {
+        IPage<MStaffTabVo> entity = service.selectStaffPage(searchCondition);
+        return ResponseEntity.ok().body(ResultUtil.OK(entity));
+    }
 }

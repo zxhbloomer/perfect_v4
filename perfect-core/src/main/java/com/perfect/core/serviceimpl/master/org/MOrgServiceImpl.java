@@ -9,6 +9,7 @@ import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.entity.master.org.MStaffOrgEntity;
+import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
@@ -21,7 +22,6 @@ import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.common.component.TreeNode;
 import com.perfect.bean.vo.master.org.*;
 import com.perfect.bean.vo.master.user.MStaffVo;
-import com.perfect.bean.vo.sys.config.dict.SDictTypeExportVo;
 import com.perfect.common.annotations.LogByIdAnnotion;
 import com.perfect.common.annotations.LogByIdsAnnotion;
 import com.perfect.common.annotations.OperationLogAnnotion;
@@ -64,7 +64,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     private MOrgMapper mapper;
 
     @Autowired
-    ICommonComponentService iCommonComponentService;
+    private ICommonComponentService iCommonComponentService;
 
     @Autowired
     private MOrgServiceImpl self;
@@ -685,5 +685,20 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         bean.setColumns(columns);
     }
 
-
+    /**
+     * 获取列表，页面查询
+     *
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public IPage<MStaffTabVo> selectStaffPage(MStaffTabVo searchCondition) {
+        searchCondition.setTenant_id(getUserSessionTenantId());
+        // 分页条件
+        Page<MStaffEntity> pageCondition =
+            new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
+        // 通过page进行排序
+        PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
+        return mapper.selectStaffPage(pageCondition, searchCondition);
+    }
 }
