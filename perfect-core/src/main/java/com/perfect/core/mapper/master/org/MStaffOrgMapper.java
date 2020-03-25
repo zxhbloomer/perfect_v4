@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
  * @author zxh
  * @since 2019-08-23
  */
+@Deprecated
 @Repository
 public interface MStaffOrgMapper extends BaseMapper<MStaffOrgEntity> {
 

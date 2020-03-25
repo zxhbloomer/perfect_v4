@@ -9,7 +9,6 @@ import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MOrgEntity;
 import com.perfect.bean.entity.master.org.MStaffOrgEntity;
-import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
@@ -692,8 +691,30 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * @return
      */
     @Override
-    public List<MStaffTabVo> selectStaff(MStaffTabVo searchCondition) {
+    public MStaffTabVo selectStaff(MStaffTabDataVo searchCondition) {
+        MStaffTabVo mStaffTabVo = new MStaffTabVo();
         searchCondition.setTenant_id(getUserSessionTenantId());
-        return mapper.selectStaff(searchCondition);
+        // 表数据
+        mStaffTabVo.setList(mapper.selectStaff(searchCondition));
+        // count 数据
+        mStaffTabVo.setCurrentOrgStaffCount(getCurrentOrgStaffCount(searchCondition));
+        mStaffTabVo.setAllOrgStaffCount(getAllOrgStaffCount(searchCondition));
+        return mStaffTabVo;
+    }
+
+    /**
+     * 获取员工count
+     */
+    @Override
+    public Integer getCurrentOrgStaffCount(MStaffTabDataVo searchCondition) {
+        return mapper.getCurrentOrgStaffCount(searchCondition);
+    }
+
+    /**
+     * 获取所有员工count
+     */
+    @Override
+    public Integer getAllOrgStaffCount(MStaffTabDataVo searchCondition) {
+        return mapper.getAllOrgStaffCount(searchCondition);
     }
 }

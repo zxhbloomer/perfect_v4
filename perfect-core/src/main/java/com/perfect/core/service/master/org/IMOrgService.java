@@ -143,6 +143,16 @@ public interface IMOrgService extends IService<MOrgEntity> {
     /**
      * 获取员工列表，页面查询
      */
-    List<MStaffTabVo> selectStaff(MStaffTabVo searchCondition) ;
+    MStaffTabVo selectStaff(MStaffTabDataVo searchCondition) ;
+
+    /**
+     * 获取员工count
+     */
+    Integer getCurrentOrgStaffCount(MStaffTabDataVo searchCondition) ;
+
+    /**
+     * 获取所有员工count
+     */
+    Integer getAllOrgStaffCount(MStaffTabDataVo searchCondition) ;
 
 }

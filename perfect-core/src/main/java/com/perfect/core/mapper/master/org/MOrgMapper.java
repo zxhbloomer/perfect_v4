@@ -610,6 +610,37 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + staffListSql
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)           "
         + "      ")
-    List<MStaffTabVo> selectStaff(@Param("p1") MStaffTabVo searchCondition);
+    List<MStaffTabDataVo> selectStaff(@Param("p1") MStaffTabDataVo searchCondition);
+
+
+    /**
+     * 获取员工count
+     * @param searchCondition
+     * @return
+     */
+    @Select("    "
+        + " select count(1) "
+        + "   from (                                                                                                            "
+        +            staffListSql
+        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)           "
+        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                          "
+        + "        ) count_tab                                                                                                  "
+        + "                                                                                                                     ")
+    Integer getCurrentOrgStaffCount(@Param("p1") MStaffTabDataVo searchCondition);
+
+    /**
+     * 获取所有员工count
+     * @param searchCondition
+     * @return
+     */
+    @Select("    "
+        + " select count(1) "
+        + "   from (                                                                                                            "
+        +            staffListSql
+        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)           "
+        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                          "
+        + "        )  count_tab                                                                                                 "
+        + "                                                                                                                     ")
+    Integer getAllOrgStaffCount(@Param("p1") MStaffTabDataVo searchCondition);
 
 }
