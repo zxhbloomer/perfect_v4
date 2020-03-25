@@ -609,6 +609,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("    "
         + staffListSql
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)           "
+        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                          "
         + "      ")
     List<MStaffTabDataVo> selectStaff(@Param("p1") MStaffTabDataVo searchCondition);
 
