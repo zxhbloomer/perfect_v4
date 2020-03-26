@@ -146,7 +146,7 @@ public interface IMOrgService extends IService<MOrgEntity> {
     MStaffTabVo selectStaff(MStaffTabDataVo searchCondition) ;
 
     /**
-     * 获取员工count
+     * 获取当组织下员工count
      */
     Integer getCurrentOrgStaffCount(MStaffTabDataVo searchCondition) ;
 

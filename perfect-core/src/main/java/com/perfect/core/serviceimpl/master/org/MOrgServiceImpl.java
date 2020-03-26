@@ -1,5 +1,6 @@
 package com.perfect.core.serviceimpl.master.org;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
@@ -694,16 +695,28 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     public MStaffTabVo selectStaff(MStaffTabDataVo searchCondition) {
         MStaffTabVo mStaffTabVo = new MStaffTabVo();
         searchCondition.setTenant_id(getUserSessionTenantId());
-        // 表数据
+        // 这个需要提前运行
+        mStaffTabVo.setCurrentOrgStaffCount(getCurrentOrgStaffCount(searchCondition));
+
+        /**
+         * 表数据
+         * 判断是当前组织下还是全部员工
+         * 0:当前组织
+         * 1：全部员工
+         * */
+        if (searchCondition.getActive_tabs_index() == 1){
+            String _code = searchCondition.getCode();
+            _code = StrUtil.sub(_code, 0, 4);
+            searchCondition.setCode(_code);
+        }
         mStaffTabVo.setList(mapper.selectStaff(searchCondition));
         // count 数据
-        mStaffTabVo.setCurrentOrgStaffCount(getCurrentOrgStaffCount(searchCondition));
         mStaffTabVo.setAllOrgStaffCount(getAllOrgStaffCount(searchCondition));
         return mStaffTabVo;
     }
 
     /**
-     * 获取员工count
+     * 获取当组织下员工count
      */
     @Override
     public Integer getCurrentOrgStaffCount(MStaffTabDataVo searchCondition) {
@@ -715,6 +728,14 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     @Override
     public Integer getAllOrgStaffCount(MStaffTabDataVo searchCondition) {
+        /**
+         * 考虑所有员工的方法
+         * 1:根据code的定义规则，0001xxxx|xxxx|，每4位为一个层，所以找到第一组的4个
+         * 2：并设置回code中去
+         */
+        String _code = searchCondition.getCode();
+        _code = StrUtil.sub(_code, 0, 4);
+        searchCondition.setCode(_code);
         return mapper.getAllOrgStaffCount(searchCondition);
     }
 }

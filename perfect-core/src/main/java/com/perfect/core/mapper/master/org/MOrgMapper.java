@@ -594,7 +594,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "                                                from (" + MORGMAPPER_CLASS_COMMON_TREE_SELECT + ") subtab2           "
         + "                                               where subtab2.type = '"+ PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION +"'  "
         + "                                                 and subtab2.tenant_id = t1.tenant_id                                "
-        + "                                                 and subtab2.code > #{p1.code,jdbcType=VARCHAR}                    "
+        + "                                                 and (subtab2.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%')) "
         + "                                            )                                                                        "
         + "                    )                                                                                                "
 //        + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                          "

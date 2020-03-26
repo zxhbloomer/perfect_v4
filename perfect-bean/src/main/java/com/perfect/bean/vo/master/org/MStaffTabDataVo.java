@@ -170,6 +170,7 @@ public class MStaffTabDataVo extends BaseVo implements Serializable {
      * 编号，00010001..
      */
     private String code;
+    private int active_tabs_index;
 
 
     /**
