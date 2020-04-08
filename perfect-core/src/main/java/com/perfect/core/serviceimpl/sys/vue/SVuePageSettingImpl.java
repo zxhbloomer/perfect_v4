@@ -45,7 +45,7 @@ public class SVuePageSettingImpl extends BaseServiceImpl<SVuePageSettingMapper, 
     @Override
     public IPage<SVuePageSettingVo> selectPage(SVuePageSettingVo searchCondition) {
         // 分页条件
-        Page<SVuePageSettingEntity> pageCondition =
+        Page<SVuePageSettingVo> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
         // 通过page进行排序
         PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
@@ -62,19 +62,6 @@ public class SVuePageSettingImpl extends BaseServiceImpl<SVuePageSettingMapper, 
     public List<SVuePageSettingVo> select(SVuePageSettingVo searchCondition) {
         // 查询 数据
         List<SVuePageSettingVo> list = mapper.select(searchCondition);
-        return list;
-    }
-
-    /**
-     * 获取列表，根据id查询所有数据
-     *
-     * @param searchCondition
-     * @return
-     */
-    @Override
-    public List<SVuePageSettingVo> selectIdsIn(List<SVuePageSettingVo> searchCondition) {
-        // 查询 数据
-        List<SVuePageSettingVo> list = mapper.selectIdsIn(searchCondition);
         return list;
     }
 
@@ -135,22 +122,22 @@ public class SVuePageSettingImpl extends BaseServiceImpl<SVuePageSettingMapper, 
      * @return
      */
     @Override
-    public List<SVuePageSettingEntity> selectByName(String name) {
+    public List<SVuePageSettingVo> selectByName(String name) {
         // 查询 数据
-        List<SVuePageSettingEntity> list = mapper.selectByName(name);
+        List<SVuePageSettingVo> list = mapper.selectByName(name);
         return list;
     }
 
     /**
      * 获取列表，查询所有数据
      *
-     * @param key
+     * @param code
      * @return
      */
     @Override
-    public List<SVuePageSettingEntity> selectByKey(String key) {
+    public List<SVuePageSettingVo> selectByCode(String code) {
         // 查询 数据
-        List<SVuePageSettingEntity> list = mapper.selectByKey(key);
+        List<SVuePageSettingVo> list = mapper.selectByCode(code);
         return list;
     }
 
@@ -159,9 +146,9 @@ public class SVuePageSettingImpl extends BaseServiceImpl<SVuePageSettingMapper, 
      * 
      * @return
      */
-    public CheckResult checkLogic(String name, String key, String moduleType) {
-        List<SVuePageSettingEntity> selectByName = selectByName(name);
-        List<SVuePageSettingEntity> selectByKey = selectByKey(key);
+    public CheckResult checkLogic(String name, String code, String moduleType) {
+        List<SVuePageSettingVo> selectByName = selectByName(name);
+        List<SVuePageSettingVo> selectByKey = selectByCode(code);
 
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
@@ -170,7 +157,7 @@ public class SVuePageSettingImpl extends BaseServiceImpl<SVuePageSettingMapper, 
                     return CheckResultUtil.NG("新增保存出错：参数名称出现重复", name);
                 }
                 if (selectByKey.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：参数键名出现重复", key);
+                    return CheckResultUtil.NG("新增保存出错：参数键名出现重复", code);
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
@@ -179,7 +166,7 @@ public class SVuePageSettingImpl extends BaseServiceImpl<SVuePageSettingMapper, 
                     return CheckResultUtil.NG("新增保存出错：参数名称出现重复", name);
                 }
                 if (selectByKey.size() >= 2) {
-                    return CheckResultUtil.NG("新增保存出错：参数键名出现重复", key);
+                    return CheckResultUtil.NG("新增保存出错：参数键名出现重复", code);
                 }
                 break;
             default:

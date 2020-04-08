@@ -22,40 +22,39 @@ import java.util.List;
 @Repository
 public interface SVuePageSettingMapper extends BaseMapper<SVuePageSettingEntity> {
 
-    String common_select = "  "
-        + "  SELECT                                                             "
-        + "       *                                                            "
-        + "  FROM                                                                   "
-        + "  	s_config t                                            "
-        + "                                                                   "
-        ;
-
     /**
      * 页面查询列表
      * @param page
      * @param searchCondition
      * @return
      */
-    @Select("    "
-        + common_select
-        + "  where true "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-        + "    and (t.config_key  like CONCAT ('%',#{p1.config_key,jdbcType=VARCHAR},'%') or #{p1.config_key,jdbcType=VARCHAR} is null) "
-        + "    and (t.value  like CONCAT ('%',#{p1.value,jdbcType=VARCHAR},'%') or #{p1.value,jdbcType=VARCHAR} is null) "
-        + "      ") IPage<SVuePageSettingVo> selectPage(Page page, @Param("p1") SVuePageSettingVo searchCondition);
+    @Select("                                                                                                            "
+        + "  SELECT                                                                                                      "
+        + "       *                                                                                                      "
+        + "  FROM                                                                                                        "
+        + "  	s_config t                                                                                               "
+        + "  where true                                                                                                  "
+        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)     "
+        + "    and (t.title  like CONCAT ('%',#{p1.title,jdbcType=VARCHAR},'%') or #{p1.title,jdbcType=VARCHAR} is null) "
+        + "    and (t.code  like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)    "
+        + "                                                                                                              ")
+    IPage<SVuePageSettingVo> selectPage(Page page, @Param("p1") SVuePageSettingVo searchCondition);
 
     /**
      * 按条件获取所有数据，没有分页
      * @param searchCondition
      * @return
      */
-    @Select("    "
-        + common_select
-        + "  where true "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-        + "    and (t.config_key  like CONCAT ('%',#{p1.config_key,jdbcType=VARCHAR},'%') or #{p1.config_key,jdbcType=VARCHAR} is null) "
-        + "    and (t.value  like CONCAT ('%',#{p1.value,jdbcType=VARCHAR},'%') or #{p1.value,jdbcType=VARCHAR} is null) "
-        + "      ")
+    @Select("                                                                                                            "
+        + "  SELECT                                                                                                      "
+        + "       *                                                                                                      "
+        + "  FROM                                                                                                        "
+        + "  	s_vue_page_setting t                                                                                     "
+        + "  where true                                                                                                  "
+        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)     "
+        + "    and (t.title  like CONCAT ('%',#{p1.title,jdbcType=VARCHAR},'%') or #{p1.title,jdbcType=VARCHAR} is null) "
+        + "    and (t.code  like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)    "
+        + "                                                                                                              ")
     List<SVuePageSettingVo> select(@Param("p1") SVuePageSettingVo searchCondition);
 
     /**
@@ -64,8 +63,11 @@ public interface SVuePageSettingMapper extends BaseMapper<SVuePageSettingEntity>
      * @return
      */
     @Select("   <script>   "
-        + common_select
-        + "  where t.id in "
+        + "  SELECT                                                                                        "
+        + "       *                                                                                        "
+        + "  FROM                                                                                          "
+        + "  	s_vue_page_setting t                                                                       "
+        + "  where t.id in                                                                                 "
         + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>    "
         + "         #{item.id}  "
         + "        </foreach>    "
@@ -78,23 +80,29 @@ public interface SVuePageSettingMapper extends BaseMapper<SVuePageSettingEntity>
      * @return
      */
     @Select("    "
-        + common_select
-        + "  where true "
-        + "    and t.name =  #{p1}"
+        + "  SELECT                                                                                        "
+        + "       *                                                                                        "
+        + "  FROM                                                                                          "
+        + "  	s_vue_page_setting t                                                                       "
+        + "  where true                                                                                    "
+        + "    and t.name =  #{p1}                                                                         "
         + "      ")
-    List<SVuePageSettingEntity> selectByName(@Param("p1") String name);
+    List<SVuePageSettingVo> selectByName(@Param("p1") String name);
 
     /**
      * 按条件获取所有数据，没有分页
-     * @param config_key
+     * @param code
      * @return
      */
     @Select("    "
-        + common_select
-        + "  where true "
-        + "    and t.config_key =  #{p1}"
+        + "  SELECT                                                                                        "
+        + "       *                                                                                        "
+        + "  FROM                                                                                          "
+        + "  	s_vue_page_setting t                                                                       "
+        + "  where true                                                                                    "
+        + "    and t.code =  #{p1}                                                                         "
         + "      ")
-    List<SVuePageSettingEntity> selectByKey(@Param("p1") String config_key);
+    List<SVuePageSettingVo> selectByCode(@Param("p1") String code);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -102,10 +110,14 @@ public interface SVuePageSettingMapper extends BaseMapper<SVuePageSettingEntity>
      * @return
      */
     @Select("    "
-        + common_select
-        + "  where true "
-        + "    and t.value =  #{p1}"
-        + "      ") List<SVuePageSettingVo> selectByValue(@Param("p1") String value);
+        + "  SELECT                                                                                        "
+        + "       *                                                                                        "
+        + "  FROM                                                                                          "
+        + "  	s_vue_page_setting t                                                                       "
+        + "  where true                                                                                    "
+        + "    and t.value =  #{p1}                                                                        "
+        + "      ")
+    List<SVuePageSettingVo> selectByValue(@Param("p1") String value);
 
     /**
      * 按条件获取所有数据，没有分页
@@ -113,8 +125,12 @@ public interface SVuePageSettingMapper extends BaseMapper<SVuePageSettingEntity>
      * @return
      */
     @Select("    "
-        + common_select
-        + "  where t1.id =  #{p1}"
-        + "      ") SVuePageSettingVo selectId(@Param("p1") Long id);
+        + "  SELECT                                                                                        "
+        + "       *                                                                                        "
+        + "  FROM                                                                                          "
+        + "  	s_vue_page_setting t                                                                       "
+        + "  where t1.id =  #{p1}                                                                          "
+        + "      ")
+    SVuePageSettingVo selectId(@Param("p1") Long id);
 
 }

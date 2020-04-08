@@ -39,6 +39,30 @@ public class SVuePageSettingEntity implements Serializable {
     @TableField("code")
     private String code;
 
+    /**
+     * 模块地址：@/views/10_system/vuesetting/vue
+     */
+    @TableField("component")
+    private String component;
+
+    /**
+     * 页面的名称
+     */
+    @TableField("meta_title")
+    private String meta_title;
+
+    /**
+     * 菜单中显示的icon
+     */
+    @TableField("meta_icon")
+    private String meta_icon;
+
+    /**
+     * 描述
+     */
+    @TableField("descr")
+    private String descr;
+
     @TableField(value="c_id", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NOT_EMPTY)
     private Long c_id;
 

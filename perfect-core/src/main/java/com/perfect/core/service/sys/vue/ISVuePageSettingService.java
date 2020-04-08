@@ -28,10 +28,6 @@ public interface ISVuePageSettingService extends IService<SVuePageSettingEntity>
      */
     List<SVuePageSettingVo> select(SVuePageSettingVo searchCondition) ;
 
-    /**
-     * 获取所选id的数据
-     */
-    List<SVuePageSettingVo> selectIdsIn(List<SVuePageSettingVo> searchCondition) ;
 
     /**
      * 查询by id，返回结果
@@ -60,11 +56,11 @@ public interface ISVuePageSettingService extends IService<SVuePageSettingEntity>
      * 通过name查询
      *
      */
-    List<SVuePageSettingEntity> selectByName(String name);
+    List<SVuePageSettingVo> selectByName(String name);
 
     /**
      * 通过key查询
      *
      */
-    List<SVuePageSettingEntity> selectByKey(String key);
+    List<SVuePageSettingVo> selectByCode(String code);
 }
