@@ -127,6 +127,8 @@ public class PerfectDictConstant {
     public static final String DICT_SYS_CODE_TYPE_M_POSITION  = "m_position";
     /** 公司编号 */
     public static final String DICT_SYS_CODE_TYPE_M_COMPANY  = "m_company";
+    /** vue页面配置表 */
+    public static final String DICT_SYS_CODE_TYPE_S_VUE_PAGE_SETTING  = "s_vue_page_setting";
 
     /**
      * 组织架构中已被使用

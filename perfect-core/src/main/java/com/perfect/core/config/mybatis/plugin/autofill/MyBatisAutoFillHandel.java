@@ -5,7 +5,6 @@ import com.perfect.core.utils.security.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
 
 /**
@@ -25,8 +24,8 @@ public class MyBatisAutoFillHandel implements MetaObjectHandler {
         this.setFieldValByNameMy("u_time", LocalDateTime.now(), metaObject);
         this.setFieldValByNameMy("dbversion", 0, metaObject);
 
-        this.setFieldValByNameMy("c_id", SecurityUtil.getLoginUser_id() < 0 ? null : SecurityUtil.getLoginUser_id(), metaObject);
-        this.setFieldValByNameMy("u_id", SecurityUtil.getLoginUser_id() < 0 ? null : SecurityUtil.getLoginUser_id(), metaObject);
+        this.setFieldValByNameMy("c_id", SecurityUtil.getStaff_id() < 0 ? null : SecurityUtil.getStaff_id(), metaObject);
+        this.setFieldValByNameMy("u_id", SecurityUtil.getStaff_id() < 0 ? null : SecurityUtil.getStaff_id(), metaObject);
         // 默认未删除
         this.setFieldValByNameMy("is_del", false, metaObject);
         // 默认未启用
@@ -41,7 +40,7 @@ public class MyBatisAutoFillHandel implements MetaObjectHandler {
     public void updateFill(MetaObject metaObject) {
         log.info(" ....更新的时候自动填充 ....");
         this.setFieldValByName("u_time", LocalDateTime.now(), metaObject);
-        this.setFieldValByName("u_id", SecurityUtil.getLoginUser_id() < 0 ? null : SecurityUtil.getLoginUser_id(), metaObject);
+        this.setFieldValByName("u_id", SecurityUtil.getStaff_id() < 0 ? null : SecurityUtil.getStaff_id(), metaObject);
     }
 
     private void setFieldValByNameMy(String fieldName, Object fieldVal, MetaObject metaObject){

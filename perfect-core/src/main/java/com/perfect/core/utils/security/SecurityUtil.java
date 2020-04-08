@@ -42,6 +42,18 @@ public class SecurityUtil {
     }
 
     /**
+     * 获取login的userid
+     * @return
+     */
+    public static long getStaff_id(){
+        if(SecurityUtil.getAuthentication() == null){
+            return -1;
+        } else {
+            return SecurityUtil.getLoginUserEntity().getStaff_id();
+        }
+    }
+
+    /**
      * 获取Principal
      * @return
      */

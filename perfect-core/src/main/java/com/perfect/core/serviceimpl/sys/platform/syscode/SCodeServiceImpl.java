@@ -214,7 +214,13 @@ public class SCodeServiceImpl extends BaseServiceImpl<SCodeMapper, SCodeEntity> 
                 entity.setU_id(((UserSessionBo)ServletUtil.getUserSession()).getAccountId());
                 // 合并并设置到entity
                 entity.setCode(entity.getPrefex() == null ? "" : entity.getPrefex().toUpperCase() + first + second_radomchar + suffix);
-            break;
+                break;
+            case PerfectDictConstant.DICT_SYS_CODE_RULE_TYPE_TWO:
+                // P99999999
+                entity.setAuto_create((entity.getAuto_create() == null ? 0 : entity.getAuto_create()) + 1);
+                String code =String.format("%08d", entity.getAuto_create());
+                entity.setCode("P" + code);
+                break;
         }
     }
 }

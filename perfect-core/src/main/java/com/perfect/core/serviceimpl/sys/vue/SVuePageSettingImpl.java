@@ -11,9 +11,11 @@ import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.vue.SVuePageSettingVo;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.sys.vue.SVuePageSettingMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.vue.ISVuePageSettingService;
+import com.perfect.core.serviceimpl.common.autocode.MVuePageSettingAutoCodeImpl;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,9 @@ public class SVuePageSettingImpl extends BaseServiceImpl<SVuePageSettingMapper, 
 
     @Autowired
     private SVuePageSettingMapper mapper;
+
+    @Autowired
+    private MVuePageSettingAutoCodeImpl autoCode;
 
     /**
      * 获取列表，页面查询
@@ -86,8 +91,12 @@ public class SVuePageSettingImpl extends BaseServiceImpl<SVuePageSettingMapper, 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public InsertResult<Integer> insert(SVuePageSettingEntity entity) {
+        // 编码如果为空，自动生成编码
+        if(StringUtil.isEmpty(entity.getName())){
+            entity.setName(autoCode.autoCode().getCode());
+        }
         // 插入前check
-        CheckResult cr = checkLogic(entity.getName(), "11", CheckResult.INSERT_CHECK_TYPE);
+        CheckResult cr = checkLogic(entity.getName(), entity.getCode(), CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -105,7 +114,7 @@ public class SVuePageSettingImpl extends BaseServiceImpl<SVuePageSettingMapper, 
     @Override
     public UpdateResult<Integer> update(SVuePageSettingEntity entity) {
         // 更新前check
-        CheckResult cr = checkLogic(entity.getName(), "11", CheckResult.UPDATE_CHECK_TYPE);
+        CheckResult cr = checkLogic(entity.getName(), entity.getCode(), CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }

@@ -57,10 +57,12 @@ public class SVuePageSettingVo implements Serializable {
     private String descr;
 
     private Long c_id;
+    private Long c_name;
 
     private LocalDateTime c_time;
 
     private Long u_id;
+    private Long u_name;
 
     private LocalDateTime u_time;
 
