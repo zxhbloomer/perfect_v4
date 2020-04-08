@@ -13,6 +13,7 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
+import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
@@ -21,6 +22,7 @@ import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.config.dict.ISDictDataService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,6 +103,7 @@ public class SDictDataServiceImpl extends BaseServiceImpl<SDictDataMapper, SDict
      * @param entityList
      * @return
      */
+    @CacheEvict(value = PerfectConstant.CACHE_PC.CACHE_DICT_TYPE, allEntries=true)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveBatches(List<SDictDataEntity> entityList) {
@@ -113,6 +116,7 @@ public class SDictDataServiceImpl extends BaseServiceImpl<SDictDataMapper, SDict
      * @param searchCondition
      * @return
      */
+    @CacheEvict(value = PerfectConstant.CACHE_PC.CACHE_DICT_TYPE, allEntries=true)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteByIdsIn(List<SDictDataVo> searchCondition) {
@@ -130,6 +134,7 @@ public class SDictDataServiceImpl extends BaseServiceImpl<SDictDataMapper, SDict
      * @param entity 实体对象
      * @return
      */
+    @CacheEvict(value = PerfectConstant.CACHE_PC.CACHE_DICT_TYPE, allEntries=true)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public InsertResult<Integer> insert(SDictDataEntity entity) {
@@ -156,6 +161,7 @@ public class SDictDataServiceImpl extends BaseServiceImpl<SDictDataMapper, SDict
      * @param entity 实体对象
      * @return
      */
+    @CacheEvict(value = PerfectConstant.CACHE_PC.CACHE_DICT_TYPE, allEntries=true)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public UpdateResult<Integer> update(SDictDataEntity entity) {
