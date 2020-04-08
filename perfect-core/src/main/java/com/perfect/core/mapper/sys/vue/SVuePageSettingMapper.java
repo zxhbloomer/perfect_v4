@@ -30,7 +30,7 @@ public interface SVuePageSettingMapper extends BaseMapper<SVuePageSettingEntity>
      */
     @Select("                                                                                                            "
         + "  SELECT                                                                                                      "
-        + "         *,                                                                                                   "
+        + "         t.*,                                                                                                 "
         + "         c_staff.name as c_name,                                                                              "
         + "         u_staff.name as u_name                                                                               "
         + "    FROM                                                                                                      "
@@ -51,7 +51,7 @@ public interface SVuePageSettingMapper extends BaseMapper<SVuePageSettingEntity>
      */
     @Select("                                                                                                            "
         + "  SELECT                                                                                                      "
-        + "         *,                                                                                                   "
+        + "         t.*,                                                                                                 "
         + "         c_staff.name as c_name,                                                                              "
         + "         u_staff.name as u_name                                                                               "
         + "  FROM                                                                                                        "
