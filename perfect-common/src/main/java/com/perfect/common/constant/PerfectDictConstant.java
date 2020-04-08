@@ -108,6 +108,8 @@ public class PerfectDictConstant {
     public static final String DICT_SYS_CODE_RULE_TYPE  = "sys_coderule_type";
     // YYYYMMDD??999
     public static final String DICT_SYS_CODE_RULE_TYPE_ONE  = "10";
+    // P99999999
+    public static final String DICT_SYS_CODE_RULE_TYPE_TWO  = "11";
 
     /**
      * 自动编号名称：
