@@ -3,6 +3,7 @@ package com.perfect.core.service.sys.vue;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfect.bean.entity.sys.vue.SVuePageSettingEntity;
+import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.sys.vue.SVuePageSettingVo;
@@ -63,4 +64,11 @@ public interface ISVuePageSettingService extends IService<SVuePageSettingEntity>
      *
      */
     List<SVuePageSettingVo> selectByCode(String code);
+
+    /**
+     * 批量物理删除
+     * @param searchCondition
+     * @return
+     */
+    DeleteResult<Integer> realDeleteByIdsIn(List<SVuePageSettingVo> searchCondition);
 }

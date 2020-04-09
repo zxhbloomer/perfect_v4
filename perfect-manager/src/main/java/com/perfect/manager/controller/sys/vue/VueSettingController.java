@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 /**
  * @author zhangxh
  */
@@ -34,8 +36,8 @@ public class VueSettingController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLogAnnotion("根据查询条件，获取系统参数信息")
-    @ApiOperation("根据参数id，获取系统参数信息")
+    @SysLogAnnotion("根据查询条件，获取vue页面设置信息")
+    @ApiOperation("根据参数id，获取vue页面设置信息")
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<IPage<SVuePageSettingVo>>> list(@RequestBody(required = false) SVuePageSettingVo searchCondition) {
@@ -43,31 +45,40 @@ public class VueSettingController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLogAnnotion("系统参数数据更新保存")
-    @ApiOperation("根据参数id，获取系统参数信息")
+    @SysLogAnnotion("vue页面设置数据更新保存")
+    @ApiOperation("根据参数id，获取vue页面设置信息")
     @PostMapping("/save")
     @ResponseBody
     @RepeatSubmitAnnotion
-    public ResponseEntity<JsonResult<SVuePageSettingEntity>> save(@RequestBody(required = false) SVuePageSettingEntity bean) {
+    public ResponseEntity<JsonResult<SVuePageSettingVo>> save(@RequestBody(required = false) SVuePageSettingEntity bean) {
 
         if(service.update(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"更新成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
     }
 
-    @SysLogAnnotion("系统参数数据新增保存")
-    @ApiOperation("根据参数id，获取系统参数信息")
+    @SysLogAnnotion("vue页面设置数据新增保存")
+    @ApiOperation("根据参数id，获取vue页面设置信息")
     @PostMapping("/insert")
     @ResponseBody
     @RepeatSubmitAnnotion
-    public ResponseEntity<JsonResult<SVuePageSettingEntity>> insert(@RequestBody(required = false) SVuePageSettingEntity bean) {
+    public ResponseEntity<JsonResult<SVuePageSettingVo>> insert(@RequestBody(required = false) SVuePageSettingEntity bean) {
         if(service.insert(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"插入成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
         }
     }
 
+    @SysLogAnnotion("vue页面设置表数据逻辑物理删除，部分数据")
+    @ApiOperation("根据参数id，逻辑删除数据")
+    @PostMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false)
+        List<SVuePageSettingVo> searchConditionList) {
+        service.realDeleteByIdsIn(searchConditionList);
+        return ResponseEntity.ok().body(ResultUtil.OK("OK"));
+    }
 }

@@ -133,11 +133,15 @@ public interface SVuePageSettingMapper extends BaseMapper<SVuePageSettingEntity>
      * @return
      */
     @Select("    "
-        + "  SELECT                                                                                        "
-        + "       *                                                                                        "
-        + "  FROM                                                                                          "
-        + "  	s_vue_page_setting t                                                                       "
-        + "  where t1.id =  #{p1}                                                                          "
+        + "  SELECT                                                                                                      "
+        + "         t.*,                                                                                                 "
+        + "         c_staff.name as c_name,                                                                              "
+        + "         u_staff.name as u_name                                                                               "
+        + "    FROM                                                                                                      "
+        + "  	    s_vue_page_setting t                                                                                 "
+        + "  LEFT JOIN m_staff c_staff ON t.c_id = c_staff.id                                                            "
+        + "  LEFT JOIN m_staff u_staff ON t.u_id = u_staff.id                                                            "
+        + "  where t.id =  #{p1}                                                                          "
         + "      ")
     SVuePageSettingVo selectId(@Param("p1") Long id);
 

@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.sys.vue.SVuePageSettingEntity;
 import com.perfect.bean.pojo.result.CheckResult;
+import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.CheckResultUtil;
+import com.perfect.bean.result.utils.v1.DeleteResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.vue.SVuePageSettingVo;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,18 +71,6 @@ public class SVuePageSettingImpl extends BaseServiceImpl<SVuePageSettingMapper, 
         // 查询 数据
         List<SVuePageSettingVo> list = mapper.select(searchCondition);
         return list;
-    }
-
-    /**
-     * 查询by id，返回结果
-     *
-     * @param id
-     * @return
-     */
-    @Override
-    public SVuePageSettingVo selectByid(Long id) {
-        // 查询 数据
-        return mapper.selectId(id);
     }
 
     /**
@@ -183,4 +174,32 @@ public class SVuePageSettingImpl extends BaseServiceImpl<SVuePageSettingMapper, 
         return CheckResultUtil.OK();
     }
 
+    /**
+     * 查询by id，返回结果
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public SVuePageSettingVo selectByid(Long id) {
+        // 查询 数据
+        return mapper.selectId(id);
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param searchCondition
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public DeleteResult<Integer> realDeleteByIdsIn(List<SVuePageSettingVo> searchCondition) {
+        List<Long> idList = new ArrayList<>();
+        searchCondition.forEach(bean -> {
+            idList.add(bean.getId());
+        });
+        int result=mapper.deleteBatchIds(idList);
+        return DeleteResultUtil.OK(result);
+    }
 }

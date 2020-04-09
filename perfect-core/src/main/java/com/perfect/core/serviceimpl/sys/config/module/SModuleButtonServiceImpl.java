@@ -1,36 +1,30 @@
 package com.perfect.core.serviceimpl.sys.config.module;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.perfect.bean.entity.sys.config.module.SModuleButtonEntity;
+import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.DeleteResult;
+import com.perfect.bean.pojo.result.InsertResult;
+import com.perfect.bean.pojo.result.UpdateResult;
+import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.DeleteResultUtil;
-import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
+import com.perfect.bean.result.utils.v1.InsertResultUtil;
+import com.perfect.bean.result.utils.v1.UpdateResultUtil;
+import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
+import com.perfect.common.exception.BusinessException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
+import com.perfect.core.mapper.sys.config.module.SModuleButtonMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.config.module.IModuleButtonService;
+import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.perfect.bean.entity.sys.config.module.SModuleButtonEntity;
-import com.perfect.bean.pojo.result.CheckResult;
-import com.perfect.bean.pojo.result.InsertResult;
-import com.perfect.bean.pojo.result.UpdateResult;
-import com.perfect.bean.result.utils.v1.CheckResultUtil;
-import com.perfect.bean.result.utils.v1.InsertResultUtil;
-import com.perfect.bean.result.utils.v1.UpdateResultUtil;
-import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
-import com.perfect.common.constant.PerfectDictConstant;
-import com.perfect.common.exception.BusinessException;
-import com.perfect.core.mapper.sys.config.module.SModuleButtonMapper;
-import com.perfect.core.service.sys.config.module.IModuleService;
-import com.perfect.core.utils.mybatis.PageUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -89,7 +83,7 @@ public class SModuleButtonServiceImpl extends BaseServiceImpl<SModuleButtonMappe
     }
 
     /**
-     * 批量删除复原
+     * 批量删除
      *
      * @param searchCondition
      * @return
