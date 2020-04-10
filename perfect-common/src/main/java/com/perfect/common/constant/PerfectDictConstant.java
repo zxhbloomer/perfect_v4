@@ -31,9 +31,9 @@ public class PerfectDictConstant {
     public static final String DICT_SYS_VISIBLE_TYPE_ALL = null;
 
     /**
-     * 隐藏显示类型： 0：显示 1：隐藏 null:全部
+     * 按钮类型：
      */
-    public static final String DICT_BTN_NAME_TYPE = "btn_name_type";
+    public static final String DICT_BTN_NAME_TYPE = "sys_btn_type";
 
     /**
      * 关联表类型：
