@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.sys.rabc.menu;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.perfect.bean.vo.common.component.TreeNode;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -153,6 +154,7 @@ public class SMenuVo extends TreeNode implements Serializable {
      */
     private String descr;
 
+    @TableField(typeHandler = com.perfect.core.config.mybatis.typehandlers.JsonArrayTypeHandler)
     private List<SModuleInfoVo> module_info;
 
     /**
