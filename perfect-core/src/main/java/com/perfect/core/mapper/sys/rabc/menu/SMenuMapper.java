@@ -3,7 +3,10 @@ package com.perfect.core.mapper.sys.rabc.menu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.perfect.bean.entity.sys.rabc.menu.SMenuEntity;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
+import com.perfect.bean.vo.sys.rabc.menu.SModuleInfoVo;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -120,6 +123,9 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
         + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null) "
         + "      ")
+    @Results({
+        @Result(property = "module_info", column = "module_info", javaType = List.class, typeHandler = com.perfect.core.config.mybatis.typehandlers.JsonArrayTypeHandler.class),
+    })
     List<SMenuVo> select(@Param("p1") SMenuVo searchCondition);
 
     /**
