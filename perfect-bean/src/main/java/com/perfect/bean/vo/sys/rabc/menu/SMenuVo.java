@@ -154,7 +154,6 @@ public class SMenuVo extends TreeNode implements Serializable {
      */
     private String descr;
 
-    @TableField(typeHandler = com.perfect.core.config.mybatis.typehandlers.JsonArrayTypeHandler)
     private List<SModuleInfoVo> module_info;
 
     /**
