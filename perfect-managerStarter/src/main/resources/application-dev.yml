@@ -228,6 +228,7 @@ mybatis-plus:
       insertStrategy: ignored
       update-strategy: ignored
   mapper-locations: 'classpath:/mapper/*Mapper '
+  type-handlers-package: com.perfect.core.config.mybatis.typehandlers
 
 
 #-----------------------Perfect  Configuration---------

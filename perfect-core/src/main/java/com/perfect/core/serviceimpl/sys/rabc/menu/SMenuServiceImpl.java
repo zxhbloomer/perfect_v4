@@ -49,6 +49,10 @@ public class SMenuServiceImpl extends BaseServiceImpl<SMenuMapper, SMenuEntity> 
     public List<SMenuVo> getTreeList(SMenuVo searchCondition) {
         // 查询 数据
         List<SMenuVo> list = mapper.select(searchCondition);
+        System.out.println(list.get(7));
+        System.out.println(list.get(7).getModule_info());
+        System.out.println(list.get(7).getModule_info().get(0));
+        System.out.println(list.get(7).getModule_info().get(0).getPerms());
 
         List<SMenuVo> rtnList = TreeUtil.getTreeList(list);
         return rtnList;
