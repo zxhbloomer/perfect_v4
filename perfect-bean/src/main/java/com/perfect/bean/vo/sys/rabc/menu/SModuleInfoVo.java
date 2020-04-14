@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 菜单信息
+ * 模块按钮信息
  * </p>
  *
  * @author zxh

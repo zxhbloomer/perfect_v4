@@ -5,8 +5,7 @@ import com.perfect.bean.entity.sys.rabc.menu.SMenuEntity;
 import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
-import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
-import com.perfect.bean.vo.sys.config.module.SModuleVo;
+import com.perfect.bean.vo.sys.rabc.menu.SMenuDataVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 
 import java.util.List;
@@ -24,12 +23,12 @@ public interface ISMenuService extends IService<SMenuEntity> {
     /**
      * 获取所有数据
      */
-    List<SMenuVo> getTreeList(SMenuVo searchCondition) ;
+    SMenuVo getTreeData(SMenuDataVo searchCondition) ;
 
     /**
      * 获取所有数据：级联
      */
-    List<SMenuVo> getCascaderList(SMenuVo searchCondition) ;
+    List<SMenuDataVo> getCascaderList(SMenuVo searchCondition) ;
 
     /**
      * 获取所有数据：级联

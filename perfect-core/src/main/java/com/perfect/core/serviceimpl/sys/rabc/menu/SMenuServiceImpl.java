@@ -10,6 +10,8 @@ import com.perfect.bean.result.utils.v1.DeleteResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
+import com.perfect.bean.vo.sys.rabc.menu.SMenuButtonVo;
+import com.perfect.bean.vo.sys.rabc.menu.SMenuDataVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.string.StringUtil;
@@ -46,17 +48,21 @@ public class SMenuServiceImpl extends BaseServiceImpl<SMenuMapper, SMenuEntity> 
      * @return
      */
     @Override
-    public List<SMenuVo> getTreeList(SMenuVo searchCondition) {
-        // 查询 数据
-        List<SMenuVo> list = mapper.select(searchCondition);
-        System.out.println(list.get(7));
-        System.out.println(list.get(7).getModule_info());
-        System.out.println(list.get(7).getModule_info().get(0));
-        System.out.println(list.get(7).getModule_info().get(0).getPerms());
+    public SMenuVo getTreeData(SMenuDataVo searchCondition) {
+        SMenuVo sMenuVo = new SMenuVo();
+        // 查询 菜单 数据
+        List<SMenuDataVo> list = mapper.select(searchCondition);
+        // 设置树bean
+        List<SMenuDataVo> rtnList = TreeUtil.getTreeList(list);
+        // 获取按钮清单
+        List<SMenuButtonVo> sMenuButtonVoList = mapper.getAllMenuButton(searchCondition);
 
-        List<SMenuVo> rtnList = TreeUtil.getTreeList(list);
-        return rtnList;
+        sMenuVo.setMenu_data(rtnList);
+        sMenuVo.setMenu_buttons(sMenuButtonVoList);
+
+        return sMenuVo;
     }
+
 
     /**
      * 级联：获取列表，查询所有数据
@@ -65,10 +71,10 @@ public class SMenuServiceImpl extends BaseServiceImpl<SMenuMapper, SMenuEntity> 
      * @return
      */
     @Override
-    public List<SMenuVo> getCascaderList(SMenuVo searchCondition) {
+    public List<SMenuDataVo> getCascaderList(SMenuVo searchCondition) {
         // 查询 数据
-        List<SMenuVo> list = mapper.getCascaderList(searchCondition);
-        List<SMenuVo> rtnList = TreeUtil.getTreeList(list);
+        List<SMenuDataVo> list = mapper.getCascaderList(searchCondition);
+        List<SMenuDataVo> rtnList = TreeUtil.getTreeList(list);
         return rtnList;
     }
 

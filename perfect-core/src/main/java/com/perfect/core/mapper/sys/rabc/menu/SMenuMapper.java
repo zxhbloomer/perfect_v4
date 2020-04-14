@@ -2,8 +2,10 @@ package com.perfect.core.mapper.sys.rabc.menu;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.perfect.bean.entity.sys.rabc.menu.SMenuEntity;
+import com.perfect.bean.vo.sys.rabc.menu.SMenuButtonVo;
+import com.perfect.bean.vo.sys.rabc.menu.SMenuDataVo;
 import com.perfect.bean.vo.sys.rabc.menu.SMenuVo;
-import com.perfect.bean.vo.sys.rabc.menu.SModuleInfoVo;
+import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -126,7 +128,26 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
     @Results({
         @Result(property = "module_info", column = "module_info", javaType = List.class, typeHandler = com.perfect.core.config.mybatis.typehandlers.JsonArrayTypeHandler.class),
     })
-    List<SMenuVo> select(@Param("p1") SMenuVo searchCondition);
+    List<SMenuDataVo> select(@Param("p1") SMenuDataVo searchCondition);
+
+    /**
+     * 获取所有的菜单按钮
+     * @param searchCondition
+     * @return
+     */
+    @Select("    "
+        + "    SELECT DISTINCT t1.code,                                                                               "
+        + "           t1.name,                                                                                        "
+        + "           t2.extra1 as button_group,                                                                      "
+        + "           t2.extra2 as button_group_name,                                                                 "
+        + "           t2.sort                                                                                         "
+        + "      FROM s_module_button t1 ,                                                                            "
+        + "           v_dict_info t2                                                                                  "
+        + "     where t2.`code` = '" + PerfectDictConstant.DICT_BTN_NAME_TYPE + "'                                    "
+        + "       and t2.dict_value = t1.id                                                                           "
+        + "  order by t2.sort                                                                                         "
+        + "      ")
+    List<SMenuButtonVo> getAllMenuButton(@Param("p1") SMenuDataVo searchCondition);
 
     /**
      *
@@ -153,7 +174,7 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
             + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
             + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null) "
             + "      ")
-    List<SMenuVo> getCascaderList(@Param("p1") SMenuVo searchCondition);
+    List<SMenuDataVo> getCascaderList(@Param("p1") SMenuVo searchCondition);
 
     /**
      * 级联,按条件获取所有数据，没有分页

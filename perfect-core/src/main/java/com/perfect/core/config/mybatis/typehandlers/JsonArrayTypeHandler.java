@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * @ClassName: JsonHandler
- * @Description: mybatis处理JSON类型
+ * @Description: mybatis处理JSON array类型
  * @Author: zxh
  * @date: 2020/4/13
  * @Version: 1.0
