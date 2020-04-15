@@ -26,6 +26,16 @@ public class SModuleInfoVo implements Serializable {
     private Long id;
 
     /**
+     * 按钮编号：字典表过来
+     */
+    private String code;
+
+    /**
+     * 按钮名称
+     */
+    private String name;
+
+    /**
      * 权限标识
      */
     private String perms;

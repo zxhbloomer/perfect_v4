@@ -106,7 +106,11 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
         + "  LEFT JOIN (                                                                               " // 按钮数据，按json方式
         + "              SELECT                                                                        "
         + "                     subtab1.id,                                                            "
-        + "                     JSON_ARRAYAGG(JSON_OBJECT('id' , subtab2.id , 'perms' , subtab2.perms)) as module_info    "
+        + "                     JSON_ARRAYAGG(JSON_OBJECT('id' , subtab2.id ,                          "
+        + "                                               'code' , subtab2.code,                       "
+        + "                                               'name' , subtab2.name,                       "
+        + "                                               'perms' , subtab2.perms)                     "
+        + "                                                                        ) as module_info    "
         + "                FROM s_module subtab1                                                       "
         + "           LEFT JOIN s_module_button subtab2 ON subtab1.id = subtab2.parent_id              "
         + "               WHERE subtab2.id is not null                                                 "
