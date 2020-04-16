@@ -42,7 +42,7 @@ public interface CommonComponentMapper extends BaseMapper<NameAndValueVo> {
         + "  SELECT                                                                                    "
         + "       t2.extra1 as label_code,                                                             "
         + "       t2.extra2 as label,                                                                  "
-        + "       JSON_ARRAYAGG(JSON_OBJECT('name',t2.label,'value',t2.id )) as options                "
+        + "       JSON_ARRAYAGG(JSON_OBJECT('name',t2.label,'value',t2.dict_value )) as options        "
         + "    FROM                                                                                    "
         + "       s_dict_type t1                                                                       "
         + "       INNER JOIN s_dict_data t2 ON t1.id = t2.dict_type_id                                 "

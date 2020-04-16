@@ -21,7 +21,7 @@ public interface IMGroupService extends IService<MGroupEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<MGroupEntity> selectPage(MGroupVo searchCondition) ;
+    IPage<MGroupVo> selectPage(MGroupVo searchCondition) ;
 
     /**
      * 获取所有数据

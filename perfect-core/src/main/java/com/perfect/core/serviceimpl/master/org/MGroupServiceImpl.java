@@ -53,7 +53,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @return
      */
     @Override
-    public IPage<MGroupEntity> selectPage(MGroupVo searchCondition) {
+    public IPage<MGroupVo> selectPage(MGroupVo searchCondition) {
         searchCondition.setTenant_id(getUserSessionTenantId());
         // 分页条件
         Page<MGroupEntity> pageCondition =

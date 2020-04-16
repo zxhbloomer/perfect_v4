@@ -3,7 +3,6 @@ package com.perfect.core.mapper.master.org;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.vo.master.org.MGroupVo;
 import com.perfect.common.constant.PerfectDictConstant;
@@ -30,9 +29,13 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
      * @return
      */
     @Select("    "
-        + " select t.* "
-        + "   from m_group t "
-        + "  where true "
+        + " select t.*,                                                                                               "
+        + "        c_staff.name as c_name,                                                                           "
+        + "        u_staff.name as u_name                                                                            "
+        + "   from m_group t                                                                                         "
+        + "  LEFT JOIN m_staff c_staff ON t.c_id = c_staff.id                                                            "
+        + "  LEFT JOIN m_staff u_staff ON t.u_id = u_staff.id                                                            "
+        + "  where true                                                                                              "
         + "    and (t.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
         + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
         + "    and (t.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                "
@@ -50,7 +53,7 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + "       end                                                                                                "
         + "        )                                                                                                 "
         + "                                                                                                          ")
-    IPage<MGroupEntity> selectPage(Page page, @Param("p1") MGroupVo searchCondition);
+    IPage<MGroupVo> selectPage(Page page, @Param("p1") MGroupVo searchCondition);
 
     /**
      * 按条件获取所有数据，没有分页

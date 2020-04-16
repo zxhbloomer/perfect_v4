@@ -44,8 +44,8 @@ public class OrgGroupController extends BaseController {
     @ApiOperation("根据参数id，获取集团主表信息")
     @PostMapping("/group/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<MGroupEntity>>> list(@RequestBody(required = false) MGroupVo searchCondition) {
-        IPage<MGroupEntity> entity = service.selectPage(searchCondition);
+    public ResponseEntity<JsonResult<IPage<MGroupVo>>> list(@RequestBody(required = false) MGroupVo searchCondition) {
+        IPage<MGroupVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
