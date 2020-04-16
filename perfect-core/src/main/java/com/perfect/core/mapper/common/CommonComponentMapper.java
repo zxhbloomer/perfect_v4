@@ -1,11 +1,13 @@
 package com.perfect.core.mapper.common;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.perfect.bean.vo.common.component.DictConditionVo;
+import com.perfect.bean.vo.common.component.DictGroupVo;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
+import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
 
@@ -29,12 +31,27 @@ public interface CommonComponentMapper extends BaseMapper<NameAndValueVo> {
         + "    FROM                                                              "
         + "       s_dict_type t1                                                 "
         + "       INNER JOIN s_dict_data t2 ON t1.id = t2.dict_type_id           "
-        + "       AND t1.is_del = 0                                               "
-        + "       AND t2.is_del = 0                                               "
+        + "       AND t1.is_del = "+ PerfectDictConstant.DICT_SYS_DELETE_MAP_NO + " "
+        + "       AND t2.is_del = "+ PerfectDictConstant.DICT_SYS_DELETE_MAP_NO + " "
         + "       and t1.code = #{p1}                                             "
         + "     order by t2.sort    "
         + "      ")
     List<NameAndValueVo> getSelectDictDataNormal(@Param("p1") String dict_type_code);
+
+    @Select( "   "
+        + "  SELECT                                                                                    "
+        + "       t2.extra1 as label_code,                                                             "
+        + "       t2.extra2 as label,                                                                  "
+        + "       JSON_ARRAYAGG(JSON_OBJECT('name',t2.label,'value',t2.id )) as options                "
+        + "    FROM                                                                                    "
+        + "       s_dict_type t1                                                                       "
+        + "       INNER JOIN s_dict_data t2 ON t1.id = t2.dict_type_id                                 "
+        + "       AND t1.is_del = "+ PerfectDictConstant.DICT_SYS_DELETE_MAP_NO + "                    "
+        + "       AND t2.is_del = "+ PerfectDictConstant.DICT_SYS_DELETE_MAP_NO + "                    "
+        + "       and t1.code = #{p1}                                                                  "
+        + "     group by t2.extra1                                                                     "
+        + "      ")
+    List<DictGroupVo> getSelectDictGroupDataNormal(@Param("p1") String dict_type_code);
 
     /**
      * 下拉选项卡：按参数查询，包含filter
@@ -50,8 +67,8 @@ public interface CommonComponentMapper extends BaseMapper<NameAndValueVo> {
         + "    FROM                                                              "
         + "       s_dict_type t1                                                 "
         + "       INNER JOIN s_dict_data t2 ON t1.id = t2.dict_type_id           "
-        + "       AND t1.is_del = 0                                              "
-        + "       AND t2.is_del = 0                                              "
+        + "       AND t1.is_del = "+PerfectDictConstant.DICT_SYS_DELETE_MAP_NO+" "
+        + "       AND t2.is_del = "+PerfectDictConstant.DICT_SYS_DELETE_MAP_NO+" "
         + "       AND t1.code = #{p1.para,jdbcType=VARCHAR}                      "
         + "   <if test='p1.filter_para != null and p1.filter_para.length!=0' >   "
         + "    and t2.dict_value not in                                              "

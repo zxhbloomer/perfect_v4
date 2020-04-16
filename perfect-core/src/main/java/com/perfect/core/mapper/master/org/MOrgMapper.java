@@ -176,7 +176,8 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "            FROM                                                                                          "
         + "               s_dict_type t1                                                                             "
         + "               INNER JOIN s_dict_data t2 ON t1.id = t2.dict_type_id                                       "
-        + "               AND t1.is_del = 0  AND t2.is_del = 0                                                       "
+        + "               AND t1.is_del = "+PerfectDictConstant.DICT_SYS_DELETE_MAP_NO+"                             "
+        + "               AND t2.is_del = "+PerfectDictConstant.DICT_SYS_DELETE_MAP_NO+"                             "
         + "           where                                                                                          "
         + "               t1.code =  '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE + "'                             "
 //        + "           and t2.dict_value >=  #{p1.type,jdbcType=VARCHAR}                                              "
@@ -411,7 +412,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "             t1.tenant_id                                                 "
         + "       FROM  m_staff t1                                                   "
         + "      WHERE                                                               "
-        + "             t1.is_del = 0                                                "
+        + "             t1.is_del = "+PerfectDictConstant.DICT_SYS_DELETE_MAP_NO+"   "
         + "        AND  t1.tenant_id = (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null) "
         + "   order by  t1.name                                                      "
         + "                                                                          ")

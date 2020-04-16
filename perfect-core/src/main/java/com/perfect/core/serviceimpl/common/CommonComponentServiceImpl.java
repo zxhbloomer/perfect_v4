@@ -1,8 +1,7 @@
 package com.perfect.core.serviceimpl.common;
 
-import java.util.List;
-
 import com.perfect.bean.vo.common.component.DictConditionVo;
+import com.perfect.bean.vo.common.component.DictGroupVo;
 import com.perfect.bean.vo.common.component.NameAndValueVo;
 import com.perfect.bean.vo.common.component.PerfectComponentVo;
 import com.perfect.common.constant.PerfectConstant;
@@ -13,6 +12,8 @@ import com.perfect.core.service.common.ICommonComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -67,6 +68,15 @@ public class CommonComponentServiceImpl extends BaseServiceImpl<CommonComponentM
     @Override
     public List<NameAndValueVo> selectComponent(DictConditionVo condition) {
         return mapper.getSelectDictDataNormal(condition.getPara());
+    }
+
+    /**
+     * 下拉选项卡，按组：按参数查询
+     * @return
+     */
+    @Override
+    public List<DictGroupVo> selectGroupComponent(DictConditionVo condition) {
+        return mapper.getSelectDictGroupDataNormal(condition.getPara());
     }
 
     /**
