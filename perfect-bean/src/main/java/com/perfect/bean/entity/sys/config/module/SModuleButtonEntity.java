@@ -22,8 +22,7 @@ import java.time.LocalDateTime;
 @TableName("s_module_button")
 public class SModuleButtonEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 1745981682351103962L;
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 

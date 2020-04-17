@@ -1,12 +1,12 @@
 package com.perfect.bean.entity.log.mq;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.time.LocalDateTime;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
 @TableName("s_log_mq")
 public class SLogMqEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 4850292309675522117L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

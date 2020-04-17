@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @TableName("s_log_sys")
 public class SLogSysEntity extends BaseEntity<SLogSysEntity> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4758264062460745328L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

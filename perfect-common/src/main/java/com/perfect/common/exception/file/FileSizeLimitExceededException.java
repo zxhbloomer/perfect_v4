@@ -7,7 +7,8 @@ package com.perfect.common.exception.file;
  */
 public class FileSizeLimitExceededException extends FileException
 {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -3651851277930650740L;
 
     public FileSizeLimitExceededException(long defaultMaxSize)
     {

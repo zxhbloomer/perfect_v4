@@ -21,8 +21,7 @@ import java.time.LocalDateTime;
 @TableName("m_user_lite")
 public class MUserLiteEntity extends BaseEntity<MUserLiteEntity> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = -3245496064225940524L;
     /**
      * 主键
      */

@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @TableName("s_module")
 public class SModuleEntity extends BaseEntity<SModuleEntity> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5988423556456014305L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

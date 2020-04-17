@@ -23,8 +23,7 @@ import java.time.LocalDateTime;
 @TableName("s_dict_data")
 public class SDictDataEntity extends BaseEntity<SDictDataEntity> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = -7176009605501263947L;
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 

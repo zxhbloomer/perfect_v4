@@ -6,6 +6,6 @@ package com.perfect.common.exception.file;
  * @author
  */
 public class FileException extends Exception {
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 6165683568555291079L;
 }

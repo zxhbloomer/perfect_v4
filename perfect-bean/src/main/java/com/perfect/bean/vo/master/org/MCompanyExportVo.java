@@ -27,8 +27,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper=false)
 public class MCompanyExportVo extends BaseVo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = -70599579335943322L;
     private Long id;
 
     /**

@@ -20,8 +20,7 @@ import java.time.LocalDateTime;
 @ApiModel(value = "用户组织机构关系表", description = "用户组织机构关系表")
 public class MUserOrgVo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = -432721807027517188L;
     private Long id;
 
     /**

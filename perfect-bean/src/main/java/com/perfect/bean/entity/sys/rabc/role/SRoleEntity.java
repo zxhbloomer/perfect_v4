@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @TableName("s_role")
 public class SRoleEntity extends BaseEntity<SRoleEntity> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4476852388271557947L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

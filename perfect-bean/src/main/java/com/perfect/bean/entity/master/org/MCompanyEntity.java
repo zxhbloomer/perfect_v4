@@ -1,16 +1,14 @@
 package com.perfect.bean.entity.master.org;
 
-import java.math.BigDecimal;
-
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -26,7 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @TableName("m_company")
 public class MCompanyEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -1373230930742993029L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

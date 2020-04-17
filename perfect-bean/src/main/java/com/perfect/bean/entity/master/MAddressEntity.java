@@ -1,13 +1,12 @@
 package com.perfect.bean.entity.master;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -23,7 +22,7 @@ import lombok.experimental.Accessors;
 @TableName("m_address")
 public class MAddressEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 4921853425830909222L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

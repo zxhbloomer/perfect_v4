@@ -1,13 +1,11 @@
 package com.perfect.bean.vo.master;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -28,7 +26,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper=false)
 public class MAddressVo extends BaseVo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -8109278266189641803L;
 
     private Long id;
 

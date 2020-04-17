@@ -11,7 +11,8 @@ import java.util.Arrays;
  */
 public class InvalidExtensionException extends FileUploadException
 {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -486821521507886239L;
 
     private String[] allowedExtension;
     private String extension;
@@ -42,7 +43,8 @@ public class InvalidExtensionException extends FileUploadException
 
     public static class InvalidImageExtensionException extends InvalidExtensionException
     {
-        private static final long serialVersionUID = 1L;
+
+        private static final long serialVersionUID = 3167815323952420605L;
 
         public InvalidImageExtensionException(String[] allowedExtension, String extension, String filename)
         {
@@ -52,7 +54,8 @@ public class InvalidExtensionException extends FileUploadException
 
     public static class InvalidFlashExtensionException extends InvalidExtensionException
     {
-        private static final long serialVersionUID = 1L;
+
+        private static final long serialVersionUID = 3216358922681366585L;
 
         public InvalidFlashExtensionException(String[] allowedExtension, String extension, String filename)
         {
@@ -62,7 +65,8 @@ public class InvalidExtensionException extends FileUploadException
 
     public static class InvalidMediaExtensionException extends InvalidExtensionException
     {
-        private static final long serialVersionUID = 1L;
+
+        private static final long serialVersionUID = -188360039352826556L;
 
         public InvalidMediaExtensionException(String[] allowedExtension, String extension, String filename)
         {

@@ -6,8 +6,8 @@ package com.perfect.common.exception.job;
  * @author ruoyi
  */
 public class TaskException extends Exception {
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 6696412144570129803L;
     private Code code;
 
     public TaskException(String msg, Code code) {
