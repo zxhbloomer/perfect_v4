@@ -119,9 +119,10 @@ public class MAddressVo extends BaseVo implements Serializable {
     private Long tenant_id;
 
     private Long c_id;
-
+    private String c_name;
 
     private Long u_id;
+    private String u_name;
 
     private LocalDateTime u_time;
 

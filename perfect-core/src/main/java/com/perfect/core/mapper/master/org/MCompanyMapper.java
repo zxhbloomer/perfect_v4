@@ -244,10 +244,10 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "     FROM                                                                                                  "
         + "         m_company AS t1                                                                                   "
         + "         LEFT JOIN m_address AS t2 ON t1.address_id = t2.id                                                "
-        + "         LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                  "
-        + "         LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                  "
+        + "         LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                 "
+        + "         LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                 "
         + "  where true                                                                                               "
-        + "    and t1.id =#{p1}                                                                                      "
+        + "    and t1.id =#{p1}                                                                                       "
         + "      ")
     MCompanyVo selectId(@Param("p1") Long id);
 }

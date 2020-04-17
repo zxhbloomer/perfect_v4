@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.master.MAddressEntity;
 import com.perfect.bean.vo.master.MAddressVo;
-import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -35,17 +34,21 @@ public interface MAddressMapper extends BaseMapper<MAddressEntity> {
         + "        	t3.`name` city_name,                                                                                   "
         + "        	t4.`name` area_name,                                                                                   "
         + "        	concat_ws(' / ',t2.`name`,t3.`name`,t4.`name`) as cascader_text,                                       "
-        + "        	t5.label tag_name                                                                                      "
+        + "        	t5.label tag_name,                                                                                     "
+        + "         c_staff.name as c_name,                                                                                "
+        + "         u_staff.name as u_name                                                                                 "
         + "    FROM                                                                                                        "
         + "        	m_address t1                                                                                           "
         + "        	LEFT JOIN s_area_provinces t2 ON t1.province_code = t2.`code`                                          "
         + "        	LEFT JOIN s_area_cities t3 ON t1.city_code = t3.`code`                                                 "
         + "        	LEFT JOIN s_areas t4 ON t1.area_code = t4.`code`                                                       "
         + "        	LEFT JOIN v_dict_info t5 ON t5.code = 'sys_address_tag_type' and t1.tag = t5.dict_value                "
+        + "         LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                      "
+        + "         LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                      "
         + "  where true                                                                                                    "
         + "     and (t1.serial_type = #{p1.serial_type,jdbcType=VARCHAR} or #{p1.serial_type,jdbcType=VARCHAR} is null  )  "
         + "     and (t1.serial_id = #{p1.serial_id,jdbcType=BIGINT} or #{p1.serial_id,jdbcType=BIGINT} is null     )       "
-        + "     and (t1.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)          "
+        + "     and (t1.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)             "
         + "      ")
     IPage<MAddressVo> selectPage(Page page, @Param("p1") MAddressVo searchCondition);
 
@@ -60,13 +63,17 @@ public interface MAddressMapper extends BaseMapper<MAddressEntity> {
         + "        	t2.`name` province_name,                                                                               "
         + "        	t3.`name` city_name,                                                                                   "
         + "        	t4.`name` area_name,                                                                                   "
-        + "        	t5.label tag_name                                                                                      "
+        + "        	t5.label tag_name,                                                                                     "
+        + "         c_staff.name as c_name,                                                                                "
+        + "         u_staff.name as u_name                                                                                 "
         + "    FROM                                                                                                        "
         + "        	m_address t1                                                                                           "
         + "        	LEFT JOIN s_area_provinces t2 ON t1.province_code = t2.`code`                                          "
         + "        	LEFT JOIN s_area_cities t3 ON t1.city_code = t3.`code`                                                 "
         + "        	LEFT JOIN s_areas t4 ON t1.area_code = t4.`code`                                                       "
         + "        	LEFT JOIN v_dict_info t5 ON t5.code = 'sys_address_tag_type' and t1.tag = t5.dict_value                "
+        + "         LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                      "
+        + "         LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                      "
         + "  where true                                                                                                    "
         + "     and (t1.serial_type = #{p1.serial_type,jdbcType=VARCHAR} or #{p1.serial_type,jdbcType=VARCHAR} is null  )  "
         + "     and (t1.serial_id = #{p1.serial_id,jdbcType=BIGINT} or #{p1.serial_id,jdbcType=BIGINT} is null     )     "
@@ -96,22 +103,26 @@ public interface MAddressMapper extends BaseMapper<MAddressEntity> {
      * @return
      */
     @Select("    "
-            + "  SELECT                                                                                                        "
-            + "        	t1.*,                                                                                                  "
-            + "        	t2.`name` province_name,                                                                               "
-            + "        	t3.`name` city_name,                                                                                   "
-            + "        	t4.`name` area_name,                                                                                   "
-            + "        	concat_ws(' / ',t2.`name`,t3.`name`,t4.`name`) as cascader_text,                                       "
-            + "        	t5.label tag_name                                                                                      "
-            + "    FROM                                                                                                        "
-            + "        	m_address t1                                                                                           "
-            + "        	LEFT JOIN s_area_provinces t2 ON t1.province_code = t2.`code`                                          "
-            + "        	LEFT JOIN s_area_cities t3 ON t1.city_code = t3.`code`                                                 "
-            + "        	LEFT JOIN s_areas t4 ON t1.area_code = t4.`code`                                                       "
-            + "        	LEFT JOIN v_dict_info t5 ON t5.code = 'sys_address_tag_type' and t1.tag = t5.dict_value                "
-            + "  where true                                                                                                    "
-            + "     and (t1.id = #{p1})                                                                                        "
-            + "     and (t1.tenant_id = #{p2} or #{p2} is null  )                                                             "
-            + "      ")
+        + "  SELECT                                                                                                        "
+        + "        	t1.*,                                                                                                  "
+        + "        	t2.`name` province_name,                                                                               "
+        + "        	t3.`name` city_name,                                                                                   "
+        + "        	t4.`name` area_name,                                                                                   "
+        + "        	concat_ws(' / ',t2.`name`,t3.`name`,t4.`name`) as cascader_text,                                       "
+        + "        	t5.label tag_name,                                                                                     "
+        + "         c_staff.name as c_name,                                                                           "
+        + "         u_staff.name as u_name                                                                            "
+        + "    FROM                                                                                                        "
+        + "        	m_address t1                                                                                           "
+        + "        	LEFT JOIN s_area_provinces t2 ON t1.province_code = t2.`code`                                          "
+        + "        	LEFT JOIN s_area_cities t3 ON t1.city_code = t3.`code`                                                 "
+        + "        	LEFT JOIN s_areas t4 ON t1.area_code = t4.`code`                                                       "
+        + "        	LEFT JOIN v_dict_info t5 ON t5.code = 'sys_address_tag_type' and t1.tag = t5.dict_value                "
+        + "         LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                      "
+        + "         LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                      "
+        + "  where true                                                                                                    "
+        + "     and (t1.id = #{p1})                                                                                        "
+        + "     and (t1.tenant_id = #{p2} or #{p2} is null  )                                                              "
+        + "      ")
     MAddressVo selectByid(@Param("p1") Long id, @Param("p2")Long tenant_id);
 }
