@@ -70,10 +70,10 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @return
      */
     @Override
-    public List<MGroupEntity> select(MGroupVo searchCondition) {
+    public List<MGroupVo> select(MGroupVo searchCondition) {
         searchCondition.setTenant_id(getUserSessionTenantId());
         // 查询 数据
-        List<MGroupEntity> list = mapper.select(searchCondition);
+        List<MGroupVo> list = mapper.select(searchCondition);
         return list;
     }
 
@@ -84,9 +84,9 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @return
      */
     @Override
-    public List<MGroupEntity> selectIdsIn(List<MGroupVo> searchCondition) {
+    public List<MGroupVo> selectIdsIn(List<MGroupVo> searchCondition) {
         // 查询 数据
-        List<MGroupEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTenantId());
+        List<MGroupVo> list = mapper.selectIdsInForExport(searchCondition, getUserSessionTenantId());
         return list;
     }
 

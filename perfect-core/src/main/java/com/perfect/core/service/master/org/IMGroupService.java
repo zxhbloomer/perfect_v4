@@ -26,12 +26,12 @@ public interface IMGroupService extends IService<MGroupEntity> {
     /**
      * 获取所有数据
      */
-    List<MGroupEntity> select(MGroupVo searchCondition) ;
+    List<MGroupVo> select(MGroupVo searchCondition) ;
 
     /**
      * 获取所选id的数据
      */
-    List<MGroupEntity> selectIdsIn(List<MGroupVo> searchCondition) ;
+    List<MGroupVo> selectIdsIn(List<MGroupVo> searchCondition) ;
 
     /**
      * 批量删除复原

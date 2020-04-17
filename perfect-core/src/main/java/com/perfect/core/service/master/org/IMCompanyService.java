@@ -21,7 +21,7 @@ public interface IMCompanyService extends IService<MCompanyEntity> {
     /**
      * 获取列表，页面查询
      */
-    IPage<MCompanyEntity> selectPage(MCompanyVo searchCondition) ;
+    IPage<MCompanyVo> selectPage(MCompanyVo searchCondition) ;
 
     /**
      * 获取所有数据

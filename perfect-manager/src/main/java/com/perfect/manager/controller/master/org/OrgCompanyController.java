@@ -44,8 +44,8 @@ public class OrgCompanyController extends BaseController {
     @ApiOperation("根据参数id，获取公司主表信息")
     @PostMapping("/company/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<MCompanyEntity>>> list(@RequestBody(required = false) MCompanyVo searchCondition){
-        IPage<MCompanyEntity> entity = service.selectPage(searchCondition);
+    public ResponseEntity<JsonResult<IPage<MCompanyVo>>> list(@RequestBody(required = false) MCompanyVo searchCondition){
+        IPage<MCompanyVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 

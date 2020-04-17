@@ -1,7 +1,5 @@
 package com.perfect.bean.vo.master.org;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import com.perfect.common.annotations.ExcelAnnotion;
@@ -68,11 +66,18 @@ public class MGroupExportVo extends BaseVo implements Serializable {
 
     private Long c_id;
 
+    @ExcelAnnotion(name = "新增人")
+    private String c_name;
+
+    @ExcelAnnotion(name = "新增时间")
     private LocalDateTime c_time;
 
     private Long u_id;
 
-    @TableField(value="u_time", fill = FieldFill.INSERT_UPDATE)
+    @ExcelAnnotion(name = "更新人")
+    private String u_name;
+
+    @ExcelAnnotion(name = "更新时间")
     private LocalDateTime u_time;
 
     /**

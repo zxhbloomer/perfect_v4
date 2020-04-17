@@ -1,14 +1,11 @@
 package com.perfect.bean.vo.master.org;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -126,10 +123,12 @@ public class MCompanyVo extends BaseVo implements Serializable {
     private Long tenant_id;
 
     private Long c_id;
+    private String c_name;
 
     private LocalDateTime c_time;
 
     private Long u_id;
+    private String u_name;
 
     private LocalDateTime u_time;
 

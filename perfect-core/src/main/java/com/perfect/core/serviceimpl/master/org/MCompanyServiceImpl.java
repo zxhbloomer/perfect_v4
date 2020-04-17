@@ -2,7 +2,6 @@ package com.perfect.core.serviceimpl.master.org;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
@@ -13,10 +12,8 @@ import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.org.MCompanyVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.master.org.MCompanyMapper;
-import com.perfect.core.mapper.master.org.MGroupMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.org.IMCompanyService;
-import com.perfect.core.service.master.org.IMGroupService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,10 +42,10 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
      * @return
      */
     @Override
-    public IPage<MCompanyEntity> selectPage(MCompanyVo searchCondition) {
+    public IPage<MCompanyVo> selectPage(MCompanyVo searchCondition) {
         searchCondition.setTenant_id(getUserSessionTenantId());
         // 分页条件
-        Page<MCompanyEntity> pageCondition =
+        Page<MCompanyVo> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
         // 通过page进行排序
         PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());

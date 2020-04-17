@@ -74,23 +74,44 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + "    and (t.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)         "
         + "    and (t.id =#{p1.id,jdbcType=BIGINT} or #{p1.id,jdbcType=BIGINT} is null)                              "
         + "      ")
-    List<MGroupEntity> select(@Param("p1") MGroupVo searchCondition);
+    List<MGroupVo> select(@Param("p1") MGroupVo searchCondition);
+
+    /**
+     * 没有分页，按id筛选条件，导出
+     * @param searchCondition
+     * @return
+     */
+    @Select("   <script>   "
+        + " select t.*,                                                                                              "
+        + "        c_staff.name as c_name,                                                                           "
+        + "        u_staff.name as u_name                                                                            "
+        + "   from m_group t                                                                                         "
+        + "  LEFT JOIN m_staff c_staff ON t.c_id = c_staff.id                                                        "
+        + "  LEFT JOIN m_staff u_staff ON t.u_id = u_staff.id                                                        "
+        + "  where true                                                                                              "
+        + "    and (t.tenant_id = #{p2} or #{p2} is null  )                                                          "
+        + "    and t.id in                                                                                           "
+        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>              "
+        + "         #{item.id}                                                                                       "
+        + "        </foreach>                                                                                        "
+        + "  </script>    ")
+    List<MGroupVo> selectIdsInForExport(@Param("p1") List<MGroupVo> searchCondition, @Param("p2")Long tenant_id);
 
     /**
      * 没有分页，按id筛选条件
      * @param searchCondition
      * @return
      */
-    @Select("<script>"
-        + " select t.* "
-        + "   from m_group t "
-        + "  where true "
-        + "    and (t.tenant_id = #{p2} or #{p2} is null  )                                               "
-        + "    and t.id in "
-        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>"
-        + "         #{item.id}  "
-        + "        </foreach>"
-        + "  </script>")
+    @Select("   <script>   "
+        + " select t.*                                                                                               "
+        + "   from m_group t                                                                                         "
+         + "  where true                                                                                              "
+        + "    and (t.tenant_id = #{p2} or #{p2} is null  )                                                          "
+        + "    and t.id in                                                                                           "
+        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>              "
+        + "         #{item.id}                                                                                       "
+        + "        </foreach>                                                                                        "
+        + "  </script>    ")
     List<MGroupEntity> selectIdsIn(@Param("p1") List<MGroupVo> searchCondition, @Param("p2")Long tenant_id);
 
     /**
