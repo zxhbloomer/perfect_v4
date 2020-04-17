@@ -53,4 +53,12 @@ public interface IMCompanyService extends IService<MCompanyEntity> {
      * @return
      */
     UpdateResult<Integer> update(MCompanyEntity entity);
+
+    /**
+     * 查询by id，返回结果
+     *
+     * @param id
+     * @return
+     */
+    MCompanyVo selectByid(Long id);
 }

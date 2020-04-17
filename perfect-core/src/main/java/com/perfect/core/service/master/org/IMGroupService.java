@@ -53,4 +53,12 @@ public interface IMGroupService extends IService<MGroupEntity> {
      * @return
      */
     UpdateResult<Integer> update(MGroupEntity entity);
+
+    /**
+     * 查询by id，返回结果
+     *
+     * @param id
+     * @return
+     */
+    MGroupVo selectByid(Long id);
 }

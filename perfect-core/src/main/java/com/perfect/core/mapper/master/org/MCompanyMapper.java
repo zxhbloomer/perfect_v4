@@ -206,4 +206,48 @@ public interface MCompanyMapper extends BaseMapper<MCompanyEntity> {
         + "    and t.serial_id = #{p1.id,jdbcType=BIGINT}                                                       "
         + "                                                                                                     ")
     int isExistsInOrg(@Param("p1") MCompanyEntity searchCondition);
+
+    /**
+     *
+     * 根据id获取数据
+     *
+     * @param id
+     * @return
+     */
+    @Select("    "
+        + "     SELECT                                                                                                "
+        + "         t1.id,                                                                                            "
+        + "         t1.`code`,                                                                                        "
+        + "         t1.`name`,                                                                                        "
+        + "         t1.simple_name,                                                                                   "
+        + "         t1.address_id,                                                                                    "
+        + "         t1.juridical_name,                                                                                "
+        + "         t1.register_capital,                                                                              "
+        + "         t1.type,                                                                                          "
+        + "         t1.setup_date,                                                                                    "
+        + "         t1.end_date,                                                                                      "
+        + "         t1.descr,                                                                                         "
+        + "         t1.is_del,                                                                                        "
+        + "         t1.tenant_id,                                                                                     "
+        + "         t1.c_id,                                                                                          "
+        + "         t1.c_time,                                                                                        "
+        + "         t1.u_id,                                                                                          "
+        + "         t1.u_time,                                                                                        "
+        + "         t1.dbversion,                                                                                     "
+        + "         t2.postal_code,                                                                                   "
+        + "         t2.province_code,                                                                                 "
+        + "         t2.city_code,                                                                                     "
+        + "         t2.area_code,                                                                                     "
+        + "         t2.detail_address,                                                                                "
+        + "         c_staff.name as c_name,                                                                           "
+        + "         u_staff.name as u_name                                                                            "
+        + "     FROM                                                                                                  "
+        + "         m_company AS t1                                                                                   "
+        + "         LEFT JOIN m_address AS t2 ON t1.address_id = t2.id                                                "
+        + "         LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                  "
+        + "         LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                  "
+        + "  where true                                                                                               "
+        + "    and t1.id =#{p1}                                                                                      "
+        + "      ")
+    MCompanyVo selectId(@Param("p1") Long id);
 }

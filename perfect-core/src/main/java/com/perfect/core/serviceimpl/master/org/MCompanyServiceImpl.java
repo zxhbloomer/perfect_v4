@@ -253,4 +253,17 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
         }
         return CheckResultUtil.OK();
     }
+
+
+    /**
+     * 查询by id，返回结果
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public MCompanyVo selectByid(Long id) {
+        // 查询 数据
+        return mapper.selectId(id);
+    }
 }

@@ -302,4 +302,17 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
         }
         return CheckResultUtil.OK();
     }
+
+    /**
+     *
+     * 根据id获取数据
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public MGroupVo selectByid(Long id) {
+        // 查询 数据
+        return mapper.selectId(id);
+    }
 }

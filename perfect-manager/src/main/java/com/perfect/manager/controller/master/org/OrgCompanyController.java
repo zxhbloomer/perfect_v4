@@ -53,10 +53,10 @@ public class OrgCompanyController extends BaseController {
     @ApiOperation("根据参数id，获取公司主表信息")
     @PostMapping("/company/save")
     @ResponseBody
-    public ResponseEntity<JsonResult<MCompanyEntity>> save(@RequestBody(required = false) MCompanyEntity bean) {
+    public ResponseEntity<JsonResult<MCompanyVo>> save(@RequestBody(required = false) MCompanyEntity bean) {
 
         if(service.update(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"更新成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
@@ -66,9 +66,9 @@ public class OrgCompanyController extends BaseController {
     @ApiOperation("根据参数id，获取公司主表信息")
     @PostMapping("/company/insert")
     @ResponseBody
-    public ResponseEntity<JsonResult<MCompanyEntity>> insert(@RequestBody(required = false) MCompanyEntity bean) {
+    public ResponseEntity<JsonResult<MCompanyVo>> insert(@RequestBody(required = false) MCompanyEntity bean) {
         if(service.insert(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"插入成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
         }

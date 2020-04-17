@@ -178,4 +178,23 @@ public interface MGroupMapper extends BaseMapper<MGroupEntity> {
         + "    and t.serial_id = #{p1.id,jdbcType=BIGINT}                                                       "
         + "                                                                                                     ")
     int isExistsInOrg(@Param("p1") MGroupEntity searchCondition);
+
+    /**
+     *
+     * 根据id获取数据
+     *
+     * @param id
+     * @return
+     */
+    @Select("    "
+        + " select t.*,                                                                                              "
+        + "        c_staff.name as c_name,                                                                           "
+        + "        u_staff.name as u_name                                                                            "
+        + "   from m_group t                                                                                         "
+        + "  LEFT JOIN m_staff c_staff ON t.c_id = c_staff.id                                                        "
+        + "  LEFT JOIN m_staff u_staff ON t.u_id = u_staff.id                                                        "
+        + "  where true                                                                                              "
+        + "    and (t.id =#{p1} )                                                                                    "
+        + "      ")
+    MGroupVo selectId(@Param("p1") Long id);
 }

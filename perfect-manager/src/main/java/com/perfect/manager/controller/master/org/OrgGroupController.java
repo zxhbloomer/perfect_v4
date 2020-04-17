@@ -53,10 +53,10 @@ public class OrgGroupController extends BaseController {
     @ApiOperation("根据参数id，获取集团主表信息")
     @PostMapping("/group/save")
     @ResponseBody
-    public ResponseEntity<JsonResult<MGroupEntity>> save(@RequestBody(required = false) MGroupEntity bean) {
+    public ResponseEntity<JsonResult<MGroupVo>> save(@RequestBody(required = false) MGroupEntity bean) {
 
         if(service.update(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"更新成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
@@ -66,9 +66,9 @@ public class OrgGroupController extends BaseController {
     @ApiOperation("根据参数id，获取集团主表信息")
     @PostMapping("/group/insert")
     @ResponseBody
-    public ResponseEntity<JsonResult<MGroupEntity>> insert(@RequestBody(required = false) MGroupEntity bean) {
+    public ResponseEntity<JsonResult<MGroupVo>> insert(@RequestBody(required = false) MGroupEntity bean) {
         if(service.insert(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"插入成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
         }
