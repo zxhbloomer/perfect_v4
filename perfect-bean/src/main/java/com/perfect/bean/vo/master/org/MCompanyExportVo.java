@@ -95,26 +95,25 @@ public class MCompanyExportVo extends BaseVo implements Serializable {
     /**
      * 租户id
      */
-    @TableField("tenant_id")
     private Long tenant_id;
 
-    @TableField(value="c_id", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NOT_EMPTY)
     private Long c_id;
 
-    @TableField(value="c_time", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NOT_EMPTY)
+    @ExcelAnnotion(name = "新增人")
+    private String c_name;
+    @ExcelAnnotion(name = "新增时间")
     private LocalDateTime c_time;
 
-    @TableField(value="u_id", fill = FieldFill.INSERT_UPDATE)
     private Long u_id;
 
-    @TableField(value="u_time", fill = FieldFill.INSERT_UPDATE)
+    @ExcelAnnotion(name = "更新人")
+    private String u_name;
+    @ExcelAnnotion(name = "更新时间")
     private LocalDateTime u_time;
 
     /**
      * 数据版本，乐观锁使用
      */
-    @Version
-    @TableField(value="dbversion", fill = FieldFill.INSERT_UPDATE)
     private Integer dbversion;
 
 

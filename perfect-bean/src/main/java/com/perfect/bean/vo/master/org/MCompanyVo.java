@@ -86,7 +86,7 @@ public class MCompanyVo extends BaseVo implements Serializable {
      * 是否删除
      */
     private Boolean is_del;
-    private String del_name;
+    private String is_del_name;
 
     /**
      * 地址簿id
