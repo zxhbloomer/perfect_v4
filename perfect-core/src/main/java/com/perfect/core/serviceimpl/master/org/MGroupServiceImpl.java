@@ -84,7 +84,7 @@ public class MGroupServiceImpl extends BaseServiceImpl<MGroupMapper, MGroupEntit
      * @return
      */
     @Override
-    public List<MGroupVo> selectIdsIn(List<MGroupVo> searchCondition) {
+    public List<MGroupVo> selectIdsInForExport(List<MGroupVo> searchCondition) {
         // 查询 数据
         List<MGroupVo> list = mapper.selectIdsInForExport(searchCondition, getUserSessionTenantId());
         return list;

@@ -6,6 +6,7 @@ import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.master.org.MCompanyVo;
+import com.perfect.bean.vo.master.org.MGroupVo;
 
 import java.util.List;
 
@@ -26,12 +27,12 @@ public interface IMCompanyService extends IService<MCompanyEntity> {
     /**
      * 获取所有数据
      */
-    List<MCompanyEntity> select(MCompanyVo searchCondition) ;
+    List<MCompanyVo> select(MCompanyVo searchCondition) ;
 
     /**
      * 获取所选id的数据
      */
-    List<MCompanyEntity> selectIdsIn(List<MCompanyVo> searchCondition) ;
+    List<MCompanyVo> selectIdsInForExport(List<MCompanyVo> searchCondition) ;
 
     /**
      * 批量删除复原

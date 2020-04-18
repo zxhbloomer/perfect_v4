@@ -78,7 +78,7 @@ public class OrgCompanyController extends BaseController {
     @ApiOperation("根据选择的数据，公司主表数据导出")
     @PostMapping("/company/export_all")
     public void exportAll(@RequestBody(required = false) MCompanyVo searchCondition, HttpServletResponse response) throws IOException {
-        List<MCompanyEntity> searchResult = service.select(searchCondition);
+        List<MCompanyVo> searchResult = service.select(searchCondition);
         List<MCompanyExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MCompanyExportVo.class);
         ExcelUtil<MCompanyExportVo> util = new ExcelUtil<>(MCompanyExportVo.class);
         util.exportExcel("公司主表数据导出", "公司主表数据", rtnList, response);
@@ -88,7 +88,7 @@ public class OrgCompanyController extends BaseController {
     @ApiOperation("根据选择的数据，公司主表数据导出")
     @PostMapping("/company/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MCompanyVo> searchConditionList, HttpServletResponse response) throws IOException {
-        List<MCompanyEntity> searchResult = service.selectIdsIn(searchConditionList);
+        List<MCompanyVo> searchResult = service.selectIdsInForExport(searchConditionList);
         List<MCompanyExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MCompanyExportVo.class);
         ExcelUtil<MCompanyExportVo> util = new ExcelUtil<>(MCompanyExportVo.class);
         util.exportExcel("公司主表数据导出", "公司主表数据", rtnList, response);

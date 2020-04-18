@@ -1,15 +1,7 @@
 package com.perfect.common.utils.security;
 
-import com.perfect.common.constant.PermissionConstants;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.MessageUtils;
-
-import javax.security.auth.Subject;
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 
 /**
  * permission 工具类

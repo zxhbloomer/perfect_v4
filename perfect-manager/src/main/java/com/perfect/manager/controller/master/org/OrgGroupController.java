@@ -88,7 +88,7 @@ public class OrgGroupController extends BaseController {
     @ApiOperation("根据选择的数据，集团主表数据导出")
     @PostMapping("/group/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MGroupVo> searchConditionList, HttpServletResponse response) throws IOException {
-        List<MGroupVo> searchResult = service.selectIdsIn(searchConditionList);
+        List<MGroupVo> searchResult = service.selectIdsInForExport(searchConditionList);
         List<MGroupExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MGroupExportVo.class);
         ExcelUtil<MGroupExportVo> util = new ExcelUtil<>(MGroupExportVo.class);
         util.exportExcel("集团主表数据导出", "集团主表数据", rtnList, response);

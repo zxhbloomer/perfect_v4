@@ -10,6 +10,7 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.org.MCompanyVo;
+import com.perfect.bean.vo.master.org.MGroupVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.master.org.MCompanyMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
@@ -59,10 +60,10 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
      * @return
      */
     @Override
-    public List<MCompanyEntity> select(MCompanyVo searchCondition) {
+    public List<MCompanyVo> select(MCompanyVo searchCondition) {
         searchCondition.setTenant_id(getUserSessionTenantId());
         // 查询 数据
-        List<MCompanyEntity> list = mapper.select(searchCondition);
+        List<MCompanyVo> list = mapper.select(searchCondition);
         return list;
     }
 
@@ -73,9 +74,9 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
      * @return
      */
     @Override
-    public List<MCompanyEntity> selectIdsIn(List<MCompanyVo> searchCondition) {
+    public List<MCompanyVo> selectIdsInForExport(List<MCompanyVo> searchCondition) {
         // 查询 数据
-        List<MCompanyEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTenantId());
+        List<MCompanyVo> list = mapper.selectIdsInForExport(searchCondition, getUserSessionTenantId());
         return list;
     }
 

@@ -56,8 +56,9 @@ public class MGroupExportVo extends BaseVo implements Serializable {
     /**
      * 是否删除
      */
-    @ExcelAnnotion(name = "是否删除")
     private Boolean is_del;
+    @ExcelAnnotion(name = "是否删除")
+    private String is_del_name;
 
     /**
      * 租户id

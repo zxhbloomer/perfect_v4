@@ -48,50 +48,49 @@ public class MCompanyExportVo extends BaseVo implements Serializable {
     @ExcelAnnotion(name = "企业简称")
     private String simple_name;
 
-    @TableField("address_id")
-    private Long address_id;
-
     /**
      * 法定代表人
      */
-    @TableField("juridical_name")
+    @ExcelAnnotion(name = "法定代表人")
     private String juridical_name;
 
     /**
      * 注册资本
      */
-    @TableField("register_capital")
+    @ExcelAnnotion(name = "注册资本")
     private BigDecimal register_capital;
 
     /**
      * =0,内资=1,国有全资=2,集体全资=3,股份合作=4,联营=5,国有联营=6,集体联营=7,国有与集体联营=8,其它联营=9,有限责任（公司）=10,国有独资（公司）=11,其它有限责任（公司）=12,股份有限（公司）=13,私有=14,私有独资=15,私有合伙=16,私营有限责任（公司）=17,个体经营=18,私营股份有限（公司）=19,其它私有=20,其它内资=21,内地与港、澳、台合作=22,内地与港、澳、台合资=23,港、澳、台投资=24,港、澳、台独资=25,港、澳、台投资股份有限（公司）=26,其他港、澳、台投资=27,外资=28,国外投资股份有限（公司）=29,其他国外投资=30,其他=31
      */
-    @TableField("type")
     private String type;
+    @ExcelAnnotion(name = "企业类型")
+    private String type_name;
 
     /**
      * 成立日期
      */
-    @TableField("setup_date")
+    @ExcelAnnotion(name = "成立日期")
     private LocalDate setup_date;
 
     /**
      * 营业有效期
      */
-    @TableField("end_date")
+    @ExcelAnnotion(name = "营业有效期")
     private LocalDate end_date;
 
     /**
      * 描述
      */
-    @TableField("descr")
+    @ExcelAnnotion(name = "描述")
     private String descr;
 
     /**
      * 是否删除
      */
-    @TableField("is_del")
     private Boolean is_del;
+    @ExcelAnnotion(name = "是否删除")
+    private String is_del_name;
 
     /**
      * 租户id

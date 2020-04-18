@@ -31,7 +31,7 @@ public interface IMGroupService extends IService<MGroupEntity> {
     /**
      * 获取所选id的数据
      */
-    List<MGroupVo> selectIdsIn(List<MGroupVo> searchCondition) ;
+    List<MGroupVo> selectIdsInForExport(List<MGroupVo> searchCondition) ;
 
     /**
      * 批量删除复原

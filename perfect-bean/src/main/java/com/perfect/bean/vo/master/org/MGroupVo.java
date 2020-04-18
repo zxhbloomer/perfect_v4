@@ -54,6 +54,7 @@ public class MGroupVo extends BaseVo implements Serializable {
      * 是否删除
      */
     private Boolean is_del;
+    private String is_del_name;
 
     /**
      * 租户id

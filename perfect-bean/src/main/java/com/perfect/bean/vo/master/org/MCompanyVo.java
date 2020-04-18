@@ -60,6 +60,7 @@ public class MCompanyVo extends BaseVo implements Serializable {
      * =0,内资=1,国有全资=2,集体全资=3,股份合作=4,联营=5,国有联营=6,集体联营=7,国有与集体联营=8,其它联营=9,有限责任（公司）=10,国有独资（公司）=11,其它有限责任（公司）=12,股份有限（公司）=13,私有=14,私有独资=15,私有合伙=16,私营有限责任（公司）=17,个体经营=18,私营股份有限（公司）=19,其它私有=20,其它内资=21,内地与港、澳、台合作=22,内地与港、澳、台合资=23,港、澳、台投资=24,港、澳、台独资=25,港、澳、台投资股份有限（公司）=26,其他港、澳、台投资=27,外资=28,国外投资股份有限（公司）=29,其他国外投资=30,其他=31
      */
     private String type;
+    private String type_name;
 
     /**
      * 成立日期
@@ -85,6 +86,7 @@ public class MCompanyVo extends BaseVo implements Serializable {
      * 是否删除
      */
     private Boolean is_del;
+    private String del_name;
 
     /**
      * 地址簿id
