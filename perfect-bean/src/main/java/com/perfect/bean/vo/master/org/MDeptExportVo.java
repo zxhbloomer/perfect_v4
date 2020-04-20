@@ -76,6 +76,7 @@ public class MDeptExportVo implements Serializable {
     /**
      * 描述
      */
+    @ExcelAnnotion(name = "描述")
     private String descr;
 
     /**

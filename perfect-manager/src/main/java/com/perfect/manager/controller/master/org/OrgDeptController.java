@@ -6,7 +6,6 @@ import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.master.org.MDeptExportVo;
 import com.perfect.bean.vo.master.org.MDeptVo;
-import com.perfect.bean.vo.master.org.MGroupExportVo;
 import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
@@ -91,7 +90,7 @@ public class OrgDeptController extends BaseController {
     @PostMapping("/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MDeptVo> searchConditionList, HttpServletResponse response) throws IOException {
         List<MDeptVo> searchResult = service.selectIdsInForExport(searchConditionList);
-        List<MDeptExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MGroupExportVo.class);
+        List<MDeptExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MDeptExportVo.class);
         ExcelUtil<MDeptExportVo> util = new ExcelUtil<>(MDeptExportVo.class);
         util.exportExcel("部门主表数据导出", "部门主表数据", rtnList, response);
     }
