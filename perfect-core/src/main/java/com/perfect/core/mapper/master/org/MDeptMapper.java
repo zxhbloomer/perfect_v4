@@ -3,7 +3,6 @@ package com.perfect.core.mapper.master.org;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MDeptEntity;
 import com.perfect.bean.vo.master.org.MDeptVo;
 import com.perfect.common.constant.PerfectDictConstant;
@@ -31,13 +30,17 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
         + "           	t2.`name` as handler_id_name,                                "
         + "           	t3.`name` as sub_handler_id_name,                            "
         + "           	t4.`name` as leader_id_name,                                 "
-        + "           	t5.`name` as response_leader_id_name                         "
+        + "           	t5.`name` as response_leader_id_name,                        "
+        + "             c_staff.name as c_name,                                      "
+        + "             u_staff.name as u_name                                       "
         + "           FROM                                                           "
         + "           	m_dept t1                                                    "
         + "           	LEFT JOIN m_staff t2 on t1.handler_id = t2.id                "
         + "           	LEFT JOIN m_staff t3 on t1.sub_handler_id = t3.id            "
         + "           	LEFT JOIN m_staff t4 on t1.leader_id = t4.id                 "
         + "           	LEFT JOIN m_staff t5 on t1.leader_id = t5.id                 "
+        + "             LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id            "
+        + "             LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id            "
         + "                                                                          ";
 
 
