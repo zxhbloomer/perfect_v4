@@ -12,7 +12,6 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.DeleteResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
-import com.perfect.bean.vo.master.user.MStaffExportVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.BusinessException;
@@ -96,9 +95,9 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
      * 获取所选id的数据
      */
     @Override
-    public List<MStaffExportVo> exportBySelectIdsIn(List<MStaffVo> searchCondition) {
+    public List<MStaffVo> exportBySelectIdsIn(List<MStaffVo> searchCondition) {
         // 查询 数据
-        List<MStaffExportVo> list = mapper.exportSelectIdsIn(searchCondition, getUserSessionTenantId());
+        List<MStaffVo> list = mapper.exportSelectIdsIn(searchCondition, getUserSessionTenantId());
         return list;
     }
 

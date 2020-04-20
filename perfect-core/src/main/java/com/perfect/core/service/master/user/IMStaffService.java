@@ -6,9 +6,7 @@ import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
-import com.perfect.bean.vo.master.user.MStaffExportVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
-import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -40,7 +38,7 @@ public interface IMStaffService extends IService<MStaffEntity> {
     /**
      * 获取所选id的数据
      */
-    List<MStaffExportVo> exportBySelectIdsIn(List<MStaffVo> searchCondition);
+    List<MStaffVo> exportBySelectIdsIn(List<MStaffVo> searchCondition);
 
     /**
      * 批量物理删除

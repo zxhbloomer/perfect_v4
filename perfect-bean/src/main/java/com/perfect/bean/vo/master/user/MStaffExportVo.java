@@ -1,7 +1,6 @@
 package com.perfect.bean.vo.master.user;
 
 import com.perfect.bean.config.base.v1.BaseVo;
-import com.perfect.bean.vo.common.condition.PageCondition;
 import com.perfect.common.annotations.ExcelAnnotion;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -67,42 +66,6 @@ public class MStaffExportVo extends BaseVo implements Serializable {
     private LocalDate birthday;
 
     /**
-     * 邮箱地址
-     */
-    @ExcelAnnotion(name = "邮箱地址")
-    private String email;
-
-    /**
-     * 家庭电话
-     */
-    @ExcelAnnotion(name = "家庭电话")
-    private String home_phone;
-
-    /**
-     * 办公室电话
-     */
-    @ExcelAnnotion(name = "办公室电话")
-    private String office_phone;
-
-    /**
-     * 手机号码
-     */
-    @ExcelAnnotion(name = "手机号码")
-    private String mobile_phone;
-
-    /**
-     * 备用手机号码
-     */
-    @ExcelAnnotion(name = "备用手机号码")
-    private String mobile_phone_backup;
-
-    /**
-     * 备用电子邮件
-     */
-    @ExcelAnnotion(name = "备用电子邮件")
-    private String email_backup;
-
-    /**
      * 身份证号码
      */
     @ExcelAnnotion(name = "身份证号码")
@@ -139,8 +102,75 @@ public class MStaffExportVo extends BaseVo implements Serializable {
     private String degree_text;
 
     /**
+     * 邮箱地址
+     */
+    @ExcelAnnotion(name = "邮箱地址")
+    private String email;
+
+    /**
+     * 家庭电话
+     */
+    @ExcelAnnotion(name = "家庭电话")
+    private String home_phone;
+
+    /**
+     * 办公室电话
+     */
+    @ExcelAnnotion(name = "办公室电话")
+    private String office_phone;
+
+    /**
+     * 手机号码
+     */
+    @ExcelAnnotion(name = "手机号码")
+    private String mobile_phone;
+
+    /**
+     * 备用手机号码
+     */
+    @ExcelAnnotion(name = "备用手机号码")
+    private String mobile_phone_backup;
+
+    /**
+     * 备用电子邮件
+     */
+    @ExcelAnnotion(name = "备用电子邮件")
+    private String email_backup;
+
+
+    /**
+     * 所属公司
+     */
+    private Long company_id;
+    @ExcelAnnotion(name = "所属公司")
+    private String company_name;
+    private String company_simple_name;
+
+    /**
+     * 默认部门
+     */
+    private Long dept_id;
+    @ExcelAnnotion(name = "默认部门")
+    private String dept_name;
+    private String dept_simple_name;
+
+    /**
      * 是否删除
      */
     private Boolean is_del;
+    @ExcelAnnotion(name = "是否删除")
+    private String is_del_name;
 
+
+    @ExcelAnnotion(name = "新增人")
+    private String c_name;
+    @ExcelAnnotion(name = "新增时间")
+    private LocalDateTime c_time;
+
+    private Long u_id;
+
+    @ExcelAnnotion(name = "更新人")
+    private String u_name;
+    @ExcelAnnotion(name = "更新时间")
+    private LocalDateTime u_time;
 }
