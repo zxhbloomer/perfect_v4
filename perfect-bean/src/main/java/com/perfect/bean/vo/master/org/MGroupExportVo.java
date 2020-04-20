@@ -32,25 +32,25 @@ public class MGroupExportVo extends BaseVo implements Serializable {
     /**
      * 集团编码
      */
-    @ExcelAnnotion(name = "集团编码")
+    @ExcelAnnotion(name = "编码")
     private String code;
 
     /**
      * 集团名称
      */
-    @ExcelAnnotion(name = "集团名称")
+    @ExcelAnnotion(name = "名称")
     private String name;
 
     /**
      * 简称
      */
-    @ExcelAnnotion(name = "集团简称")
+    @ExcelAnnotion(name = "简称")
     private String simple_name;
 
     /**
      * 描述
      */
-    @ExcelAnnotion(name = "集团描述")
+    @ExcelAnnotion(name = "描述")
     private String descr;
 
     /**

@@ -1,7 +1,6 @@
 package com.perfect.bean.vo.master.org;
 
-import com.perfect.bean.config.base.v1.BaseVo;
-import com.perfect.bean.vo.common.condition.PageCondition;
+import com.perfect.common.annotations.ExcelAnnotion;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,43 +19,59 @@ import java.time.LocalDateTime;
  */
 @Data
 @NoArgsConstructor
-@ApiModel(value = "部门主表", description = "部门主表")
+@ApiModel(value = "部门主表导出", description = "部门主表导出")
 @EqualsAndHashCode(callSuper=false)
-public class MDeptExportVo extends BaseVo implements Serializable {
+public class MDeptExportVo implements Serializable {
 
-    private static final long serialVersionUID = 160255159388247094L;
+    private static final long serialVersionUID = 1189343038090433062L;
 
     private Long id;
 
     /**
      * 编码
      */
+    @ExcelAnnotion(name = "编码")
     private String code;
 
     /**
      * 全称
      */
+    @ExcelAnnotion(name = "名称")
     private String name;
 
     /**
      * 简称
      */
+    @ExcelAnnotion(name = "简称")
     private String simple_name;
 
     /**
-     * 负责人
+     * 部门主管
      */
     private Long handler_id;
+    @ExcelAnnotion(name = "部门主管")
+    private String handler_id_name;
 
     /**
-     * 部门副负责人
+     * 部门副主管
      */
     private Long sub_handler_id;
+    @ExcelAnnotion(name = "部门副主管")
+    private String sub_handler_id_name;
 
     /**
-     * 部门主管领导
+     * 上级主管领导
      */
     private Long leader_id;
+    @ExcelAnnotion(name = "上级主管领导")
+    private String leader_id_name;
+
+    /**
+     * 上级分管领导
+     */
+    private Long response_leader_id;
+    @ExcelAnnotion(name = "上级分管领导")
+    private String response_leader_id_name;
 
     /**
      * 描述
@@ -67,6 +82,8 @@ public class MDeptExportVo extends BaseVo implements Serializable {
      * 是否删除
      */
     private Boolean is_del;
+    @ExcelAnnotion(name = "是否删除")
+    private String is_del_name;
 
     /**
      * 租户id
@@ -74,11 +91,14 @@ public class MDeptExportVo extends BaseVo implements Serializable {
     private Long tenant_id;
 
     private Long c_id;
-
+    @ExcelAnnotion(name = "新增人")
+    private String c_name;
+    @ExcelAnnotion(name = "新增时间")
     private LocalDateTime c_time;
-
     private Long u_id;
-
+    @ExcelAnnotion(name = "更新人")
+    private String u_name;
+    @ExcelAnnotion(name = "更新时间")
     private LocalDateTime u_time;
 
     /**
@@ -87,7 +107,20 @@ public class MDeptExportVo extends BaseVo implements Serializable {
     private Integer dbversion;
 
     /**
-     * 换页条件
+     * 关联单号
      */
-    private PageCondition pageCondition;
+    private Long parent_serial_id;
+
+    /**
+     * 关联单号类型
+     */
+    private String parent_serial_type;
+    private String parent_name;
+    private String parent_simple_name;
+    private String parent_type_text;
+
+    /**
+     * 弹出框模式：空：普通模式；10：组织使用，需要排除已经选择的数据；
+     */
+    private String dataModel;
 }
