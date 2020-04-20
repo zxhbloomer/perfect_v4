@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.master.user.MStaffEntity;
-import com.perfect.bean.vo.master.user.MStaffExportVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
@@ -34,7 +33,10 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "            	t6.name as company_name,                                                                                "
         + "            	t6.simple_name as company_simple_name,                                                                  "
         + "            	t7.name as dept_name,                                                                                   "
-        + "            	t7.simple_name as dept_simple_name                                                                      "
+        + "            	t7.simple_name as dept_simple_name,                                                                     "
+        + "             c_staff.name as c_name,                                                                                 "
+        + "             u_staff.name as u_name,                                                                                 "
+        + "             t8.label as is_del_name                                                                                 "
         + "        FROM                                                                                                         "
         + "            	m_staff t1                                                                                              "
         + "            	LEFT JOIN v_dict_info AS t2 ON t2.code = '" + PerfectDictConstant.DICT_SYS_SEX_TYPE + "' and t2.dict_value = t1.sex                      "
@@ -43,6 +45,9 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "             LEFT JOIN v_dict_info AS t5 ON t5.code = '" + PerfectDictConstant.DICT_USR_WED_TYPE + "' and t5.dict_value = t1.is_wed                   "
         + "             LEFT JOIN m_company AS t6 ON t6.id = t1.company_id                                                      "
         + "             LEFT JOIN m_dept AS t7 ON t7.id = t1.dept_id                                                            "
+        + "             LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                       "
+        + "             LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                       "
+        + "             LEFT JOIN v_dict_info AS t8 ON t8.code = '" + PerfectDictConstant.DICT_SYS_DELETE_MAP + "' and t8.dict_value = cast(t1.is_del as char(1))      "
         + "       where true                                                                                                    "
         + "                    ";
 
@@ -102,7 +107,7 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "         #{item.id}                                                                              "
         + "        </foreach>                                                                               "
         + "  </script>                                                                                      ")
-    List<MStaffExportVo> exportSelectIdsIn(@Param("p1") List<MStaffVo> searchCondition, @Param("p2")Long tenant_id);
+    List<MStaffVo> exportSelectIdsIn(@Param("p1") List<MStaffVo> searchCondition, @Param("p2")Long tenant_id);
 
     /**
      * 按条件获取所有数据，没有分页
