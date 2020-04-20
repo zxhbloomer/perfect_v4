@@ -2,7 +2,6 @@ package com.perfect.core.serviceimpl.master.org;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.master.org.MDeptEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
@@ -11,14 +10,11 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.org.MDeptVo;
-import com.perfect.bean.vo.master.org.MDeptVo;
-import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.master.org.MDeptMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.org.IMDeptService;
-import com.perfect.core.service.master.org.IMGroupService;
 import com.perfect.core.serviceimpl.common.autocode.MDeptAutoCodeImpl;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +80,19 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
     public List<MDeptEntity> selectIdsIn(List<MDeptVo> searchCondition) {
         // 查询 数据
         List<MDeptEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTenantId());
+        return list;
+    }
+
+    /**
+     * 获取列表，根据id查询所有数据,导出用
+     *
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public List<MDeptVo> selectIdsInForExport(List<MDeptVo> searchCondition) {
+        // 查询 数据
+        List<MDeptVo> list = mapper.selectIdsInForExport(searchCondition);
         return list;
     }
 

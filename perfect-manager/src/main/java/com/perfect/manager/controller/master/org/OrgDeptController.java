@@ -5,14 +5,13 @@ import com.perfect.bean.entity.master.org.MDeptEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.master.org.MDeptExportVo;
-import com.perfect.bean.vo.master.org.MGroupExportVo;
 import com.perfect.bean.vo.master.org.MDeptVo;
+import com.perfect.bean.vo.master.org.MGroupExportVo;
 import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.service.master.org.IMDeptService;
-import com.perfect.core.service.master.org.IMGroupService;
 import com.perfect.excel.export.ExcelUtil;
 import com.perfect.framework.base.controller.v1.BaseController;
 import io.swagger.annotations.Api;
@@ -91,9 +90,9 @@ public class OrgDeptController extends BaseController {
     @ApiOperation("根据选择的数据，部门主表数据导出")
     @PostMapping("/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MDeptVo> searchConditionList, HttpServletResponse response) throws IOException {
-        List<MDeptEntity> searchResult = service.selectIdsIn(searchConditionList);
-        List<MGroupExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MGroupExportVo.class);
-        ExcelUtil<MGroupExportVo> util = new ExcelUtil<>(MGroupExportVo.class);
+        List<MDeptVo> searchResult = service.selectIdsInForExport(searchConditionList);
+        List<MDeptExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MGroupExportVo.class);
+        ExcelUtil<MDeptExportVo> util = new ExcelUtil<>(MDeptExportVo.class);
         util.exportExcel("部门主表数据导出", "部门主表数据", rtnList, response);
     }
 

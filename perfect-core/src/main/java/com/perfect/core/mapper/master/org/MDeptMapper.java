@@ -79,7 +79,7 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
      */
     @Select("    "
         + COMMON_SELECT
-        + "  where true "
+        + "  where true                                                                                                "
         + "    and (t1.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)  "
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)  "
         + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                 "
@@ -103,6 +103,21 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
         + "        </foreach>"
         + "  </script>")
     List<MDeptEntity> selectIdsIn(@Param("p1") List<MDeptVo> searchCondition, @Param("p2")Long tenant_id);
+
+    /**
+     * 没有分页，按id筛选条件，导出用
+     * @param searchCondition
+     * @return
+     */
+    @Select("<script>"
+        + COMMON_SELECT
+        + "  where true                                                                                   "
+        + "    and t1.id in                                                                                "
+        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>   "
+        + "         #{item.id}                                                                            "
+        + "        </foreach>                                                                             "
+        + "  </script>")
+    List<MDeptVo> selectIdsInForExport(@Param("p1") List<MDeptVo> searchCondition);
 
     /**
      * 按条件获取所有数据，没有分页

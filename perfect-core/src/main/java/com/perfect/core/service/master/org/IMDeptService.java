@@ -6,7 +6,6 @@ import com.perfect.bean.entity.master.org.MDeptEntity;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.master.org.MDeptVo;
-import com.perfect.bean.vo.master.user.MStaffVo;
 
 import java.util.List;
 
@@ -33,6 +32,11 @@ public interface IMDeptService extends IService<MDeptEntity> {
      * 获取所选id的数据
      */
     List<MDeptEntity> selectIdsIn(List<MDeptVo> searchCondition) ;
+
+    /**
+     * 获取所选id的数据，导出用
+     */
+    List<MDeptVo> selectIdsInForExport(List<MDeptVo> searchCondition) ;
 
     /**
      * 批量删除复原
