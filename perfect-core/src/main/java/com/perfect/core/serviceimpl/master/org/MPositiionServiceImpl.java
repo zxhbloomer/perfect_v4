@@ -2,8 +2,6 @@ package com.perfect.core.serviceimpl.master.org;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.perfect.bean.entity.master.org.MCompanyEntity;
 import com.perfect.bean.entity.master.org.MPositionEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
@@ -16,7 +14,6 @@ import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.master.org.MPositionMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
-import com.perfect.core.service.master.org.IMDeptService;
 import com.perfect.core.service.master.org.IMPositionService;
 import com.perfect.core.serviceimpl.common.autocode.MPositionAutoCodeImpl;
 import com.perfect.core.utils.mybatis.PageUtil;
@@ -84,6 +81,19 @@ public class MPositiionServiceImpl extends BaseServiceImpl<MPositionMapper, MPos
     public List<MPositionEntity> selectIdsIn(List<MPositionVo> searchCondition) {
         // 查询 数据
         List<MPositionEntity> list = mapper.selectIdsIn(searchCondition, getUserSessionTenantId());
+        return list;
+    }
+
+    /**
+     * 获取列表，根据id查询所有数据
+     *
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public List<MPositionVo> selectIdsInForExport(List<MPositionVo> searchCondition) {
+        // 查询 数据
+        List<MPositionVo> list = mapper.selectIdsInForExport(searchCondition);
         return list;
     }
 

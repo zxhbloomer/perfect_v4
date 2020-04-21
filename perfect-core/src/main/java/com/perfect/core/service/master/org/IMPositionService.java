@@ -34,6 +34,11 @@ public interface IMPositionService extends IService<MPositionEntity> {
     List<MPositionEntity> selectIdsIn(List<MPositionVo> searchCondition) ;
 
     /**
+     * 获取所选id的数据
+     */
+    List<MPositionVo> selectIdsInForExport(List<MPositionVo> searchCondition) ;
+
+    /**
      * 批量删除复原
      * @param searchCondition
      * @return

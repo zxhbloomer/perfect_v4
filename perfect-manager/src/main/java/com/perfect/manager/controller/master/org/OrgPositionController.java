@@ -90,7 +90,7 @@ public class OrgPositionController extends BaseController {
     @ApiOperation("根据选择的数据，岗位主表数据导出")
     @PostMapping("/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MPositionVo> searchConditionList, HttpServletResponse response) throws IOException {
-        List<MPositionEntity> searchResult = service.selectIdsIn(searchConditionList);
+        List<MPositionVo> searchResult = service.selectIdsInForExport(searchConditionList);
         List<MPositionExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MPositionExportVo.class);
         ExcelUtil<MPositionExportVo> util = new ExcelUtil<>(MPositionExportVo.class);
         util.exportExcel("岗位主表数据导出", "岗位主表数据", rtnList, response);

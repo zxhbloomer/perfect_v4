@@ -3,7 +3,6 @@ package com.perfect.core.mapper.master.org;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.perfect.bean.entity.master.org.MGroupEntity;
 import com.perfect.bean.entity.master.org.MPositionEntity;
 import com.perfect.bean.vo.master.org.MPositionVo;
 import com.perfect.common.constant.PerfectDictConstant;
@@ -24,13 +23,18 @@ import java.util.List;
 @Repository
 public interface MPositionMapper extends BaseMapper<MPositionEntity> {
 
-    String COMMON_SELECT = "                                                         "
-        + "                                                                          "
-        + "           SELECT                                                         "
-        + "           	t1.*                                                         "
-        + "           FROM                                                           "
-        + "           	m_position t1                                                "
-        + "                                                                          ";
+    String COMMON_SELECT = "                                                           "
+        + "                                                                            "
+        + "        SELECT                                                              "
+        + "               t1.*,                                                        "
+        + "               c_staff.name as c_name,                                      "
+        + "               u_staff.name as u_name,                                      "
+        + "               t2.label as is_del_name                                      "
+        + "          FROM m_position t1                                                "
+        + "     LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                      "
+        + "     LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                      "
+        + "     LEFT JOIN v_dict_info AS t2 ON t2.code = '" + PerfectDictConstant.DICT_SYS_DELETE_MAP + "' and t2.dict_value = cast(t1.is_del as char(1))      "
+        + "                                                                            ";
 
 
     /**
@@ -75,6 +79,22 @@ public interface MPositionMapper extends BaseMapper<MPositionEntity> {
         + "    and (t1.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)       "
         + "      ")
     List<MPositionVo> select(@Param("p1") MPositionVo searchCondition);
+
+    /**
+     * 没有分页，按id筛选条件
+     * @param searchCondition
+     * @return
+     */
+    @Select("<script>"
+        + COMMON_SELECT
+        + "  where true "
+        + "    and (t.tenant_id = #{p2} or #{p2} is null  )                                               "
+        + "    and t.id in "
+        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>"
+        + "         #{item.id}  "
+        + "        </foreach>"
+        + "  </script>")
+    List<MPositionVo> selectIdsInForExport(@Param("p1") List<MPositionVo> searchCondition);
 
     /**
      * 没有分页，按id筛选条件
