@@ -88,8 +88,7 @@ public interface MPositionMapper extends BaseMapper<MPositionEntity> {
     @Select("<script>"
         + COMMON_SELECT
         + "  where true "
-        + "    and (t.tenant_id = #{p2} or #{p2} is null  )                                               "
-        + "    and t.id in "
+        + "    and t1.id in "
         + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>"
         + "         #{item.id}  "
         + "        </foreach>"

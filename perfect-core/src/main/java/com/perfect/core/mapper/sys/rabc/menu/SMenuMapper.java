@@ -114,7 +114,7 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
         + "                FROM s_module subtab1                                                       "
         + "           LEFT JOIN s_module_button subtab2 ON subtab1.id = subtab2.parent_id              "
         + "               WHERE subtab2.id is not null                                                 "
-        + "                                                                                            "
+        + "            GROUP BY subtab1.id                                                             "
         + "            ) t5 on t5.id = t2.module_id                                                    "
         + "                                                                                            ";
 
