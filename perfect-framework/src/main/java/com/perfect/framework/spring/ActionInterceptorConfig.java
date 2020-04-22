@@ -1,13 +1,14 @@
 package com.perfect.framework.spring;
 
-import com.perfect.framework.spring.interceptor.impl.ActionInterceptor;
 import com.perfect.framework.config.messageconverter.CallbackMappingJackson2HttpMessageConverter;
+import com.perfect.framework.spring.interceptor.impl.ActionInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -42,7 +43,11 @@ public class ActionInterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(0, new CallbackMappingJackson2HttpMessageConverter());
+        //        converters.add(0, new CallbackMappingJackson2HttpMessageConverter());
+        CallbackMappingJackson2HttpMessageConverter converter = new CallbackMappingJackson2HttpMessageConverter();
+        converter.setDefaultCharset(Charset.forName("UTF-8"));
+        converters.add(0, converter);
+
 //        Iterator<HttpMessageConverter<?>> iterator = converters.iterator();
 //        while(iterator.hasNext()){
 //            HttpMessageConverter<?> converter = iterator.next();
