@@ -100,7 +100,7 @@ public class ConfigController extends BaseController {
         util.exportExcel("系统参数数据导出", "系统参数数据", rtnList, response);
     }
 
-    @SysLogAnnotion("模块按钮表数据逻辑物理删除，部分数据")
+    @SysLogAnnotion("根据选择的数据逻辑物理删除，部分数据")
     @ApiOperation("根据参数id，逻辑删除数据")
     @PostMapping("/delete")
     @ResponseBody
@@ -109,8 +109,8 @@ public class ConfigController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 
-    @SysLogAnnotion("模块按钮表数据逻辑物理删除，部分数据")
-    @ApiOperation("根据参数id，逻辑删除数据")
+    @SysLogAnnotion("根据选择的数据启用禁用，部分数据")
+    @ApiOperation("根据参数id，启用禁用数据")
     @PostMapping("/enabled")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> enabled(@RequestBody(required = false) List<SConfigVo> searchConditionList) {
