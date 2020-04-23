@@ -42,18 +42,6 @@ public class ConfigController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLogAnnotion("根据参数id，获取系统参数信息")
-    @ApiOperation("根据参数id，获取系统参数信息")
-    @PostMapping("{ id }")
-    @ResponseBody
-    public ResponseEntity<JsonResult<SConfigEntity>> info(@RequestParam("id") String id) {
-
-        SConfigEntity entity = service.getById(id);
-
-//        ResponseEntity<OAuth2AccessToken
-        return ResponseEntity.ok().body(ResultUtil.OK(entity));
-    }
-
     @SysLogAnnotion("根据查询条件，获取系统参数信息")
     @ApiOperation("根据参数id，获取系统参数信息")
     @PostMapping("/list")
@@ -84,7 +72,7 @@ public class ConfigController extends BaseController {
     @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<SConfigEntity>> insert(@RequestBody(required = false) SConfigEntity bean) {
         // 默认启用
-        bean.setIsenable(true);
+        bean.setIs_enable(true);
         if(service.insert(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.getById(bean.getId()),"插入成功"));
         } else {
@@ -106,9 +94,27 @@ public class ConfigController extends BaseController {
     @ApiOperation("根据选择的数据，系统参数数据导出")
     @PostMapping("/export_selection")
     public void exportSelection(@RequestBody(required = false) List<SConfigVo> searchConditionList, HttpServletResponse response) throws IOException {
-        List<SConfigVo> searchResult = service.selectIdsIn(searchConditionList);
+        List<SConfigVo> searchResult = service.selectIdsInForExport(searchConditionList);
         List<SResourceExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, SConfigDataExportVo.class);
         ExcelUtil<SResourceExportVo> util = new ExcelUtil<>(SResourceExportVo.class);
         util.exportExcel("系统参数数据导出", "系统参数数据", rtnList, response);
+    }
+
+    @SysLogAnnotion("模块按钮表数据逻辑物理删除，部分数据")
+    @ApiOperation("根据参数id，逻辑删除数据")
+    @PostMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false) List<SConfigVo> searchConditionList) {
+        service.realDeleteByIdsIn(searchConditionList);
+        return ResponseEntity.ok().body(ResultUtil.OK("OK"));
+    }
+
+    @SysLogAnnotion("模块按钮表数据逻辑物理删除，部分数据")
+    @ApiOperation("根据参数id，逻辑删除数据")
+    @PostMapping("/enabled")
+    @ResponseBody
+    public ResponseEntity<JsonResult<String>> enabled(@RequestBody(required = false) List<SConfigVo> searchConditionList) {
+        service.enabledByIdsIn(searchConditionList);
+        return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 }

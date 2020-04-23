@@ -66,8 +66,8 @@ public class SRoleEntity extends BaseEntity<SRoleEntity> implements Serializable
     /**
      * 是否禁用(1:false-未启用,0:true-已启用)
      */
-    @TableField(value = "isenable", fill = FieldFill.INSERT)
-    private Boolean isenable;
+    @TableField(value = "is_enable", fill = FieldFill.INSERT)
+    private Boolean is_enable;
 
     /**
      * 租户代码

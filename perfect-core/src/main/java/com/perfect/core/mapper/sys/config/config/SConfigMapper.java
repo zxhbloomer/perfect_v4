@@ -1,15 +1,15 @@
 package com.perfect.core.mapper.sys.config.config;
 
-import java.util.List;
-
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.sys.config.config.SConfigEntity;
 import com.perfect.bean.vo.sys.config.config.SConfigVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.util.List;
 
 /**
  * <p>
@@ -23,11 +23,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 public interface SConfigMapper extends BaseMapper<SConfigEntity> {
 
     String common_select = "  "
-        + "  SELECT                                                             "
-        + "       *                                                            "
-        + "  FROM                                                                   "
-        + "  	s_config t                                            "
-        + "                                                                   "
+        + "     SELECT                                                             "
+        + "            t.*,                                                        "
+        + "            c_staff.name as c_name,                                     "
+        + "            u_staff.name as u_name                                      "
+        + "       FROM                                                             "
+        + "  	       s_config t                                                  "
+        + "  LEFT JOIN m_staff c_staff ON t.c_id = c_staff.id                      "
+        + "  LEFT JOIN m_staff u_staff ON t.u_id = u_staff.id                      "
+        + "                                                                        "
         ;
 
     /**
@@ -71,7 +75,21 @@ public interface SConfigMapper extends BaseMapper<SConfigEntity> {
         + "         #{item.id}  "
         + "        </foreach>    "
         + "  </script>    ")
-    List<SConfigVo> selectIdsIn(@Param("p1") List<SConfigVo> searchCondition);
+    List<SConfigEntity> selectIdsIn(@Param("p1") List<SConfigVo> searchCondition);
+
+    /**
+     * 没有分页，按id筛选条件
+     * @param searchCondition
+     * @return
+     */
+    @Select("   <script>   "
+        + common_select
+        + "  where t.id in "
+        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>    "
+        + "         #{item.id}  "
+        + "        </foreach>    "
+        + "  </script>    ")
+    List<SConfigVo> selectIdsInForExport(@Param("p1") List<SConfigVo> searchCondition);
 
     /**
      * 按条件获取所有数据，没有分页

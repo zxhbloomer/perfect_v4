@@ -45,7 +45,7 @@ public class SConfigDataExportVo extends BaseVo implements Serializable {
      * 是否禁用(1:false-未启用,0:true-已启用)
      */
     @ExcelAnnotion(name = "是否禁用")
-    private Boolean isenable;
+    private Boolean is_enable;
 
     /**
      * 描述

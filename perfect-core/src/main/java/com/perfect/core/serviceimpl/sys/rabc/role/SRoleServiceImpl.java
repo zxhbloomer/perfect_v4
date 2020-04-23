@@ -2,16 +2,13 @@ package com.perfect.core.serviceimpl.sys.rabc.role;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.sys.rabc.role.SRoleEntity;
 import com.perfect.bean.vo.sys.rabc.role.SRoleVo;
-import com.perfect.common.constant.PerfectConstant;
 import com.perfect.core.mapper.sys.rabc.role.SRoleMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.sys.rabc.role.ISRoleService;
 import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,23 +94,6 @@ public class SRoleServiceImpl extends BaseServiceImpl<SRoleMapper, SRoleEntity> 
         list.forEach(
             bean -> {
                 bean.setIsdel(!bean.getIsdel());
-            }
-        );
-        saveOrUpdateBatch(list, 500);
-    }
-
-    /**
-     * 批量启用禁用
-     * @param searchCondition
-     * @return
-     */
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void enableByIdsIn(List<SRoleVo> searchCondition) {
-        List<SRoleEntity> list = sRoleMapper.selectIdsIn(searchCondition);
-        list.forEach(
-            bean -> {
-                bean.setIsenable(!bean.getIsenable());
             }
         );
         saveOrUpdateBatch(list, 500);

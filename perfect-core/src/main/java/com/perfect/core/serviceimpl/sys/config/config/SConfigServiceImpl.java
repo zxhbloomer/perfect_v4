@@ -1,27 +1,30 @@
 package com.perfect.core.serviceimpl.sys.config.config;
 
-import java.util.List;
-import com.perfect.bean.entity.sys.config.config.SConfigEntity;
-import com.perfect.bean.vo.sys.config.config.SConfigVo;
-import com.perfect.core.mapper.sys.config.config.SConfigMapper;
-import com.perfect.core.service.base.v1.BaseServiceImpl;
-import com.perfect.core.service.sys.config.config.ISConfigService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.perfect.bean.entity.sys.config.dict.SDictTypeEntity;
+import com.perfect.bean.entity.master.org.MCompanyEntity;
+import com.perfect.bean.entity.sys.config.config.SConfigEntity;
 import com.perfect.bean.pojo.result.CheckResult;
+import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.CheckResultUtil;
+import com.perfect.bean.result.utils.v1.DeleteResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
+import com.perfect.bean.vo.master.org.MCompanyVo;
+import com.perfect.bean.vo.sys.config.config.SConfigVo;
 import com.perfect.common.exception.BusinessException;
-import com.perfect.common.utils.bean.BeanUtilsSupport;
+import com.perfect.core.mapper.sys.config.config.SConfigMapper;
+import com.perfect.core.service.base.v1.BaseServiceImpl;
+import com.perfect.core.service.sys.config.config.ISConfigService;
 import com.perfect.core.utils.mybatis.PageUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -73,9 +76,22 @@ public class SConfigServiceImpl extends BaseServiceImpl<SConfigMapper, SConfigEn
      * @return
      */
     @Override
-    public List<SConfigVo> selectIdsIn(List<SConfigVo> searchCondition) {
+    public List<SConfigEntity> selectIdsIn(List<SConfigVo> searchCondition) {
         // 查询 数据
-        List<SConfigVo> list = mapper.selectIdsIn(searchCondition);
+        List<SConfigEntity> list = mapper.selectIdsIn(searchCondition);
+        return list;
+    }
+
+    /**
+     * 获取列表，根据id查询所有数据
+     *
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public List<SConfigVo> selectIdsInForExport(List<SConfigVo> searchCondition) {
+        // 查询 数据
+        List<SConfigVo> list = mapper.selectIdsInForExport(searchCondition);
         return list;
     }
 
@@ -103,22 +119,6 @@ public class SConfigServiceImpl extends BaseServiceImpl<SConfigMapper, SConfigEn
         return super.saveBatch(entityList, 500);
     }
 
-    /**
-     * 批量启用复原
-     * 
-     * @param searchCondition
-     * @return
-     */
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void enableByIdsIn(List<SConfigVo> searchCondition) {
-        List<SConfigVo> list = mapper.selectIdsIn(searchCondition);
-        list.forEach(bean -> {
-            bean.setIsenable(!bean.getIsenable());
-        });
-        List<SConfigEntity> entityList = BeanUtilsSupport.copyProperties(list, SConfigEntity.class);
-        super.saveOrUpdateBatch(entityList, 500);
-    }
 
     /**
      * 插入一条记录（选择字段，策略插入）
@@ -197,6 +197,7 @@ public class SConfigServiceImpl extends BaseServiceImpl<SConfigMapper, SConfigEn
         return list;
     }
 
+
     /**
      * check逻辑
      * 
@@ -228,6 +229,50 @@ public class SConfigServiceImpl extends BaseServiceImpl<SConfigMapper, SConfigEn
             default:
         }
         return CheckResultUtil.OK();
+    }
+
+
+    /**
+     * 批量删除复原
+     *
+     * @param searchCondition
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public DeleteResult<Integer> realDeleteByIdsIn(List<SConfigVo> searchCondition) {
+        List<Long> idList = new ArrayList<>();
+        searchCondition.forEach(bean -> {
+            idList.add(bean.getId());
+        });
+        int result=mapper.deleteBatchIds(idList);
+        return DeleteResultUtil.OK(result);
+    }
+
+    /**
+     * 批量删除复原
+     * @param searchCondition
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void enabledByIdsIn(List<SConfigVo> searchCondition) {
+        List<SConfigEntity> list = mapper.selectIdsIn(searchCondition);
+        for(SConfigEntity entity : list) {
+//            CheckResult cr;
+//            if(entity.getIs_enable()){
+//                /** 如果逻辑删除为true，表示为：页面点击了复原操作 */
+//                cr = checkLogic(entity, CheckResult.UNDELETE_CHECK_TYPE);
+//            } else {
+//                /** 如果逻辑删除为false，表示为：页面点击了删除操作 */
+//                cr = checkLogic(entity, CheckResult.DELETE_CHECK_TYPE);
+//            }
+//            if (cr.isSuccess() == false) {
+//                throw new BusinessException(cr.getMessage());
+//            }
+            entity.setIs_enable(!entity.getIs_enable());
+        }
+        saveOrUpdateBatch(list, 500);
     }
 
 }

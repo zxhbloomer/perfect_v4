@@ -148,13 +148,4 @@ public class RoleController extends BaseController {
         isRoleService.deleteByIdsIn(searchConditionList);
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
-
-    @SysLogAnnotion("角色数据逻辑启用禁用")
-    @ApiOperation("根据参数id，启用禁用数据")
-    @PostMapping("/enable")
-    @ResponseBody
-    public ResponseEntity<JsonResult<String>> enable(@RequestBody(required = false) List<SRoleVo> searchConditionList) {
-        isRoleService.enableByIdsIn(searchConditionList);
-        return ResponseEntity.ok().body(ResultUtil.OK("OK"));
-    }
 }

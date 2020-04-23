@@ -1,6 +1,5 @@
 package com.perfect.bean.vo.sys.config.config;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.perfect.bean.pojo.fs.UploadFileResultPojo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
@@ -42,7 +41,7 @@ public class SConfigVo extends UploadFileResultPojo implements Serializable {
     /**
      * 是否禁用(1:false-未启用,0:true-已启用)
      */
-    private Boolean isenable;
+    private Boolean is_enable;
 
     /**
      * 描述
@@ -50,10 +49,12 @@ public class SConfigVo extends UploadFileResultPojo implements Serializable {
     private String descr;
 
     private Long c_id;
+    private String c_name;
 
     private LocalDateTime c_time;
 
     private Long u_id;
+    private String u_name;
 
     private LocalDateTime u_time;
 

@@ -44,10 +44,4 @@ public interface ISRoleService extends IService<SRoleEntity> {
      */
     void deleteByIdsIn(List<SRoleVo> searchCondition);
 
-    /**
-     * 批量启用禁用
-     * @param searchCondition
-     * @return
-     */
-    void enableByIdsIn(List<SRoleVo> searchCondition);
 }

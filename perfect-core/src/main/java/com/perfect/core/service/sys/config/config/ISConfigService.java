@@ -1,15 +1,14 @@
 package com.perfect.core.service.sys.config.config;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfect.bean.entity.sys.config.config.SConfigEntity;
-import com.perfect.bean.entity.sys.config.dict.SDictDataEntity;
+import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.vo.sys.config.config.SConfigVo;
-import com.perfect.bean.vo.sys.config.dict.SDictDataVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -33,7 +32,12 @@ public interface ISConfigService extends IService<SConfigEntity> {
     /**
      * 获取所选id的数据
      */
-    List<SConfigVo> selectIdsIn(List<SConfigVo> searchCondition) ;
+    List<SConfigEntity> selectIdsIn(List<SConfigVo> searchCondition) ;
+
+    /**
+     * 获取所选id的数据
+     */
+    List<SConfigVo> selectIdsInForExport(List<SConfigVo> searchCondition) ;
 
     /**
      * 查询by id，返回结果
@@ -47,13 +51,6 @@ public interface ISConfigService extends IService<SConfigEntity> {
      * 批量导入
      */
     boolean saveBatches(List<SConfigEntity> entityList);
-
-    /**
-     * 批量删除复原
-     * @param searchCondition
-     * @return
-     */
-    void enableByIdsIn(List<SConfigVo> searchCondition);
 
     /**
      * 插入一条记录（选择字段，策略插入）
@@ -86,5 +83,19 @@ public interface ISConfigService extends IService<SConfigEntity> {
      *
      */
     List<SConfigEntity> selectByValue(String value);
+
+    /**
+     * 批量物理删除
+     * @param searchCondition
+     * @return
+     */
+    DeleteResult<Integer> realDeleteByIdsIn(List<SConfigVo> searchCondition);
+
+    /**
+     * 批量删除复原
+     * @param searchCondition
+     * @return
+     */
+    void enabledByIdsIn(List<SConfigVo> searchCondition);
 
 }
