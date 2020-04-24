@@ -2,6 +2,7 @@ package com.perfect.bean.vo.master.user;
 
 import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
+import com.perfect.bean.vo.master.org.MStaffPositionsVo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -193,4 +195,9 @@ public class MStaffVo extends BaseVo implements Serializable {
     public MUserVo getRealUser(){
         return user;
     }
+
+    /**
+     * 员工的岗位信息集合
+     */
+    public List<MStaffPositionsVo> positions;
 }
