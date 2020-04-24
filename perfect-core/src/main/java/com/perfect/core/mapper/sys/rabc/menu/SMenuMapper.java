@@ -148,7 +148,7 @@ public interface SMenuMapper extends BaseMapper<SMenuEntity> {
         + "      FROM s_module_button t1 ,                                                                            "
         + "           v_dict_info t2                                                                                  "
         + "     where t2.`code` = '" + PerfectDictConstant.DICT_BTN_NAME_TYPE + "'                                    "
-        + "       and t2.dict_value = t1.id                                                                           "
+        + "       and t2.dict_value = t1.code                                                                           "
         + "  order by t2.sort                                                                                         "
         + "      ")
     List<SMenuButtonVo> getAllMenuButton(@Param("p1") SMenuDataVo searchCondition);

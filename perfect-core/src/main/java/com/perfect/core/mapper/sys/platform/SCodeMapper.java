@@ -24,20 +24,24 @@ import java.util.List;
 public interface SCodeMapper extends BaseMapper<SCodeEntity> {
 
     String COMMON_SELECT = "                                                                                   "
-        + "                                                                                                "
-        + "   SELECT                                                                                       "
-        + "   	t1.* ,                                                                                     "
-        + "   	t2.label as code_rule_label,                                                               "
-        + "   	t3.label as code_type_label                                                                "
-        + "   FROM                                                                                         "
-        + "   	s_code t1                                                                                  "
-        + "   	LEFT JOIN v_dict_info t2 on t2.code = '" + PerfectDictConstant.DICT_SYS_CODE_RULE_TYPE + "' "
-        + "                             and t2.dict_value = t1.rule                                        "
-        + "                             and t2.is_del = "+PerfectDictConstant.DICT_SYS_DELETE_MAP_NO+"     "
-        + "   	LEFT JOIN v_dict_info t3 on t3.code = '" + PerfectDictConstant.DICT_SYS_CODE_TYPE + "'     "
-        + "                             and t3.dict_value = t1.type                                        "
-        + "                             and t3.is_del = "+PerfectDictConstant.DICT_SYS_DELETE_MAP_NO+"     "
-        + "                                                                                                ";
+        + "                                                                                                          "
+        + "        SELECT                                                                                            "
+        + "   	          t1.* ,                                                                                     "
+        + "   	          t2.label as code_rule_label,                                                               "
+        + "   	          t3.label as code_type_label,                                                               "
+        + "               c_staff.name as c_name,                                                                    "
+        + "               u_staff.name as u_name                                                                     "
+        + "          FROM                                                                                            "
+        + "   	          s_code t1                                                                                  "
+        + "   	LEFT JOIN v_dict_info t2 on t2.code = '" + PerfectDictConstant.DICT_SYS_CODE_RULE_TYPE + "'          "
+        + "                             and t2.dict_value = t1.rule                                                  "
+        + "                             and t2.is_del = "+PerfectDictConstant.DICT_SYS_DELETE_MAP_NO+"               "
+        + "   	LEFT JOIN v_dict_info t3 on t3.code = '" + PerfectDictConstant.DICT_SYS_CODE_TYPE + "'               "
+        + "                             and t3.dict_value = t1.type                                                  "
+        + "                             and t3.is_del = "+PerfectDictConstant.DICT_SYS_DELETE_MAP_NO+"               "
+        + "     LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                    "
+        + "     LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                    "
+        + "                                                                                                          ";
 
 
     /**
