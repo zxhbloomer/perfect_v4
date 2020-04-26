@@ -29,11 +29,21 @@ public interface MPositionMapper extends BaseMapper<MPositionEntity> {
         + "               t1.*,                                                        "
         + "               c_staff.name as c_name,                                      "
         + "               u_staff.name as u_name,                                      "
-        + "               t2.label as is_del_name                                      "
+        + "               t2.label as is_del_name,                                     "
+        + "               t3.staff_count                                                                                "
         + "          FROM m_position t1                                                "
         + "     LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                      "
         + "     LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                      "
         + "     LEFT JOIN v_dict_info AS t2 ON t2.code = '" + PerfectDictConstant.DICT_SYS_DELETE_MAP + "' and t2.dict_value = cast(t1.is_del as char(1))      "
+        + "     left join (                                                                                             "
+        + "                  select count(1) staff_count,                                                                          "
+        + "                         subt.serial_id,                                                                     "
+        + "                         subt.serial_type                                                                    "
+        + "                    from m_staff_org subt                                                                    "
+        + "                   where (subt.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)   "
+        + "                group by subt.serial_id, subt.serial_type                                                    "
+        + "                )  t3 on t3.serial_id = t1.id                                                                "
+        + "           and t3.serial_type = '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE + "'     "
         + "                                                                            ";
 
 
