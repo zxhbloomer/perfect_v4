@@ -1,6 +1,5 @@
 package com.perfect.core.serviceimpl.master.org;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
@@ -705,11 +704,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
          * 1：全部员工
          * */
         if (searchCondition.getActive_tabs_index() == 1){
-            String _code = searchCondition.getCode();
-            _code = StrUtil.sub(_code, 0, 4);
-            searchCondition.setCode(_code);
+            // 1：全部员工
+            mStaffTabVo.setList(mapper.getAllOrgStaff(searchCondition));
+        } else {
+            // 0:当前组织
+            mStaffTabVo.setList(mapper.selectStaff(searchCondition));
         }
-        mStaffTabVo.setList(mapper.selectStaff(searchCondition));
+
         // count 数据
         mStaffTabVo.setAllOrgStaffCount(getAllOrgStaffCount(searchCondition));
         return mStaffTabVo;
@@ -732,10 +733,12 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
          * 考虑所有员工的方法
          * 1:根据code的定义规则，0001xxxx|xxxx|，每4位为一个层，所以找到第一组的4个
          * 2：并设置回code中去
+         *
+         * 2020.04.26 updated：该方法不适合，只需要判断，用户表中租户=参数，即可
          */
-        String _code = searchCondition.getCode();
-        _code = StrUtil.sub(_code, 0, 4);
-        searchCondition.setCode(_code);
+//        String _code = searchCondition.getCode();
+//        _code = StrUtil.sub(_code, 0, 4);
+//        searchCondition.setCode(_code);
         return mapper.getAllOrgStaffCount(searchCondition);
     }
 }
