@@ -176,16 +176,16 @@ public interface MPositionMapper extends BaseMapper<MPositionEntity> {
 
     /**
      * 获取单条数据
-     * @param id
+     * @param searchCondition
      * @return
      */
-    @Select("                                                                        "
+    @Select("                                                                                                       "
         + COMMON_SELECT
-        + "  where true                                                              "
-        + "    and (t1.id = #{p1})                                                   "
-        + "    and (t1.tenant_id = #{p2} or #{p2} is null)                           "
+        + "  where true                                                                                             "
+        + "    and (t1.id = #{p1.id,jdbcType=BIGINT})                                                               "
+        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)      "
         + "                                                                          ")
-    MPositionVo selectByid(@Param("p1") Long id, @Param("p2")Long tenant_id);
+    MPositionVo selectByid(@Param("p1") MPositionVo searchCondition);
 
     /**
      * 查询在组织架构中是否存在有被使用的数据

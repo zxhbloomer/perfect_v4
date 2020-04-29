@@ -165,7 +165,10 @@ public class MPositiionServiceImpl extends BaseServiceImpl<MPositionMapper, MPos
      */
     @Override
     public MPositionVo selectByid(Long id){
-        return mapper.selectByid(id, getUserSessionTenantId());
+        MPositionVo searchCondition = new MPositionVo();
+        searchCondition.setId(id);
+        searchCondition.setTenant_id(getUserSessionTenantId());
+        return mapper.selectByid(searchCondition);
     }
 
     /**

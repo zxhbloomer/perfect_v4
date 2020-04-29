@@ -56,7 +56,6 @@ public class OrgPositionController extends BaseController {
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<JsonResult<MPositionVo>> save(@RequestBody(required = false) MPositionEntity bean) {
-
         if(service.update(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
         } else {
