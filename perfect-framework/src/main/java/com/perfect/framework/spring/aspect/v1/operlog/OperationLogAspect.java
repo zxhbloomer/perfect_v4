@@ -14,6 +14,7 @@ import com.perfect.common.enums.OperationEnum;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.properies.PerfectConfigProperies;
 import com.perfect.common.utils.annotation.AnnotationResolverUtil;
+import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.log.operate.SLogOperMapper;
 import com.perfect.core.service.log.operate.ISLogOperDetailService;
 import com.perfect.core.service.log.operate.ISLogOperService;
@@ -30,6 +31,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 操作日志
@@ -188,7 +190,14 @@ public class OperationLogAspect {
 			Object paraId = AnnotationResolverUtil.newInstance().resolver(p, operationlog.logById()[i].id());
 			String sql = sqlTemplate + " FROM " + obo.getTable_name() + " WHERE id=" + paraId ;
 			Map<String, Object> newMap = sLogOperMapper.selectAnyTalbe(sql);
-
+			// 删除的场合，newMap会是null，所以需要其它方式创建
+			if (newMap == null) {
+				newMap = new ConcurrentHashMap<String, Object>();
+				Map<String, Object> finalNewMap = newMap;
+				obo.getColumnCommentMap().forEach((key, value) -> {
+					finalNewMap.put(key, "");
+				});
+			}
 			List<SLogOperDetailEntity> opds = new ArrayList<>();
 			for (String clm : cloum) {
 				Object oldValue = (oldMap == null ? null : oldMap.get(clm));
@@ -218,7 +227,11 @@ public class OperationLogAspect {
 				opd.setOld_val((oldMap == null ? null : ( oldValue == null ? null : oldValue.toString() )));
 				opd.setNew_val(newValue == null ? null : newValue.toString());
 				opd.setClm_name(clm);
-				opd.setClm_comment(columnCommentMap.get(clm).toString());
+				if(columnCommentMap.get(clm) == null) {
+					opd.setClm_comment(null);
+				} else {
+					opd.setClm_comment(columnCommentMap.get(clm).toString());
+				}
 				opds.add(opd);
 			}
 			if (!opds.isEmpty()) {
