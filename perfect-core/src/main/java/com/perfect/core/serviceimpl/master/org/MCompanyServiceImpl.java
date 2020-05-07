@@ -10,7 +10,6 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.master.org.MCompanyVo;
-import com.perfect.bean.vo.master.org.MGroupVo;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.core.mapper.master.org.MCompanyMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
@@ -194,13 +193,13 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
                 List<MCompanyEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
                 List<MCompanyEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
                 if (codeList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：集团编号【"+ entity.getCode() +"】出现重复!", entity.getCode());
+                    return CheckResultUtil.NG("新增保存出错：企业编号【"+ entity.getCode() +"】出现重复!", entity.getCode());
                 }
                 if (nameList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：集团全称【"+ entity.getName() +"】出现重复!", entity.getName());
+                    return CheckResultUtil.NG("新增保存出错：企业全称【"+ entity.getName() +"】出现重复!", entity.getName());
                 }
                 if (simple_name_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：集团简称【"+ entity.getSimple_name() +"】出现重复!", entity.getSimple_name());
+                    return CheckResultUtil.NG("新增保存出错：企业简称【"+ entity.getSimple_name() +"】出现重复!", entity.getSimple_name());
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
@@ -210,13 +209,13 @@ public class MCompanyServiceImpl extends BaseServiceImpl<MCompanyMapper, MCompan
                 List<MCompanyEntity> simple_name_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
 
                 if (codeList_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：集团编号【"+ entity.getCode() +"】出现重复!", entity.getCode());
+                    return CheckResultUtil.NG("更新保存出错：企业编号【"+ entity.getCode() +"】出现重复!", entity.getCode());
                 }
                 if (nameList_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：集团全称【"+ entity.getName() +"】出现重复!", entity.getName());
+                    return CheckResultUtil.NG("更新保存出错：企业全称【"+ entity.getName() +"】出现重复!", entity.getName());
                 }
                 if (simple_name_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：集团简称【"+ entity.getSimple_name() +"】出现重复!", entity.getSimple_name());
+                    return CheckResultUtil.NG("更新保存出错：企业简称【"+ entity.getSimple_name() +"】出现重复!", entity.getSimple_name());
                 }
                 break;
             case CheckResult.DELETE_CHECK_TYPE:
