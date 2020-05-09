@@ -39,7 +39,7 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
         + "           	LEFT JOIN m_staff t2 on t1.handler_id = t2.id                "
         + "           	LEFT JOIN m_staff t3 on t1.sub_handler_id = t3.id            "
         + "           	LEFT JOIN m_staff t4 on t1.leader_id = t4.id                 "
-        + "           	LEFT JOIN m_staff t5 on t1.leader_id = t5.id                 "
+        + "           	LEFT JOIN m_staff t5 on t1.response_leader_id = t5.id                 "
         + "             LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id            "
         + "             LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id            "
         + "             LEFT JOIN v_dict_info AS t6 ON t6.code = '" + PerfectDictConstant.DICT_SYS_DELETE_MAP + "' and t6.dict_value = cast(t1.is_del as char(1))      "
