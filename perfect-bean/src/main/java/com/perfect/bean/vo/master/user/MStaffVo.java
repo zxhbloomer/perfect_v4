@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.master.user;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.perfect.bean.config.base.v1.BaseVo;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import com.perfect.bean.vo.master.org.MStaffPositionsVo;
@@ -148,6 +149,11 @@ public class MStaffVo extends BaseVo implements Serializable {
     private Long dept_id;
     private String dept_name;
     private String dept_simple_name;
+
+    /**
+     * 描述
+     */
+    private String descr;
 
     /**
      * 是否删除
