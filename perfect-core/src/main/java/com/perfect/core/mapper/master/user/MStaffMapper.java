@@ -167,29 +167,11 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
      * @return
      */
     @Select("    "
-        + "      SELECT                                                                                                         "
-        + "            	t1.* ,                                                                                                  "
-        + "            	t2.label as sex_text,                                                                                   "
-        + "            	t3.label as service_text,                                                                               "
-        + "            	t4.label as degree_text,                                                                                "
-        + "            	t5.label as is_wed_text,                                                                                "
-        + "            	t6.name as company_name,                                                                                "
-        + "            	t6.simple_name as company_simple_name,                                                                  "
-        + "            	t7.name as dept_name,                                                                                   "
-        + "            	t7.simple_name as dept_simple_name                                                                      "
-        + "        FROM                                                                                                         "
-        + "            	m_staff t1                                                                                              "
-        + "            	LEFT JOIN v_dict_info AS t2 ON t2.code = 'sys_sex_type' and t2.dict_value = t1.sex                      "
-        + "            	LEFT JOIN v_dict_info AS t3 ON t3.code = 'usr_service_type' and t3.dict_value = t1.service              "
-        + "            	LEFT JOIN v_dict_info AS t4 ON t4.code = 'usr_degree_type' and t4.dict_value = t1.degree                "
-        + "             LEFT JOIN v_dict_info AS t5 ON t5.code = 'usr_wed_type' and t5.dict_value = t1.is_wed                   "
-        + "             LEFT JOIN m_company AS t6 ON t6.id = t1.company_id                                                      "
-        + "             LEFT JOIN m_dept AS t7 ON t7.id = t1.dept_id                                                            "
-        + "       where true                                                                                                    "
-        + "         and (t1.id = #{p1})  "
-        + "         and (t1.tenant_id = #{p2} or #{p2} is null )  "
+        + common_select
+        + "    and (t1.id =#{p1.id,jdbcType=BIGINT} or #{p1.id,jdbcType=BIGINT} is null)      "
+        + "    and (t1.tenant_id =#{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)      "
         + "      ")
-    MStaffVo selectByid(@Param("p1") Long id, @Param("p2")Long tenant_id);
+    MStaffVo selectByid(@Param("p1") MStaffVo searchCondition);
 
     /**
      * 放到session中

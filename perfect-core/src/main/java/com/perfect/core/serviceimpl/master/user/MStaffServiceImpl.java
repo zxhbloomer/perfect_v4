@@ -250,7 +250,10 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
      */
     @Override
     public MStaffVo selectByid(Long id){
-        return mapper.selectByid(id, getUserSessionTenantId());
+        MStaffVo searchCondition = new MStaffVo();
+        searchCondition.setId(id);
+        searchCondition.setTenant_id(getUserSessionTenantId());
+        return mapper.selectByid(searchCondition);
     }
 
     /**
