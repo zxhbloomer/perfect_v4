@@ -43,6 +43,16 @@ public class OrgPositionController extends BaseController {
 
     @SysLogAnnotion("根据查询条件，获取岗位主表信息")
     @ApiOperation("根据参数id，获取岗位主表信息")
+    @PostMapping("/id")
+    @ResponseBody
+    public ResponseEntity<JsonResult<MPositionVo>> id(@RequestBody(required = false)
+        MPositionVo searchCondition)  {
+        MPositionVo entity = service.selectByid(searchCondition.getId());
+        return ResponseEntity.ok().body(ResultUtil.OK(entity));
+    }
+
+    @SysLogAnnotion("根据查询条件，获取岗位主表信息")
+    @ApiOperation("根据参数id，获取岗位主表信息")
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<IPage<MPositionVo>>> list(@RequestBody(required = false)

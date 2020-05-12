@@ -93,6 +93,20 @@ public class MPositionVo extends BaseVo implements Serializable {
     private int staff_count;
 
     /**
+     * 集团名称
+     */
+    private String group_name;
+    /**
+     * 企业名称
+     */
+    private String company_name;
+    /**
+     * 部门名称
+     */
+    private String dept_name;
+
+
+    /**
      * 弹出框模式：空：普通模式；10：组织使用，需要排除已经选择的数据；
      */
     private String dataModel;
