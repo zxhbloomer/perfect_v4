@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -199,4 +200,8 @@ public class MStaffTabDataVo extends BaseVo implements Serializable {
         return user;
     }
 
+    /**
+     * 员工的岗位信息集合
+     */
+    public List<MStaffPositionsVo> positions;
 }
