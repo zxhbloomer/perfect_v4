@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -99,4 +100,9 @@ public class MGroupVo extends BaseVo implements Serializable {
      * 换页条件
      */
     private PageCondition pageCondition;
+
+    /**
+     * 组织机构路线
+     */
+    private List<MOrgRouteVo> org_route;
 }
