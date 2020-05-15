@@ -5,10 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import com.perfect.bean.bo.log.operate.CustomOperateBo;
 import com.perfect.bean.bo.log.operate.CustomOperateDetailBo;
-import com.perfect.bean.entity.master.org.MCompanyEntity;
-import com.perfect.bean.entity.master.org.MGroupEntity;
-import com.perfect.bean.entity.master.org.MOrgEntity;
-import com.perfect.bean.entity.master.org.MStaffOrgEntity;
+import com.perfect.bean.entity.master.org.*;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
@@ -270,7 +267,46 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         entity.setCode(parentCode + str);
         entity.setSon_count(0);
 
-        return InsertResultUtil.OK(mapper.insert(entity));
+        // 执行插入操作
+        int insert_result = mapper.insert(entity);
+
+        // 判断当前结点
+        switch (entity.getType()) {
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT:
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP:
+                updateOrgGroupGroupRelation(entity,parentEntity);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY:
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT:
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION:
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_STAFF:
+                break;
+        }
+
+        return InsertResultUtil.OK(insert_result);
+    }
+
+    /**
+     * 设置集团关系，存在集团嵌套情况
+     */
+    private void updateOrgGroupGroupRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
+        MOrgGroupGroupEntity groupGroupEntity = new MOrgGroupGroupEntity();
+        groupGroupEntity.setCurrent_id(currentEntity.getSerial_id());
+        groupGroupEntity.setTenant_id(getUserSessionTenantId());
+        /** 查找上级结点如果是集团时，说明存在集团嵌套，m_org_group_group */
+        if(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE.equals(parentEntity.getSerial_type())) {
+            groupGroupEntity.setParent_id(parentEntity.getSerial_id());
+        }
+        /** 更新sort */
+        int count = mapper.getOrgGroupGroupRelationCount(currentEntity);
+        count = count + 1;
+        groupGroupEntity.setSort(count);
+        /** 更新counts */
+        mapper.updateOrgGroupGroupRelationCount(currentEntity.getSerial_id(),count);
     }
 
     /**

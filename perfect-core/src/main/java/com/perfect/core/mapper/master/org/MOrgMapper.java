@@ -737,4 +737,32 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                          "
         + "                                                                                                                     ")
     List<MStaffTabDataVo> getAllOrgStaff(@Param("p1") MStaffTabDataVo searchCondition);
+
+    /**
+     * 集团关系，集团嵌套count
+     * @param searchCondition
+     * @return
+     */
+    @Select("    "
+        + "      SELECT                                                         "
+        + "             count(*) count                                          "
+        + "        FROM                                                         "
+        + "             m_org_group_group t1                                    "
+        + "       WHERE                                                         "
+        + "             t1.current_id = #{p1.serial_id,jdbcType=BIGINT})        "
+        + "         and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT})        "
+        + "                                                                     ")
+    int getOrgGroupGroupRelationCount(@Param("p1") MOrgEntity searchCondition);
+
+    /**
+     * 拖拽的保存
+     * @return
+     */
+    @Update("                                                                        "
+        + "    update m_org_group_group t                                            "
+        + "       set t.counts = #{p2} ,                                             "
+        + "     where t.current_id = #{p1}                                           "
+        + "                                                                          "
+    )
+    int updateOrgGroupGroupRelationCount(@Param("p1")Long id, @Param("p2")int count);
 }
