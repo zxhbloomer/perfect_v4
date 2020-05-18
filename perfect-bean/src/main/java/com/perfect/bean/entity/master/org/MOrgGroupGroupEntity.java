@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author zxh
- * @since 2020-05-15
+ * @since 2020-05-18
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @TableName("m_org_group_group")
 public class MOrgGroupGroupEntity implements Serializable {
 
-    private static final long serialVersionUID = 282742236653103671L;
+    private static final long serialVersionUID = -745386752871791908L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -40,13 +40,25 @@ public class MOrgGroupGroupEntity implements Serializable {
     private Long parent_id;
 
     /**
-     * 当前集团对应上级所有集团数量
+     * 根集团id
+     */
+    @TableField("root_parent_id")
+    private Long root_parent_id;
+
+    /**
+     * 根集团code
+     */
+    @TableField("root_parent_code")
+    private String root_parent_code;
+
+    /**
+     * 嵌套时会>1
      */
     @TableField("counts")
     private Integer counts;
 
     /**
-     * 当前集团对应上级所有集团数量排序
+     * 从根集团到当前集团的排序
      */
     @TableField("sort")
     private Integer sort;

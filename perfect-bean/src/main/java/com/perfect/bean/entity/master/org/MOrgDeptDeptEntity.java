@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author zxh
- * @since 2020-05-15
+ * @since 2020-05-18
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @TableName("m_org_dept_dept")
 public class MOrgDeptDeptEntity implements Serializable {
 
-    private static final long serialVersionUID = 2578506090767984013L;
+    private static final long serialVersionUID = 5939217676444646438L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -38,6 +38,18 @@ public class MOrgDeptDeptEntity implements Serializable {
      */
     @TableField("parent_id")
     private Long parent_id;
+
+    /**
+     * 集团嵌套时的根集团id
+     */
+    @TableField("root_id")
+    private Long root_id;
+
+    /**
+     * 集团嵌套时的根集团code
+     */
+    @TableField("root_code")
+    private String root_code;
 
     /**
      * 当前集团对应上级所有集团数量
@@ -75,5 +87,4 @@ public class MOrgDeptDeptEntity implements Serializable {
     @Version
     @TableField(value="dbversion", fill = FieldFill.INSERT_UPDATE)
     private Integer dbversion;
-
 }

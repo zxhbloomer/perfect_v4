@@ -1,7 +1,7 @@
 package com.perfect.core.mapper.master.org;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.perfect.bean.entity.master.org.MOrgDeptCompanyEntity;
+import com.perfect.bean.entity.master.org.MOrgCompanyDeptEntity;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @since 2020-05-15
  */
 @Repository
-public interface MOrgDeptCompanyMapper extends BaseMapper<MOrgDeptCompanyEntity> {
+public interface MOrgCompanyDeptMapper extends BaseMapper<MOrgCompanyDeptEntity> {
 
 }

@@ -10,34 +10,58 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 部门与企业关系表
+ * 岗位与部门关系表，部门->岗位
  * </p>
  *
  * @author zxh
- * @since 2020-05-15
+ * @since 2020-05-18
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("m_org_company_group")
-public class MOrgCompanyGroupEntity implements Serializable {
+@TableName("m_org_dept_position")
+public class MOrgDeptPositionEntity implements Serializable {
 
-    private static final long serialVersionUID = 7172311837544110876L;
+    private static final long serialVersionUID = -8650518624699316727L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 部门id
+     * 岗位id
      */
     @TableField("current_id")
     private Long current_id;
 
     /**
-     * 所属企业id
+     * 所属部门id
      */
     @TableField("parent_id")
     private Long parent_id;
+
+    /**
+     * 根部门id
+     */
+    @TableField("root_parent_id")
+    private Long root_parent_id;
+
+    /**
+     * 根部门code
+     */
+    @TableField("root_code")
+    private String root_code;
+
+    /**
+     * 嵌套时会>1
+     */
+    @TableField("counts")
+    private Integer counts;
+
+    /**
+     * 嵌套时的排序
+     */
+    @TableField("sort")
+    private Integer sort;
 
     /**
      * 租户id
@@ -63,6 +87,5 @@ public class MOrgCompanyGroupEntity implements Serializable {
     @Version
     @TableField(value="dbversion", fill = FieldFill.INSERT_UPDATE)
     private Integer dbversion;
-
 
 }

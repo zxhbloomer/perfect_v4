@@ -1,7 +1,7 @@
 package com.perfect.core.service.master.org;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.perfect.bean.entity.master.org.MOrgPositionDeptEntity;
+import com.perfect.bean.entity.master.org.MOrgDeptPositionEntity;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.perfect.bean.entity.master.org.MOrgPositionDeptEntity;
  * @author zxh
  * @since 2020-05-15
  */
-public interface IMOrgPositionDeptService extends IService<MOrgPositionDeptEntity> {
+public interface IMOrgDeptPositionService extends IService<MOrgDeptPositionEntity> {
 
 }
