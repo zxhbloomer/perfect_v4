@@ -22,7 +22,6 @@ public interface MOrgGroupGroupMapper extends BaseMapper<MOrgGroupGroupEntity> {
 
     /**
      * 集团关系，集团嵌套count
-     * @param searchCondition
      * @return
      */
     @Select("    "
@@ -34,7 +33,7 @@ public interface MOrgGroupGroupMapper extends BaseMapper<MOrgGroupGroupEntity> {
         + "             t1.current_id = #{p1}                                   "
         + "         and t1.tenant_id = #{p2}                                    "
         + "                                                                     ")
-    MOrgGroupGroupEntity getOrgGroupGroupEntityByCurrentId(@Param("p1") Long current_id, @Param("p2") Long tenant_id);
+    MOrgGroupGroupEntity getOrgGGEntityByCurrentId(@Param("p1") Long current_id, @Param("p2") Long tenant_id);
 
     /**
      * 集团关系，集团嵌套count
@@ -50,23 +49,34 @@ public interface MOrgGroupGroupMapper extends BaseMapper<MOrgGroupGroupEntity> {
         + "             t1.current_id = #{p1.serial_id,jdbcType=BIGINT}         "
         + "         and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT})        "
         + "                                                                     ")
-    int getOrgGroupGroupRelationCount(@Param("p1") MOrgEntity searchCondition);
-
-    /**
-     * 保存嵌套时的儿子个数
-     * @return
-     */
-    @Update("                                                                        "
-        + "    update m_org_group_group t                                            "
-        + "       set t.counts = #{p2}                                               "
-        + "     where t.current_id = #{p1}                                           "
-        + "                                                                          "
-    )
-    int updateOrgGroupGroupRelationCount(@Param("p1")Long id, @Param("p2")int count);
+    int getOrgGGRelationCount(@Param("p1") MOrgEntity searchCondition);
 
     @Delete("                                                                        "
         + "     delete from m_org_group_group t                                      "
         + "      where t.current_id = #{p1}                                          "
     )
-    int delOrgGroupGroupRelation(@Param("p1")Long id);
+    int delOrgGGRelation(@Param("p1")Long id);
+
+    /**
+     * 保存嵌套时的儿子个数
+     * @return
+     */
+    @Update("                                                                                    "
+        + "         update m_org_group_group ut1                                                 "
+        + "     inner join (                                                                     "
+        + "                  select t1.id,                                                       "
+        + "                         count(1) over(partition by t1.root_parent_id) as counts,     "
+        + "                         row_number() over(partition by t1.root_parent_id) as sort    "
+        + "                    from m_org_group_group t1                                         "
+        + "               left join (                                                            "
+        + "                           SELECT sub.root_parent_id                                  "
+        + "                             FROM m_org_group_group sub                               "
+        + "                            where sub.current_id = #{p1}                              "
+        + "                          ) t2 on t1.root_parent_id = t2.root_parent_id               "
+        + "                ) ut2 on ut1.id = ut2.id                                              "
+        + "            set ut1.counts = ut2.counts,                                              "
+        + "                ut1.sort = ut2.sort                                                   "
+        + "                                                                                      "
+    )
+    int updateOrgGGCountAndSort(@Param("p1")Long id);
 }

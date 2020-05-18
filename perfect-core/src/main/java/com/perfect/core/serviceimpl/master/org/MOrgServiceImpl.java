@@ -306,7 +306,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             ggEntity.setParent_id(parentEntity.getSerial_id());
             ggEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
             // 查找上级结点获取，root信息
-            MOrgGroupGroupEntity parentGGMentity = groupGroupMapper.getOrgGroupGroupEntityByCurrentId(parentEntity.getSerial_id(), parentEntity.getTenant_id());
+            MOrgGroupGroupEntity parentGGMentity = groupGroupMapper.getOrgGGEntityByCurrentId(parentEntity.getSerial_id(), parentEntity.getTenant_id());
             ggEntity.setRoot_parent_code(parentGGMentity.getRoot_parent_code());
             ggEntity.setRoot_parent_id(parentGGMentity.getRoot_parent_id());
         } else {
@@ -317,12 +317,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             ggEntity.setRoot_parent_code(currentEntity.getCode());
         }
         /** 更新sort */
-        int count = groupGroupMapper.getOrgGroupGroupRelationCount(currentEntity);
+        int count = groupGroupMapper.getOrgGGRelationCount(currentEntity);
         count = count + 1;
         ggEntity.setSort(count);
+        /** 插入操作 */
         groupGroupMapper.insert(ggEntity);
-        /** 更新counts */
-        groupGroupMapper.updateOrgGroupGroupRelationCount(currentEntity.getSerial_id(),count);
+        /** 更新counts，和sorts */
+        groupGroupMapper.updateOrgGGCountAndSort(ggEntity.getId());
     }
 
     /**
@@ -501,7 +502,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
                 entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP:
-                groupGroupMapper.delOrgGroupGroupRelation(entity.getSerial_id());
+                groupGroupMapper.delOrgGGRelation(entity.getSerial_id());
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY:
                 break;
