@@ -28,6 +28,7 @@ import com.perfect.common.enums.ParameterEnum;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.ArrayPfUtil;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
+import com.perfect.core.mapper.master.org.MOrgGroupGroupMapper;
 import com.perfect.core.mapper.master.org.MOrgMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.common.ICommonComponentService;
@@ -55,6 +56,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Service
 public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> implements IMOrgService {
+
+    @Autowired
+    private MOrgGroupGroupMapper groupGroupMapper;
 
     @Autowired
     private MOrgMapper mapper;
@@ -294,19 +298,31 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * 设置集团关系，存在集团嵌套情况
      */
     private void updateOrgGroupGroupRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
-        MOrgGroupGroupEntity groupGroupEntity = new MOrgGroupGroupEntity();
-        groupGroupEntity.setCurrent_id(currentEntity.getSerial_id());
-        groupGroupEntity.setTenant_id(getUserSessionTenantId());
-        /** 查找上级结点如果是集团时，说明存在集团嵌套，m_org_group_group */
+        MOrgGroupGroupEntity ggEntity = new MOrgGroupGroupEntity();
+        ggEntity.setCurrent_id(currentEntity.getSerial_id());
+        ggEntity.setTenant_id(getUserSessionTenantId());
         if(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE.equals(parentEntity.getSerial_type())) {
-            groupGroupEntity.setParent_id(parentEntity.getSerial_id());
+            /** 查找上级结点如果是集团时，说明存在集团嵌套，m_org_group_group */
+            ggEntity.setParent_id(parentEntity.getSerial_id());
+            ggEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
+            // 查找上级结点获取，root信息
+            MOrgGroupGroupEntity parentGGMentity = groupGroupMapper.getOrgGroupGroupEntityByCurrentId(parentEntity.getSerial_id(), parentEntity.getTenant_id());
+            ggEntity.setRoot_parent_code(parentGGMentity.getRoot_parent_code());
+            ggEntity.setRoot_parent_id(parentGGMentity.getRoot_parent_id());
+        } else {
+            /** 查找上级结点如果是租户，则不存在嵌套 */
+            ggEntity.setParent_id(parentEntity.getSerial_id());
+            ggEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
+            ggEntity.setRoot_parent_id(currentEntity.getSerial_id());
+            ggEntity.setRoot_parent_code(currentEntity.getCode());
         }
         /** 更新sort */
-        int count = mapper.getOrgGroupGroupRelationCount(currentEntity);
+        int count = groupGroupMapper.getOrgGroupGroupRelationCount(currentEntity);
         count = count + 1;
-        groupGroupEntity.setSort(count);
+        ggEntity.setSort(count);
+        groupGroupMapper.insert(ggEntity);
         /** 更新counts */
-        mapper.updateOrgGroupGroupRelationCount(currentEntity.getSerial_id(),count);
+        groupGroupMapper.updateOrgGroupGroupRelationCount(currentEntity.getSerial_id(),count);
     }
 
     /**
@@ -466,10 +482,36 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         // 检索子组织数据
         List<MOrgEntity> rtnList = getDataByCode(entity);
         rtnList.forEach(bean -> {
+            // 删除关联表数据
+            deleteOrgRelation(bean);
             // 删除 数据
             mapper.deleteById(bean.getId());
-        });;
+        });
+
         return true;
+    }
+
+    /**
+     * 删除关联表
+     * @param entity
+     */
+    private void deleteOrgRelation(MOrgEntity entity) {
+        switch (entity.getType()) {
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT:
+                entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP:
+                groupGroupMapper.delOrgGroupGroupRelation(entity.getSerial_id());
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY:
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT:
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION:
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_STAFF:
+                break;
+        }
     }
 
     /**
