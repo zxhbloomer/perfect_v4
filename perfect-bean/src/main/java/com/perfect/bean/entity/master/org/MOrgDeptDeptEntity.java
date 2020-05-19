@@ -40,16 +40,22 @@ public class MOrgDeptDeptEntity implements Serializable {
     private Long parent_id;
 
     /**
+     * 所属父节点类型
+     */
+    @TableField("parent_type")
+    private String parent_type;
+
+    /**
      * 集团嵌套时的根集团id
      */
-    @TableField("root_id")
-    private Long root_id;
+    @TableField("root_parent_id")
+    private Long root_parent_id;
 
     /**
      * 集团嵌套时的根集团code
      */
-    @TableField("root_code")
-    private String root_code;
+    @TableField("root_parent_code")
+    private String root_parent_code;
 
     /**
      * 当前集团对应上级所有集团数量

@@ -2,6 +2,8 @@ package com.perfect.core.mapper.master.org;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.perfect.bean.entity.master.org.MOrgGroupCompanyEntity;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,4 +17,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MOrgGroupCompanyMapper extends BaseMapper<MOrgGroupCompanyEntity> {
 
+    @Delete("                                                                        "
+        + "     delete from m_org_group_company t                                      "
+        + "      where t.current_id = #{p1}                                          "
+    )
+    int delOGCRelation(@Param("p1")Long id);
 }
