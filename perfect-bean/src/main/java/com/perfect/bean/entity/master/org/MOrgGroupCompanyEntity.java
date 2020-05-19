@@ -40,6 +40,12 @@ public class MOrgGroupCompanyEntity implements Serializable {
     private Long parent_id;
 
     /**
+     * 所属父节点类型
+     */
+    @TableField("parent_type")
+    private String parent_type;
+
+    /**
      * 根集团id
      */
     @TableField("root_parent_id")

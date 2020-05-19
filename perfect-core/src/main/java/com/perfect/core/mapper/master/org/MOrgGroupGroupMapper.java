@@ -33,7 +33,7 @@ public interface MOrgGroupGroupMapper extends BaseMapper<MOrgGroupGroupEntity> {
         + "             t1.current_id = #{p1}                                   "
         + "         and t1.tenant_id = #{p2}                                    "
         + "                                                                     ")
-    MOrgGroupGroupEntity getOrgGGEntityByCurrentId(@Param("p1") Long current_id, @Param("p2") Long tenant_id);
+    MOrgGroupGroupEntity getOGGEntityByCurrentId(@Param("p1") Long current_id, @Param("p2") Long tenant_id);
 
     /**
      * 集团关系，集团嵌套count
@@ -49,13 +49,13 @@ public interface MOrgGroupGroupMapper extends BaseMapper<MOrgGroupGroupEntity> {
         + "             t1.current_id = #{p1.serial_id,jdbcType=BIGINT}         "
         + "         and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT})        "
         + "                                                                     ")
-    int getOrgGGRelationCount(@Param("p1") MOrgEntity searchCondition);
+    int getOGGRelationCount(@Param("p1") MOrgEntity searchCondition);
 
     @Delete("                                                                        "
         + "     delete from m_org_group_group t                                      "
         + "      where t.current_id = #{p1}                                          "
     )
-    int delOrgGGRelation(@Param("p1")Long id);
+    int delOGGRelation(@Param("p1")Long id);
 
     /**
      * 保存嵌套时的儿子个数
@@ -78,5 +78,5 @@ public interface MOrgGroupGroupMapper extends BaseMapper<MOrgGroupGroupEntity> {
         + "                ut1.sort = ut2.sort                                                   "
         + "                                                                                      "
     )
-    int updateOrgGGCountAndSort(@Param("p1")Long id);
+    int updateOGGCountAndSort(@Param("p1")Long id);
 }

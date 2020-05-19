@@ -28,6 +28,8 @@ import com.perfect.common.enums.ParameterEnum;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.ArrayPfUtil;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
+import com.perfect.core.mapper.master.org.MOrgCompanyDeptMapper;
+import com.perfect.core.mapper.master.org.MOrgGroupCompanyMapper;
 import com.perfect.core.mapper.master.org.MOrgGroupGroupMapper;
 import com.perfect.core.mapper.master.org.MOrgMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
@@ -58,7 +60,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> implements IMOrgService {
 
     @Autowired
-    private MOrgGroupGroupMapper groupGroupMapper;
+    private MOrgGroupGroupMapper oGGMapper;
+
+    @Autowired
+    private MOrgGroupCompanyMapper oGCMapper;
+
+    @Autowired
+    private MOrgCompanyDeptMapper oCDMapper;
 
     @Autowired
     private MOrgMapper mapper;
@@ -279,11 +287,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT:
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP:
-                updateOrgGroupGroupRelation(entity,parentEntity);
+                updateOGGRelation(entity,parentEntity);
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY:
+                updateOGCRelation(entity,parentEntity);
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT:
+                updateOCDRelation(entity,parentEntity);
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION:
                 break;
@@ -297,33 +307,66 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     /**
      * 设置集团关系，存在集团嵌套情况
      */
-    private void updateOrgGroupGroupRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
-        MOrgGroupGroupEntity ggEntity = new MOrgGroupGroupEntity();
-        ggEntity.setCurrent_id(currentEntity.getSerial_id());
-        ggEntity.setTenant_id(getUserSessionTenantId());
+    private void updateOGGRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
+        MOrgGroupGroupEntity oGGEntity = new MOrgGroupGroupEntity();
+        oGGEntity.setCurrent_id(currentEntity.getSerial_id());
+        oGGEntity.setTenant_id(getUserSessionTenantId());
         if(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE.equals(parentEntity.getSerial_type())) {
             /** 查找上级结点如果是集团时，说明存在集团嵌套，m_org_group_group */
-            ggEntity.setParent_id(parentEntity.getSerial_id());
-            ggEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
+            oGGEntity.setParent_id(parentEntity.getSerial_id());
+            oGGEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
             // 查找上级结点获取，root信息
-            MOrgGroupGroupEntity parentGGMentity = groupGroupMapper.getOrgGGEntityByCurrentId(parentEntity.getSerial_id(), parentEntity.getTenant_id());
-            ggEntity.setRoot_parent_code(parentGGMentity.getRoot_parent_code());
-            ggEntity.setRoot_parent_id(parentGGMentity.getRoot_parent_id());
+            MOrgGroupGroupEntity parentGGEntity = oGGMapper
+                .getOGGEntityByCurrentId(parentEntity.getSerial_id(), parentEntity.getTenant_id());
+            oGGEntity.setRoot_parent_code(parentGGEntity.getRoot_parent_code());
+            oGGEntity.setRoot_parent_id(parentGGEntity.getRoot_parent_id());
         } else {
             /** 查找上级结点如果是租户，则不存在嵌套 */
-            ggEntity.setParent_id(parentEntity.getSerial_id());
-            ggEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
-            ggEntity.setRoot_parent_id(currentEntity.getSerial_id());
-            ggEntity.setRoot_parent_code(currentEntity.getCode());
+            oGGEntity.setParent_id(parentEntity.getSerial_id());
+            oGGEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
+            oGGEntity.setRoot_parent_id(currentEntity.getSerial_id());
+            oGGEntity.setRoot_parent_code(currentEntity.getCode());
         }
         /** 更新sort */
-        int count = groupGroupMapper.getOrgGGRelationCount(currentEntity);
+        int count = oGGMapper.getOGGRelationCount(currentEntity);
         count = count + 1;
-        ggEntity.setSort(count);
+        oGGEntity.setSort(count);
         /** 插入操作 */
-        groupGroupMapper.insert(ggEntity);
+        oGGMapper.insert(oGGEntity);
         /** 更新counts，和sorts */
-        groupGroupMapper.updateOrgGGCountAndSort(ggEntity.getId());
+        oGGMapper.updateOGGCountAndSort(oGGEntity.getId());
+    }
+
+    /**
+     * 设置部门关系，存在集团嵌套情况
+     */
+    private void updateOGCRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
+        MOrgGroupCompanyEntity oGCEntity = new MOrgGroupCompanyEntity();
+        oGCEntity.setCurrent_id(currentEntity.getSerial_id());
+        oGCEntity.setTenant_id(getUserSessionTenantId());
+        oGCEntity.setParent_id(parentEntity.getSerial_id());
+        oGCEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
+        oGCEntity.setRoot_parent_id(currentEntity.getSerial_id());
+        oGCEntity.setRoot_parent_code(currentEntity.getCode());
+        oGCEntity.setCounts(1);
+        oGCEntity.setSort(1);
+        oGCMapper.insert(oGCEntity);
+    }
+
+    /**
+     * 设置企业->部门关系，不存在嵌套
+     */
+    private void updateOCDRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
+        MOrgCompanyDeptEntity oCDEntity = new MOrgCompanyDeptEntity();
+        oCDEntity.setCurrent_id(currentEntity.getSerial_id());
+        oCDEntity.setTenant_id(getUserSessionTenantId());
+        oCDEntity.setParent_id(parentEntity.getSerial_id());
+        oCDEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE);
+        oCDEntity.setRoot_parent_id(currentEntity.getSerial_id());
+        oCDEntity.setRoot_parent_code(currentEntity.getCode());
+        oCDEntity.setCounts(1);
+        oCDEntity.setSort(1);
+        oCDMapper.insert(oCDEntity);
     }
 
     /**
@@ -502,7 +545,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
                 entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP:
-                groupGroupMapper.delOrgGGRelation(entity.getSerial_id());
+                oGGMapper.delOGGRelation(entity.getSerial_id());
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY:
                 break;

@@ -69,7 +69,7 @@ public interface MDeptMapper extends BaseMapper<MDeptEntity> {
         + "           not exists(                                                                                    "
         + "                     select 1                                                                             "
         + "                       from m_org subt1                                                                   "
-        + "                      where subt1.serial_type = '"+ PerfectDictConstant.DICT_SYS_CODE_TYPE_M_GROUP +"'    "
+        + "                      where subt1.serial_type = '"+ PerfectDictConstant.DICT_SYS_CODE_TYPE_M_DEPT +"'    "
         + "                        and t1.id = subt1.serial_id                                                        "
         + "           )                                                                                              "
         + "       else true                                                                                          "
