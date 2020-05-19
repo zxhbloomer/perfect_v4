@@ -22,4 +22,10 @@ public interface MOrgDeptPositionMapper extends BaseMapper<MOrgDeptPositionEntit
         + "      where t.current_id = #{p1}                                          "
     )
     int delODPRelation(@Param("p1")Long id);
+
+    @Delete("                                                                        "
+        + "     delete from m_org_dept_position t                                      "
+        + "      where t.tenant_id = #{p1}                                           "
+    )
+    int delAll(@Param("p1")Long tenant_id);
 }

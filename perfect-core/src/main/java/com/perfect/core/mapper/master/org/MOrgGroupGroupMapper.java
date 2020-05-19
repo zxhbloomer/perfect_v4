@@ -79,4 +79,11 @@ public interface MOrgGroupGroupMapper extends BaseMapper<MOrgGroupGroupEntity> {
         + "                                                                                      "
     )
     int updateOGGCountAndSort(@Param("p1")Long id);
+
+    @Delete("                                                                        "
+        + "     delete from m_org_group_group t                                      "
+        + "      where t.tenant_id = #{p1}                                           "
+    )
+    int delAll(@Param("p1")Long tenant_id);
+
 }

@@ -22,4 +22,10 @@ public interface MOrgGroupCompanyMapper extends BaseMapper<MOrgGroupCompanyEntit
         + "      where t.current_id = #{p1}                                          "
     )
     int delOGCRelation(@Param("p1")Long id);
+
+    @Delete("                                                                        "
+        + "     delete from m_org_group_company t                                      "
+        + "      where t.tenant_id = #{p1}                                           "
+    )
+    int delAll(@Param("p1")Long tenant_id);
 }

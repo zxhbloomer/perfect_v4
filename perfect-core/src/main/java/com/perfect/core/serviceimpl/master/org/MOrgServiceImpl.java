@@ -687,13 +687,14 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             entity.setU_id(SecurityUtil.getLoginUser_id());
             entity.setU_time(LocalDateTime.now());
             mapper.updateDragSave(entity);
-
-            /** 获取父亲的entity */
-            MOrgEntity currentEntity = getById(entity.getId());
-            MOrgEntity parentEntity = getById(entity.getParent_id());
-            /** 设置组织关系表逻辑 */
-            setOrgRelationData(currentEntity,parentEntity);
         }
+
+        Long tenant_id = getUserSessionTenantId();
+        oGGMapper.delAll(tenant_id);
+        oGCMapper.delAll(tenant_id);
+        oCDMapper.delAll(tenant_id);
+        oDPMapper.delAll(tenant_id);
+        oDDMapper.delAll(tenant_id);
 
         // 设置组织关系表逻辑
         for (MOrgEntity entity : list) {

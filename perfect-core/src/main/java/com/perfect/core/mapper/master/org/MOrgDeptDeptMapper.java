@@ -79,4 +79,10 @@ public interface MOrgDeptDeptMapper extends BaseMapper<MOrgDeptDeptEntity> {
         + "                                                                                      "
     )
     int updateODDCountAndSort(@Param("p1")Long id);
+
+    @Delete("                                                                        "
+        + "     delete from m_org_Dept_Dept t                                      "
+        + "      where t.tenant_id = #{p1}                                           "
+    )
+    int delAll(@Param("p1")Long tenant_id);
 }
