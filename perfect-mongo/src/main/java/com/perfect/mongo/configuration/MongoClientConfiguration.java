@@ -1,11 +1,13 @@
 package com.perfect.mongo.configuration;
 
-import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoClientSettings;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Copyright (C), 2018, Banyan Network Foundation
@@ -43,32 +45,68 @@ public class MongoClientConfiguration {
     private String requiredReplicaSetName;
 
     @Bean
-    public MongoClientOptions getMongoClientOptions() {
-        MongoClientOptions.Builder builder = MongoClientOptions.builder();
-        builder.minConnectionsPerHost(minConnectionsPerHost)
-                .connectionsPerHost(maxConnectionsPerHost)
-                .threadsAllowedToBlockForConnectionMultiplier(threadsAllowedToBlockForConnectionMultiplier)
-                .serverSelectionTimeout(serverSelectionTimeout)
-                .maxWaitTime(maxWaitTime)
-                .maxConnectionIdleTime(maxConnectionIdleTime)
-                .maxConnectionLifeTime(maxConnectionLifeTime)
-                .connectTimeout(connectTimeout)
-                .socketTimeout(socketTimeout)
-//                .socketKeepAlive(socketKeepAlive)
-                .sslEnabled(sslEnabled)
-                .sslInvalidHostNameAllowed(sslInvalidHostNameAllowed)
-                .alwaysUseMBeans(alwaysUseMBeans)
+    public MongoClientSettings getMongoClientOptions() {
+        MongoClientSettings.Builder mongoClientSettings = MongoClientSettings.builder();
+        mongoClientSettings.applyToConnectionPoolSettings( builder -> builder
+            .maxWaitTime(maxWaitTime, TimeUnit.SECONDS)
+            .maxConnectionIdleTime(maxConnectionIdleTime, TimeUnit.SECONDS)
+            .maxConnectionLifeTime(maxConnectionLifeTime, TimeUnit.SECONDS)
+        ).applyToSocketSettings(builder -> builder
+            .connectTimeout(connectTimeout, TimeUnit.SECONDS)
+            .readTimeout(socketTimeout, TimeUnit.SECONDS)
+        ).applyToSslSettings(builder -> builder
+            .enabled(sslEnabled)
+            .invalidHostNameAllowed(sslInvalidHostNameAllowed)
+        ).applyToServerSettings(builder -> builder
+            .heartbeatFrequency(heartbeatFrequency, TimeUnit.SECONDS)
+            .minHeartbeatFrequency(minHeartbeatFrequency, TimeUnit.SECONDS)
+        ).applyToClusterSettings(builder -> builder
+            // https://github.com/catkeeper1/backend_template/blob/a0e44413856360deca1a1ea487fe32a6912c3cfe/msdemo-service/src/main/java/org/ckr/msdemo/adminservice/config/MongoDbConfig.java
+            .requiredReplicaSetName(requiredReplicaSetName)
+            .localThreshold(localThreshold, TimeUnit.MILLISECONDS)
+        );
 
-                .heartbeatFrequency(heartbeatFrequency)
-                .minHeartbeatFrequency(minHeartbeatFrequency)
-                .heartbeatConnectTimeout(heartbeatConnectTimeout)
-                .heartbeatSocketTimeout(heartbeatSocketTimeout)
-                .localThreshold(localThreshold)
+//        ;
+//        builder.minConnectionsPerHost(minConnectionsPerHost)
+//            .connectionsPerHost(maxConnectionsPerHost)
+//            .threadsAllowedToBlockForConnectionMultiplier(threadsAllowedToBlockForConnectionMultiplier)
+//            .serverSelectionTimeout(serverSelectionTimeout)
+//            //                .socketKeepAlive(socketKeepAlive)
+//            .alwaysUseMBeans(alwaysUseMBeans)
+//
+//            .heartbeatConnectTimeout(heartbeatConnectTimeout)
+//            .heartbeatSocketTimeout(heartbeatSocketTimeout)
 
-                .requiredReplicaSetName(requiredReplicaSetName);
-
-        return builder.build();
+        return mongoClientSettings.build();
     }
+
+//    @Bean
+//    public MongoClientSettings getMongoClientOptions() {
+//        MongoClientSettings.Builder builder = MongoClientSettings.builder();
+//        builder.minConnectionsPerHost(minConnectionsPerHost)
+//                .connectionsPerHost(maxConnectionsPerHost)
+//                .threadsAllowedToBlockForConnectionMultiplier(threadsAllowedToBlockForConnectionMultiplier)
+//                .serverSelectionTimeout(serverSelectionTimeout)
+//                .maxWaitTime(maxWaitTime)
+//                .maxConnectionIdleTime(maxConnectionIdleTime)
+//                .maxConnectionLifeTime(maxConnectionLifeTime)
+//                .connectTimeout(connectTimeout)
+//                .socketTimeout(socketTimeout)
+////                .socketKeepAlive(socketKeepAlive)
+//                .sslEnabled(sslEnabled)
+//                .sslInvalidHostNameAllowed(sslInvalidHostNameAllowed)
+//                .alwaysUseMBeans(alwaysUseMBeans)
+//
+//                .heartbeatFrequency(heartbeatFrequency)
+//                .minHeartbeatFrequency(minHeartbeatFrequency)
+//                .heartbeatConnectTimeout(heartbeatConnectTimeout)
+//                .heartbeatSocketTimeout(heartbeatSocketTimeout)
+//                .localThreshold(localThreshold)
+//
+//                .requiredReplicaSetName(requiredReplicaSetName);
+//
+//        return builder.build();
+//    }
 
     public int getMinConnectionsPerHost() {
         return minConnectionsPerHost;
