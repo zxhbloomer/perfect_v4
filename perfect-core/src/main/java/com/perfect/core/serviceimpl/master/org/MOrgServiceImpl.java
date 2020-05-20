@@ -57,7 +57,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> implements IMOrgService {
 
     @Autowired
-    private MOrgGroupGroupMapper oGGMapper;
+    private MOrgTenantGroupMapper oTGMapper;
 
     @Autowired
     private MOrgGroupCompanyMapper oGCMapper;
@@ -324,16 +324,16 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      * 设置集团关系，存在集团嵌套情况
      */
     private void updateOGGRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
-        MOrgGroupGroupEntity oGGEntity = new MOrgGroupGroupEntity();
+        MOrgTenantGroupEntity oGGEntity = new MOrgTenantGroupEntity();
         oGGEntity.setCurrent_id(currentEntity.getSerial_id());
         oGGEntity.setTenant_id(getUserSessionTenantId());
         if(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE.equals(parentEntity.getSerial_type())) {
-            /** 查找上级结点如果是集团时，说明存在集团嵌套，m_org_group_group */
+            /** 查找上级结点如果是集团时，说明存在集团嵌套，m_org_tenant_group */
             oGGEntity.setParent_id(parentEntity.getSerial_id());
             oGGEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
             // 查找上级结点获取，root信息
-            MOrgGroupGroupEntity parentGGEntity = oGGMapper
-                .getOGGEntityByCurrentId(parentEntity.getSerial_id(), parentEntity.getTenant_id());
+            MOrgTenantGroupEntity parentGGEntity = oTGMapper
+                .getOTGEntityByCurrentId(parentEntity.getSerial_id(), parentEntity.getTenant_id());
             oGGEntity.setRoot_parent_code(parentGGEntity.getRoot_parent_code());
             oGGEntity.setRoot_parent_id(parentGGEntity.getRoot_parent_id());
         } else {
@@ -344,13 +344,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             oGGEntity.setRoot_parent_code(currentEntity.getCode());
         }
         /** 更新sort */
-        int count = oGGMapper.getOGGRelationCount(currentEntity);
+        int count = oTGMapper.getOTGRelationCount(currentEntity);
         count = count + 1;
         oGGEntity.setSort(count);
         /** 插入操作 */
-        oGGMapper.insert(oGGEntity);
+        oTGMapper.insert(oGGEntity);
         /** 更新counts，和sorts */
-        oGGMapper.updateOGGCountAndSort(oGGEntity.getId());
+        oTGMapper.updateOTGCountAndSort(oGGEntity.getId());
     }
 
     /**
@@ -610,7 +610,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
                 entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP:
-                oGGMapper.delOGGRelation(entity.getSerial_id());
+                oTGMapper.delOTGRelation(entity.getSerial_id());
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY:
                 oGCMapper.delOGCRelation(entity.getSerial_id());
@@ -690,7 +690,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         }
 
         Long tenant_id = getUserSessionTenantId();
-        oGGMapper.delAll(tenant_id);
+        oTGMapper.delAll(tenant_id);
         oGCMapper.delAll(tenant_id);
         oCDMapper.delAll(tenant_id);
         oDPMapper.delAll(tenant_id);

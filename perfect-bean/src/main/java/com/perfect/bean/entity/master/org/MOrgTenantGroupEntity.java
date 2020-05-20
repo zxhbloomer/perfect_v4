@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("m_org_group_group")
-public class MOrgGroupGroupEntity implements Serializable {
+@TableName("m_org_tenant_group")
+public class MOrgTenantGroupEntity implements Serializable {
 
     private static final long serialVersionUID = -745386752871791908L;
 

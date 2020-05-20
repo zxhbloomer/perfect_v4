@@ -1,7 +1,7 @@
 package com.perfect.core.service.master.org;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.perfect.bean.entity.master.org.MOrgGroupGroupEntity;
+import com.perfect.bean.entity.master.org.MOrgTenantGroupEntity;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.perfect.bean.entity.master.org.MOrgGroupGroupEntity;
  * @author zxh
  * @since 2020-05-15
  */
-public interface IMOrgGroupGroupService extends IService<MOrgGroupGroupEntity> {
+public interface IMOrgTenantGroupService extends IService<MOrgTenantGroupEntity> {
 
 }

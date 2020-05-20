@@ -104,7 +104,7 @@ public class CodeGenerator {
                 "m_org_dept_dept",
                 "m_org_dept_position",
                 "m_org_group_company",
-                "m_org_group_group"
+                "m_org_tenant_group"
 
                 //,
 //                "oauth_access_token",
