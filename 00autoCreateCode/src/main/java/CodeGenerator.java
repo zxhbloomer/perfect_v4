@@ -101,7 +101,7 @@ public class CodeGenerator {
         //需要包含的表名，允许正则表达式
         strategy.setInclude(
                 "m_org_company_dept",
-                "m_org_dept_dept",
+                "m_org_company_dept",
                 "m_org_dept_position",
                 "m_org_group_company",
                 "m_org_tenant_group"

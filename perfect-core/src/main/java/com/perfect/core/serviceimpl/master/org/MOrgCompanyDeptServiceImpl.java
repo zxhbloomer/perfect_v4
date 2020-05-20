@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 企业与集团关系表，企业不存在嵌套 服务实现类
+ * 部门与部门关系表，多部门嵌套关系表 服务实现类
  * </p>
  *
  * @author zxh

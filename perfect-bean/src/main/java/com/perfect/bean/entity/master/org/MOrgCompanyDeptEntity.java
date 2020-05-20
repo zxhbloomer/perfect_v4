@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 企业与部门关系表，企业->部门
+ * 部门与部门关系表，多部门嵌套关系表
  * </p>
  *
  * @author zxh
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @TableName("m_org_company_dept")
 public class MOrgCompanyDeptEntity implements Serializable {
 
-    private static final long serialVersionUID = -5893675942396983284L;
+    private static final long serialVersionUID = 5939217676444646438L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -34,7 +34,7 @@ public class MOrgCompanyDeptEntity implements Serializable {
     private Long current_id;
 
     /**
-     * 所属企业id
+     * 所属部门id
      */
     @TableField("parent_id")
     private Long parent_id;
@@ -45,27 +45,26 @@ public class MOrgCompanyDeptEntity implements Serializable {
     @TableField("parent_type")
     private String parent_type;
 
-
     /**
-     * 根企业id
+     * 集团嵌套时的根集团id
      */
     @TableField("root_parent_id")
     private Long root_parent_id;
 
     /**
-     * 根企业code
+     * 集团嵌套时的根集团code
      */
     @TableField("root_parent_code")
     private String root_parent_code;
 
     /**
-     * 嵌套时会>1
+     * 当前集团对应上级所有集团数量
      */
     @TableField("counts")
     private Integer counts;
 
     /**
-     * 嵌套时的排序
+     * 当前集团对应上级所有集团数量排序
      */
     @TableField("sort")
     private Integer sort;
