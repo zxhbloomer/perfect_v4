@@ -320,6 +320,8 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         MOrgTenantGroupEntity oGGEntity = new MOrgTenantGroupEntity();
         oGGEntity.setCurrent_id(currentEntity.getSerial_id());
         oGGEntity.setTenant_id(getUserSessionTenantId());
+        oGGEntity.setOrg_id(currentEntity.getId());
+        oGGEntity.setOrg_parent_id(currentEntity.getParent_id());
         if(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE.equals(parentEntity.getSerial_type())) {
             /** 查找上级结点如果是集团时，说明存在集团嵌套，m_org_tenant_group */
             oGGEntity.setParent_id(parentEntity.getSerial_id());
@@ -351,6 +353,8 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     private void updateOGCRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
         MOrgGroupCompanyEntity oGCEntity = new MOrgGroupCompanyEntity();
+        oGCEntity.setOrg_id(currentEntity.getId());
+        oGCEntity.setOrg_parent_id(currentEntity.getParent_id());
         oGCEntity.setCurrent_id(currentEntity.getSerial_id());
         oGCEntity.setTenant_id(getUserSessionTenantId());
         oGCEntity.setParent_id(parentEntity.getSerial_id());
@@ -367,6 +371,8 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     private void updateODDRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
         MOrgCompanyDeptEntity oCDEntity = new MOrgCompanyDeptEntity();
+        oCDEntity.setOrg_id(currentEntity.getId());
+        oCDEntity.setOrg_parent_id(currentEntity.getParent_id());
         oCDEntity.setCurrent_id(currentEntity.getSerial_id());
         oCDEntity.setTenant_id(getUserSessionTenantId());
         if(PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT_SERIAL_TYPE.equals(parentEntity.getSerial_type())) {
@@ -400,6 +406,8 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
      */
     private void updateODPRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
         MOrgDeptPositionEntity oDPEntity = new MOrgDeptPositionEntity();
+        oDPEntity.setOrg_id(currentEntity.getId());
+        oDPEntity.setOrg_parent_id(currentEntity.getParent_id());
         oDPEntity.setCurrent_id(currentEntity.getSerial_id());
         oDPEntity.setTenant_id(getUserSessionTenantId());
         oDPEntity.setParent_id(parentEntity.getSerial_id());

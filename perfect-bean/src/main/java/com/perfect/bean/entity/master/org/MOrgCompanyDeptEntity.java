@@ -28,6 +28,18 @@ public class MOrgCompanyDeptEntity implements Serializable {
     private Long id;
 
     /**
+     * 组织id
+     */
+    @TableField("org_id")
+    private Long org_id;
+
+    /**
+     * 组织parent id
+     */
+    @TableField("org_parent_id")
+    private Long org_parent_id;
+
+    /**
      * 部门id
      */
     @TableField("current_id")
