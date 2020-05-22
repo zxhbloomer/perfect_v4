@@ -297,13 +297,13 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT:
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP:
-                updateOGGRelation(entity,parentEntity);
+                updateOTGRelation(entity,parentEntity);
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY:
                 updateOGCRelation(entity,parentEntity);
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT:
-                updateODDRelation(entity,parentEntity);
+                updateOCDRelation(entity,parentEntity);
                 break;
             case PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION:
                 updateODPRelation(entity,parentEntity);
@@ -316,36 +316,36 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     /**
      * 设置集团关系，存在集团嵌套情况
      */
-    private void updateOGGRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
-        MOrgTenantGroupEntity oGGEntity = new MOrgTenantGroupEntity();
-        oGGEntity.setCurrent_id(currentEntity.getSerial_id());
-        oGGEntity.setTenant_id(getUserSessionTenantId());
-        oGGEntity.setOrg_id(currentEntity.getId());
-        oGGEntity.setOrg_parent_id(currentEntity.getParent_id());
+    private void updateOTGRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
+        MOrgTenantGroupEntity oTGEntity = new MOrgTenantGroupEntity();
+        oTGEntity.setCurrent_id(currentEntity.getSerial_id());
+        oTGEntity.setTenant_id(getUserSessionTenantId());
+        oTGEntity.setOrg_id(currentEntity.getId());
+        oTGEntity.setOrg_parent_id(currentEntity.getParent_id());
         if(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE.equals(parentEntity.getSerial_type())) {
             /** 查找上级结点如果是集团时，说明存在集团嵌套，m_org_tenant_group */
-            oGGEntity.setParent_id(parentEntity.getSerial_id());
-            oGGEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
+            oTGEntity.setParent_id(parentEntity.getSerial_id());
+            oTGEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE);
             // 查找上级结点获取，root信息
             MOrgTenantGroupEntity parentOTGEntity = oTGMapper
                 .getOTGEntityByCurrentId(parentEntity.getSerial_id(), parentEntity.getTenant_id());
-            oGGEntity.setRoot_parent_code(parentOTGEntity.getRoot_parent_code());
-            oGGEntity.setRoot_parent_id(parentOTGEntity.getRoot_parent_id());
+            oTGEntity.setRoot_parent_code(parentOTGEntity.getRoot_parent_code());
+            oTGEntity.setRoot_parent_id(parentOTGEntity.getRoot_parent_id());
         } else {
             /** 查找上级结点如果是租户，则不存在嵌套 */
-            oGGEntity.setParent_id(parentEntity.getSerial_id());
-            oGGEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
-            oGGEntity.setRoot_parent_id(currentEntity.getSerial_id());
-            oGGEntity.setRoot_parent_code(currentEntity.getCode());
+            oTGEntity.setParent_id(parentEntity.getSerial_id());
+            oTGEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE);
+            oTGEntity.setRoot_parent_id(currentEntity.getSerial_id());
+            oTGEntity.setRoot_parent_code(currentEntity.getCode());
         }
         /** 更新sort */
         int count = oTGMapper.getOTGRelationCount(currentEntity);
         count = count + 1;
-        oGGEntity.setSort(count);
+        oTGEntity.setSort(count);
         /** 插入操作 */
-        oTGMapper.insert(oGGEntity);
+        oTGMapper.insert(oTGEntity);
         /** 更新counts，和sorts */
-        oTGMapper.updateOTGCountAndSort(oGGEntity.getId());
+        oTGMapper.updateOTGCountAndSort(oTGEntity.getId());
     }
 
     /**
@@ -369,7 +369,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     /**
      * 设置部门关系，存在部门嵌套情况
      */
-    private void updateODDRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
+    private void updateOCDRelation(MOrgEntity currentEntity, MOrgEntity parentEntity){
         MOrgCompanyDeptEntity oCDEntity = new MOrgCompanyDeptEntity();
         oCDEntity.setOrg_id(currentEntity.getId());
         oCDEntity.setOrg_parent_id(currentEntity.getParent_id());
