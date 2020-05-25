@@ -80,31 +80,19 @@ public class MPositionVo extends BaseVo implements Serializable {
     private Long parent_serial_id;
 
     /**
-     * 关联单号类型
+     * 所属数据
      */
-    private String parent_serial_type;
-    private String parent_name;
-    private String parent_simple_name;
-    private String parent_type_text;
+    private String group_full_name;
+    private String group_full_simple_name;
+    private String company_name;
+    private String company_simple_name;
+    private String dept_full_name;
+    private String dept_full_simple_name;
 
     /**
      * 该岗位向下，员工数量
      */
     private int staff_count;
-
-    /**
-     * 集团名称
-     */
-    private String group_name;
-    /**
-     * 企业名称
-     */
-    private String company_name;
-    /**
-     * 部门名称
-     */
-    private String dept_name;
-
 
     /**
      * 弹出框模式：空：普通模式；10：组织使用，需要排除已经选择的数据；

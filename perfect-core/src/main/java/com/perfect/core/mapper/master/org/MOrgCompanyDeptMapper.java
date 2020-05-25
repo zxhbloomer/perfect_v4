@@ -94,11 +94,11 @@ public interface MOrgCompanyDeptMapper extends BaseMapper<MOrgCompanyDeptEntity>
         + "     					 when t1.sort = 1 then t1.parent_id                          "
         + "     					 when t1.sort > 1 then t2.parent_id                          "
         + "     					 end                                                         "
-        + "     				 ) root_group_id                                                 "
+        + "     				 ) root_company_id                                                 "
         + "     			 FROM m_org_company_dept t1                                          "
         + "     	left JOIN m_org_company_dept t2 on t1.root_id = t2.current_id                "
         + "        	) ut2 on ut1.id = ut2.id                                                     "
-        + "     		  set ut1.root_group_id = ut2.root_group_id                              "
+        + "     		  set ut1.root_company_id = ut2.root_company_id                              "
         + "                                                                                      "
     )
     int updateOCDParentData();
