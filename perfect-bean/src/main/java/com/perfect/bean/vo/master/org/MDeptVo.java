@@ -111,6 +111,12 @@ public class MDeptVo extends BaseVo implements Serializable {
     private String parent_name;
     private String parent_simple_name;
     private String parent_type_text;
+    private String group_full_name;
+    private String group_full_simple_name;
+    private String company_name;
+    private String company_simple_name;
+    private String parent_dept_name;
+    private String parent_dept_simple_name;
 
     /**
      * 弹出框模式：空：普通模式；10：组织使用，需要排除已经选择的数据；

@@ -58,16 +58,10 @@ public class MOrgDeptPositionEntity implements Serializable {
     private String parent_type;
 
     /**
-     * 根部门code
-     */
-    @TableField("root_parent_code")
-    private String root_parent_code;
-
-    /**
      * 根部门id
      */
-    @TableField("root_parent_id")
-    private Long root_parent_id;
+    @TableField("root_id")
+    private Long root_id;
 
     /**
      * 嵌套时会>1

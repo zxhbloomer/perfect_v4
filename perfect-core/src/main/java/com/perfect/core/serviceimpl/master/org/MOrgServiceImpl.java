@@ -409,8 +409,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         oDPEntity.setTenant_id(getUserSessionTenantId());
         oDPEntity.setParent_id(parentEntity.getSerial_id());
         oDPEntity.setParent_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE);
-        oDPEntity.setRoot_parent_id(currentEntity.getSerial_id());
-        oDPEntity.setRoot_parent_code(currentEntity.getCode());
+        oDPEntity.setRoot_id(currentEntity.getSerial_id());
         oDPEntity.setCounts(1);
         oDPEntity.setSort(1);
         oDPMapper.insert(oDPEntity);
