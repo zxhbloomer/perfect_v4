@@ -62,23 +62,46 @@ public interface MOrgCompanyDeptMapper extends BaseMapper<MOrgCompanyDeptEntity>
      * @return
      */
     @Update("                                                                                    "
-        + "         update m_org_company_dept ut1                                                   "
+        + "         update m_org_company_dept ut1                                                "
         + "     inner join (                                                                     "
         + "                  select t1.id,                                                       "
-        + "                         count(1) over(partition by t1.root_parent_id) as counts,     "
-        + "                         row_number() over(partition by t1.root_parent_id) as sort    "
-        + "                    from m_org_company_dept t1                                           "
+        + "                         count(1) over(partition by t1.root_id) as counts,            "
+        + "                         row_number() over(partition by t1.root_id) as sort           "
+        + "                    from m_org_company_dept t1                                        "
         + "               left join (                                                            "
-        + "                           SELECT sub.root_parent_id                                  "
-        + "                             FROM m_org_company_dept sub                                 "
+        + "                           SELECT sub.root_id                                         "
+        + "                             FROM m_org_company_dept sub                              "
         + "                            where sub.current_id = #{p1}                              "
-        + "                          ) t2 on t1.root_parent_id = t2.root_parent_id               "
+        + "                          ) t2 on t1.root_id = t2.root_id                             "
         + "                ) ut2 on ut1.id = ut2.id                                              "
         + "            set ut1.counts = ut2.counts,                                              "
         + "                ut1.sort = ut2.sort                                                   "
         + "                                                                                      "
     )
     int updateOCDCountAndSort(@Param("p1")Long id);
+
+    /**
+     * 保存嵌套时的儿子个数
+     * @return
+     */
+    @Update("                                                                                    "
+        + "         update m_org_company_dept ut1                                                "
+        + "     inner join (                                                                     "
+        + "     		      SELECT                                                             "
+        + "     				     t1.id,                                                      "
+        + "     				 (                                                               "
+        + "     					 case                                                        "
+        + "     					 when t1.sort = 1 then t1.parent_id                          "
+        + "     					 when t1.sort > 1 then t2.parent_id                          "
+        + "     					 end                                                         "
+        + "     				 ) root_group_id                                                 "
+        + "     			 FROM m_org_company_dept t1                                          "
+        + "     	left JOIN m_org_company_dept t2 on t1.root_id = t2.current_id                "
+        + "        	) ut2 on ut1.id = ut2.id                                                     "
+        + "     		  set ut1.root_group_id = ut2.root_group_id                              "
+        + "                                                                                      "
+    )
+    int updateOCDParentData();
 
     @Delete("                                                                        "
         + "     delete from m_org_company_dept t                                      "

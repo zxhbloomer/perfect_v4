@@ -148,8 +148,8 @@ public class MCompanyVo extends BaseVo implements Serializable {
      * 关联单号类型
      */
     private String parent_serial_type;
-    private String parent_name;
-    private String parent_simple_name;
+    private String group_full_name;
+    private String group_full_simple_name;
     private String parent_type_text;
 
     /**

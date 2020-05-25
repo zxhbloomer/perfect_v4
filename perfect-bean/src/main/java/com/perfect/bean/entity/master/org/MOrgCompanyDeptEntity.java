@@ -58,16 +58,16 @@ public class MOrgCompanyDeptEntity implements Serializable {
     private String parent_type;
 
     /**
-     * 集团嵌套时的根集团id
+     * 根部门id
      */
-    @TableField("root_parent_id")
-    private Long root_parent_id;
+    @TableField("root_id")
+    private Long root_id;
 
     /**
-     * 集团嵌套时的根集团code
+     * 根企业id
      */
-    @TableField("root_parent_code")
-    private String root_parent_code;
+    @TableField("root_company_id")
+    private Long root_company_id;
 
     /**
      * 当前集团对应上级所有集团数量

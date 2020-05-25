@@ -60,14 +60,14 @@ public class MOrgGroupCompanyEntity implements Serializable {
     /**
      * 根集团id
      */
-    @TableField("root_parent_id")
-    private Long root_parent_id;
+    @TableField("root_id")
+    private Long root_id;
 
     /**
-     * 根集团code
+     * 根集团id
      */
-    @TableField("root_parent_code")
-    private String root_parent_code;
+    @TableField("root_group_id")
+    private Long root_group_id;
 
     /**
      * 嵌套时会>1
