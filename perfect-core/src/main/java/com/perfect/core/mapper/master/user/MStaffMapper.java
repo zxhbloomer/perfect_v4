@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.master.user.MStaffEntity;
+import com.perfect.bean.vo.master.org.MPositionVo;
+import com.perfect.bean.vo.master.user.MStaffPositionVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
@@ -199,4 +201,9 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "    and t.serial_id = #{p1.id,jdbcType=BIGINT}                                                       "
         + "                                                                                                     ")
     int isExistsInOrg(@Param("p1") MStaffEntity searchCondition);
+
+    @Select("                                                                                                   "
+        + "                                                                                                     "
+    )
+    List<MPositionVo> getPositionStaffData(@Param("p1") MStaffPositionVo searchCondition);
 }

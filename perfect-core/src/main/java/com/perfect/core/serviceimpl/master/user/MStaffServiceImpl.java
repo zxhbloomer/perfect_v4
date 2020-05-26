@@ -12,6 +12,7 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.DeleteResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
+import com.perfect.bean.vo.master.user.MStaffPositionVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.BusinessException;
@@ -415,5 +416,25 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
         return list;
     }
 
-
+    /**
+     * 查询岗位员工
+     * @param searchCondition
+     * @return
+     */
+    @Override
+    public MStaffPositionVo getPositionStaffData(MStaffPositionVo searchCondition) {
+        MStaffPositionVo mStaffPositionVo = new MStaffPositionVo();
+        switch (searchCondition.getActive_tabs_index()) {
+            case 0:
+                // all
+                break;
+            case 1:
+                // settled
+                break;
+            case 2:
+                // unsettled
+                break;
+        }
+        return  mStaffPositionVo;
+    }
 }

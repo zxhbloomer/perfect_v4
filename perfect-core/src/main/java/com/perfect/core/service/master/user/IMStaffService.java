@@ -6,6 +6,7 @@ import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
+import com.perfect.bean.vo.master.user.MStaffPositionVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 
 import javax.servlet.http.HttpSession;
@@ -74,4 +75,11 @@ public interface IMStaffService extends IService<MStaffEntity> {
      * @return
      */
     void deleteByIdsIn(List<MStaffVo> searchCondition);
+
+    /**
+     * 查询岗位员工
+     * @param searchCondition
+     * @return
+     */
+    MStaffPositionVo getPositionStaffData(MStaffPositionVo searchCondition);
 }
