@@ -29,7 +29,7 @@ import java.util.List;
  * @author zhangxh
  */
 @RestController
-@RequestMapping(value = "/api/v1/org")
+@RequestMapping(value = "/api/v1/org/group")
 @Slf4j
 @Api("集团表相关")
 public class OrgGroupController extends BaseController {
@@ -42,7 +42,7 @@ public class OrgGroupController extends BaseController {
 
     @SysLogAnnotion("根据查询条件，获取集团主表信息")
     @ApiOperation("根据参数id，获取集团主表信息")
-    @PostMapping("/group/list")
+    @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<IPage<MGroupVo>>> list(@RequestBody(required = false) MGroupVo searchCondition) {
         IPage<MGroupVo> entity = service.selectPage(searchCondition);
@@ -51,7 +51,7 @@ public class OrgGroupController extends BaseController {
 
     @SysLogAnnotion("集团主表数据更新保存")
     @ApiOperation("根据参数id，获取集团主表信息")
-    @PostMapping("/group/save")
+    @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<JsonResult<MGroupVo>> save(@RequestBody(required = false) MGroupEntity bean) {
 
@@ -64,7 +64,7 @@ public class OrgGroupController extends BaseController {
 
     @SysLogAnnotion("集团主表数据新增保存")
     @ApiOperation("根据参数id，获取集团主表信息")
-    @PostMapping("/group/insert")
+    @PostMapping("/insert")
     @ResponseBody
     public ResponseEntity<JsonResult<MGroupVo>> insert(@RequestBody(required = false) MGroupEntity bean) {
         if(service.insert(bean).isSuccess()){
@@ -76,7 +76,7 @@ public class OrgGroupController extends BaseController {
 
     @SysLogAnnotion("集团主表数据导出")
     @ApiOperation("根据选择的数据，集团主表数据导出")
-    @PostMapping("/group/export_all")
+    @PostMapping("/export_all")
     public void exportAll(@RequestBody(required = false) MGroupVo searchCondition, HttpServletResponse response) throws IOException {
         List<MGroupVo> searchResult = service.select(searchCondition);
         List<MGroupExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MGroupExportVo.class);
@@ -86,7 +86,7 @@ public class OrgGroupController extends BaseController {
 
     @SysLogAnnotion("集团主表数据导出")
     @ApiOperation("根据选择的数据，集团主表数据导出")
-    @PostMapping("/group/export_selection")
+    @PostMapping("/export_selection")
     public void exportSelection(@RequestBody(required = false) List<MGroupVo> searchConditionList, HttpServletResponse response) throws IOException {
         List<MGroupVo> searchResult = service.selectIdsInForExport(searchConditionList);
         List<MGroupExportVo> rtnList = BeanUtilsSupport.copyProperties(searchResult, MGroupExportVo.class);
@@ -96,7 +96,7 @@ public class OrgGroupController extends BaseController {
 
     @SysLogAnnotion("集团主表数据逻辑删除复原")
     @ApiOperation("根据参数id，逻辑删除复原数据")
-    @PostMapping("/group/delete")
+    @PostMapping("/delete")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false) List<MGroupVo> searchConditionList) {
         service.deleteByIdsIn(searchConditionList);

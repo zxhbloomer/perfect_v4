@@ -23,20 +23,23 @@ import java.util.List;
 @Repository
 public interface MPositionMapper extends BaseMapper<MPositionEntity> {
 
-    String COMMON_SELECT = "                                                           "
-        + "                                                                            "
-        + "        SELECT                                                              "
-        + "               t1.*,                                                        "
-        + "               c_staff.name as c_name,                                      "
-        + "               u_staff.name as u_name,                                      "
-        + "               t2.label as is_del_name,                                     "
-        + "               t3.staff_count                                                                                "
-        + "          FROM m_position t1                                                "
-        + "     LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                      "
-        + "     LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                      "
+    String COMMON_SELECT = "                                                                                            "
+        + "                                                                                                             "
+        + "        SELECT                                                                                               "
+        + "               t1.*,                                                                                         "
+        + "               c_staff.name as c_name,                                                                       "
+        + "               u_staff.name as u_name,                                                                       "
+        + "               t2.label as is_del_name,                                                                      "
+        + "               t3.staff_count,                                                                               "
+        + "               vor.group_full_simple_name,                                                                   "
+        + "               vor.company_simple_name,                                                                      "
+        + "               vor.dept_full_simple_name                                                                   "
+        + "          FROM m_position t1                                                                                 "
+        + "     LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                       "
+        + "     LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                       "
         + "     LEFT JOIN v_dict_info AS t2 ON t2.code = '" + PerfectDictConstant.DICT_SYS_DELETE_MAP + "' and t2.dict_value = cast(t1.is_del as char(1))      "
         + "     left join (                                                                                             "
-        + "                  select count(1) staff_count,                                                                          "
+        + "                  select count(1) staff_count,                                                               "
         + "                         subt.serial_id,                                                                     "
         + "                         subt.serial_type                                                                    "
         + "                    from m_staff_org subt                                                                    "
@@ -44,6 +47,7 @@ public interface MPositionMapper extends BaseMapper<MPositionEntity> {
         + "                group by subt.serial_id, subt.serial_type                                                    "
         + "                )  t3 on t3.serial_id = t1.id                                                                "
         + "           and t3.serial_type = '" + PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE + "'     "
+        + "      LEFT JOIN v_org_route_dept_position_info vor on t1.id = vor.current_id                                 "
         + "                                                                            ";
 
 

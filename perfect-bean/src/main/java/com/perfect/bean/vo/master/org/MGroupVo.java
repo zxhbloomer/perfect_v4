@@ -86,8 +86,8 @@ public class MGroupVo extends BaseVo implements Serializable {
      * 关联单号类型
      */
     private String parent_serial_type;
-    private String parent_name;
-    private String parent_simple_name;
+    private String parent_group_name;
+    private String parent_group_simple_name;
     private String parent_type_text;
 
     /**
