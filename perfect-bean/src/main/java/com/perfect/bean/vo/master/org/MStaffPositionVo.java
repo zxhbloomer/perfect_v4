@@ -1,13 +1,14 @@
 package com.perfect.bean.vo.master.org;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.config.base.v1.BaseVo;
+import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * <p>
@@ -40,7 +41,7 @@ public class MStaffPositionVo extends BaseVo implements Serializable {
     /**
      * 岗位数据
      */
-    private List<MPositionVo> list;
+    private IPage<MPositionVo> list;
 
     /**
      * 全岗位
@@ -56,5 +57,15 @@ public class MStaffPositionVo extends BaseVo implements Serializable {
      * 未设置岗位
      */
     private int unsettled;
+
+    /**
+     * 租户id
+     */
+    private Long tenant_id;
+
+    /**
+     * 换页条件
+     */
+    private PageCondition pageCondition;
 
 }

@@ -425,9 +425,16 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
      */
     @Override
     public MStaffPositionVo getPositionStaffData(MStaffPositionVo searchCondition) {
+        searchCondition.setTenant_id(getUserSessionTenantId());
+        // 分页条件
+        Page<MStaffEntity> pageCondition =
+            new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
+        // 通过page进行排序
+        PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
+
         MStaffPositionVo mStaffPositionVo = new MStaffPositionVo();
         mStaffPositionVo.setId(searchCondition.getId());
-        List<MPositionVo> list = mapper.getPositionStaffData(searchCondition);
+        IPage<MPositionVo> list = mapper.getPositionStaffData(pageCondition, searchCondition);
         List<MStaffPositionCountsVo> counts = mapper.getPositionStaffDataCount(searchCondition);
         mStaffPositionVo.setAll(counts.get(0).getCount());
         mStaffPositionVo.setSettled(counts.get(1).getCount());
