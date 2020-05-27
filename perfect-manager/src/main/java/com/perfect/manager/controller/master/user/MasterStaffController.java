@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.master.user.MStaffExportVo;
-import com.perfect.bean.vo.master.user.MStaffPositionVo;
+import com.perfect.bean.vo.master.org.MStaffPositionVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
@@ -107,8 +107,8 @@ public class  MasterStaffController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 
-    @SysLogAnnotion("员工主表数据逻辑删除复原")
-    @ApiOperation("根据参数id，逻辑删除复原数据")
+    @SysLogAnnotion("查询岗位员工")
+    @ApiOperation("根据参数id，查询岗位员工")
     @PostMapping("/list_position")
     @ResponseBody
     public ResponseEntity<JsonResult<MStaffPositionVo>> getPositionStaffData(@RequestBody(required = false) MStaffPositionVo searchCondition) {

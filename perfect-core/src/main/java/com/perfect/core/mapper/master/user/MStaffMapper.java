@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.vo.master.org.MPositionVo;
-import com.perfect.bean.vo.master.user.MStaffPositionVo;
+import com.perfect.bean.vo.master.org.MStaffPositionCountsVo;
+import com.perfect.bean.vo.master.org.MStaffPositionVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectDictConstant;
 import org.apache.ibatis.annotations.Param;
@@ -202,8 +203,74 @@ public interface MStaffMapper extends BaseMapper<MStaffEntity> {
         + "                                                                                                     ")
     int isExistsInOrg(@Param("p1") MStaffEntity searchCondition);
 
-    @Select("                                                                                                   "
-        + "                                                                                                     "
+    /**
+     * 查询岗位员工
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                       "
+        + "   SELECT                                                                                                "
+        + "           t1.*,                                                                                         "
+        + "           t2.group_full_name,                                                                           "
+        + "           t2.group_full_simple_name,                                                                    "
+        + "           t2.company_name,                                                                              "
+        + "           t2.company_simple_name,                                                                       "
+        + "           t2.dept_full_name,                                                                            "
+        + "           t2.dept_full_simple_name,                                                                     "
+        + "           t3.staff_id                                                                                   "
+        + "      FROM                                                                                               "
+        + "      m_position t1                                                                                      "
+        + " LEFT JOIN v_org_route_dept_position_info t2 ON t1.id = t2.current_id                                    "
+        + " LEFT JOIN m_staff_org t3 on t3.serial_type = '"+ PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE +"'    "
+        + "       and t3.serial_id = t1.id                                                                          "
+        + "       and t3.staff_id = #{p1.id,jdbcType=BIGINT}                                                                              "
+        + "     where true                                                                                          "
+        + "     and (                                                                                               "
+        + "           case                                                                                          "
+        + "           when 0=#{p1.active_tabs_index,jdbcType=INTEGER} then true                                     "
+        + "           when 1=#{p1.active_tabs_index,jdbcType=INTEGER} then staff_id is not null                     "
+        + "           when 2=#{p1.active_tabs_index,jdbcType=INTEGER} then staff_id is null                         "
+        + "            end                                                                                          "
+        + "        )                                                                                                "
     )
     List<MPositionVo> getPositionStaffData(@Param("p1") MStaffPositionVo searchCondition);
+
+    /**
+     * 查询岗位员工，所有数据count
+     * @param searchCondition
+     * @return
+     */
+    @Select("                                                                                                       "
+        + "   select *                                                                                              "
+        + "     from (                                                                                              "
+        + "             SELECT t1.id,                                                                               "
+        + "                    0 as active_tabs_index,                                                              "
+        + "                    count(1) as `count`                                                                  "
+        + "               FROM m_position t1                                                                        "
+        + "          LEFT JOIN v_org_route_dept_position_info t2 ON t1.id = t2.current_id                           "
+        + "          LEFT JOIN m_staff_org t3 on t3.serial_type = '"+ PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE +"'   "
+        + "                and t3.serial_id = t1.id and t3.staff_id = #{p1.id,jdbcType=BIGINT}                      "
+        + "          union all                                                                                      "
+        + "             SELECT t1.id,                                                                               "
+        + "                    1 as active_tabs_index,                                                              "
+        + "                    count(1) as `count`                                                                  "
+        + "               FROM m_position t1                                                                        "
+        + "          LEFT JOIN v_org_route_dept_position_info t2 ON t1.id = t2.current_id                           "
+        + "          LEFT JOIN m_staff_org t3 on t3.serial_type = '"+ PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE +"'   "
+        + "                and t3.serial_id = t1.id and t3.staff_id = #{p1.id,jdbcType=BIGINT}                      "
+        + "              where staff_id is not null                                                                 "
+        + "          union all                                                                                      "
+        + "             SELECT t1.id,                                                                               "
+        + "                    2 as active_tabs_index,                                                              "
+        + "                    count(1) as `count`                                                                  "
+        + "               FROM m_position t1                                                                        "
+        + "          LEFT JOIN v_org_route_dept_position_info t2 ON t1.id = t2.current_id                           "
+        + "          LEFT JOIN m_staff_org t3 on t3.serial_type = '"+ PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE +"'   "
+        + "                and t3.serial_id = t1.id and t3.staff_id = #{p1.id,jdbcType=BIGINT}                      "
+        + "              where staff_id is null                                                                     "
+        + "       ) t                                                                                               "
+        + "    ORDER BY t.active_tabs_index                                                                         "
+        + "                                                                                                         "
+    )
+    List<MStaffPositionCountsVo> getPositionStaffDataCount(@Param("p1") MStaffPositionVo searchCondition);
 }

@@ -12,7 +12,9 @@ import com.perfect.bean.result.utils.v1.CheckResultUtil;
 import com.perfect.bean.result.utils.v1.DeleteResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
-import com.perfect.bean.vo.master.user.MStaffPositionVo;
+import com.perfect.bean.vo.master.org.MPositionVo;
+import com.perfect.bean.vo.master.org.MStaffPositionCountsVo;
+import com.perfect.bean.vo.master.org.MStaffPositionVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectConstant;
 import com.perfect.common.exception.BusinessException;
@@ -424,17 +426,13 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
     @Override
     public MStaffPositionVo getPositionStaffData(MStaffPositionVo searchCondition) {
         MStaffPositionVo mStaffPositionVo = new MStaffPositionVo();
-        switch (searchCondition.getActive_tabs_index()) {
-            case 0:
-                // all
-                break;
-            case 1:
-                // settled
-                break;
-            case 2:
-                // unsettled
-                break;
-        }
+        mStaffPositionVo.setId(searchCondition.getId());
+        List<MPositionVo> list = mapper.getPositionStaffData(searchCondition);
+        List<MStaffPositionCountsVo> counts = mapper.getPositionStaffDataCount(searchCondition);
+        mStaffPositionVo.setAll(counts.get(0).getCount());
+        mStaffPositionVo.setSettled(counts.get(1).getCount());
+        mStaffPositionVo.setUnsettled(counts.get(2).getCount());
+        mStaffPositionVo.setList(list);
         return  mStaffPositionVo;
     }
 }

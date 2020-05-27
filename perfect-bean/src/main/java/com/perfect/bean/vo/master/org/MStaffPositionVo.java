@@ -1,7 +1,6 @@
-package com.perfect.bean.vo.master.user;
+package com.perfect.bean.vo.master.org;
 
 import com.perfect.bean.config.base.v1.BaseVo;
-import com.perfect.bean.vo.master.org.MPositionVo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -41,7 +40,7 @@ public class MStaffPositionVo extends BaseVo implements Serializable {
     /**
      * 岗位数据
      */
-    private List<MPositionVo> postions_staffs;
+    private List<MPositionVo> list;
 
     /**
      * 全岗位

@@ -6,7 +6,7 @@ import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.pojo.result.DeleteResult;
 import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.UpdateResult;
-import com.perfect.bean.vo.master.user.MStaffPositionVo;
+import com.perfect.bean.vo.master.org.MStaffPositionVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 
 import javax.servlet.http.HttpSession;
