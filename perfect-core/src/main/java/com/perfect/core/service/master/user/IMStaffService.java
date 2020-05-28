@@ -82,4 +82,11 @@ public interface IMStaffService extends IService<MStaffEntity> {
      * @return
      */
     MStaffPositionVo getPositionStaffData(MStaffPositionVo searchCondition);
+
+    /**
+     * 查询岗位员工
+     * @param searchCondition
+     * @return
+     */
+    void setPositionStaff(MStaffPositionVo searchCondition);
 }

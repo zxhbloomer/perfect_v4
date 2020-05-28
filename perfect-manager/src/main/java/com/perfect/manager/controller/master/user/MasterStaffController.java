@@ -109,10 +109,19 @@ public class  MasterStaffController extends BaseController {
 
     @SysLogAnnotion("查询岗位员工")
     @ApiOperation("根据参数id，查询岗位员工")
-    @PostMapping("/list_position")
+    @PostMapping("/position/list")
     @ResponseBody
     public ResponseEntity<JsonResult<MStaffPositionVo>> getPositionStaffData(@RequestBody(required = false) MStaffPositionVo searchCondition) {
         MStaffPositionVo vo = service.getPositionStaffData(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(vo));
+    }
+
+    @SysLogAnnotion("查询岗位员工")
+    @ApiOperation("根据参数id，查询岗位员工")
+    @PostMapping("/position/save")
+    @ResponseBody
+    public ResponseEntity<JsonResult<String>> setPositionStaff(@RequestBody(required = false) MStaffPositionVo searchCondition) {
+        service.setPositionStaff(searchCondition);
+        return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
 }

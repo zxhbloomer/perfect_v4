@@ -1,7 +1,9 @@
 package com.perfect.core.serviceimpl.master.user;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.perfect.bean.entity.master.org.MStaffOrgEntity;
 import com.perfect.bean.entity.master.user.MStaffEntity;
 import com.perfect.bean.entity.master.user.MUserEntity;
 import com.perfect.bean.pojo.result.CheckResult;
@@ -17,9 +19,11 @@ import com.perfect.bean.vo.master.org.MStaffPositionCountsVo;
 import com.perfect.bean.vo.master.org.MStaffPositionVo;
 import com.perfect.bean.vo.master.user.MStaffVo;
 import com.perfect.common.constant.PerfectConstant;
+import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.client.user.MUserMapper;
+import com.perfect.core.mapper.master.org.MStaffOrgMapper;
 import com.perfect.core.mapper.master.user.MStaffMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.user.IMStaffService;
@@ -49,6 +53,8 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
     @Autowired
     private MUserMapper mUserMapper;
 
+    @Autowired
+    private MStaffOrgMapper mStaffOrgMapper;
 
     /**
      * 获取列表，页面查询
@@ -441,5 +447,32 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
         mStaffPositionVo.setUnsettled(counts.get(2).getCount());
         mStaffPositionVo.setList(list);
         return  mStaffPositionVo;
+    }
+
+    /**
+     * 查询岗位员工
+     * @param searchCondition
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void setPositionStaff(MStaffPositionVo searchCondition) {
+        /** 用户组织机构关系表:m_staff_org 插入数据 */
+        if(searchCondition.getPosition_settled()){
+            // 设置了岗位
+            MStaffOrgEntity entity = new MStaffOrgEntity();
+            entity.setStaff_id(searchCondition.getId());
+            entity.setSerial_id(searchCondition.getPosition_id());
+            entity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE);
+            entity.setTenant_id(getUserSessionTenantId());
+            mStaffOrgMapper.insert(entity);
+        } else {
+            // 取消了岗位
+            mStaffOrgMapper.delete(new QueryWrapper<MStaffOrgEntity>()
+                .eq("staff_id",searchCondition.getId())
+                .eq("serial_id",searchCondition.getPosition_id())
+                .eq("serial_type", PerfectDictConstant.DICT_ORG_SETTING_TYPE_POSITION_SERIAL_TYPE)
+            );
+        }
     }
 }

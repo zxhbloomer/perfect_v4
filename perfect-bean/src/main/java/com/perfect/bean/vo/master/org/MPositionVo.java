@@ -90,6 +90,16 @@ public class MPositionVo extends BaseVo implements Serializable {
     private String dept_full_simple_name;
 
     /**
+     * 岗位下员工id
+     */
+    private Long staff_id;
+
+    /**
+     * 是否已经设置该岗位
+     */
+    private Boolean settled;
+
+    /**
      * 该岗位向下，员工数量
      */
     private int staff_count;

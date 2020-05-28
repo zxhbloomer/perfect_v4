@@ -26,7 +26,20 @@ public class MStaffPositionVo extends BaseVo implements Serializable {
 
     private static final long serialVersionUID = -2807973727279079173L;
 
+    /**
+     * 员工id
+     */
     private Long id;
+
+    private String group_name;
+    private String company_name;
+    private String dept_name;
+
+    /**
+     * 岗位id
+     */
+    private Long position_id;
+    private Boolean position_settled;
 
     /**
      * 页面上激活的tabs:  0:全岗位,1:已设置岗位,2:未设置岗位
