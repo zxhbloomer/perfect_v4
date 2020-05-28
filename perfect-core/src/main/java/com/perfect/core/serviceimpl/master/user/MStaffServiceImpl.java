@@ -191,9 +191,47 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
         mUserEntity.setTenant_id(getUserSessionTenantId());
         mUserMapper.updateById(mUserEntity);
 
+
+        // 判断企业、部门字段，对用户组织关系表进行更新
+        updateStaffOrg(mStaffEntity);
+
         // 返回值确定
         vo.setId(mStaffEntity.getId());
         return InsertResultUtil.OK(1);
+    }
+
+    /**
+     * 更新用户组织机构关系表
+     */
+    private void updateStaffOrg(MStaffEntity entity) {
+        // 删除关系表：企业
+        mStaffOrgMapper.delete(new QueryWrapper<MStaffOrgEntity>()
+            .eq("staff_id",entity.getId())
+            .eq("serial_type", PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE)
+        );
+        // 删除关系表：部门
+        mStaffOrgMapper.delete(new QueryWrapper<MStaffOrgEntity>()
+            .eq("staff_id",entity.getId())
+            .eq("serial_type", PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT_SERIAL_TYPE)
+        );
+        // 插入关系表：企业
+        if(entity.getCompany_id() != null){
+            MStaffOrgEntity companyStaffEntity = new MStaffOrgEntity();
+            companyStaffEntity.setStaff_id(entity.getId());
+            companyStaffEntity.setSerial_id(entity.getCompany_id());
+            companyStaffEntity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE);
+            companyStaffEntity.setTenant_id(getUserSessionTenantId());
+            mStaffOrgMapper.insert(companyStaffEntity);
+        }
+        // 插入关系表：部门
+        if(entity.getDept_id() != null){
+            MStaffOrgEntity deptStaffEntity = new MStaffOrgEntity();
+            deptStaffEntity.setStaff_id(entity.getId());
+            deptStaffEntity.setSerial_id(entity.getDept_id());
+            deptStaffEntity.setSerial_type(PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT_SERIAL_TYPE);
+            deptStaffEntity.setTenant_id(getUserSessionTenantId());
+            mStaffOrgMapper.insert(deptStaffEntity);
+        }
     }
 
     /**
@@ -243,6 +281,9 @@ public class MStaffServiceImpl extends BaseServiceImpl<MStaffMapper, MStaffEntit
         mStaffEntity.setC_id(null);
         mStaffEntity.setC_time(null);
         mapper.updateById(mStaffEntity);
+
+        // 判断企业、部门字段，对用户组织关系表进行更新
+        updateStaffOrg(mStaffEntity);
 
 
         // 设置返回值
