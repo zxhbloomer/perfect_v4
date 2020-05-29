@@ -8,8 +8,6 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 生成组织架构数据的接收类
@@ -90,6 +88,11 @@ public class MOrgTreeVo extends TreeNode implements Serializable {
     private Long u_id;
 
     private LocalDateTime u_time;
+
+    /**
+     * s_tenant、m_group、m_company、m_position
+     */
+    private String [] codes;
 
     /**
      * 数据版本，乐观锁使用

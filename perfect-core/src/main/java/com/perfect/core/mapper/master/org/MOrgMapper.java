@@ -72,12 +72,18 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     /**
      * 左侧树查询
      */
-    @Select("    "
+    @Select(" <script>    "
         + COMMON_TREE_SELECT
         + "  where true                                                                                              "
         + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)       "
+        + "   <if test='p1.codes != null and p1.codes.length!=0' >                                                   "
+        + "    and t3.serial_type in                                                                                 "
+        + "        <foreach collection='p1.codes' item='item' index='index' open='(' separator=',' close=')'>"
+        + "         #{item}  "
+        + "        </foreach>   "
+        + "   </if>                                                                                                  "
         + "  order by t2.code                                                                                        "
-        + "      ")
+        + " </script>     ")
     List<MOrgTreeVo> getTreeList(@Param("p1") MOrgTreeVo searchCondition);
 
     /**
@@ -85,7 +91,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
      */
     @Select("    "
             + COMMON_TREE_SELECT
-            + "  where true                                                                                            "
+            + "  where true                                                                                         "
             + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)  "
             + "      ")
     List<MOrgTreeVo> getList(@Param("p1") MOrgTreeVo searchCondition);

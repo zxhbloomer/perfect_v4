@@ -42,10 +42,6 @@ public class OrgController extends BaseController {
     @PostMapping("/tree/list")
     @ResponseBody
     public ResponseEntity<JsonResult<List<MOrgTreeVo>>> treeList(@RequestBody(required = false) MOrgTreeVo searchCondition) {
-        if(searchCondition == null){
-            searchCondition = new MOrgTreeVo();
-            searchCondition.setTenant_id(getUserSessionTenantId());
-        }
         List<MOrgTreeVo> vo = service.getTreeList(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(vo));
     }

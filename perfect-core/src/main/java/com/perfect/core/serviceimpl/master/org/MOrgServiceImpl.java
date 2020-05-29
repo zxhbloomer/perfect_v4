@@ -92,9 +92,16 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @Override
     public List<MOrgTreeVo> getTreeList(MOrgTreeVo searchCondition) {
         searchCondition.setTenant_id(getUserSessionTenantId());
+        if(PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY.equals(searchCondition.getType())) {
+            String[] company_codes = {
+                PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE,
+                PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE,
+                PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE};
+            searchCondition.setCodes(company_codes);
+        }
+
         // 查询 数据
         List<MOrgTreeVo> list = mapper.getTreeList(searchCondition);
-
         List<MOrgTreeVo> rtnList = TreeUtil.getTreeList(list);
         return rtnList;
     }
