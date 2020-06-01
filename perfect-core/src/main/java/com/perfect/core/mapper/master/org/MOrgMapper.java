@@ -76,11 +76,12 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + COMMON_TREE_SELECT
         + "  where true                                                                                              "
         + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)       "
+        + "    and (t2.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)    "
         + "   <if test='p1.codes != null and p1.codes.length!=0' >                                                   "
         + "    and t3.serial_type in                                                                                 "
-        + "        <foreach collection='p1.codes' item='item' index='index' open='(' separator=',' close=')'>"
-        + "         #{item}  "
-        + "        </foreach>   "
+        + "        <foreach collection='p1.codes' item='item' index='index' open='(' separator=',' close=')'>        "
+        + "         #{item}                                                                                          "
+        + "        </foreach>                                                                                        "
         + "   </if>                                                                                                  "
         + "  order by t2.code                                                                                        "
         + " </script>     ")
@@ -105,7 +106,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     @Select("    "
         + COMMON_TREE_SELECT
         + "  where true                                                                                                "
-        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)      "
+        + "    and (t1.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)         "
         + "    and (t1.code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)      "
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)  "
         + "    and (t1.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null)                 "

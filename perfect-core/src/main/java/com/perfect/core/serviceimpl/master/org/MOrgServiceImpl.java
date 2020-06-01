@@ -1,5 +1,6 @@
 package com.perfect.core.serviceimpl.master.org;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
@@ -92,13 +93,36 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     @Override
     public List<MOrgTreeVo> getTreeList(MOrgTreeVo searchCondition) {
         searchCondition.setTenant_id(getUserSessionTenantId());
-        if(PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY.equals(searchCondition.getType())) {
-            String[] company_codes = {
-                PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE,
-                PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE,
-                PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE};
-            searchCondition.setCodes(company_codes);
-        }
+        switch (searchCondition.getType()) {
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT:
+                // 组织机构
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY:
+                // 企业
+                String[] company_codes = {
+                    PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE,
+                    PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE,
+                    PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE};
+                searchCondition.setCodes(company_codes);
+                break;
+            case PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT:
+                // 部门
+                String[] dept_codes = {
+                    PerfectDictConstant.DICT_ORG_SETTING_TYPE_TENANT_SERIAL_TYPE,
+                    PerfectDictConstant.DICT_ORG_SETTING_TYPE_GROUP_SERIAL_TYPE,
+                    PerfectDictConstant.DICT_ORG_SETTING_TYPE_COMPANY_SERIAL_TYPE,
+                    PerfectDictConstant.DICT_ORG_SETTING_TYPE_DEPT_SERIAL_TYPE
+                };
+                searchCondition.setCodes(dept_codes);
+                // 获取code
+                MOrgEntity mOrgEntity = mapper.selectOne(new QueryWrapper<MOrgEntity>()
+                    .eq("serial_id",searchCondition.getSerial_id())
+                    .eq("serial_type", searchCondition.getSerial_type())
+                );
+                String code = mOrgEntity.getCode().substring(0,8);
+                searchCondition.setCode(code);
+                break;
+        };
 
         // 查询 数据
         List<MOrgTreeVo> list = mapper.getTreeList(searchCondition);
