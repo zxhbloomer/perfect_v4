@@ -44,6 +44,7 @@ public class MOrgTreeVo extends TreeNode implements Serializable {
      * 编号，00010001..
      */
     private String code;
+    private String current_code;
 
     /**
      * 儿子个数

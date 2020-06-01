@@ -121,6 +121,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
                 );
                 String code = mOrgEntity.getCode().substring(0,8);
                 searchCondition.setCode(code);
+                searchCondition.setCurrent_code(mOrgEntity.getCode());
                 break;
         };
 

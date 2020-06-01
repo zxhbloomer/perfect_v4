@@ -83,6 +83,14 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
         + "         #{item}                                                                                          "
         + "        </foreach>                                                                                        "
         + "   </if>                                                                                                  "
+        + "   <if test='p1.current_code != null ' >                                                                  "
+        + "    and (                                                                                                 "
+        + "          case when length(t2.code) >= length(#{p1.current_code,jdbcType=VARCHAR}) then                   "
+        + "                              t2.code like CONCAT (#{p1.current_code,jdbcType=VARCHAR},'%')               "
+        + "          else true                                                                                       "
+        + "           end                                                                                            "
+        + "         )                                                                                                "
+        + "   </if>                                                                                                  "
         + "  order by t2.code                                                                                        "
         + " </script>     ")
     List<MOrgTreeVo> getTreeList(@Param("p1") MOrgTreeVo searchCondition);
