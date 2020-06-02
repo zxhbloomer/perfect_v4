@@ -211,33 +211,33 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
             case CheckResult.INSERT_CHECK_TYPE:
                 // 新增场合，不能重复
                 List<MDeptEntity> codeList_insertCheck = selectByCode(entity.getCode(), null, null);
-                List<MDeptEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
-                List<MDeptEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
+//                List<MDeptEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
+//                List<MDeptEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
                 if (codeList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：部门编号[" + entity.getCode() + "]出现重复", entity.getCode());
+                    return CheckResultUtil.NG("新增保存出错：部门编号【" + entity.getCode() + "】出现重复", entity.getCode());
                 }
-                if (nameList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：部门全称[" + entity.getName() + "]出现重复", entity.getName());
-                }
-                if (simple_name_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：部门简称[" + entity.getSimple_name() + "]出现重复", entity.getSimple_name());
-                }
+//                if (nameList_insertCheck.size() >= 1) {
+//                    return CheckResultUtil.NG("新增保存出错：部门全称【" + entity.getName() + "】出现重复", entity.getName());
+//                }
+//                if (simple_name_insertCheck.size() >= 1) {
+//                    return CheckResultUtil.NG("新增保存出错：部门简称【" + entity.getSimple_name() + "】出现重复", entity.getSimple_name());
+//                }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
                 // 更新场合，不能重复设置
                 List<MDeptEntity> codeList_updCheck = selectByCode(entity.getCode(), null, entity.getId());
-                List<MDeptEntity> nameList_updCheck = selectByName(entity.getName(), null, entity.getId());
-                List<MDeptEntity> simple_name_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
+//                List<MDeptEntity> nameList_updCheck = selectByName(entity.getName(), null, entity.getId());
+//                List<MDeptEntity> simple_name_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
 
                 if (codeList_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：部门编号[" + entity.getCode() + "]出现重复！", entity.getCode());
+                    return CheckResultUtil.NG("更新保存出错：部门编号【" + entity.getCode() + "】出现重复！", entity.getCode());
                 }
-                if (nameList_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：部门全称[" + entity.getName() + "]出现重复！", entity.getName());
-                }
-                if (simple_name_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：部门简称[" + entity.getSimple_name() + "]出现重复！", entity.getSimple_name());
-                }
+//                if (nameList_updCheck.size() >= 1) {
+//                    return CheckResultUtil.NG("更新保存出错：部门全称【" + entity.getName() + "】出现重复！", entity.getName());
+//                }
+//                if (simple_name_updCheck.size() >= 1) {
+//                    return CheckResultUtil.NG("更新保存出错：部门简称【" + entity.getSimple_name() + "】出现重复！", entity.getSimple_name());
+//                }
                 break;
             case CheckResult.DELETE_CHECK_TYPE:
                 /** 如果逻辑删除为false，表示为：页面点击了删除操作 */
@@ -257,18 +257,18 @@ public class MDeptServiceImpl extends BaseServiceImpl<MDeptMapper, MDeptEntity> 
                 }
                 // 更新场合，不能重复设置
                 List<MDeptEntity> codeList_undel_Check = selectByCode(entity.getCode(), null, entity.getId());
-                List<MDeptEntity> nameList_undel_updCheck = selectByName(entity.getName(), null, entity.getId());
-                List<MDeptEntity> simple_name_undel_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
+//                List<MDeptEntity> nameList_undel_updCheck = selectByName(entity.getName(), null, entity.getId());
+//                List<MDeptEntity> simple_name_undel_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
 
                 if (codeList_undel_Check.size() >= 1) {
-                    return CheckResultUtil.NG("复原出错：部门编号[" + entity.getCode() + "]出现重复", entity.getCode());
+                    return CheckResultUtil.NG("复原出错：部门编号【" + entity.getCode() + "】出现重复", entity.getCode());
                 }
-                if (nameList_undel_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("复原出错：部门全称[" + entity.getName() + "]出现重复", entity.getName());
-                }
-                if (simple_name_undel_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("复原出错：部门简称[" + entity.getSimple_name() + "]出现重复", entity.getSimple_name());
-                }
+//                if (nameList_undel_updCheck.size() >= 1) {
+//                    return CheckResultUtil.NG("复原出错：部门全称【" + entity.getName() + "】出现重复", entity.getName());
+//                }
+//                if (simple_name_undel_updCheck.size() >= 1) {
+//                    return CheckResultUtil.NG("复原出错：部门简称【" + entity.getSimple_name() + "】出现重复", entity.getSimple_name());
+//                }
                 break;
             default:
         }

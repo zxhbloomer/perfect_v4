@@ -216,33 +216,33 @@ public class MPositiionServiceImpl extends BaseServiceImpl<MPositionMapper, MPos
             case CheckResult.INSERT_CHECK_TYPE:
                 // 新增场合，不能重复
                 List<MPositionEntity> codeList_insertCheck = selectByCode(entity.getCode(), null, null);
-                List<MPositionEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
-                List<MPositionEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
+//                List<MPositionEntity> nameList_insertCheck = selectByName(entity.getName(), null, null);
+//                List<MPositionEntity> simple_name_insertCheck = selectBySimpleName(entity.getSimple_name(), null, null);
                 if (codeList_insertCheck.size() >= 1) {
                     return CheckResultUtil.NG("新增保存出错：岗位编号【"+ entity.getCode() +"】出现重复", entity.getCode());
                 }
-                if (nameList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：岗位全称【"+ entity.getName() +"】出现重复", entity.getName());
-                }
-                if (simple_name_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：岗位简称【"+ entity.getSimple_name() +"】出现重复", entity.getSimple_name());
-                }
+//                if (nameList_insertCheck.size() >= 1) {
+//                    return CheckResultUtil.NG("新增保存出错：岗位全称【"+ entity.getName() +"】出现重复", entity.getName());
+//                }
+//                if (simple_name_insertCheck.size() >= 1) {
+//                    return CheckResultUtil.NG("新增保存出错：岗位简称【"+ entity.getSimple_name() +"】出现重复", entity.getSimple_name());
+//                }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
                 // 更新场合，不能重复设置
                 List<MPositionEntity> codeList_updCheck = selectByCode(entity.getCode(), null, entity.getId());
-                List<MPositionEntity> nameList_updCheck = selectByName(entity.getName(), null, entity.getId());
-                List<MPositionEntity> simple_name_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
+//                List<MPositionEntity> nameList_updCheck = selectByName(entity.getName(), null, entity.getId());
+//                List<MPositionEntity> simple_name_updCheck = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
 
                 if (codeList_updCheck.size() >= 1) {
                     return CheckResultUtil.NG("更新保存出错：岗位编号【"+ entity.getCode() +"】出现重复", entity.getCode());
                 }
-                if (nameList_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：岗位全称【"+ entity.getName() +"】出现重复", entity.getName());
-                }
-                if (simple_name_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：岗位简称【"+ entity.getSimple_name() +"】出现重复", entity.getSimple_name());
-                }
+//                if (nameList_updCheck.size() >= 1) {
+//                    return CheckResultUtil.NG("更新保存出错：岗位全称【"+ entity.getName() +"】出现重复", entity.getName());
+//                }
+//                if (simple_name_updCheck.size() >= 1) {
+//                    return CheckResultUtil.NG("更新保存出错：岗位简称【"+ entity.getSimple_name() +"】出现重复", entity.getSimple_name());
+//                }
                 break;
             case CheckResult.DELETE_CHECK_TYPE:
                 /** 如果逻辑删除为false，表示为：页面点击了删除操作 */
@@ -261,18 +261,18 @@ public class MPositiionServiceImpl extends BaseServiceImpl<MPositionMapper, MPos
                     return CheckResultUtil.OK();
                 }
                 List<MPositionEntity> codeList_undelete_Check = selectByCode(entity.getCode(), null, entity.getId());
-                List<MPositionEntity> nameList_undelete_Check = selectByName(entity.getName(), null, entity.getId());
-                List<MPositionEntity> simple_name_undelete_Check = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
+//                List<MPositionEntity> nameList_undelete_Check = selectByName(entity.getName(), null, entity.getId());
+//                List<MPositionEntity> simple_name_undelete_Check = selectBySimpleName(entity.getSimple_name(), null, entity.getId());
 
                 if (codeList_undelete_Check.size() >= 1) {
                     return CheckResultUtil.NG("复原出错：复原岗位编号【"+ entity.getCode() +"】出现重复", entity.getCode());
                 }
-                if (nameList_undelete_Check.size() >= 1) {
-                    return CheckResultUtil.NG("复原出错：复原岗位全称【"+ entity.getName() +"】出现重复", entity.getName());
-                }
-                if (simple_name_undelete_Check.size() >= 1) {
-                    return CheckResultUtil.NG("复原出错：复原岗位简称【"+ entity.getSimple_name() +"】出现重复", entity.getSimple_name());
-                }
+//                if (nameList_undelete_Check.size() >= 1) {
+//                    return CheckResultUtil.NG("复原出错：复原岗位全称【"+ entity.getName() +"】出现重复", entity.getName());
+//                }
+//                if (simple_name_undelete_Check.size() >= 1) {
+//                    return CheckResultUtil.NG("复原出错：复原岗位简称【"+ entity.getSimple_name() +"】出现重复", entity.getSimple_name());
+//                }
                 break;
             default:
         }
