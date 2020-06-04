@@ -1,4 +1,4 @@
-package com.perfect.bean.entity.sys.platform.syscode;
+package com.perfect.bean.entity.sys.pages;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
@@ -10,53 +10,64 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 编码控制
+ * 页面按钮表
  * </p>
  *
  * @author zxh
- * @since 2019-12-12
+ * @since 2020-06-04
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("s_code")
-public class SCodeEntity implements Serializable {
+@TableName("s_pages_function")
+public class SPagesFunctionEntity implements Serializable {
 
-    private static final long serialVersionUID = -3616976089046858264L;
+    private static final long serialVersionUID = -7034286474283534783L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 编码类型
+     * 类型：PAGE：主页面上，TABLE：表格上，POPUP：弹出框上
      */
     @TableField("type")
     private String type;
 
     /**
-     * 编码规则
-     */
-    @TableField("rule")
-    private String rule;
-
-    /**
-     * 当前编码
+     * 按钮编号：字典表过来
      */
     @TableField("code")
     private String code;
 
     /**
-     * 代码增加序号
+     * 按钮名称
      */
-    @TableField("auto_create")
-    private Long auto_create;
+    @TableField("name")
+    private String name;
 
     /**
-     * 前缀
+     * 排序
      */
-    @TableField("prefex")
-    private String prefex;
+    @TableField("sort")
+    private Integer sort;
 
+    /**
+     * 权限标识
+     */
+    @TableField("perms")
+    private String perms;
+
+    /**
+     * 描述
+     */
+    @TableField("descr")
+    private String descr;
+
+    /**
+     * 页面id，
+     */
+    @TableField("page_id")
+    private Long page_id;
 
     @TableField(value="c_id", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NOT_EMPTY)
     private Long c_id;
