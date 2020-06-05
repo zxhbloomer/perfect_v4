@@ -54,17 +54,6 @@ public interface ISPagesService extends IService<SPagesEntity> {
      */
     UpdateResult<Integer> update(SPagesEntity entity);
 
-    /**
-     * 通过name查询
-     *
-     */
-    List<SPagesVo> selectByName(String name);
-
-    /**
-     * 通过key查询
-     *
-     */
-    List<SPagesVo> selectByCode(String code);
 
     /**
      * 批量物理删除

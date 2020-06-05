@@ -7,6 +7,7 @@ import com.perfect.bean.entity.sys.pages.SPagesEntity;
 import com.perfect.bean.vo.sys.pages.SPagesVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @author zxh
  * @since 2020-06-05
  */
+@Repository
 public interface SPagesMapper extends BaseMapper<SPagesEntity> {
 
     /**
@@ -80,50 +82,6 @@ public interface SPagesMapper extends BaseMapper<SPagesEntity> {
         + "  </script>    ")
     List<SPagesVo> selectIdsIn(@Param("p1") List<SPagesVo> searchCondition);
 
-    /**
-     * 按条件获取所有数据，没有分页
-     * @param name
-     * @return
-     */
-    @Select("    "
-        + "  SELECT                                                                                        "
-        + "       *                                                                                        "
-        + "  FROM                                                                                          "
-        + "  	s_pages t                                                                                  "
-        + "  where true                                                                                    "
-        + "    and t.name =  #{p1}                                                                         "
-        + "      ")
-    List<SPagesVo> selectByName(@Param("p1") String name);
-
-    /**
-     * 按条件获取所有数据，没有分页
-     * @param code
-     * @return
-     */
-    @Select("    "
-        + "  SELECT                                                                                        "
-        + "       *                                                                                        "
-        + "  FROM                                                                                          "
-        + "  	s_pages t                                                                                  "
-        + "  where true                                                                                    "
-        + "    and t.code =  #{p1}                                                                         "
-        + "      ")
-    List<SPagesVo> selectByCode(@Param("p1") String code);
-
-    /**
-     * 按条件获取所有数据，没有分页
-     * @param value
-     * @return
-     */
-    @Select("    "
-        + "  SELECT                                                                                        "
-        + "       *                                                                                        "
-        + "  FROM                                                                                          "
-        + "  	s_pages t                                                                                  "
-        + "  where true                                                                                    "
-        + "    and t.value =  #{p1}                                                                        "
-        + "      ")
-    List<SPagesVo> selectByValue(@Param("p1") String value);
 
     /**
      * 按条件获取所有数据，没有分页

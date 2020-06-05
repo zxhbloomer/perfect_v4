@@ -1,5 +1,6 @@
 package com.perfect.core.serviceimpl.sys.pages;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -76,10 +77,6 @@ public class SPagesServiceImpl extends ServiceImpl<SPagesMapper, SPagesEntity> i
     @Transactional(rollbackFor = Exception.class)
     @Override
     public InsertResult<Integer> insert(SPagesEntity entity) {
-        // 编码如果为空，自动生成编码
-//        if(StringUtil.isEmpty(entity.getName())){
-//            entity.setName(autoCode.autoCode().getCode());
-//        }
         // 插入前check
         CheckResult cr = checkLogic(entity.getName(), entity.getCode(), CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -115,24 +112,36 @@ public class SPagesServiceImpl extends ServiceImpl<SPagesMapper, SPagesEntity> i
      * @param name
      * @return
      */
-    @Override
-    public List<SPagesVo> selectByName(String name) {
-        // 查询 数据
-        List<SPagesVo> list = mapper.selectByName(name);
-        return list;
+    public int selectByName(String name) {
+        int count = mapper.selectCount(new QueryWrapper<SPagesEntity>()
+            .eq("name",name)
+        );
+        return count;
     }
 
     /**
      * 获取列表，查询所有数据
      *
-     * @param code
      * @return
      */
-    @Override
-    public List<SPagesVo> selectByCode(String code) {
-        // 查询 数据
-        List<SPagesVo> list = mapper.selectByCode(code);
-        return list;
+    public int selectByCode(String code,String moduleType, Long id) {
+        int count = 0;
+        switch (moduleType) {
+            case CheckResult.INSERT_CHECK_TYPE:
+                count = mapper.selectCount(new QueryWrapper<SPagesEntity>()
+                    .eq("code",code)
+                );
+                break;
+            case CheckResult.UPDATE_CHECK_TYPE:
+                count = mapper.selectCount(new QueryWrapper<SPagesEntity>()
+                    .eq("code",code)
+
+                );
+                break;
+            default:
+                break;
+        }
+        return count;
     }
 
     /**
@@ -141,30 +150,29 @@ public class SPagesServiceImpl extends ServiceImpl<SPagesMapper, SPagesEntity> i
      * @return
      */
     public CheckResult checkLogic(String name, String code, String moduleType) {
-        List<SPagesVo> selectByName = selectByName(name);
-        List<SPagesVo> selectByKey = selectByCode(code);
 
-        switch (moduleType) {
-            case CheckResult.INSERT_CHECK_TYPE:
-                // 新增场合，不能重复
-                if (selectByName.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：参数名称出现重复", name);
-                }
-                if (selectByKey.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：参数键名出现重复", code);
-                }
-                break;
-            case CheckResult.UPDATE_CHECK_TYPE:
-                // 更新场合，不能重复设置
-                if (selectByName.size() >= 2) {
-                    return CheckResultUtil.NG("新增保存出错：参数名称出现重复", name);
-                }
-                if (selectByKey.size() >= 2) {
-                    return CheckResultUtil.NG("新增保存出错：参数键名出现重复", code);
-                }
-                break;
-            default:
-        }
+//        switch (moduleType) {
+//            case CheckResult.INSERT_CHECK_TYPE:
+//                // 新增场合，不能重复
+//                if (selectByCode(code) >= 1) {
+//                    return CheckResultUtil.NG("新增保存出错：页面编号出现重复", code);
+//                }
+//                if (selectByName(name) >= 1) {
+//                    return CheckResultUtil.NG("新增保存出错：页面名称出现重复", name);
+//                }
+//
+//                break;
+//            case CheckResult.UPDATE_CHECK_TYPE:
+//                // 更新场合，不能重复设置
+//                if (selectByCode(code) >= 1) {
+//                    return CheckResultUtil.NG("新增保存出错：页面编号出现重复", code);
+//                }
+//                if (selectByName(name) >= 1) {
+//                    return CheckResultUtil.NG("新增保存出错：页面名称出现重复", name);
+//                }
+//                break;
+//            default:
+//        }
         return CheckResultUtil.OK();
     }
 
