@@ -78,7 +78,7 @@ public class SPagesServiceImpl extends ServiceImpl<SPagesMapper, SPagesEntity> i
     @Override
     public InsertResult<Integer> insert(SPagesEntity entity) {
         // 插入前check
-        CheckResult cr = checkLogic(entity.getName(), entity.getCode(), CheckResult.INSERT_CHECK_TYPE);
+        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -96,7 +96,7 @@ public class SPagesServiceImpl extends ServiceImpl<SPagesMapper, SPagesEntity> i
     @Override
     public UpdateResult<Integer> update(SPagesEntity entity) {
         // 更新前check
-        CheckResult cr = checkLogic(entity.getName(), entity.getCode(), CheckResult.UPDATE_CHECK_TYPE);
+        CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -109,14 +109,13 @@ public class SPagesServiceImpl extends ServiceImpl<SPagesMapper, SPagesEntity> i
     /**
      * 获取列表，查询所有数据
      *
-     * @param name
      * @return
      */
-    public int selectByName(String name) {
-        int count = mapper.selectCount(new QueryWrapper<SPagesEntity>()
-            .eq("name",name)
+    public int selectByName(SPagesEntity entity, String moduleType) {
+        return mapper.selectCount(new QueryWrapper<SPagesEntity>()
+                .eq("name", entity.getName())
+                .ne(CheckResult.UPDATE_CHECK_TYPE.equals(moduleType) ? true:false, "id", entity.getId())
         );
-        return count;
     }
 
     /**
@@ -124,24 +123,11 @@ public class SPagesServiceImpl extends ServiceImpl<SPagesMapper, SPagesEntity> i
      *
      * @return
      */
-    public int selectByCode(String code,String moduleType, Long id) {
-        int count = 0;
-        switch (moduleType) {
-            case CheckResult.INSERT_CHECK_TYPE:
-                count = mapper.selectCount(new QueryWrapper<SPagesEntity>()
-                    .eq("code",code)
-                );
-                break;
-            case CheckResult.UPDATE_CHECK_TYPE:
-                count = mapper.selectCount(new QueryWrapper<SPagesEntity>()
-                    .eq("code",code)
-
-                );
-                break;
-            default:
-                break;
-        }
-        return count;
+    public int selectByCode(SPagesEntity entity, String moduleType) {
+        return mapper.selectCount(new QueryWrapper<SPagesEntity>()
+                .eq("code", entity.getCode())
+                .ne(CheckResult.UPDATE_CHECK_TYPE.equals(moduleType) ? true:false, "id", entity.getId())
+        );
     }
 
     /**
@@ -149,30 +135,30 @@ public class SPagesServiceImpl extends ServiceImpl<SPagesMapper, SPagesEntity> i
      *
      * @return
      */
-    public CheckResult checkLogic(String name, String code, String moduleType) {
+    public CheckResult checkLogic(SPagesEntity entity, String moduleType) {
 
-//        switch (moduleType) {
-//            case CheckResult.INSERT_CHECK_TYPE:
-//                // 新增场合，不能重复
-//                if (selectByCode(code) >= 1) {
-//                    return CheckResultUtil.NG("新增保存出错：页面编号出现重复", code);
-//                }
-//                if (selectByName(name) >= 1) {
-//                    return CheckResultUtil.NG("新增保存出错：页面名称出现重复", name);
-//                }
-//
-//                break;
-//            case CheckResult.UPDATE_CHECK_TYPE:
-//                // 更新场合，不能重复设置
-//                if (selectByCode(code) >= 1) {
-//                    return CheckResultUtil.NG("新增保存出错：页面编号出现重复", code);
-//                }
-//                if (selectByName(name) >= 1) {
-//                    return CheckResultUtil.NG("新增保存出错：页面名称出现重复", name);
-//                }
-//                break;
-//            default:
-//        }
+        switch (moduleType) {
+            case CheckResult.INSERT_CHECK_TYPE:
+                // 新增场合，不能重复
+                if (selectByCode(entity, moduleType) >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：页面编号【"+ entity.getCode() +"】出现重复!", entity.getCode());
+                }
+                if (selectByName(entity, moduleType) >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：页面名称【"+ entity.getName() +"】出现重复!", entity.getName());
+                }
+
+                break;
+            case CheckResult.UPDATE_CHECK_TYPE:
+                // 更新场合，不能重复设置
+                if (selectByCode(entity, moduleType) >= 1) {
+                    return CheckResultUtil.NG("更新保存出错：页面编号【"+ entity.getCode() +"】出现重复!", entity.getCode());
+                }
+                if (selectByName(entity, moduleType) >= 1) {
+                    return CheckResultUtil.NG("更新保存出错：页面名称【"+ entity.getName() +"】出现重复!", entity.getName());
+                }
+                break;
+            default:
+        }
         return CheckResultUtil.OK();
     }
 
