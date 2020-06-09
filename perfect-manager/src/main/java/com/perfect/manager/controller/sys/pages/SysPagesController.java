@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -40,7 +41,8 @@ public class SysPagesController extends BaseController {
     @ApiOperation("根据参数id，获取vue页面设置信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<SPagesVo>>> list(@RequestBody(required = false) SPagesVo searchCondition) {
+    public ResponseEntity<JsonResult<IPage<SPagesVo>>> list(@RequestBody(required = false) SPagesVo searchCondition,
+        HttpServletRequest request) {
         IPage<SPagesVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
