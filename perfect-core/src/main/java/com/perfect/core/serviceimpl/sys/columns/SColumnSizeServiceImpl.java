@@ -7,6 +7,8 @@ import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.columns.SColumnSizeVo;
 import com.perfect.core.mapper.sys.columns.SColumnSizeMapper;
 import com.perfect.core.service.sys.columns.ISColumnSizeService;
+import com.perfect.core.utils.security.SecurityUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,12 +25,19 @@ import java.util.List;
 public class SColumnSizeServiceImpl extends ServiceImpl<SColumnSizeMapper, SColumnSizeEntity> implements
     ISColumnSizeService {
 
+    @Autowired
+    private SColumnSizeMapper mapper;
+
     /**
      * 获取列表，页面查询
      */
     @Override
-    public List<SColumnSizeVo> selectPage(SColumnSizeVo searchCondition) {
-        return null;
+    public List<SColumnSizeVo> getData(SColumnSizeVo searchCondition) {
+        /** 获取员工id */
+        searchCondition.setStaff_id(SecurityUtil.getStaff_id());
+
+        List<SColumnSizeVo> rtnBean =  mapper.getData(searchCondition);
+        return rtnBean;
     }
 
     /**
@@ -36,8 +45,13 @@ public class SColumnSizeServiceImpl extends ServiceImpl<SColumnSizeMapper, SColu
      * @param searchCondition
      */
     @Override
-    public UpdateResult<Boolean> insertOrUpdate(SColumnSizeVo searchCondition) {
+    public UpdateResult<Boolean> saveColumnsSize(SColumnSizeVo searchCondition) {
         SColumnSizeEntity entity = new SColumnSizeEntity();
+        entity.setPage_code(searchCondition.getPage_code());
+        entity.setType(searchCondition.getType());
+        entity.setStaff_id(SecurityUtil.getStaff_id());
+        entity.setColumn_property(searchCondition.getColumn_property());
+        entity.setSize(searchCondition.getSize());
         Boolean rtn = this.saveOrUpdate(entity);
         return UpdateResultUtil.OK(rtn);
     }

@@ -34,7 +34,7 @@ public class ColumnsController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<List<SColumnSizeVo>>> list(@RequestBody(required = false) SColumnSizeVo searchCondition) {
-        List<SColumnSizeVo> entity = service.selectPage(searchCondition);
+        List<SColumnSizeVo> entity = service.getData(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
@@ -43,9 +43,9 @@ public class ColumnsController extends BaseController {
     @PostMapping("/save")
     @ResponseBody
     @RepeatSubmitAnnotion
-    public ResponseEntity<JsonResult<String>> save(@RequestBody(required = false) SColumnSizeVo bean) {
+    public ResponseEntity<JsonResult<String>> saveColumnsSize(@RequestBody(required = false) SColumnSizeVo bean) {
 
-        if(service.insertOrUpdate(bean).isSuccess()){
+        if(service.saveColumnsSize(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK("更新成功","更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");

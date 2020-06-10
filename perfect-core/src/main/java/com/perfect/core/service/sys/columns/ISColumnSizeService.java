@@ -20,10 +20,10 @@ public interface ISColumnSizeService extends IService<SColumnSizeEntity> {
     /**
      * 获取列表，页面查询
      */
-    List<SColumnSizeVo> selectPage(SColumnSizeVo searchCondition) ;
+    List<SColumnSizeVo> getData(SColumnSizeVo searchCondition) ;
 
     /**
      * 获取列表，页面查询
      */
-    UpdateResult<Boolean> insertOrUpdate(SColumnSizeVo searchCondition) ;
+    UpdateResult<Boolean> saveColumnsSize(SColumnSizeVo searchCondition) ;
 }

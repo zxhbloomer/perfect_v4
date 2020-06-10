@@ -1,12 +1,13 @@
 package com.perfect.bean.vo.master.user;
 
+import com.perfect.bean.bo.session.user.UserSessionBo;
 import com.perfect.bean.config.base.v1.BaseVo;
 import io.swagger.annotations.ApiModel;
-import java.io.Serializable;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
@@ -25,4 +26,6 @@ public class UserInfoVo extends BaseVo implements Serializable {
     private String avatar;
 
     private String name;
+
+    private UserSessionBo user_session_bean;
 }

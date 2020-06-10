@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.sys.columns;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -46,13 +47,15 @@ public class SColumnSizeVo implements Serializable {
     private Long staff_id;
 
     /**
-     * 列宽
+     * table的column的属性
      */
-    private Integer size;
+    @TableField("column_property")
+    private String column_property;
 
     /**
-     * table的column的顺序id
+     * 列宽
      */
-    private Integer column_sort_id;
+    @TableField("size")
+    private Integer size;
 
 }

@@ -45,7 +45,10 @@ public class UserController extends BaseController {
 
         UserInfoVo userInfoVo = service.getUserInfo(token);
 
-//        ResponseEntity<OAuth2AccessToken
+        /** 设置user session bean */
+        userInfoVo.setUser_session_bean(getUserSession());
+
+        //        ResponseEntity<OAuth2AccessToken
         return ResponseEntity.ok().body(ResultUtil.OK(userInfoVo));
     }
 
