@@ -61,7 +61,7 @@ public class SColumnSizeServiceImpl extends ServiceImpl<SColumnSizeMapper, SColu
         int updCount = mapper.saveColumnsSize(searchCondition);
         // 更新失败则插入
         if(updCount < 1){
-            this.saveOrUpdate(entity);
+            mapper.insert(entity);
         }
         return UpdateResultUtil.OK(true);
     }
