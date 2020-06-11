@@ -62,6 +62,12 @@ public class SColumnSizeEntity implements Serializable {
     /**
      * 列宽
      */
-    @TableField("size")
-    private Integer size;
+    @TableField("min_width")
+    private Integer min_width;
+
+    /**
+     * 列宽
+     */
+    @TableField("real_width")
+    private Integer real_width;
 }

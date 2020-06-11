@@ -10,6 +10,7 @@ import com.perfect.core.service.sys.columns.ISColumnSizeService;
 import com.perfect.core.utils.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class SColumnSizeServiceImpl extends ServiceImpl<SColumnSizeMapper, SColu
      * 插入or更新
      * @param searchCondition
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public UpdateResult<Boolean> saveColumnsSize(SColumnSizeVo searchCondition) {
         SColumnSizeEntity entity = new SColumnSizeEntity();
@@ -51,8 +53,16 @@ public class SColumnSizeServiceImpl extends ServiceImpl<SColumnSizeMapper, SColu
         entity.setType(searchCondition.getType());
         entity.setStaff_id(SecurityUtil.getStaff_id());
         entity.setColumn_property(searchCondition.getColumn_property());
-        entity.setSize(searchCondition.getSize());
-        Boolean rtn = this.saveOrUpdate(entity);
-        return UpdateResultUtil.OK(rtn);
+        entity.setReal_width(searchCondition.getReal_width());
+        entity.setMin_width(searchCondition.getMin_width());
+
+        // 尝试更新
+        searchCondition.setStaff_id(SecurityUtil.getStaff_id());
+        int updCount = mapper.saveColumnsSize(searchCondition);
+        // 更新失败则插入
+        if(updCount < 1){
+            this.saveOrUpdate(entity);
+        }
+        return UpdateResultUtil.OK(true);
     }
 }
