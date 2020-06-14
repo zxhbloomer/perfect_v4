@@ -53,6 +53,8 @@ public class SColumnSizeServiceImpl extends ServiceImpl<SColumnSizeMapper, SColu
         entity.setType(searchCondition.getType());
         entity.setStaff_id(SecurityUtil.getStaff_id());
         entity.setColumn_property(searchCondition.getColumn_property());
+        entity.setColumn_label(searchCondition.getColumn_label());
+        entity.setColumn_id(searchCondition.getColumn_id());
         entity.setReal_width(searchCondition.getReal_width());
         entity.setMin_width(searchCondition.getMin_width());
 

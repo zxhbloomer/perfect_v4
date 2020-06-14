@@ -40,11 +40,13 @@ public interface SColumnSizeMapper extends BaseMapper<SColumnSizeEntity> {
      */
     @Update("                                                                                           "
         + "    update s_column_size t                                                                   "
-        + "       set t.min_width = #{p1.min_width,jdbcType=INTEGER},                                   "
+        + "       set t.column_property = #{p1.column_property,jdbcType=INTEGER},                       "
+        + "           t.column_label = #{p1.column_label,jdbcType=INTEGER},                             "
+        + "           t.min_width = #{p1.min_width,jdbcType=INTEGER},                                   "
         + "           t.real_width = #{p1.real_width,jdbcType=INTEGER}                                  "
         + "     where t.page_code = #{p1.page_code,jdbcType=VARCHAR}                                    "
         + "       and t.staff_id = #{p1.staff_id,jdbcType=BIGINT}                                       "
-        + "       and t.column_property = #{p1.column_property,jdbcType=VARCHAR}                        "
+        + "       and t.column_id = #{p1.column_id,jdbcType=VARCHAR}                                    "
         + "       and (t.type = #{p1.type,jdbcType=VARCHAR} or #{p1.type,jdbcType=VARCHAR} is null)     "
         + "                                                                          "
     )

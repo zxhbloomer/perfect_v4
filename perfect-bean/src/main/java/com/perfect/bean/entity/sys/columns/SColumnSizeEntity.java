@@ -54,10 +54,22 @@ public class SColumnSizeEntity implements Serializable {
     private Long staff_id;
 
     /**
-     * table的column的属性
+     * table的column的property属性
      */
     @TableField("column_property")
     private String column_property;
+
+    /**
+     * table的column的label属性
+     */
+    @TableField("column_label")
+    private String column_label;
+
+    /**
+     * table的column的id属性
+     */
+    @TableField("column_id")
+    private String column_id;
 
     /**
      * 列宽
