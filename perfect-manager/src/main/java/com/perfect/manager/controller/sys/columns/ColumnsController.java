@@ -42,7 +42,6 @@ public class ColumnsController extends BaseController {
     @ApiOperation("更新保存")
     @PostMapping("/save")
     @ResponseBody
-    @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<String>> saveColumnsSize(@RequestBody(required = false) SColumnSizeVo bean) {
 
         if(service.saveColumnsSize(bean).isSuccess()){
