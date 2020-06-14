@@ -56,6 +56,10 @@ public class SColumnSizeServiceImpl extends ServiceImpl<SColumnSizeMapper, SColu
         entity.setReal_width(searchCondition.getReal_width());
         entity.setMin_width(searchCondition.getMin_width());
 
+        if(entity.getReal_width() == null){
+            UpdateResultUtil.NG(false, "更新的列长度为0，更新错误");
+        }
+
         // 尝试更新
         searchCondition.setStaff_id(SecurityUtil.getStaff_id());
         int updCount = mapper.saveColumnsSize(searchCondition);
