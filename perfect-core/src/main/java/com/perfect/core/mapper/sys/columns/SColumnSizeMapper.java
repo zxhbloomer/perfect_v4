@@ -46,7 +46,7 @@ public interface SColumnSizeMapper extends BaseMapper<SColumnSizeEntity> {
         + "           t.real_width = #{p1.real_width,jdbcType=INTEGER}                                  "
         + "     where t.page_code = #{p1.page_code,jdbcType=VARCHAR}                                    "
         + "       and t.staff_id = #{p1.staff_id,jdbcType=BIGINT}                                       "
-        + "       and t.column_id = #{p1.column_id,jdbcType=VARCHAR}                                    "
+        + "       and t.column_index = #{p1.column_index,jdbcType=VARCHAR}                              "
         + "       and (t.type = #{p1.type,jdbcType=VARCHAR} or #{p1.type,jdbcType=VARCHAR} is null)     "
         + "                                                                          "
     )

@@ -66,10 +66,10 @@ public class SColumnSizeEntity implements Serializable {
     private String column_label;
 
     /**
-     * table的column的id属性
+     * table的column的第几个列，从0开始
      */
-    @TableField("column_id")
-    private String column_id;
+    @TableField("column_index")
+    private Integer column_index;
 
     /**
      * 列宽
