@@ -1,6 +1,5 @@
 package com.perfect.bean.vo.sys.columns;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -70,5 +69,7 @@ public class SColumnSizeVo implements Serializable {
      * 列宽
      */
     private Integer real_width;
+
+    private String cache_key;
 
 }

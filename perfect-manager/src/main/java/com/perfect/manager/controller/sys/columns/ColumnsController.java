@@ -3,7 +3,6 @@ package com.perfect.manager.controller.sys.columns;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.sys.columns.SColumnSizeVo;
-import com.perfect.common.annotations.RepeatSubmitAnnotion;
 import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.core.service.sys.columns.ISColumnSizeService;
@@ -34,6 +33,11 @@ public class ColumnsController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<List<SColumnSizeVo>>> list(@RequestBody(required = false) SColumnSizeVo searchCondition) {
+        String cache_key = searchCondition.getPage_code()
+            +  searchCondition.getType() ==null ? "" : searchCondition.getType()
+            + searchCondition.getStaff_id()
+            + searchCondition.getColumn_index();
+        searchCondition.setCache_key(cache_key);
         List<SColumnSizeVo> entity = service.getData(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
@@ -43,7 +47,11 @@ public class ColumnsController extends BaseController {
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> saveColumnsSize(@RequestBody(required = false) SColumnSizeVo bean) {
-
+        String cache_key = bean.getPage_code()
+            +  bean.getType() ==null ? "" : bean.getType()
+            + bean.getStaff_id()
+            + bean.getColumn_index();
+        bean.setCache_key(cache_key);
         if(service.saveColumnsSize(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK("更新成功","更新成功"));
         } else {

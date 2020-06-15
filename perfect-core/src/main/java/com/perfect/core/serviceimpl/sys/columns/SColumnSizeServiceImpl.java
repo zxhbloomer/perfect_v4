@@ -5,10 +5,13 @@ import com.perfect.bean.entity.sys.columns.SColumnSizeEntity;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.columns.SColumnSizeVo;
+import com.perfect.common.constant.PerfectConstant;
 import com.perfect.core.mapper.sys.columns.SColumnSizeMapper;
 import com.perfect.core.service.sys.columns.ISColumnSizeService;
 import com.perfect.core.utils.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,7 @@ public class SColumnSizeServiceImpl extends ServiceImpl<SColumnSizeMapper, SColu
     /**
      * 获取列表，页面查询
      */
+    @Cacheable(value = PerfectConstant.CACHE_PC.CACHE_COLUMNS_TYPE, key = "#searchCondition.cache_key")
     @Override
     public List<SColumnSizeVo> getData(SColumnSizeVo searchCondition) {
         /** 获取员工id */
@@ -45,6 +49,7 @@ public class SColumnSizeServiceImpl extends ServiceImpl<SColumnSizeMapper, SColu
      * 插入or更新
      * @param searchCondition
      */
+    @CacheEvict(value = PerfectConstant.CACHE_PC.CACHE_COLUMNS_TYPE, key = "#searchCondition.cache_key")
     @Transactional(rollbackFor = Exception.class)
     @Override
     public UpdateResult<Boolean> saveColumnsSize(SColumnSizeVo searchCondition) {
