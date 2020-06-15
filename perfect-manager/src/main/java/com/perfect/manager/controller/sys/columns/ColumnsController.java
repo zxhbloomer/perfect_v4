@@ -33,10 +33,12 @@ public class ColumnsController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<List<SColumnSizeVo>>> list(@RequestBody(required = false) SColumnSizeVo searchCondition) {
+        /** 获取员工id */
+        searchCondition.setStaff_id(getUserSessionStaffId());
+        /** 拼接缓存的key */
         String cache_key = searchCondition.getPage_code()
             +  searchCondition.getType() ==null ? "" : searchCondition.getType()
-            + searchCondition.getStaff_id()
-            + searchCondition.getColumn_index();
+            + searchCondition.getStaff_id();
         searchCondition.setCache_key(cache_key);
         List<SColumnSizeVo> entity = service.getData(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
@@ -47,10 +49,12 @@ public class ColumnsController extends BaseController {
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> saveColumnsSize(@RequestBody(required = false) SColumnSizeVo bean) {
+        /** 获取员工id */
+        bean.setStaff_id(getUserSessionStaffId());
+        /** 拼接缓存的key */
         String cache_key = bean.getPage_code()
             +  bean.getType() ==null ? "" : bean.getType()
-            + bean.getStaff_id()
-            + bean.getColumn_index();
+            + bean.getStaff_id();
         bean.setCache_key(cache_key);
         if(service.saveColumnsSize(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK("更新成功","更新成功"));

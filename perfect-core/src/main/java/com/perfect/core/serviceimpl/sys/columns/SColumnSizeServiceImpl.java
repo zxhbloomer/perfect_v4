@@ -38,9 +38,6 @@ public class SColumnSizeServiceImpl extends ServiceImpl<SColumnSizeMapper, SColu
     @Cacheable(value = PerfectConstant.CACHE_PC.CACHE_COLUMNS_TYPE, key = "#searchCondition.cache_key")
     @Override
     public List<SColumnSizeVo> getData(SColumnSizeVo searchCondition) {
-        /** 获取员工id */
-        searchCondition.setStaff_id(SecurityUtil.getStaff_id());
-
         List<SColumnSizeVo> rtnBean =  mapper.getData(searchCondition);
         return rtnBean;
     }
