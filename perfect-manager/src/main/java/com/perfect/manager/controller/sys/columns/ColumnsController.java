@@ -37,7 +37,9 @@ public class ColumnsController extends BaseController {
         searchCondition.setStaff_id(getUserSessionStaffId());
         /** 拼接缓存的key */
         String cache_key = searchCondition.getPage_code()
-            +  searchCondition.getType() ==null ? "" : searchCondition.getType()
+            +":"
+            + (searchCondition.getType() ==null ? "" : searchCondition.getType())
+            +":"
             + searchCondition.getStaff_id();
         searchCondition.setCache_key(cache_key);
         List<SColumnSizeVo> entity = service.getData(searchCondition);
@@ -53,7 +55,9 @@ public class ColumnsController extends BaseController {
         bean.setStaff_id(getUserSessionStaffId());
         /** 拼接缓存的key */
         String cache_key = bean.getPage_code()
-            +  bean.getType() ==null ? "" : bean.getType()
+            +":"
+            + (bean.getType() ==null ? "" : bean.getType())
+            +":"
             + bean.getStaff_id();
         bean.setCache_key(cache_key);
         if(service.saveColumnsSize(bean).isSuccess()){
