@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ApiModel(value = "页面按钮表vo", description = "页面按钮表vo")
 @EqualsAndHashCode(callSuper=false)
-public class SPagesFunctionEntity implements Serializable {
+public class SPagesFunctionVo implements Serializable {
 
     private static final long serialVersionUID = 6408649934054725183L;
 

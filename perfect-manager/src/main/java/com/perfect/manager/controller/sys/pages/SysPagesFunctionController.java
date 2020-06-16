@@ -1,15 +1,14 @@
 package com.perfect.manager.controller.sys.pages;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.perfect.bean.entity.sys.pages.SPagesEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
-import com.perfect.bean.vo.sys.pages.SPagesVo;
+import com.perfect.bean.vo.sys.pages.SPagesFunctionVo;
 import com.perfect.common.annotations.RepeatSubmitAnnotion;
 import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
-import com.perfect.core.service.sys.pages.ISPagesService;
+import com.perfect.core.service.sys.pages.ISPagesFunctionService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -25,23 +23,20 @@ import java.util.List;
  * @author zhangxh
  */
 @RestController
-@RequestMapping(value = "/api/v1/sys/pages")
+@RequestMapping(value = "/api/v1/sys/pages_fun")
 @Slf4j
-@Api("页面维护相关")
-public class SysPagesController extends BaseController {
+@Api("页面按钮相关")
+public class SysPagesFunctionController extends BaseController {
 
     @Autowired
-    private ISPagesService service;
-
-    @Autowired
-    private RestTemplate restTemplate;
+    private ISPagesFunctionService service;
 
     @SysLogAnnotion("根据查询条件，获取vue页面设置信息")
     @ApiOperation("根据参数id，获取vue页面设置信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<SPagesVo>>> list(@RequestBody(required = false) SPagesVo searchCondition) {
-        IPage<SPagesVo> entity = service.selectPage(searchCondition);
+    public ResponseEntity<JsonResult<IPage<SPagesFunctionVo>>> list(@RequestBody(required = false) SPagesFunctionVo searchCondition) {
+        IPage<SPagesFunctionVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
@@ -50,7 +45,7 @@ public class SysPagesController extends BaseController {
     @PostMapping("/save")
     @ResponseBody
     @RepeatSubmitAnnotion
-    public ResponseEntity<JsonResult<SPagesVo>> save(@RequestBody(required = false) SPagesEntity bean) {
+    public ResponseEntity<JsonResult<SPagesFunctionVo>> save(@RequestBody(required = false) SPagesFunctionVo bean) {
 
         if(service.update(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
@@ -64,8 +59,8 @@ public class SysPagesController extends BaseController {
     @PostMapping("/insert")
     @ResponseBody
     @RepeatSubmitAnnotion
-    public ResponseEntity<JsonResult<SPagesVo>> insert(@RequestBody(required = false)
-        SPagesEntity bean) {
+    public ResponseEntity<JsonResult<SPagesFunctionVo>> insert(@RequestBody(required = false)
+        SPagesFunctionVo bean) {
         if(service.insert(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
         } else {
@@ -78,7 +73,7 @@ public class SysPagesController extends BaseController {
     @PostMapping("/delete")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false)
-        List<SPagesVo> searchConditionList) {
+        List<SPagesFunctionVo> searchConditionList) {
         service.realDeleteByIdsIn(searchConditionList);
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
