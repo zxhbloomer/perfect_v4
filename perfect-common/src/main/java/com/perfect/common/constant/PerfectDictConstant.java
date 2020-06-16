@@ -143,4 +143,12 @@ public class PerfectDictConstant {
      * 操作日志服务
      */
     public static final String DICT_SYS_TABLE_TYPE = "sys_table_type";
+
+    /**
+     * 页面按钮类型
+     */
+    public static final String DICT_SYS_PAGES_FUN_TYPE = "sys_PAGES_FUN_type";
+    public static final String DICT_SYS_PAGES_FUN_TYPE_ON_PAGE = "PAGE";
+    public static final String DICT_SYS_PAGES_FUN_TYPE_ON_TABLE = "TABLE";
+    public static final String DICT_SYS_PAGES_FUN_TYPE_ON_POPUP = "POPUP";
 }

@@ -1,4 +1,4 @@
-package com.perfect.manager.controller.sys.pages;
+package com.perfect.manager.controller.sys.pages.function;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.entity.sys.pages.SPagesEntity;
@@ -25,10 +25,10 @@ import java.util.List;
  * @author zhangxh
  */
 @RestController
-@RequestMapping(value = "/api/v1/sys/pages")
+@RequestMapping(value = "/api/v1/sys/funs")
 @Slf4j
-@Api("页面维护相关")
-public class SysPagesController extends BaseController {
+@Api("按钮维护相关")
+public class SysFunctionController extends BaseController {
 
     @Autowired
     private ISPagesService service;
@@ -36,8 +36,8 @@ public class SysPagesController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @SysLogAnnotion("根据查询条件，获取vue页面设置信息")
-    @ApiOperation("根据参数id，获取vue页面设置信息")
+    @SysLogAnnotion("根据查询条件，获取按钮信息")
+    @ApiOperation("根据参数id，获取按钮信息")
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<IPage<SPagesVo>>> list(@RequestBody(required = false) SPagesVo searchCondition) {
@@ -45,8 +45,8 @@ public class SysPagesController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
-    @SysLogAnnotion("页面设置数据更新保存")
-    @ApiOperation("根据参数id，获取页面设置信息")
+    @SysLogAnnotion("按钮数据更新保存")
+    @ApiOperation("根据参数id，获取按钮信息")
     @PostMapping("/save")
     @ResponseBody
     @RepeatSubmitAnnotion
@@ -59,8 +59,8 @@ public class SysPagesController extends BaseController {
         }
     }
 
-    @SysLogAnnotion("页面设置数据新增保存")
-    @ApiOperation("根据参数id，获取vue页面设置信息")
+    @SysLogAnnotion("按钮数据新增保存")
+    @ApiOperation("根据参数id，获取按钮信息")
     @PostMapping("/insert")
     @ResponseBody
     @RepeatSubmitAnnotion
@@ -73,7 +73,7 @@ public class SysPagesController extends BaseController {
         }
     }
 
-    @SysLogAnnotion("页面设置表数据物理删除，部分数据")
+    @SysLogAnnotion("按钮表数据物理删除，部分数据")
     @ApiOperation("根据参数id，物理删除数据")
     @PostMapping("/delete")
     @ResponseBody

@@ -1,0 +1,63 @@
+package com.perfect.bean.vo.sys.pages.function;
+
+import com.perfect.bean.vo.common.condition.PageCondition;
+import io.swagger.annotations.ApiModel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * <p>
+ * 按钮表
+ * </p>
+ *
+ * @author zxh
+ * @since 2020-06-16
+ */
+@Data
+@NoArgsConstructor
+@ApiModel(value = "按钮表vo", description = "按钮表vo")
+@EqualsAndHashCode(callSuper=false)
+public class SFunctionVo implements Serializable {
+
+    private static final long serialVersionUID = 2586852812669387371L;
+
+    private Long id;
+
+    /**
+     * 编号
+     */
+    private String code;
+
+    /**
+     * 按钮名称
+     */
+    private String name;
+
+    /**
+     * 描述
+     */
+    private String descr;
+
+    private Long c_id;
+
+    private LocalDateTime c_time;
+
+    private Long u_id;
+
+    private LocalDateTime u_time;
+
+    /**
+     * 数据版本，乐观锁使用
+     */
+    private Integer dbversion;
+
+    /**
+     * 换页条件
+     */
+    private PageCondition pageCondition;
+
+}

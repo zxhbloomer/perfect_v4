@@ -38,9 +38,10 @@ public interface SPagesMapper extends BaseMapper<SPagesEntity> {
         + "  LEFT JOIN m_staff c_staff ON t.c_id = c_staff.id                                                            "
         + "  LEFT JOIN m_staff u_staff ON t.u_id = u_staff.id                                                            "
         + "  where true                                                                                                  "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)     "
-        + "    and (t.meta_title  like CONCAT ('%',#{p1.meta_title,jdbcType=VARCHAR},'%') or #{p1.meta_title,jdbcType=VARCHAR} is null) "
-        + "    and (t.code  like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)    "
+        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)                      "
+        + "    and (t.meta_title like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)                "
+        + "    and (t.component like CONCAT ('%',#{p1.component,jdbcType=VARCHAR},'%') or #{p1.component,jdbcType=VARCHAR} is null)       "
+        + "    and (t.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)                      "
         + "                                                                                                              ")
     IPage<SPagesVo> selectPage(Page page, @Param("p1") SPagesVo searchCondition);
 
