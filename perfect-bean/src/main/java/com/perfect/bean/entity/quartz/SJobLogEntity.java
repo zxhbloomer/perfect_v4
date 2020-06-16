@@ -1,12 +1,15 @@
 package com.perfect.bean.entity.quartz;
 
-import com.baomidou.mybatisplus.annotation.*;
-
-import java.time.LocalDateTime;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -33,7 +36,7 @@ public class SJobLogEntity implements Serializable {
     /**
      * 任务主键
      */
-    @TableId(value = "job_id")
+    @TableField(value = "job_id")
     private Long job_id;
 
     /**
