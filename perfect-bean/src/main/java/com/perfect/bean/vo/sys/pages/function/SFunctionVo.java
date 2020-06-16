@@ -55,6 +55,9 @@ public class SFunctionVo implements Serializable {
      */
     private Integer dbversion;
 
+    private String c_name;
+    private String u_name;
+
     /**
      * 换页条件
      */

@@ -28,15 +28,19 @@ public interface SFunctionMapper extends BaseMapper<SFunctionEntity> {
      * @param searchCondition
      * @return
      */
-    @Select("                                                                                                            "
-        + "  SELECT                                                                                                      "
-        + "         t.*                                                                                                  "
-        + "    FROM                                                                                                      "
-        + "  	    s_function t                                                                                         "
-        + "  where true                                                                                                  "
-        + "    and (t.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)     "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)     "
-        + "                                                                                                              ")
+    @Select("                                                                                                             "
+        + "     SELECT                                                                                                    "
+        + "            t1.*,                                                                                              "
+        + "            c_staff.name as c_name,                                                                            "
+        + "            u_staff.name as u_name                                                                             "
+        + "       FROM                                                                                                    "
+        + "  	       s_function t1                                                                                      "
+        + "  LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                            "
+        + "  LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                            "
+        + "      where true                                                                                               "
+        + "        and (t1.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
+        + "        and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
+        )
     IPage<SFunctionVo> selectPage(Page page, @Param("p1") SFunctionVo searchCondition);
 
 
@@ -45,14 +49,18 @@ public interface SFunctionMapper extends BaseMapper<SFunctionEntity> {
      * @param searchCondition
      * @return
      */
-    @Select("                                                                                                            "
-        + "  SELECT                                                                                                      "
-        + "         t.*                                                                                                  "
-        + "    FROM                                                                                                      "
-        + "  	    s_function t                                                                                         "
-        + "  where true                                                                                                  "
-        + "    and (t.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)     "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)     "
+    @Select("                                                                                                             "
+        + "     SELECT                                                                                                    "
+        + "            t1.*,                                                                                              "
+        + "            c_staff.name as c_name,                                                                            "
+        + "            u_staff.name as u_name                                                                             "
+        + "       FROM                                                                                                    "
+        + "     	   s_function t1                                                                                      "
+        + "  LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                            "
+        + "  LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                            "
+        + "      where true                                                                                               "
+        + "        and (t1.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
+        + "        and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
         + "                                                                                                              ")
     List<SFunctionVo> select(@Param("p1") SFunctionVo searchCondition);
 
@@ -62,12 +70,16 @@ public interface SFunctionMapper extends BaseMapper<SFunctionEntity> {
      * @return
      */
     @Select("                                      "
-        + "  SELECT                                "
-        + "         t.*                            "
-        + "    FROM                                "
-        + "  	    s_function t                   "
-        + "  where true                            "
-        + "    and t.id =  #{p1}                   "
-        + "                                                                                                              ")
+        + "     SELECT                                                       "
+        + "            t1.*                                                  "
+        + "            c_staff.name as c_name,                               "
+        + "            u_staff.name as u_name                                "
+        + "       FROM                                                       "
+        + "     	    s_function t1                                        "
+        + "  LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id               "
+        + "  LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id               "
+        + "  where true                                                      "
+        + "    and t1.id =  #{p1}                                            "
+        )
     SFunctionVo selectId(@Param("p1") Long id);
 }
