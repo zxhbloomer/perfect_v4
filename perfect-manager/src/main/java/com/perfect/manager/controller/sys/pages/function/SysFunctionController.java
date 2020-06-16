@@ -1,15 +1,14 @@
 package com.perfect.manager.controller.sys.pages.function;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.perfect.bean.entity.sys.pages.SPagesEntity;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
-import com.perfect.bean.vo.sys.pages.SPagesVo;
+import com.perfect.bean.vo.sys.pages.function.SFunctionVo;
 import com.perfect.common.annotations.RepeatSubmitAnnotion;
 import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
-import com.perfect.core.service.sys.pages.ISPagesService;
+import com.perfect.core.service.sys.pages.function.ISFunctionService;
 import com.perfect.framework.base.controller.v1.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +30,7 @@ import java.util.List;
 public class SysFunctionController extends BaseController {
 
     @Autowired
-    private ISPagesService service;
+    private ISFunctionService service;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -40,8 +39,8 @@ public class SysFunctionController extends BaseController {
     @ApiOperation("根据参数id，获取按钮信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<SPagesVo>>> list(@RequestBody(required = false) SPagesVo searchCondition) {
-        IPage<SPagesVo> entity = service.selectPage(searchCondition);
+    public ResponseEntity<JsonResult<IPage<SFunctionVo>>> list(@RequestBody(required = false) SFunctionVo searchCondition) {
+        IPage<SFunctionVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
@@ -50,7 +49,7 @@ public class SysFunctionController extends BaseController {
     @PostMapping("/save")
     @ResponseBody
     @RepeatSubmitAnnotion
-    public ResponseEntity<JsonResult<SPagesVo>> save(@RequestBody(required = false) SPagesEntity bean) {
+    public ResponseEntity<JsonResult<SFunctionVo>> save(@RequestBody(required = false) SFunctionVo bean) {
 
         if(service.update(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
@@ -64,8 +63,8 @@ public class SysFunctionController extends BaseController {
     @PostMapping("/insert")
     @ResponseBody
     @RepeatSubmitAnnotion
-    public ResponseEntity<JsonResult<SPagesVo>> insert(@RequestBody(required = false)
-        SPagesEntity bean) {
+    public ResponseEntity<JsonResult<SFunctionVo>> insert(@RequestBody(required = false)
+        SFunctionVo bean) {
         if(service.insert(bean).isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
         } else {
@@ -78,7 +77,7 @@ public class SysFunctionController extends BaseController {
     @PostMapping("/delete")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false)
-        List<SPagesVo> searchConditionList) {
+        List<SFunctionVo> searchConditionList) {
         service.realDeleteByIdsIn(searchConditionList);
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
     }
