@@ -114,7 +114,7 @@ public interface SFunctionMapper extends BaseMapper<SFunctionEntity> {
      */
     @Select("    "
         + "   SELECT                                                         "
-        + "          (MAX(IFNULL(t.sort, 0)) ) AS sort                       "
+        + "          (MAX(IFNULL(t.sort, 0))) AS sort                       "
         + "     FROM s_function t                                            "
         + "      ")
     SFunctionVo getSortNum();

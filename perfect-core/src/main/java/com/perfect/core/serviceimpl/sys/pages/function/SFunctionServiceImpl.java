@@ -83,7 +83,7 @@ public class SFunctionServiceImpl extends ServiceImpl<SFunctionMapper, SFunction
         if (null == data) {
             vo.setSort(0);
         } else {
-            vo.setSort(data.getSort());
+            vo.setSort(data.getSort()+1);
         }
 
         // 插入逻辑保存
