@@ -1,5 +1,6 @@
 package com.perfect.bean.vo.sys.pages.function;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -36,6 +37,11 @@ public class SFunctionVo implements Serializable {
      * 按钮名称
      */
     private String name;
+
+    /**
+     * 排序
+     */
+    private Integer sort;
 
     /**
      * 描述

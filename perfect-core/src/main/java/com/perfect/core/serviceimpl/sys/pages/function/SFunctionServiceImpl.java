@@ -84,6 +84,15 @@ public class SFunctionServiceImpl extends ServiceImpl<SFunctionMapper, SFunction
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
+
+        // 设置：字典键值和字典排序
+        SFunctionVo data = mapper.getSortNum();
+        if (null == data) {
+            vo.setSort(0);
+        } else {
+            vo.setSort(data.getSort());
+        }
+
         // 插入逻辑保存
         SFunctionEntity sfe = (SFunctionEntity) BeanUtilsSupport.copyProperties(vo, SFunctionEntity.class);
         int rtn = mapper.insert(sfe);

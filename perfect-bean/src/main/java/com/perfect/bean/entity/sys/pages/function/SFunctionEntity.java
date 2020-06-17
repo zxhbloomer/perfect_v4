@@ -40,6 +40,12 @@ public class SFunctionEntity implements Serializable {
     private String name;
 
     /**
+     * 排序
+     */
+    @TableField("sort")
+    private Integer sort;
+
+    /**
      * 描述
      */
     @TableField("descr")

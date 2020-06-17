@@ -82,4 +82,14 @@ public interface SFunctionMapper extends BaseMapper<SFunctionEntity> {
         + "    and t1.id =  #{p1}                                            "
         )
     SFunctionVo selectId(@Param("p1") Long id);
+
+    /**
+     * 获取排序最大序号
+     */
+    @Select("    "
+        + "   SELECT                                                         "
+        + "          (MAX(IFNULL(t.sort, 0)) + 1) AS sort                    "
+        + "     FROM s_function t                                            "
+        + "      ")
+    SFunctionVo getSortNum();
 }
