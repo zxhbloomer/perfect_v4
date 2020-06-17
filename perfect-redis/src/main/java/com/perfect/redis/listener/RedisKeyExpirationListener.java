@@ -1,7 +1,6 @@
 package com.perfect.redis.listener;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
@@ -25,6 +24,6 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
      */
     @Override public void onMessage(Message message, byte[] pattern) {
         String expiredKey = message.toString();
-        log.info("失效key:" + expiredKey + "====" + "修改完成");
+        log.info("失效key:" + expiredKey + "====" + "已从redis缓存中自动删除");
     }
 }
