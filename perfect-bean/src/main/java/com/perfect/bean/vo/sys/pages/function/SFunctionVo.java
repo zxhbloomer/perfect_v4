@@ -1,6 +1,5 @@
 package com.perfect.bean.vo.sys.pages.function;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.perfect.bean.vo.common.condition.PageCondition;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -42,6 +41,11 @@ public class SFunctionVo implements Serializable {
      * 排序
      */
     private Integer sort;
+    /**
+     * 排序的最大最小值
+     */
+    private int max_sort;
+    private int min_sort;
 
     /**
      * 描述
@@ -63,10 +67,5 @@ public class SFunctionVo implements Serializable {
 
     private String c_name;
     private String u_name;
-
-    /**
-     * 换页条件
-     */
-    private PageCondition pageCondition;
 
 }

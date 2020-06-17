@@ -1,8 +1,6 @@
 package com.perfect.core.serviceimpl.sys.pages.function;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfect.bean.entity.sys.pages.function.SFunctionEntity;
 import com.perfect.bean.pojo.result.CheckResult;
@@ -19,7 +17,6 @@ import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.sys.pages.function.SFunctionMapper;
 import com.perfect.core.service.sys.pages.function.ISFunctionService;
-import com.perfect.core.utils.mybatis.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,13 +45,9 @@ public class SFunctionServiceImpl extends ServiceImpl<SFunctionMapper, SFunction
      * @return
      */
     @Override
-    public IPage<SFunctionVo> selectPage(SFunctionVo searchCondition) {
-        // 分页条件
-        Page<SFunctionVo> pageCondition =
-            new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
-        // 通过page进行排序
-        PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
-        return mapper.selectPage(pageCondition, searchCondition);
+    public List<SFunctionVo> selectPage(SFunctionVo searchCondition) {
+
+        return mapper.selectPage(searchCondition);
     }
 
     /**

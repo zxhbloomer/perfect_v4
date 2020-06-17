@@ -1,8 +1,6 @@
 package com.perfect.core.mapper.sys.pages.function;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.perfect.bean.entity.sys.pages.function.SFunctionEntity;
 import com.perfect.bean.vo.sys.pages.function.SFunctionVo;
 import org.apache.ibatis.annotations.Param;
@@ -24,7 +22,6 @@ public interface SFunctionMapper extends BaseMapper<SFunctionEntity> {
 
     /**
      * 页面查询
-     * @param page
      * @param searchCondition
      * @return
      */
@@ -32,16 +29,26 @@ public interface SFunctionMapper extends BaseMapper<SFunctionEntity> {
         + "     SELECT                                                                                                    "
         + "            t1.*,                                                                                              "
         + "            c_staff.name as c_name,                                                                            "
-        + "            u_staff.name as u_name                                                                             "
+        + "            u_staff.name as u_name,                                                                            "
+        + "            t2.max_sort,                                                                                       "
+        + "            t2.min_sort                                                                                        "
         + "       FROM                                                                                                    "
         + "  	       s_function t1                                                                                      "
         + "  LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                            "
         + "  LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                            "
+        + "  INNER JOIN (                                                                                                 "
+        + "  		SELECT                                                                                                "
+        + "  			   count(1) - 1 AS max_sort,                                                                      "
+        + "  			   0 AS min_sort                                                                                  "
+        + "  		  FROM                                                                                                "
+        + "  			   s_function                                                                                     "
+        + "  	) t2 on true                                                                                              "
         + "      where true                                                                                               "
         + "        and (t1.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
         + "        and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
+        + "   order by t1.sort                                                                                            "
         )
-    IPage<SFunctionVo> selectPage(Page page, @Param("p1") SFunctionVo searchCondition);
+    List<SFunctionVo> selectPage(@Param("p1") SFunctionVo searchCondition);
 
 
     /**
@@ -53,14 +60,24 @@ public interface SFunctionMapper extends BaseMapper<SFunctionEntity> {
         + "     SELECT                                                                                                    "
         + "            t1.*,                                                                                              "
         + "            c_staff.name as c_name,                                                                            "
-        + "            u_staff.name as u_name                                                                             "
+        + "            u_staff.name as u_name,                                                                            "
+        + "            t2.max_sort,                                                                                       "
+        + "            t2.min_sort                                                                                        "
         + "       FROM                                                                                                    "
-        + "     	   s_function t1                                                                                      "
+        + "  	       s_function t1                                                                                      "
         + "  LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id                                                            "
         + "  LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id                                                            "
+        + "  INNER JOIN (                                                                                                 "
+        + "  		SELECT                                                                                                "
+        + "  			   count(1) - 1 AS max_sort,                                                                      "
+        + "  			   0 AS min_sort                                                                                  "
+        + "  		  FROM                                                                                                "
+        + "  			   s_function                                                                                     "
+        + "  	) t2 on true                                                                                              "
         + "      where true                                                                                               "
         + "        and (t1.code like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null) "
         + "        and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
+        + "   order by t1.sort                                                                                            "
         + "                                                                                                              ")
     List<SFunctionVo> select(@Param("p1") SFunctionVo searchCondition);
 
@@ -70,16 +87,25 @@ public interface SFunctionMapper extends BaseMapper<SFunctionEntity> {
      * @return
      */
     @Select("                                      "
-        + "     SELECT                                                       "
-        + "            t1.*,                                                 "
-        + "            c_staff.name as c_name,                               "
-        + "            u_staff.name as u_name                                "
-        + "       FROM                                                       "
-        + "     	    s_function t1                                        "
-        + "  LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id               "
-        + "  LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id               "
-        + "  where true                                                      "
-        + "    and t1.id =  #{p1}                                            "
+        + "     SELECT                                                     "
+        + "            t1.*,                                               "
+        + "            c_staff.name as c_name,                             "
+        + "            u_staff.name as u_name,                             "
+        + "            t2.max_sort,                                        "
+        + "            t2.min_sort                                         "
+        + "       FROM                                                     "
+        + "  	       s_function t1                                       "
+        + "  LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id             "
+        + "  LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id             "
+        + "  INNER JOIN (                                                  "
+        + "  		SELECT                                                 "
+        + "  			   count(1) - 1 AS max_sort,                       "
+        + "  			   0 AS min_sort                                   "
+        + "  		  FROM                                                 "
+        + "  			   s_function                                      "
+        + "  	) t2 on true                                               "
+        + "      where true                                                "
+        + "    and t1.id =  #{p1}                                          "
         )
     SFunctionVo selectId(@Param("p1") Long id);
 
@@ -88,7 +114,7 @@ public interface SFunctionMapper extends BaseMapper<SFunctionEntity> {
      */
     @Select("    "
         + "   SELECT                                                         "
-        + "          (MAX(IFNULL(t.sort, 0)) + 1) AS sort                    "
+        + "          (MAX(IFNULL(t.sort, 0)) ) AS sort                       "
         + "     FROM s_function t                                            "
         + "      ")
     SFunctionVo getSortNum();

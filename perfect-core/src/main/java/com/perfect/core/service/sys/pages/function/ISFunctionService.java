@@ -1,6 +1,5 @@
 package com.perfect.core.service.sys.pages.function;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfect.bean.entity.sys.pages.function.SFunctionEntity;
 import com.perfect.bean.pojo.result.DeleteResult;
@@ -25,7 +24,7 @@ public interface ISFunctionService extends IService<SFunctionEntity> {
      * @param searchCondition
      * @return
      */
-    IPage<SFunctionVo> selectPage(SFunctionVo searchCondition) ;
+    List<SFunctionVo> selectPage(SFunctionVo searchCondition) ;
 
     /**
      * 获取所有数据

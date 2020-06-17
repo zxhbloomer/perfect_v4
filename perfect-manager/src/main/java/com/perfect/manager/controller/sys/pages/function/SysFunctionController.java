@@ -1,10 +1,8 @@
 package com.perfect.manager.controller.sys.pages.function;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
-import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
 import com.perfect.bean.vo.sys.pages.function.SFunctionVo;
 import com.perfect.common.annotations.RepeatSubmitAnnotion;
 import com.perfect.common.annotations.SysLogAnnotion;
@@ -41,8 +39,8 @@ public class SysFunctionController extends BaseController {
     @ApiOperation("根据参数id，获取按钮信息")
     @PostMapping("/list")
     @ResponseBody
-    public ResponseEntity<JsonResult<IPage<SFunctionVo>>> list(@RequestBody(required = false) SFunctionVo searchCondition) {
-        IPage<SFunctionVo> entity = service.selectPage(searchCondition);
+    public ResponseEntity<JsonResult<List<SFunctionVo>>> list(@RequestBody(required = false) SFunctionVo searchCondition) {
+        List<SFunctionVo> entity = service.selectPage(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
 
