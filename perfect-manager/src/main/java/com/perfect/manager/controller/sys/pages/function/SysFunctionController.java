@@ -2,7 +2,9 @@ package com.perfect.manager.controller.sys.pages.function;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.perfect.bean.pojo.result.JsonResult;
+import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
+import com.perfect.bean.vo.sys.config.module.SModuleButtonVo;
 import com.perfect.bean.vo.sys.pages.function.SFunctionVo;
 import com.perfect.common.annotations.RepeatSubmitAnnotion;
 import com.perfect.common.annotations.SysLogAnnotion;
@@ -80,5 +82,18 @@ public class SysFunctionController extends BaseController {
         List<SFunctionVo> searchConditionList) {
         service.realDeleteByIdsIn(searchConditionList);
         return ResponseEntity.ok().body(ResultUtil.OK("OK"));
+    }
+
+    @SysLogAnnotion("按钮表排序后保存")
+    @ApiOperation("list数据的保存")
+    @PostMapping("/save_sort")
+    @ResponseBody
+    public ResponseEntity<JsonResult<List<SFunctionVo>>> saveSort(@RequestBody(required = false) List<SFunctionVo> beanList) {
+        UpdateResult<List<SFunctionVo>> result = service.saveSort(beanList);
+        if(result.isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(result.getData(),"更新成功"));
+        } else {
+            throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
+        }
     }
 }

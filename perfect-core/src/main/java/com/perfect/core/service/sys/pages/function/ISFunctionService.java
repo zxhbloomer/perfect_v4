@@ -65,4 +65,9 @@ public interface ISFunctionService extends IService<SFunctionEntity> {
      * @return
      */
     DeleteResult<Integer> realDeleteByIdsIn(List<SFunctionVo> searchCondition);
+
+    /**
+     * sort保存
+     */
+    UpdateResult<List<SFunctionVo>> saveSort(List<SFunctionVo> data);
 }

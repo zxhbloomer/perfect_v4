@@ -15,6 +15,7 @@ import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.pages.function.SFunctionVo;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.sys.pages.function.SFunctionMapper;
 import com.perfect.core.service.sys.pages.function.ISFunctionService;
@@ -85,7 +86,9 @@ public class SFunctionServiceImpl extends ServiceImpl<SFunctionMapper, SFunction
         }
         // 插入逻辑保存
         SFunctionEntity sfe = (SFunctionEntity) BeanUtilsSupport.copyProperties(vo, SFunctionEntity.class);
-        return InsertResultUtil.OK(mapper.insert(sfe));
+        int rtn = mapper.insert(sfe);
+        vo.setId(sfe.getId());
+        return InsertResultUtil.OK(rtn);
     }
 
     /**
@@ -192,5 +195,26 @@ public class SFunctionServiceImpl extends ServiceImpl<SFunctionMapper, SFunction
         });
         int result=mapper.deleteBatchIds(idList);
         return DeleteResultUtil.OK(result);
+    }
+
+    /**
+     * sort保存
+     *
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public UpdateResult<List<SFunctionVo>> saveSort(List<SFunctionVo> data) {
+        List<SFunctionVo> resultList = new ArrayList<>();
+        // 乐观锁 dbversion
+        for(SFunctionVo bean:data){
+            UpdateResult updateResult = this.update(bean);
+            if(updateResult.isSuccess()){
+                SFunctionVo searchData = this.selectByid(bean.getId());
+                resultList.add(searchData);
+            } else {
+                throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
+            }
+        }
+        return UpdateResultUtil.OK(resultList);
     }
 }

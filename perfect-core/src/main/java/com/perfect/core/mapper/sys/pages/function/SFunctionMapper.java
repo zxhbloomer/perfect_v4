@@ -71,7 +71,7 @@ public interface SFunctionMapper extends BaseMapper<SFunctionEntity> {
      */
     @Select("                                      "
         + "     SELECT                                                       "
-        + "            t1.*                                                  "
+        + "            t1.*,                                                 "
         + "            c_staff.name as c_name,                               "
         + "            u_staff.name as u_name                                "
         + "       FROM                                                       "
