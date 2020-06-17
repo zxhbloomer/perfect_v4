@@ -28,19 +28,23 @@ public class SPagesFunctionVo implements Serializable {
     private Long id;
 
     /**
+     * 页面id
+     */
+    private Long page_id;
+    private String page_code;
+    private String page_name;
+
+    /**
      * 类型：PAGE：主页面上，TABLE：表格上，POPUP：弹出框上
      */
     private String type;
 
     /**
-     * 按钮编号：字典表过来
+     * 按钮id
      */
-    private String code;
-
-    /**
-     * 按钮名称
-     */
-    private String name;
+    private Long function_id;
+    private String function_code;
+    private String function_name;
 
     /**
      * 排序
@@ -57,16 +61,13 @@ public class SPagesFunctionVo implements Serializable {
      */
     private String descr;
 
-    /**
-     * 页面id，
-     */
-    private Long page_id;
-
     private Long c_id;
+    private String c_name;
 
     private LocalDateTime c_time;
 
     private Long u_id;
+    private String u_name;
 
     private LocalDateTime u_time;
 

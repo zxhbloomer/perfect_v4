@@ -1,6 +1,5 @@
 package com.perfect.core.serviceimpl.sys.pages;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -112,30 +111,6 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
     }
 
     /**
-     * 获取列表，查询所有数据
-     *
-     * @return
-     */
-    public int selectByName(SPagesFunctionVo entity, String moduleType) {
-        return mapper.selectCount(new QueryWrapper<SPagesFunctionEntity>()
-            .eq("name", entity.getName())
-            .ne(CheckResult.UPDATE_CHECK_TYPE.equals(moduleType) ? true:false, "id", entity.getId())
-        );
-    }
-
-    /**
-     * 获取列表，查询所有数据
-     *
-     * @return
-     */
-    public int selectByCode(SPagesFunctionVo entity, String moduleType) {
-        return mapper.selectCount(new QueryWrapper<SPagesFunctionEntity>()
-            .eq("code", entity.getCode())
-            .ne(CheckResult.UPDATE_CHECK_TYPE.equals(moduleType) ? true:false, "id", entity.getId())
-        );
-    }
-
-    /**
      * check逻辑
      *
      * @return
@@ -144,23 +119,8 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
 
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
-                // 新增场合，不能重复
-                if (selectByCode(entity, moduleType) >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：页面编号【"+ entity.getCode() +"】出现重复!", entity.getCode());
-                }
-                if (selectByName(entity, moduleType) >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：页面名称【"+ entity.getName() +"】出现重复!", entity.getName());
-                }
-
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
-                // 更新场合，不能重复设置
-                if (selectByCode(entity, moduleType) >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：页面编号【"+ entity.getCode() +"】出现重复!", entity.getCode());
-                }
-                if (selectByName(entity, moduleType) >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：页面名称【"+ entity.getName() +"】出现重复!", entity.getName());
-                }
                 break;
             default:
         }

@@ -29,19 +29,21 @@ public interface SPagesFunctionMapper extends BaseMapper<SPagesFunctionEntity> {
      * @return
      */
     @Select("                                                                                                            "
-        + "  SELECT                                                                                                      "
-        + "         t.*,                                                                                                 "
-        + "         c_staff.name as c_name,                                                                              "
-        + "         u_staff.name as u_name                                                                               "
-        + "    FROM                                                                                                      "
-        + "  	    s_pages t                                                                                            "
-        + "  LEFT JOIN m_staff c_staff ON t.c_id = c_staff.id                                                            "
-        + "  LEFT JOIN m_staff u_staff ON t.u_id = u_staff.id                                                            "
-        + "  where true                                                                                                  "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)     "
-        + "    and (t.meta_title  like CONCAT ('%',#{p1.meta_title,jdbcType=VARCHAR},'%') or #{p1.meta_title,jdbcType=VARCHAR} is null) "
-        + "    and (t.code  like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)    "
-        + "                                                                                                              ")
+        + "    SELECT                                                 "
+        + "           * ,                                             "
+        + "           t2.code as page_code,                           "
+        + "           t2.name as page_name,                           "
+        + "           t3.code as function_code,                       "
+        + "           t3.name as function_name,                       "
+        + "           c_staff.name as c_name,                         "
+        + "           u_staff.name as u_name                          "
+        + "      FROM                                                 "
+        + "           s_pages_function t1                             "
+        + " LEFT JOIN s_pages t2 ON t1.page_id = t2.id                "
+        + " LEFT JOIN s_function t3 ON t1.function_id = t3.id         "
+        + " LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id         "
+        + " LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id         "
+        + "   ")
     IPage<SPagesFunctionVo> selectPage(Page page, @Param("p1") SPagesFunctionVo searchCondition);
 
     /**
@@ -50,37 +52,22 @@ public interface SPagesFunctionMapper extends BaseMapper<SPagesFunctionEntity> {
      * @return
      */
     @Select("                                                                                                            "
-        + "  SELECT                                                                                                      "
-        + "         t.*,                                                                                                 "
-        + "         c_staff.name as c_name,                                                                              "
-        + "         u_staff.name as u_name                                                                               "
-        + "  FROM                                                                                                        "
-        + "  	s_pages t                                                                                                "
-        + "  LEFT JOIN m_staff c_staff ON t.c_id = c_staff.id                                                            "
-        + "  LEFT JOIN m_staff u_staff ON t.u_id = u_staff.id                                                            "
-        + "  where true                                                                                                  "
-        + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null)     "
-        + "    and (t.meta_title  like CONCAT ('%',#{p1.meta_title,jdbcType=VARCHAR},'%') or #{p1.meta_title,jdbcType=VARCHAR} is null) "
-        + "    and (t.code  like CONCAT ('%',#{p1.code,jdbcType=VARCHAR},'%') or #{p1.code,jdbcType=VARCHAR} is null)    "
-        + "                                                                                                              ")
+        + "    SELECT                                                 "
+        + "           * ,                                             "
+        + "           t2.code as page_code,                           "
+        + "           t2.name as page_name,                           "
+        + "           t3.code as function_code,                       "
+        + "           t3.name as function_name,                       "
+        + "           c_staff.name as c_name,                         "
+        + "           u_staff.name as u_name                          "
+        + "      FROM                                                 "
+        + "           s_pages_function t1                             "
+        + " LEFT JOIN s_pages t2 ON t1.page_id = t2.id                "
+        + " LEFT JOIN s_function t3 ON t1.function_id = t3.id         "
+        + " LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id         "
+        + " LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id         "
+        + "      ")
     List<SPagesFunctionVo> select(@Param("p1") SPagesFunctionVo searchCondition);
-
-    /**
-     * 没有分页，按id筛选条件
-     * @param searchCondition
-     * @return
-     */
-    @Select("   <script>   "
-        + "  SELECT                                                                                        "
-        + "       *                                                                                        "
-        + "  FROM                                                                                          "
-        + "  	s_pages t                                                                                  "
-        + "  where t.id in                                                                                 "
-        + "        <foreach collection='p1' item='item' index='index' open='(' separator=',' close=')'>    "
-        + "         #{item.id}  "
-        + "        </foreach>    "
-        + "  </script>    ") List<SPagesFunctionVo> selectIdsIn(@Param("p1") List<SPagesFunctionVo> searchCondition);
-
 
     /**
      * 按条件获取所有数据，没有分页
@@ -88,15 +75,21 @@ public interface SPagesFunctionMapper extends BaseMapper<SPagesFunctionEntity> {
      * @return
      */
     @Select("    "
-        + "  SELECT                                                                                                      "
-        + "         t.*,                                                                                                 "
-        + "         c_staff.name as c_name,                                                                              "
-        + "         u_staff.name as u_name                                                                               "
-        + "    FROM                                                                                                      "
-        + "  	    s_pages t                                                                                            "
-        + "  LEFT JOIN m_staff c_staff ON t.c_id = c_staff.id                                                            "
-        + "  LEFT JOIN m_staff u_staff ON t.u_id = u_staff.id                                                            "
-        + "  where t.id =  #{p1}                                                                                         "
+        + "    SELECT                                                 "
+        + "           * ,                                             "
+        + "           t2.code as page_code,                           "
+        + "           t2.name as page_name,                           "
+        + "           t3.code as function_code,                       "
+        + "           t3.name as function_name,                       "
+        + "           c_staff.name as c_name,                         "
+        + "           u_staff.name as u_name                          "
+        + "      FROM                                                 "
+        + "           s_pages_function t1                             "
+        + " LEFT JOIN s_pages t2 ON t1.page_id = t2.id                "
+        + " LEFT JOIN s_function t3 ON t1.function_id = t3.id         "
+        + " LEFT JOIN m_staff c_staff ON t1.c_id = c_staff.id         "
+        + " LEFT JOIN m_staff u_staff ON t1.u_id = u_staff.id         "
+        + "  where t1.id =  #{p1}                                     "
         + "      ")
     SPagesFunctionVo selectId(@Param("p1") Long id);
 }

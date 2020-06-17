@@ -28,22 +28,22 @@ public class SPagesFunctionEntity implements Serializable {
     private Long id;
 
     /**
+     * 页面id
+     */
+    @TableField("page_id")
+    private Long page_id;
+
+    /**
      * 类型：PAGE：主页面上，TABLE：表格上，POPUP：弹出框上
      */
     @TableField("type")
     private String type;
 
     /**
-     * 按钮编号：字典表过来
+     * 按钮id
      */
-    @TableField("code")
-    private String code;
-
-    /**
-     * 按钮名称
-     */
-    @TableField("name")
-    private String name;
+    @TableField("function_id")
+    private Long function_id;
 
     /**
      * 排序
@@ -62,12 +62,6 @@ public class SPagesFunctionEntity implements Serializable {
      */
     @TableField("descr")
     private String descr;
-
-    /**
-     * 页面id，
-     */
-    @TableField("page_id")
-    private Long page_id;
 
     @TableField(value="c_id", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NOT_EMPTY)
     private Long c_id;
