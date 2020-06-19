@@ -33,6 +33,7 @@ public class SPagesFunctionVo implements Serializable {
     private Long page_id;
     private String page_code;
     private String page_name;
+    private String page_perms;
 
     /**
      * 类型：PAGE：主页面上，TABLE：表格上，POPUP：弹出框上
