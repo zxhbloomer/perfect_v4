@@ -135,8 +135,10 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
      */
     @Override
     public SPagesFunctionVo selectByid(Long id) {
+        SPagesFunctionVo condition = new SPagesFunctionVo();
         // 查询 数据
-        return mapper.selectId(id);
+        condition.setId(id);
+        return mapper.selectId(condition);
     }
 
     /**

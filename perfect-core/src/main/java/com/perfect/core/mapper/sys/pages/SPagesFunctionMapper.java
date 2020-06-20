@@ -23,7 +23,7 @@ import java.util.List;
 public interface SPagesFunctionMapper extends BaseMapper<SPagesFunctionEntity> {
 
     String common_select = ""
-        +  "    SELECT                                                                                                                "
+        + "    SELECT                                                                                                                "
         + "           t1.* ,                                                                                                         "
         + "           t2.code as page_code,                                                                                          "
         + "           t2.name as page_name,                                                                                          "
@@ -66,12 +66,12 @@ public interface SPagesFunctionMapper extends BaseMapper<SPagesFunctionEntity> {
 
     /**
      * 按条件获取所有数据，没有分页
-     * @param id
+     * @param condition
      * @return
      */
     @Select("    "
         + common_select
         + "  and t1.id =  #{p1}                                     "
         + "      ")
-    SPagesFunctionVo selectId(@Param("p1") Long id);
+    SPagesFunctionVo selectId(@Param("p1") SPagesFunctionVo condition);
 }
