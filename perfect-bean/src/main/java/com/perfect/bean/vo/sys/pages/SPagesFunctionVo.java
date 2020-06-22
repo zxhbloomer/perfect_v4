@@ -26,6 +26,7 @@ public class SPagesFunctionVo implements Serializable {
     private static final long serialVersionUID = 6408649934054725183L;
 
     private Long id;
+    private Long ne_id;
 
     /**
      * 页面id

@@ -71,7 +71,16 @@ public interface SPagesFunctionMapper extends BaseMapper<SPagesFunctionEntity> {
      */
     @Select("    "
         + common_select
-        + "  and t1.id =  #{p1}                                     "
+        + "  and t1.id =  #{p1.id, jdbcType=BIGINT}                                     "
         + "      ")
     SPagesFunctionVo selectId(@Param("p1") SPagesFunctionVo condition);
+
+    @Select("    "
+        + common_select
+        + "  and (t1.id =  #{p1.id, jdbcType=BIGINT} or #{p1.id, jdbcType=BIGINT} is null)                             "
+        + "  and (t1.id <> #{p1.ne_id, jdbcType=BIGINT} or #{p1.ne_id, jdbcType=BIGINT} is null)                       "
+        + "  and (t1.page_id =  #{p1.page_id, jdbcType=BIGINT} or #{p1.page_id, jdbcType=BIGINT} is null)              "
+        + "  and (t1.function_id =  #{p1.function_id, jdbcType=BIGINT} or #{p1.function_id, jdbcType=BIGINT} is null)  "
+        + "      ")
+    List<SPagesFunctionVo> selectByPageIdAndFunctionId(@Param("p1") SPagesFunctionVo condition);
 }

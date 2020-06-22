@@ -115,12 +115,29 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
      *
      * @return
      */
-    public CheckResult checkLogic(SPagesFunctionVo entity, String moduleType) {
+    public CheckResult checkLogic(SPagesFunctionVo vo, String moduleType) {
 
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
+                // 新增场合，不能重复
+                vo.setId(null);
+                List<SPagesFunctionVo> insertRtnList = selectByPageIdAndFunctionId(vo);
+                if (insertRtnList.size() >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：页面名称【"+ insertRtnList.get(0).getPage_name() +"】、"
+                                                             + "按钮名称【" + insertRtnList.get(0).getFunction_name() + "】"
+                                                             +"出现重复!", vo.getId());
+                }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
+                // 新增场合，不能重复
+                vo.setNe_id(vo.getId());
+                vo.setId(null);
+                List<SPagesFunctionVo> updRtnList = selectByPageIdAndFunctionId(vo);
+                if (updRtnList.size() >= 1) {
+                    return CheckResultUtil.NG("更新保存出错：页面名称【"+ updRtnList.get(0).getPage_name() +"】、"
+                                                              + "按钮名称【" + updRtnList.get(0).getFunction_name() + "】"
+                                                              +"出现重复!", vo.getId());
+                }
                 break;
             default:
         }
@@ -157,4 +174,14 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
         int result=mapper.deleteBatchIds(idList);
         return DeleteResultUtil.OK(result);
     }
+
+    /**
+     * 获取列表，查询所有数据
+     *
+     * @return
+     */
+    public List<SPagesFunctionVo> selectByPageIdAndFunctionId(SPagesFunctionVo vo) {
+        return mapper.selectByPageIdAndFunctionId(vo);
+    }
+
 }
