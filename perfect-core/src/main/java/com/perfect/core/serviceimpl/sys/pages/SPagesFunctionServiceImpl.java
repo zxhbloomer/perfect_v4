@@ -77,7 +77,7 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<Integer> insert(SPagesFunctionVo entity) {
+    public InsertResult<SPagesFunctionVo> insert(SPagesFunctionVo entity) {
         // 插入前check
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -85,9 +85,8 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
         }
         // 插入逻辑保存
         SPagesFunctionEntity sf = (SPagesFunctionEntity) BeanUtilsSupport.copyProperties(entity, SPagesFunctionEntity.class);
-        int rtn = mapper.insert(sf);
-        entity.setId(sf.getId());
-        return InsertResultUtil.OK(rtn);
+        mapper.insert(sf);
+        return InsertResultUtil.OK(selectByid(sf.getId()));
     }
 
     /**
@@ -98,7 +97,7 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public UpdateResult<Integer> update(SPagesFunctionVo entity) {
+    public UpdateResult<SPagesFunctionVo> update(SPagesFunctionVo entity) {
         // 更新前check
         CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -109,7 +108,8 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
         entity.setC_time(null);
 
         SPagesFunctionEntity sf = (SPagesFunctionEntity) BeanUtilsSupport.copyProperties(entity, SPagesFunctionEntity.class);
-        return UpdateResultUtil.OK(mapper.updateById(sf));
+        mapper.updateById(sf);
+        return UpdateResultUtil.OK(selectByid(sf.getId()));
     }
 
     /**

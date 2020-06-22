@@ -1,7 +1,9 @@
 package com.perfect.manager.controller.sys.pages;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.JsonResult;
+import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.sys.pages.SPagesFunctionVo;
 import com.perfect.common.annotations.RepeatSubmitAnnotion;
@@ -46,9 +48,9 @@ public class SysPagesFunctionController extends BaseController {
     @ResponseBody
     @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<SPagesFunctionVo>> save(@RequestBody(required = false) SPagesFunctionVo bean) {
-
-        if(service.update(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
+        UpdateResult<SPagesFunctionVo> rtn = service.update(bean);
+        if(rtn.isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"更新成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
@@ -61,8 +63,9 @@ public class SysPagesFunctionController extends BaseController {
     @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<SPagesFunctionVo>> insert(@RequestBody(required = false)
         SPagesFunctionVo bean) {
-        if(service.insert(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
+        InsertResult<SPagesFunctionVo> rtn = service.insert(bean);
+        if(rtn.isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"插入成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
         }

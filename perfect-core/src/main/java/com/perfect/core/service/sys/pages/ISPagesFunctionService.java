@@ -44,14 +44,14 @@ public interface ISPagesFunctionService extends IService<SPagesFunctionEntity> {
      * @param entity 实体对象
      * @return
      */
-    InsertResult<Integer> insert(SPagesFunctionVo entity);
+    InsertResult<SPagesFunctionVo> insert(SPagesFunctionVo entity);
 
     /**
      * 更新一条记录（选择字段，策略更新）
      * @param entity 实体对象
      * @return
      */
-    UpdateResult<Integer> update(SPagesFunctionVo entity);
+    UpdateResult<SPagesFunctionVo> update(SPagesFunctionVo entity);
 
 
     /**
