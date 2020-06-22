@@ -120,8 +120,9 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
                 // 新增场合，不能重复
-                vo.setId(null);
-                List<SPagesFunctionVo> insertRtnList = selectByPageIdAndFunctionId(vo);
+                SPagesFunctionVo insertCondition = (SPagesFunctionVo) BeanUtilsSupport.copyProperties(vo, SPagesFunctionVo.class);
+                insertCondition.setId(null);
+                List<SPagesFunctionVo> insertRtnList = selectByPageIdAndFunctionId(insertCondition);
                 if (insertRtnList.size() >= 1) {
                     return CheckResultUtil.NG("新增保存出错：页面名称【"+ insertRtnList.get(0).getPage_name() +"】、"
                                                              + "按钮名称【" + insertRtnList.get(0).getFunction_name() + "】"
@@ -130,9 +131,10 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
                 // 新增场合，不能重复
-                vo.setNe_id(vo.getId());
-                vo.setId(null);
-                List<SPagesFunctionVo> updRtnList = selectByPageIdAndFunctionId(vo);
+                SPagesFunctionVo updCondition = (SPagesFunctionVo) BeanUtilsSupport.copyProperties(vo, SPagesFunctionVo.class);
+                updCondition.setNe_id(vo.getId());
+                updCondition.setId(null);
+                List<SPagesFunctionVo> updRtnList = selectByPageIdAndFunctionId(updCondition);
                 if (updRtnList.size() >= 1) {
                     return CheckResultUtil.NG("更新保存出错：页面名称【"+ updRtnList.get(0).getPage_name() +"】、"
                                                               + "按钮名称【" + updRtnList.get(0).getFunction_name() + "】"
