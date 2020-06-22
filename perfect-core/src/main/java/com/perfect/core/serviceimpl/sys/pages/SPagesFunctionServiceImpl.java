@@ -85,7 +85,9 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
         }
         // 插入逻辑保存
         SPagesFunctionEntity sf = (SPagesFunctionEntity) BeanUtilsSupport.copyProperties(entity, SPagesFunctionEntity.class);
-        return InsertResultUtil.OK(mapper.insert(sf));
+        int rtn = mapper.insert(sf);
+        entity.setId(sf.getId());
+        return InsertResultUtil.OK(rtn);
     }
 
     /**
