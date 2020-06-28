@@ -52,7 +52,15 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
         Page<SPagesFunctionVo> pageCondition =
             new Page(searchCondition.getPageCondition().getCurrent(), searchCondition.getPageCondition().getSize());
         // 通过page进行排序
-        PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
+        if("sort".equals(searchCondition.getPageCondition().getSort())) {
+            PageUtil.setSort(pageCondition, "page_code");
+            PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
+        } else if("-sort".equals(searchCondition.getPageCondition().getSort())) {
+            PageUtil.setSort(pageCondition, "page_code");
+            PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
+        } else {
+            PageUtil.setSort(pageCondition, searchCondition.getPageCondition().getSort());
+        }
         return mapper.selectPage(pageCondition, searchCondition);
     }
 
