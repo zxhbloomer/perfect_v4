@@ -43,7 +43,7 @@ public class SysPagesFunctionController extends BaseController {
     }
 
     @SysLogAnnotion("页面按钮数据更新保存")
-    @ApiOperation("根据参数id，获取页面按钮信息")
+    @ApiOperation("页面按钮数据更新保存")
     @PostMapping("/save")
     @ResponseBody
     @RepeatSubmitAnnotion
@@ -52,12 +52,26 @@ public class SysPagesFunctionController extends BaseController {
         if(rtn.isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"更新成功"));
         } else {
+            throw new UpdateErrorException(rtn.getMessage());
+        }
+    }
+
+    @SysLogAnnotion("快速编辑按钮")
+    @ApiOperation("快速编辑按钮")
+    @PostMapping("/save_assign")
+    @ResponseBody
+    @RepeatSubmitAnnotion
+    public ResponseEntity<JsonResult<SPagesFunctionVo>> save_assign(@RequestBody(required = false) SPagesFunctionVo bean) {
+        UpdateResult<SPagesFunctionVo> rtn = service.update_assign(bean);
+        if(rtn.isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"更新成功"));
+        } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
     }
 
     @SysLogAnnotion("页面按钮数据新增保存")
-    @ApiOperation("根据参数id，获取vue页面按钮信息")
+    @ApiOperation("页面按钮数据新增保存")
     @PostMapping("/insert")
     @ResponseBody
     @RepeatSubmitAnnotion
@@ -72,7 +86,7 @@ public class SysPagesFunctionController extends BaseController {
     }
 
     @SysLogAnnotion("页面按钮表数据物理删除，部分数据")
-    @ApiOperation("根据参数id，物理删除数据")
+    @ApiOperation("页面按钮表数据物理删除，部分数据")
     @PostMapping("/delete")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false)

@@ -53,6 +53,13 @@ public interface ISPagesFunctionService extends IService<SPagesFunctionEntity> {
      */
     UpdateResult<SPagesFunctionVo> update(SPagesFunctionVo entity);
 
+    /**
+     * 更新一条记录（选择字段，策略更新），指定字段
+     * @param entity 实体对象
+     * @return
+     */
+    UpdateResult<SPagesFunctionVo> update_assign(SPagesFunctionVo entity);
+
 
     /**
      * 批量物理删除

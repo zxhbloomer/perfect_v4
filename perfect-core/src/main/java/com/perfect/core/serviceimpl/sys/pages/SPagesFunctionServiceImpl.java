@@ -1,5 +1,6 @@
 package com.perfect.core.serviceimpl.sys.pages;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,14 +15,17 @@ import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.pages.SPagesFunctionVo;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.sys.pages.SPagesFunctionMapper;
 import com.perfect.core.service.sys.pages.ISPagesFunctionService;
 import com.perfect.core.utils.mybatis.PageUtil;
+import com.perfect.core.utils.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,24 +104,50 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
     /**
      * 更新一条记录（选择字段，策略更新）
      *
-     * @param entity 实体对象
+     * @param vo 实体对象
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public UpdateResult<SPagesFunctionVo> update(SPagesFunctionVo entity) {
+    public UpdateResult<SPagesFunctionVo> update(SPagesFunctionVo vo) {
         // 更新前check
-        CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
+        CheckResult cr = checkLogic(vo, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
         // 更新逻辑保存
-        entity.setC_id(null);
-        entity.setC_time(null);
+        vo.setC_id(null);
+        vo.setC_time(null);
 
-        SPagesFunctionEntity sf = (SPagesFunctionEntity) BeanUtilsSupport.copyProperties(entity, SPagesFunctionEntity.class);
-        mapper.updateById(sf);
+        SPagesFunctionEntity sf = (SPagesFunctionEntity) BeanUtilsSupport.copyProperties(vo, SPagesFunctionEntity.class);
+        int updCount = mapper.updateById(sf);
+        if(updCount == 0){
+            throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
+        }
         return UpdateResultUtil.OK(selectByid(sf.getId()));
+    }
+
+    /**
+     * 更新一条记录（选择字段，策略更新），指定字段
+     *
+     * @param vo 实体对象
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public UpdateResult<SPagesFunctionVo> update_assign(SPagesFunctionVo vo) {
+         int updCount = mapper.update(null, new UpdateWrapper<SPagesFunctionEntity>()
+            .eq("id", vo.getId())
+            .eq("dbversion", vo.getDbversion())
+            .set("sort", vo.getSort())
+            .set("u_id", SecurityUtil.getStaff_id())
+            .set("u_time", LocalDateTime.now())
+            .set("dbversion", vo.getDbversion() + 1)
+         );
+         if(updCount == 0){
+             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
+         }
+        return UpdateResultUtil.OK(selectByid(vo.getId()));
     }
 
     /**
