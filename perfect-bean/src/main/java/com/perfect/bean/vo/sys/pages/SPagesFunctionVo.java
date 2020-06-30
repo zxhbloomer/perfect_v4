@@ -78,6 +78,8 @@ public class SPagesFunctionVo implements Serializable {
      */
     private Integer dbversion;
 
+    private Boolean edit_cell_model = false;
+
     /**
      * 换页条件
      */
