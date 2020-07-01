@@ -24,7 +24,7 @@ import java.util.List;
  * @author zhangxh
  */
 @RestController
-@RequestMapping(value = "/api/v1/menu")
+@RequestMapping(value = "/api/v1/menus")
 @Slf4j
 @Api("菜单相关")
 public class MasterMenuController extends BaseController {
