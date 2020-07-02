@@ -14,6 +14,8 @@ import com.perfect.bean.vo.master.menu.MMenuDataVo;
 import com.perfect.bean.vo.master.menu.MMenuPageFunctionVo;
 import com.perfect.bean.vo.master.menu.MMenuVo;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.exception.InsertErrorException;
+import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.master.menu.MMenuMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
@@ -140,7 +142,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<Integer> addMenuGroup(MMenuEntity entity) {
+    public InsertResult<MMenuVo> addMenuGroup(MMenuEntity entity) {
         // 插入前check
         CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -150,6 +152,9 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         entity.setVisible(false);
         // 获取id
         int insertCount = mapper.insert(entity);
+        if(insertCount ==0){
+            throw new InsertErrorException("保存失败，请查询后重新再试。");
+        }
         // 修改root_id
         entity.setRoot_id(entity.getId());
         // 更新数据库
@@ -159,7 +164,10 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
             entity.setCode(sysMenuAutoCode.autoCode().getCode());
         }
         int updCount = mapper.updateById(entity);
-        return InsertResultUtil.OK(updCount);
+        if(updCount ==0){
+            throw new UpdateErrorException("保存失败，请查询后重新再试。");
+        }
+        return InsertResultUtil.OK(selectByid(entity.getId()));
     }
 
     /**

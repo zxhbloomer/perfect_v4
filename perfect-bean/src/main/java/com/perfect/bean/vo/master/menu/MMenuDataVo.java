@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -74,9 +75,9 @@ public class MMenuDataVo extends TreeNode implements Serializable {
     private String perms;
 
     /**
-     * 模块id
+     * 页面id
      */
-    private Long module_id;
+    private Long page_id;
 
     /**
      * 请求地址
@@ -112,6 +113,8 @@ public class MMenuDataVo extends TreeNode implements Serializable {
      * 描述
      */
     private String descr;
+
+    private List<MFunctionInfoVo> function_info;
 
     /**
      * 租户id

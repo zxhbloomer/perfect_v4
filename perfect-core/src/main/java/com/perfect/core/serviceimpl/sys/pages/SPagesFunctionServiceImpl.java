@@ -15,6 +15,7 @@ import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.vo.sys.pages.SPagesFunctionVo;
 import com.perfect.common.exception.BusinessException;
+import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.core.mapper.sys.pages.SPagesFunctionMapper;
@@ -97,7 +98,10 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
         }
         // 插入逻辑保存
         SPagesFunctionEntity sf = (SPagesFunctionEntity) BeanUtilsSupport.copyProperties(entity, SPagesFunctionEntity.class);
-        mapper.insert(sf);
+        int count = mapper.insert(sf);
+        if(count == 0){
+            throw new InsertErrorException("保存失败，请查询后重新再试。");
+        }
         return InsertResultUtil.OK(selectByid(sf.getId()));
     }
 
@@ -120,8 +124,8 @@ public class SPagesFunctionServiceImpl extends ServiceImpl<SPagesFunctionMapper,
         vo.setC_time(null);
 
         SPagesFunctionEntity sf = (SPagesFunctionEntity) BeanUtilsSupport.copyProperties(vo, SPagesFunctionEntity.class);
-        int updCount = mapper.updateById(sf);
-        if(updCount == 0){
+        int count = mapper.updateById(sf);
+        if(count == 0){
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
         return UpdateResultUtil.OK(selectByid(sf.getId()));

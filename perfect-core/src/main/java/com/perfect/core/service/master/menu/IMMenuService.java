@@ -60,7 +60,7 @@ public interface IMMenuService extends IService<MMenuEntity> {
      * @param entity 实体对象
      * @return
      */
-    InsertResult<Integer> addMenuGroup(MMenuEntity entity);
+    InsertResult<MMenuVo> addMenuGroup(MMenuEntity entity);
 
     /**
      * 插入一条记录（选择字段，策略插入）

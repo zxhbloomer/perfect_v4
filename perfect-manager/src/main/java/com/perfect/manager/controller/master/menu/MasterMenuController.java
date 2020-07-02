@@ -1,6 +1,7 @@
 package com.perfect.manager.controller.master.menu;
 
 import com.perfect.bean.entity.master.menu.MMenuEntity;
+import com.perfect.bean.pojo.result.InsertResult;
 import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.master.menu.MMenuDataVo;
@@ -71,8 +72,9 @@ public class MasterMenuController extends BaseController {
     @PostMapping("/addmenugroup")
     @ResponseBody
     public ResponseEntity<JsonResult<MMenuVo>> addMenuGroup(@RequestBody(required = false) MMenuEntity bean) {
-        if(service.addMenuGroup(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
+        InsertResult<MMenuVo> rtn = service.addMenuGroup(bean);
+        if(rtn.isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"插入成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
         }

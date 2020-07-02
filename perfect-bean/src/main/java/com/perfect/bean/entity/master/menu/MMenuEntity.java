@@ -84,8 +84,8 @@ public class MMenuEntity implements Serializable {
     /**
      * 模块id
      */
-    @TableField("module_id")
-    private Long module_id;
+    @TableField("page_id")
+    private Long page_id;
 
     /**
      * 请求地址

@@ -75,7 +75,7 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
         + "             t2.u_id,                                                                       "
         + "             t2.u_time,                                                                     "
         + "             t2.dbversion,                                                                  "
-        + "             t5.module_info                                                                 "
+        + "             t5.function_info                                                               "
         + "         from tab1 t1                                                                       "
         + "   inner join m_menu t2                                                                     "
         + "		   on t1.id = t2.id                                                                    "
