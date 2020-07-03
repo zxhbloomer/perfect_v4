@@ -6,6 +6,7 @@ import com.perfect.bean.pojo.result.JsonResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.master.menu.MMenuDataVo;
 import com.perfect.bean.vo.master.menu.MMenuVo;
+import com.perfect.common.annotations.RepeatSubmitAnnotion;
 import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
@@ -55,13 +56,13 @@ public class MasterMenuController extends BaseController {
     }
 
     @SysLogAnnotion("系统菜单数据更新保存")
-    @ApiOperation("根据参数id，获取系统菜单信息")
+    @ApiOperation("系统菜单数据更新保存")
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<JsonResult<MMenuVo>> save(@RequestBody(required = false) MMenuEntity bean) {
-
-        if(service.update(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"更新成功"));
+        InsertResult<MMenuVo> rtn = service.addSubMenu(bean);
+        if(rtn.isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"系统菜单数据更新保存成功"));
         } else {
             throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
         }
@@ -71,10 +72,11 @@ public class MasterMenuController extends BaseController {
     @ApiOperation("新增菜单组")
     @PostMapping("/addmenugroup")
     @ResponseBody
+    @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<MMenuVo>> addMenuGroup(@RequestBody(required = false) MMenuEntity bean) {
         InsertResult<MMenuVo> rtn = service.addMenuGroup(bean);
         if(rtn.isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"插入成功"));
+            return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"新增菜单组成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
         }
@@ -85,8 +87,9 @@ public class MasterMenuController extends BaseController {
     @PostMapping("/addsubmenu")
     @ResponseBody
     public ResponseEntity<JsonResult<MMenuVo>> addSubMenu(@RequestBody(required = false) MMenuEntity bean) {
-        if(service.addSubMenu(bean).isSuccess()){
-            return ResponseEntity.ok().body(ResultUtil.OK(service.selectByid(bean.getId()),"插入成功"));
+        InsertResult<MMenuVo> rtn = service.addSubMenu(bean);
+        if(rtn.isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"新增菜单组成功"));
         } else {
             throw new InsertErrorException("新增保存失败。");
         }

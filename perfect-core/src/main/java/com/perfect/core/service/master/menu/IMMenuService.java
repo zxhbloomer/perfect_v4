@@ -41,7 +41,7 @@ public interface IMMenuService extends IService<MMenuEntity> {
      * @param id
      * @return
      */
-    MMenuVo selectByid(Long id);
+    MMenuDataVo selectByid(Long id);
 
     /**
      * 获取所选id的数据
@@ -67,7 +67,7 @@ public interface IMMenuService extends IService<MMenuEntity> {
      * @param entity 实体对象
      * @return
      */
-    InsertResult<Integer> addSubMenu(MMenuEntity entity);
+    InsertResult<MMenuVo> addSubMenu(MMenuEntity entity);
 
     /**
      * 更新一条记录（选择字段，策略更新）

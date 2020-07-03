@@ -151,4 +151,12 @@ public class PerfectDictConstant {
     public static final String DICT_SYS_PAGES_FUN_TYPE_ON_PAGE = "PAGE";
     public static final String DICT_SYS_PAGES_FUN_TYPE_ON_TABLE = "TABLE";
     public static final String DICT_SYS_PAGES_FUN_TYPE_ON_POPUP = "POPUP";
+
+    /**
+     * 菜单类型
+     */
+    public static final String DICT_SYS_MENU_TYPE = "sys_menu_type";
+    public static final String DICT_SYS_MENU_TYPE_ROOT = "R";
+    public static final String DICT_SYS_MENU_TYPE_NODE = "N";
+    public static final String DICT_SYS_MENU_TYPE_PAGE = "P";
 }

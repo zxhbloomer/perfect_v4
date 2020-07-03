@@ -80,7 +80,7 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
         + "   inner join m_menu t2                                                                     "
         + "		   on t1.id = t2.id                                                                    "
         + "   left join v_dict_info t3                                                                 "
-        + "		   on t3.code = 'module_type' and t3.dict_value = t2.type                              "
+        + "		   on t3.code = '" + PerfectDictConstant.DICT_SYS_MENU_TYPE + "' and t3.dict_value = t2.type "
         + "	 LEFT join (                                                                               "
         + "				with recursive tab1  as (                                                      "
         + "             select t0.id,                                                                  "
@@ -167,7 +167,8 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
             + commonTreeGrid
             + "  where true "
             + "    and t2.id =#{p1} "
-            + "      ") MMenuVo selectId(@Param("p1") Long id);
+            + "      ")
+    MMenuDataVo selectId(@Param("p1") Long id);
 
     /**
      * 级联,按条件获取所有数据，没有分页

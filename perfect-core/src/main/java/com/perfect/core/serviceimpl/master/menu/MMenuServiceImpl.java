@@ -13,6 +13,7 @@ import com.perfect.bean.utils.common.tree.TreeUtil;
 import com.perfect.bean.vo.master.menu.MMenuDataVo;
 import com.perfect.bean.vo.master.menu.MMenuPageFunctionVo;
 import com.perfect.bean.vo.master.menu.MMenuVo;
+import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -100,7 +102,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
      * @return
      */
     @Override
-    public MMenuVo selectByid(Long id) {
+    public MMenuDataVo selectByid(Long id) {
         // 查询 数据
         return mapper.selectId(id);
     }
@@ -150,6 +152,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         }
         // 插入逻辑保存
         entity.setVisible(false);
+        entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_ROOT);
         // 获取id
         int insertCount = mapper.insert(entity);
         if(insertCount ==0){
@@ -167,7 +170,12 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         if(updCount ==0){
             throw new UpdateErrorException("保存失败，请查询后重新再试。");
         }
-        return InsertResultUtil.OK(selectByid(entity.getId()));
+        // 设置返回值
+        MMenuVo vo = new MMenuVo();
+        List<MMenuDataVo> menu_data = new ArrayList<>();
+        menu_data.add(mapper.selectId(entity.getId()));
+        vo.setMenu_data(menu_data);
+        return InsertResultUtil.OK(vo);
     }
 
     /**
@@ -177,7 +185,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<Integer> addSubMenu(MMenuEntity entity) {
+    public InsertResult<MMenuVo> addSubMenu(MMenuEntity entity) {
         // 插入逻辑保存
         entity.setVisible(false);
 
@@ -189,8 +197,9 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         // 保存父亲的儿子的个数
         parentEntity.setC_id(null);
         parentEntity.setC_time(null);
-        mapper.updateById(parentEntity);
-
+        if(mapper.updateById(parentEntity) == 0){
+            throw new UpdateErrorException("保存失败，请查询后重新再试。");
+        }
         // 获取父亲的code
         String parentCode = parentEntity.getCode();
         // 计算当前编号
@@ -207,9 +216,17 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
+        if(mapper.insert(entity) == 0){
+            throw new UpdateErrorException("保存失败，请查询后重新再试。");
+        }
+        // 设置返回值
+        MMenuVo vo = new MMenuVo();
+        List<MMenuDataVo> menu_data = new ArrayList<>();
+        menu_data.add(mapper.selectId(entity.getId()));
+        vo.setMenu_data(menu_data);
 
         // 保存儿子个数
-        return InsertResultUtil.OK(mapper.insert(entity));
+        return InsertResultUtil.OK(vo);
     }
 
     /**
