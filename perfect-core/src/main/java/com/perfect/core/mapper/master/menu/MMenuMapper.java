@@ -75,7 +75,9 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
         + "             t2.u_id,                                                                       "
         + "             t2.u_time,                                                                     "
         + "             t2.dbversion,                                                                  "
-        + "             t5.function_info                                                               "
+        + "             t5.function_info,                                                              "
+        + "             c_staff.name as c_name,                                                        "
+        + "             u_staff.name as u_name                                                         "
         + "         from tab1 t1                                                                       "
         + "   inner join m_menu t2                                                                     "
         + "		   on t1.id = t2.id                                                                    "
@@ -119,6 +121,8 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
         + "          	GROUP BY                                                                       "
         + "          		subtab1.id                                                                 "
         + "            ) t5 on t5.id = t2.page_id                                                      "
+        + "  LEFT JOIN m_staff c_staff ON t2.c_id = c_staff.id                                                        "
+        + "  LEFT JOIN m_staff u_staff ON t2.u_id = u_staff.id                                                        "
         + "                                                                                            ";
 
     /**

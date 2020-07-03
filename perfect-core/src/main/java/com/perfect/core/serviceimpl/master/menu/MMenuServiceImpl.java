@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -144,9 +143,9 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<MMenuVo> addMenuGroup(MMenuEntity entity) {
+    public InsertResult<MMenuDataVo> addMenuGroup(MMenuEntity entity) {
         // 插入前check
-        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
+        CheckResult cr = checkLogicGroupEdit(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -171,11 +170,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
             throw new UpdateErrorException("保存失败，请查询后重新再试。");
         }
         // 设置返回值
-        MMenuVo vo = new MMenuVo();
-        List<MMenuDataVo> menu_data = new ArrayList<>();
-        menu_data.add(mapper.selectId(entity.getId()));
-        vo.setMenu_data(menu_data);
-        return InsertResultUtil.OK(vo);
+        return InsertResultUtil.OK(this.selectByid(entity.getId()));
     }
 
     /**
@@ -185,7 +180,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<MMenuVo> addSubMenu(MMenuEntity entity) {
+    public InsertResult<MMenuDataVo> addSubMenu(MMenuEntity entity) {
         // 插入逻辑保存
         entity.setVisible(false);
 
@@ -212,21 +207,16 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         entity.setSon_count(0);
 
         // 插入前check
-        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
+        CheckResult cr = checkLogicGroupEdit(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
+        // 保存
         if(mapper.insert(entity) == 0){
             throw new UpdateErrorException("保存失败，请查询后重新再试。");
         }
         // 设置返回值
-        MMenuVo vo = new MMenuVo();
-        List<MMenuDataVo> menu_data = new ArrayList<>();
-        menu_data.add(mapper.selectId(entity.getId()));
-        vo.setMenu_data(menu_data);
-
-        // 保存儿子个数
-        return InsertResultUtil.OK(vo);
+        return InsertResultUtil.OK(this.selectByid(entity.getId()));
     }
 
     /**
@@ -236,16 +226,19 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public UpdateResult<Integer> update(MMenuEntity entity) {
+    public UpdateResult<MMenuDataVo> update(MMenuEntity entity) {
         // 更新前check
-        CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
+        CheckResult cr = checkLogicGroupEdit(entity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
         // 更新逻辑保存
         entity.setC_id(null);
         entity.setC_time(null);
-        return UpdateResultUtil.OK(mapper.updateById(entity));
+        if(mapper.updateById(entity) == 0) {
+            throw new UpdateErrorException("保存的数据已经被修改，请查询后重新编辑更新。");
+        }
+        return UpdateResultUtil.OK(this.selectByid(entity.getId()));
     }
 
     /**
@@ -277,21 +270,20 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
      * check逻辑
      * @return
      */
-    public CheckResult checkLogic(MMenuEntity entity, String moduleType){
+    public CheckResult checkLogicGroupEdit(MMenuEntity entity, String moduleType){
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
                 // 新增场合，不能重复
                 List<MMenuEntity> codeList_insertCheck = selectByCode(entity.getCode(), null, null);
                 if (codeList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：集团编号出现重复", entity.getCode());
+                    return CheckResultUtil.NG("新增保存出错：菜单组编号【"+ entity.getCode() +"】出现重复", entity.getCode());
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
                 // 更新场合，不能重复设置
                 List<MMenuEntity> codeList_updCheck = selectByCode(entity.getCode(), null, entity.getId());
-
                 if (codeList_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：集团编号出现重复", entity.getCode());
+                    return CheckResultUtil.NG("更新保存出错：菜单组编号【"+ entity.getCode() +"】出现重复", entity.getCode());
                 }
                 break;
             default:

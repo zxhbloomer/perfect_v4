@@ -60,21 +60,21 @@ public interface IMMenuService extends IService<MMenuEntity> {
      * @param entity 实体对象
      * @return
      */
-    InsertResult<MMenuVo> addMenuGroup(MMenuEntity entity);
+    InsertResult<MMenuDataVo> addMenuGroup(MMenuEntity entity);
 
     /**
      * 插入一条记录（选择字段，策略插入）
      * @param entity 实体对象
      * @return
      */
-    InsertResult<MMenuVo> addSubMenu(MMenuEntity entity);
+    InsertResult<MMenuDataVo> addSubMenu(MMenuEntity entity);
 
     /**
      * 更新一条记录（选择字段，策略更新）
      * @param entity 实体对象
      * @return
      */
-    UpdateResult<Integer> update(MMenuEntity entity);
+    UpdateResult<MMenuDataVo> update(MMenuEntity entity);
 
     /**
      * 批量物理删除
