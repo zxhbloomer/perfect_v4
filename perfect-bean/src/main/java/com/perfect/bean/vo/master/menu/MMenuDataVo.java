@@ -53,6 +53,18 @@ public class MMenuDataVo extends TreeNode implements Serializable {
      */
     private Integer son_count;
 
+    /**
+     * 级联
+     */
+    private Long value;
+    private String label;
+
+    private String depth_name;
+    private String depth_id;
+    private List<Long> depth_id_array;
+    private String parent_depth_id;
+    private List<Long> parent_depth_id_array;
+
 //    /**
 //     * 排序
 //     */

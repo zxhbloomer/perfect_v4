@@ -85,8 +85,23 @@ public class MasterMenuController extends BaseController {
 
     @SysLogAnnotion("系统菜单数据新增菜单组")
     @ApiOperation("新增菜单组")
+    @PostMapping("/addsubnode")
+    @ResponseBody
+    @RepeatSubmitAnnotion
+    public ResponseEntity<JsonResult<MMenuDataVo>> addSubNode(@RequestBody(required = false) MMenuEntity bean) {
+        InsertResult<MMenuDataVo> rtn = service.addSubMenu(bean);
+        if(rtn.isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"新增菜单组成功"));
+        } else {
+            throw new InsertErrorException("新增保存失败。");
+        }
+    }
+
+    @SysLogAnnotion("系统菜单数据新增菜单组")
+    @ApiOperation("新增菜单组")
     @PostMapping("/addsubmenu")
     @ResponseBody
+    @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<MMenuDataVo>> addSubMenu(@RequestBody(required = false) MMenuEntity bean) {
         InsertResult<MMenuDataVo> rtn = service.addSubMenu(bean);
         if(rtn.isSuccess()){

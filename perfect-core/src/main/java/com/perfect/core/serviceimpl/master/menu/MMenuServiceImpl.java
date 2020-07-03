@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,6 +56,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         MMenuVo MMenuVo = new MMenuVo();
         // 查询 菜单 数据
         List<MMenuDataVo> list = mapper.select(searchCondition);
+        setDepthId(list);
         // 设置树bean
         List<MMenuDataVo> rtnList = TreeUtil.getTreeList(list);
         // 获取按钮清单
@@ -77,8 +79,37 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
     public List<MMenuDataVo> getCascaderList(MMenuVo searchCondition) {
         // 查询 数据
         List<MMenuDataVo> list = mapper.getCascaderList(searchCondition);
+        setDepthId(list);
         List<MMenuDataVo> rtnList = TreeUtil.getTreeList(list);
         return rtnList;
+    }
+
+    /**
+     * 格式化depth_id，parent_depth_id成数组
+     * @param list
+     */
+    private void setDepthId(List<MMenuDataVo> list){
+        // 循环结果，格式化depth_id，parent_depth_id成数组
+        for (MMenuDataVo vo:list) {
+            // 格式化depth_id
+            if(vo.getDepth_id() != null) {
+                String[] split_depth_id = vo.getDepth_id().split(",");
+                List<Long> depth_id_array = new ArrayList<>();
+                for (int i = 0; i < split_depth_id.length; i++) {
+                    depth_id_array.add(Long.valueOf(split_depth_id[i]));
+                }
+                vo.setDepth_id_array(depth_id_array);
+            }
+            // 格式化parent_depth_id
+            if(vo.getParent_depth_id() != null) {
+                String[] split_parent_depth_id = vo.getParent_depth_id().split(",");
+                List<Long> parent_depth_id_array = new ArrayList<>();
+                for (int i = 0; i < split_parent_depth_id.length; i++) {
+                    parent_depth_id_array.add(Long.valueOf(split_parent_depth_id[i]));
+                }
+                vo.setParent_depth_id_array(parent_depth_id_array);
+            }
+        }
     }
 
     /**
