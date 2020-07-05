@@ -242,6 +242,10 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
+
+        // 设置type
+        entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_NODE);
+
         // 保存
         if(mapper.insert(entity) == 0){
             throw new UpdateErrorException("保存失败，请查询后重新再试。");
