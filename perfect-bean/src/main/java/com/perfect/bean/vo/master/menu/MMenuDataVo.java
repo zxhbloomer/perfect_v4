@@ -90,6 +90,7 @@ public class MMenuDataVo extends TreeNode implements Serializable {
      * 页面id
      */
     private Long page_id;
+    private String page_info;
 
     /**
      * 请求地址
