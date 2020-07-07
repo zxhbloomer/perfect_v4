@@ -57,17 +57,25 @@ public interface IMMenuService extends IService<MMenuEntity> {
 
     /**
      * 插入一条记录（选择字段，策略插入）
-     * @param entity 实体对象
+     * @param vo
      * @return
      */
-    InsertResult<MMenuDataVo> addMenuGroup(MMenuEntity entity);
+    InsertResult<MMenuDataVo> addMenuGroup(MMenuDataVo vo);
 
     /**
      * 插入一条记录（选择字段，策略插入）
-     * @param entity 实体对象
+     * @param vo
      * @return
      */
-    InsertResult<MMenuDataVo> addSubMenu(MMenuEntity entity);
+    InsertResult<MMenuDataVo> addSubNode(MMenuDataVo vo);
+
+
+    /**
+     * 插入一条记录（选择字段，策略插入）
+     * @param vo
+     * @return
+     */
+    InsertResult<MMenuDataVo> addSubMenu(MMenuDataVo vo);
 
     /**
      * 更新一条记录（选择字段，策略更新）

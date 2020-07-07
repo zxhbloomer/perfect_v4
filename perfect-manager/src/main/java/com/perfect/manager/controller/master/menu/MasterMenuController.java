@@ -74,7 +74,7 @@ public class MasterMenuController extends BaseController {
     @PostMapping("/addmenugroup")
     @ResponseBody
     @RepeatSubmitAnnotion
-    public ResponseEntity<JsonResult<MMenuDataVo>> addMenuGroup(@RequestBody(required = false) MMenuEntity bean) {
+    public ResponseEntity<JsonResult<MMenuDataVo>> addMenuGroup(@RequestBody(required = false) MMenuDataVo bean) {
         InsertResult<MMenuDataVo> rtn = service.addMenuGroup(bean);
         if(rtn.isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"新增菜单组成功"));
@@ -88,8 +88,8 @@ public class MasterMenuController extends BaseController {
     @PostMapping("/addsubnode")
     @ResponseBody
     @RepeatSubmitAnnotion
-    public ResponseEntity<JsonResult<MMenuDataVo>> addSubNode(@RequestBody(required = false) MMenuEntity bean) {
-        InsertResult<MMenuDataVo> rtn = service.addSubMenu(bean);
+    public ResponseEntity<JsonResult<MMenuDataVo>> addSubNode(@RequestBody(required = false) MMenuDataVo bean) {
+        InsertResult<MMenuDataVo> rtn = service.addSubNode(bean);
         if(rtn.isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"新增菜单组成功"));
         } else {
@@ -102,7 +102,7 @@ public class MasterMenuController extends BaseController {
     @PostMapping("/addsubmenu")
     @ResponseBody
     @RepeatSubmitAnnotion
-    public ResponseEntity<JsonResult<MMenuDataVo>> addSubMenu(@RequestBody(required = false) MMenuEntity bean) {
+    public ResponseEntity<JsonResult<MMenuDataVo>> addSubMenu(@RequestBody(required = false) MMenuDataVo bean) {
         InsertResult<MMenuDataVo> rtn = service.addSubMenu(bean);
         if(rtn.isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"新增菜单组成功"));

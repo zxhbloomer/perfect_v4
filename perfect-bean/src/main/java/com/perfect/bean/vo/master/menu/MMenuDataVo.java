@@ -93,9 +93,19 @@ public class MMenuDataVo extends TreeNode implements Serializable {
     private String page_info;
 
     /**
+     * 父节点请求地址
+     */
+    private String parent_path;
+
+    /**
      * 请求地址
      */
     private String path;
+
+    /**
+     * 完整地址
+     */
+    private String full_path;
 
     /**
      * 路由名，需要唯一，很重要，且需要vue这里手工录入

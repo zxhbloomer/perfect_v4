@@ -17,6 +17,7 @@ import com.perfect.common.constant.PerfectDictConstant;
 import com.perfect.common.exception.BusinessException;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
+import com.perfect.common.utils.bean.BeanUtilsSupport;
 import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.master.menu.MMenuMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
@@ -169,12 +170,15 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
 
     /**
      * 插入一条记录（选择字段，策略插入）
-     * @param entity 实体对象
+     * @param vo
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<MMenuDataVo> addMenuGroup(MMenuEntity entity) {
+    public InsertResult<MMenuDataVo> addMenuGroup(MMenuDataVo vo) {
+
+        MMenuEntity entity = (MMenuEntity)BeanUtilsSupport.copyProperties(vo, MMenuEntity.class);
+
         // 插入前check
         CheckResult cr = checkLogicGroupEdit(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
@@ -183,6 +187,8 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         // 插入逻辑保存
         entity.setVisible(false);
         entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_ROOT);
+        entity.setPath("/");
+        entity.setFull_path("/");
         // 获取id
         int insertCount = mapper.insert(entity);
         if(insertCount ==0){
@@ -206,12 +212,15 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
 
     /**
      * 插入一条记录（选择字段，策略插入）
-     * @param entity 实体对象
+     * @param vo
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public InsertResult<MMenuDataVo> addSubMenu(MMenuEntity entity) {
+    public InsertResult<MMenuDataVo> addSubNode(MMenuDataVo vo) {
+
+        MMenuEntity entity = (MMenuEntity)BeanUtilsSupport.copyProperties(vo, MMenuEntity.class);
+
         // 插入逻辑保存
         entity.setVisible(false);
 
@@ -245,6 +254,67 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
 
         // 设置type
         entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_NODE);
+
+        // 设置路径
+        entity.setParent_path(vo.getParent_path());
+        entity.setPath(vo.getPath());
+        entity.setFull_path(vo.getFull_path());
+
+        // 保存
+        if(mapper.insert(entity) == 0){
+            throw new UpdateErrorException("保存失败，请查询后重新再试。");
+        }
+        // 设置返回值
+        return InsertResultUtil.OK(this.selectByid(entity.getId()));
+    }
+
+    /**
+     * 插入一条记录（选择字段，策略插入）
+     * @param vo
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public InsertResult<MMenuDataVo> addSubMenu(MMenuDataVo vo) {
+
+        MMenuEntity entity = (MMenuEntity)BeanUtilsSupport.copyProperties(vo, MMenuEntity.class);
+
+        // 插入逻辑保存
+        entity.setVisible(false);
+
+        // 获取父亲的entity
+        MMenuEntity parentEntity = getById(entity.getParent_id());
+        Integer son_count = parentEntity.getSon_count();
+        son_count = (son_count == null ? 0 : son_count)  + 1;
+        parentEntity.setSon_count(son_count);
+        // 保存父亲的儿子的个数
+        parentEntity.setC_id(null);
+        parentEntity.setC_time(null);
+        if(mapper.updateById(parentEntity) == 0){
+            throw new UpdateErrorException("保存失败，请查询后重新再试。");
+        }
+        // 获取父亲的code
+        String parentCode = parentEntity.getCode();
+        // 计算当前编号
+        // 获取当前son_count
+        // 0 代表前面补充0
+        // 4 代表长度为4
+        // d 代表参数为正数型
+        String str = String.format("%04d", son_count);
+        entity.setCode(parentCode + str);
+        entity.setSon_count(0);
+
+        // 插入前check
+        CheckResult cr = checkLogicGroupEdit(entity, CheckResult.INSERT_CHECK_TYPE);
+        if (cr.isSuccess() == false) {
+            throw new BusinessException(cr.getMessage());
+        }
+
+        // 设置type
+        entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_NODE);
+
+        // 设置路径
+        entity.setPath(vo.getFull_path());
 
         // 保存
         if(mapper.insert(entity) == 0){
