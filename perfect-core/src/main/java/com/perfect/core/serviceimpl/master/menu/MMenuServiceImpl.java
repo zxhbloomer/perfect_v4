@@ -182,7 +182,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         MMenuEntity entity = (MMenuEntity)BeanUtilsSupport.copyProperties(vo, MMenuEntity.class);
 
         // 插入前check
-        CheckResult cr = checkLogicGroupEdit(entity, CheckResult.INSERT_CHECK_TYPE);
+        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -251,7 +251,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         entity.setSon_count(0);
 
         // 插入前check
-        CheckResult cr = checkLogicGroupEdit(entity, CheckResult.INSERT_CHECK_TYPE);
+        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -309,7 +309,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         entity.setSon_count(0);
 
         // 插入前check
-        CheckResult cr = checkLogicGroupEdit(entity, CheckResult.INSERT_CHECK_TYPE);
+        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -342,7 +342,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
     @Override
     public UpdateResult<MMenuDataVo> update(MMenuEntity entity) {
         // 更新前check
-        CheckResult cr = checkLogicGroupEdit(entity, CheckResult.UPDATE_CHECK_TYPE);
+        CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
         if (cr.isSuccess() == false) {
             throw new BusinessException(cr.getMessage());
         }
@@ -369,37 +369,30 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         return DeleteResultUtil.OK("OK");
     }
 
-    /**
-     * 获取列表，查询所有数据
-     *
-     * @param code
-     * @return
-     */
-    public List<MMenuEntity> selectByCode(String code, Long equal_id, Long not_equal_id) {
-        // 查询 数据
-        List<MMenuEntity> list = mapper.selectByCode(code, equal_id, not_equal_id);
-        return list;
-    }
+//    /**
+//     * 获取列表，查询所有数据
+//     *
+//     * @param code
+//     * @return
+//     */
+//    public List<MMenuEntity> selectByCode(String code, Long equal_id, Long not_equal_id) {
+//        // 查询 数据
+//        List<MMenuEntity> list = mapper.selectByCode(code, equal_id, not_equal_id);
+//        return list;
+//    }
     /**
      * check逻辑
      * @return
      */
-    public CheckResult checkLogicGroupEdit(MMenuEntity entity, String moduleType){
+    public CheckResult checkLogic(MMenuEntity entity, String moduleType){
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
-                // 新增场合，不能重复
-                //
-                List<MMenuEntity> codeList_insertCheck = selectByCode(entity.getCode(), null, null);
-                if (codeList_insertCheck.size() >= 1) {
-                    return CheckResultUtil.NG("新增保存出错：菜单组编号【"+ entity.getCode() +"】出现重复", entity.getCode());
-                }
+                // 新增场合
+                // url check
+
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
-                // 更新场合，不能重复设置
-                List<MMenuEntity> codeList_updCheck = selectByCode(entity.getCode(), null, entity.getId());
-                if (codeList_updCheck.size() >= 1) {
-                    return CheckResultUtil.NG("更新保存出错：菜单组编号【"+ entity.getCode() +"】出现重复", entity.getCode());
-                }
+                // 更新场合
                 break;
             default:
         }

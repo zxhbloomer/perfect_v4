@@ -231,18 +231,18 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
         + "      ")
     void realDeleteByCode(@Param("p1") MMenuDataVo searchCondition);
 
-    /**
-     * 按条件获取所有数据，没有分页
-     * @param code
-     * @return
-     */
-    @Select("    "
-        + " select t.* "
-        + "   from m_menu t "
-        + "  where true "
-        + "    and t.code =  #{p1}   "
-        + "    and (t.id  =  #{p2} or #{p2} is null)   "
-        + "    and (t.id  <> #{p3} or #{p3} is null)   "
-        + "      ")
-    List<MMenuEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
+//    /**
+//     * 按条件获取所有数据，没有分页
+//     * @param code
+//     * @return
+//     */
+//    @Select("    "
+//        + " select t.* "
+//        + "   from m_menu t "
+//        + "  where true "
+//        + "    and t.code =  #{p1}   "
+//        + "    and (t.id  =  #{p2} or #{p2} is null)   "
+//        + "    and (t.id  <> #{p3} or #{p3} is null)   "
+//        + "      ")
+//    List<MMenuEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
 }
