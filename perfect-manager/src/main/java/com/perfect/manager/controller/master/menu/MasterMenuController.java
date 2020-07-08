@@ -43,6 +43,7 @@ public class MasterMenuController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public ResponseEntity<JsonResult<MMenuVo>> list(@RequestBody(required = false) MMenuDataVo searchCondition) {
+        searchCondition.setTenant_id(super.getUserSessionTenantId());
         MMenuVo entity = service.getTreeData(searchCondition);
         return ResponseEntity.ok().body(ResultUtil.OK(entity));
     }
@@ -61,6 +62,7 @@ public class MasterMenuController extends BaseController {
     @PostMapping("/save")
     @ResponseBody
     public ResponseEntity<JsonResult<MMenuDataVo>> save(@RequestBody(required = false) MMenuEntity bean) {
+        bean.setTenant_id(super.getUserSessionTenantId());
         UpdateResult<MMenuDataVo> rtn = service.update(bean);
         if(rtn.isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"系统菜单数据更新保存成功"));
@@ -75,6 +77,7 @@ public class MasterMenuController extends BaseController {
     @ResponseBody
     @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<MMenuDataVo>> addMenuGroup(@RequestBody(required = false) MMenuDataVo bean) {
+        bean.setTenant_id(super.getUserSessionTenantId());
         InsertResult<MMenuDataVo> rtn = service.addMenuGroup(bean);
         if(rtn.isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"新增菜单组成功"));
@@ -89,6 +92,7 @@ public class MasterMenuController extends BaseController {
     @ResponseBody
     @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<MMenuDataVo>> addSubNode(@RequestBody(required = false) MMenuDataVo bean) {
+        bean.setTenant_id(super.getUserSessionTenantId());
         InsertResult<MMenuDataVo> rtn = service.addSubNode(bean);
         if(rtn.isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"新增菜单组成功"));
@@ -103,6 +107,7 @@ public class MasterMenuController extends BaseController {
     @ResponseBody
     @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<MMenuDataVo>> addSubMenu(@RequestBody(required = false) MMenuDataVo bean) {
+        bean.setTenant_id(super.getUserSessionTenantId());
         InsertResult<MMenuDataVo> rtn = service.addSubMenu(bean);
         if(rtn.isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"新增菜单组成功"));
@@ -116,6 +121,7 @@ public class MasterMenuController extends BaseController {
     @PostMapping("/realdelete")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> realDelete(@RequestBody(required = false) MMenuDataVo searchCondition) {
+        searchCondition.setTenant_id(super.getUserSessionTenantId());
         if(searchCondition == null) {
             return ResponseEntity.ok().body(ResultUtil.OK("没有数据"));
         } else {

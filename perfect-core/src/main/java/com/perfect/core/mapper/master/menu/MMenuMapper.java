@@ -137,8 +137,9 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
     @Select("    "
         + commonTreeGrid
         + "  where true "
+        + "    AND (t2.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)        "
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-        + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null) "
+        + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null)             "
         + "      ")
     @Results({
         @Result(property = "module_info", column = "module_info", javaType = List.class, typeHandler = com.perfect.core.config.mybatis.typehandlers.JsonArrayTypeHandler.class),
@@ -172,10 +173,10 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
      * @return
      */
     @Select("    "
-            + commonTreeGrid
-            + "  where true "
-            + "    and t2.id =#{p1} "
-            + "      ")
+        + commonTreeGrid
+        + "  where true "
+        + "    and t2.id =#{p1} "
+        + "      ")
     MMenuDataVo selectId(@Param("p1") Long id);
 
     /**
@@ -184,11 +185,12 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
      * @return
      */
     @Select("    "
-            + commonTreeGrid
-            + "  where true "
-            + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-            + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null) "
-            + "      ")
+        + commonTreeGrid
+        + "  where true "
+        + "    AND (t2.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)        "
+        + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
+        + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null) "
+        + "      ")
     List<MMenuDataVo> getCascaderList(@Param("p1") MMenuVo searchCondition);
 
     /**
@@ -231,18 +233,4 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
         + "      ")
     void realDeleteByCode(@Param("p1") MMenuDataVo searchCondition);
 
-//    /**
-//     * 按条件获取所有数据，没有分页
-//     * @param code
-//     * @return
-//     */
-//    @Select("    "
-//        + " select t.* "
-//        + "   from m_menu t "
-//        + "  where true "
-//        + "    and t.code =  #{p1}   "
-//        + "    and (t.id  =  #{p2} or #{p2} is null)   "
-//        + "    and (t.id  <> #{p3} or #{p3} is null)   "
-//        + "      ")
-//    List<MMenuEntity> selectByCode(@Param("p1") String code, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
 }

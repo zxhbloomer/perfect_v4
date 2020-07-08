@@ -49,13 +49,6 @@ public interface IMMenuService extends IService<MMenuEntity> {
     List<MMenuEntity> selectIdsIn(List<MMenuVo> searchCondition) ;
 
     /**
-     * 批量删除复原
-     * @param searchCondition
-     * @return
-     */
-    void visibleByIdsIn(List<MMenuVo> searchCondition);
-
-    /**
      * 插入一条记录（选择字段，策略插入）
      * @param vo
      * @return

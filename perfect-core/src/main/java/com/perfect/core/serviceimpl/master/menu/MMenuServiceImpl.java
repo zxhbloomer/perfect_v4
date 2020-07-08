@@ -1,5 +1,6 @@
 package com.perfect.core.serviceimpl.master.menu;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.perfect.bean.entity.master.menu.MMenuEntity;
 import com.perfect.bean.pojo.result.CheckResult;
 import com.perfect.bean.pojo.result.DeleteResult;
@@ -151,23 +152,6 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         // 查询 数据
         List<MMenuEntity> list = mapper.selectIdsIn(searchCondition);
         return list;
-    }
-
-    /**
-     * 批量删除复原
-     * @param searchCondition
-     * @return
-     */
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void visibleByIdsIn(List<MMenuVo> searchCondition) {
-        List<MMenuEntity> list = mapper.selectIdsIn(searchCondition);
-        list.forEach(
-            bean -> {
-                bean.setVisible(!bean.getVisible());
-            }
-        );
-        saveOrUpdateBatch(list, 500);
     }
 
     /**
@@ -389,13 +373,33 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
             case CheckResult.INSERT_CHECK_TYPE:
                 // 新增场合
                 // url check
-
+                if(countUrl(entity, moduleType) >= 1) {
+                    return CheckResultUtil.NG("新增保存出错：请求地址【"+ entity.getFull_path() +"】出现重复!", entity.getName());
+                }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
                 // 更新场合
+                // url check
+                if(countUrl(entity, moduleType) >= 1) {
+                    return CheckResultUtil.NG("更新保存出错：请求地址【"+ entity.getFull_path() +"】出现重复!", entity.getName());
+                }
                 break;
             default:
         }
         return CheckResultUtil.OK();
+    }
+
+    /**
+     * 获取相同url的count
+     * @param entity
+     * @param moduleType
+     * @return
+     */
+    private Integer countUrl(MMenuEntity entity, String moduleType){
+        return mapper.selectCount(new QueryWrapper<MMenuEntity>()
+            .eq("full_path", entity.getFull_path())
+            .eq(entity.getTenant_id() == null ? false:true,"tenant_id", entity.getTenant_id())
+            .ne(CheckResult.UPDATE_CHECK_TYPE.equals(moduleType) ? true:false, "id", entity.getId())
+        );
     }
 }
