@@ -22,7 +22,8 @@ import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.master.menu.MMenuMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.menu.IMMenuService;
-import com.perfect.core.serviceimpl.common.autocode.SysMenuAutoCodeImpl;
+import com.perfect.core.serviceimpl.common.autocode.MMenuAutoCodeImpl;
+import com.perfect.core.serviceimpl.common.autocode.MMenuRouteNameAutoCodeImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,9 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
     @Autowired
     private MMenuMapper mapper;
     @Autowired
-    private SysMenuAutoCodeImpl sysMenuAutoCode;
+    private MMenuAutoCodeImpl mMenuAutoCode;
+    @Autowired
+    private MMenuRouteNameAutoCodeImpl mMenuRouteNameAutoCode;
 
     /**
      * 获取列表，查询所有数据
@@ -187,6 +190,8 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         // 插入逻辑保存
         entity.setVisible(false);
         entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_ROOT);
+
+        // 设置path
         entity.setPath("/");
         entity.setFull_path("/");
         // 获取id
@@ -200,7 +205,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         entity.setC_id(null);
         entity.setC_time(null);
         if(StringUtil.isEmpty(entity.getCode())){
-            entity.setCode(sysMenuAutoCode.autoCode().getCode());
+            entity.setCode(mMenuAutoCode.autoCode().getCode());
         }
         int updCount = mapper.updateById(entity);
         if(updCount ==0){
@@ -311,10 +316,15 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         }
 
         // 设置type
-        entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_NODE);
+        entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_PAGE);
 
         // 设置路径
-        entity.setPath(vo.getFull_path());
+        entity.setParent_path(vo.getParent_path());
+        entity.setPath(vo.getPath());
+        entity.setFull_path(vo.getFull_path());
+
+        // 设置路由名，自动生成
+        entity.setRoute_name(mMenuRouteNameAutoCode.autoCode().getCode());
 
         // 保存
         if(mapper.insert(entity) == 0){

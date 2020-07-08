@@ -193,6 +193,7 @@ public class SCodeServiceImpl extends BaseServiceImpl<SCodeMapper, SCodeEntity> 
      * @param entity
      */
     private void createCodeProcess(SCodeEntity entity) {
+        String code;
         // 获取编码方式
         switch (entity.getRule()) {
             case PerfectDictConstant.DICT_SYS_CODE_RULE_TYPE_ONE:
@@ -216,9 +217,15 @@ public class SCodeServiceImpl extends BaseServiceImpl<SCodeMapper, SCodeEntity> 
                 entity.setCode(entity.getPrefex() == null ? "" : entity.getPrefex().toUpperCase() + first + second_radomchar + suffix);
                 break;
             case PerfectDictConstant.DICT_SYS_CODE_RULE_TYPE_TWO:
-                // P99999999
+                // P9999
                 entity.setAuto_create((entity.getAuto_create() == null ? 0 : entity.getAuto_create()) + 1);
-                String code =String.format("%08d", entity.getAuto_create());
+                code = String.format("%04d", entity.getAuto_create());
+                entity.setCode("P" + code);
+                break;
+            case PerfectDictConstant.DICT_SYS_CODE_RULE_TYPE_THREE:
+                // PC9999
+                entity.setAuto_create((entity.getAuto_create() == null ? 0 : entity.getAuto_create()) + 1);
+                code = String.format("%08d", entity.getAuto_create());
                 entity.setCode("P" + code);
                 break;
         }

@@ -108,8 +108,10 @@ public class PerfectDictConstant {
     public static final String DICT_SYS_CODE_RULE_TYPE  = "sys_coderule_type";
     // YYYYMMDD??999
     public static final String DICT_SYS_CODE_RULE_TYPE_ONE  = "10";
-    // P99999999
+    // P9999
     public static final String DICT_SYS_CODE_RULE_TYPE_TWO  = "11";
+    // PC9999
+    public static final String DICT_SYS_CODE_RULE_TYPE_THREE  = "12";
 
     /**
      * 自动编号名称：
@@ -129,6 +131,8 @@ public class PerfectDictConstant {
     public static final String DICT_SYS_CODE_TYPE_M_COMPANY  = "m_company";
     /** vue页面配置表 */
     public static final String DICT_SYS_CODE_TYPE_S_VUE_PAGE_SETTING  = "s_vue_page_setting";
+    /** 菜单主表-路由编号 */
+    public static final String DICT_SYS_CODE_TYPE_M_MENU  = "m_menu";
 
     /**
      * 组织架构中已被使用
