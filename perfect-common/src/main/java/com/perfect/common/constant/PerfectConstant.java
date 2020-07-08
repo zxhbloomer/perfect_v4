@@ -85,9 +85,14 @@ public class PerfectConstant {
      * 缓存使用常量
      */
     public class CACHE_PC {
+        /** 地区级联 */
         public static final String CACHE_AREAS_CASCADER = "CACHE_AREAS_CASCADER";
+        /** 字典表 */
         public static final String CACHE_DICT_TYPE = "CACHE_DICT_TYPE";
+        /** 列宽 */
         public static final String CACHE_COLUMNS_TYPE = "CACHE_COLUMNS_TYPE";
+        /** 系统icon */
+        public static final String CACHE_SYSTEM_ICON_TYPE = "CACHE_SYSTEM_ICON_TYPE";
     }
 
     /**
