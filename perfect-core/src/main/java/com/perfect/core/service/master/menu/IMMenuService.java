@@ -89,5 +89,5 @@ public interface IMMenuService extends IService<MMenuEntity> {
      * @param searchCondition
      * @return
      */
-    DeleteResult<String> realDeleteByCode(MMenuVo searchCondition);
+    DeleteResult<String> realDeleteByCode(MMenuDataVo searchCondition);
 }

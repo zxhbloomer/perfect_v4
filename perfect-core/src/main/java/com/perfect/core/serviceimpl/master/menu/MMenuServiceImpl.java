@@ -18,7 +18,6 @@ import com.perfect.common.exception.BusinessException;
 import com.perfect.common.exception.InsertErrorException;
 import com.perfect.common.exception.UpdateErrorException;
 import com.perfect.common.utils.bean.BeanUtilsSupport;
-import com.perfect.common.utils.string.StringUtil;
 import com.perfect.core.mapper.master.menu.MMenuMapper;
 import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.menu.IMMenuService;
@@ -204,9 +203,9 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         // 更新数据库
         entity.setC_id(null);
         entity.setC_time(null);
-        if(StringUtil.isEmpty(entity.getCode())){
-            entity.setCode(mMenuAutoCode.autoCode().getCode());
-        }
+//        if(StringUtil.isEmpty(entity.getCode())){
+//            entity.setCode(mMenuAutoCode.autoCode().getCode());
+//        }
         int updCount = mapper.updateById(entity);
         if(updCount ==0){
             throw new UpdateErrorException("保存失败，请查询后重新再试。");
@@ -364,7 +363,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public DeleteResult<String> realDeleteByCode(MMenuVo searchCondition) {
+    public DeleteResult<String> realDeleteByCode(MMenuDataVo searchCondition) {
         // 删除当前以及子菜单
         mapper.realDeleteByCode(searchCondition);
         return DeleteResultUtil.OK("OK");
@@ -389,6 +388,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
                 // 新增场合，不能重复
+                //
                 List<MMenuEntity> codeList_insertCheck = selectByCode(entity.getCode(), null, null);
                 if (codeList_insertCheck.size() >= 1) {
                     return CheckResultUtil.NG("新增保存出错：菜单组编号【"+ entity.getCode() +"】出现重复", entity.getCode());

@@ -115,7 +115,7 @@ public class MasterMenuController extends BaseController {
     @ApiOperation("根据参数id，逻辑删除数据")
     @PostMapping("/realdelete")
     @ResponseBody
-    public ResponseEntity<JsonResult<String>> realDelete(@RequestBody(required = false) MMenuVo searchCondition) {
+    public ResponseEntity<JsonResult<String>> realDelete(@RequestBody(required = false) MMenuDataVo searchCondition) {
         if(searchCondition == null) {
             return ResponseEntity.ok().body(ResultUtil.OK("没有数据"));
         } else {

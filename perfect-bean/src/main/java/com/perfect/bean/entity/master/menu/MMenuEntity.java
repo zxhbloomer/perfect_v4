@@ -88,6 +88,12 @@ public class MMenuEntity implements Serializable {
     private Long page_id;
 
     /**
+     * 页面code
+     */
+    @TableField("page_code")
+    private String page_code;
+
+    /**
      * 父节点请求地址
      */
     @TableField("parent_path")

@@ -62,6 +62,8 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
         + "             t3.label as type_name,                                                         "
         + "             t2.visible,                                                                    "
         + "             t2.perms,                                                                      "
+        + "             t2.page_id,                                                                    "
+        + "             t2.page_code,                                                                  "
         + "             t2.parent_path,                                                                "
         + "             t2.path,                                                                       "
         + "             t2.full_path,                                                                  "
@@ -227,7 +229,7 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
         + "  where true "
         + "    and code like CONCAT (#{p1.code,jdbcType=VARCHAR},'%') "
         + "      ")
-    void realDeleteByCode(@Param("p1") MMenuVo searchCondition);
+    void realDeleteByCode(@Param("p1") MMenuDataVo searchCondition);
 
     /**
      * 按条件获取所有数据，没有分页
