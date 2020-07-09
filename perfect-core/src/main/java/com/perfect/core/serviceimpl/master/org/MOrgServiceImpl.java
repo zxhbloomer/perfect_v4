@@ -511,7 +511,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     }
 
     /**
-     * 查询添加的子节点是否合法
+     * 查询添加的子结点是否合法
      *
      * @return
      */
@@ -522,7 +522,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     }
 
     /**
-     * 查询添加的子节点是否合法，子节点被重复选择使用的情况
+     * 查询添加的子结点是否合法，子结点被重复选择使用的情况
      *
      * @return
      */
@@ -540,29 +540,29 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
         Integer count = 0;
         switch (moduleType) {
             case CheckResult.INSERT_CHECK_TYPE:
-                // 查看子节点是否正确：租户->集团->企业->部门->岗位->员工
+                // 查看子结点是否正确：租户->集团->企业->部门->岗位->员工
                 Integer countInsert = this.selectNodeInsertStatus(entity.getCode(),entity.getType());
                 if(countInsert > 0){
                     String nodeTypeName = iCommonComponentService.getDictName(PerfectDictConstant.DICT_ORG_SETTING_TYPE, entity.getType());
-                    return CheckResultUtil.NG("新增保存出错：新增的子节点类型不能是" + "【" + nodeTypeName + "】", countInsert);
+                    return CheckResultUtil.NG("新增保存出错：新增的子结点类型不能是" + "【" + nodeTypeName + "】", countInsert);
                 }
-                // 查看当前节点是否已经被选择使用
+                // 查看当前结点是否已经被选择使用
                 count = getCountBySerial(entity, null, null);
                 if(count > 0){
-                    return CheckResultUtil.NG("新增保存出错：您选择的子节点已经在组织架构中，请选择尚未被使用的组织。", count);
+                    return CheckResultUtil.NG("新增保存出错：您选择的子结点已经在组织架构中，请选择尚未被使用的组织。", count);
                 }
                 break;
             case CheckResult.UPDATE_CHECK_TYPE:
-                // 查看子节点是否正确：租户->集团->企业->部门->岗位->员工
+                // 查看子结点是否正确：租户->集团->企业->部门->岗位->员工
                 Integer countUpdate = this.selectNodeInsertStatus(entity.getCode(),entity.getType());
                 if(countUpdate > 0){
                     String nodeTypeName = iCommonComponentService.getDictName(PerfectDictConstant.DICT_ORG_SETTING_TYPE, entity.getType());
-                    return CheckResultUtil.NG("新增保存出错：更新的当前节点类型不能是" + "【" + nodeTypeName + "】", countUpdate);
+                    return CheckResultUtil.NG("新增保存出错：更新的当前结点类型不能是" + "【" + nodeTypeName + "】", countUpdate);
                 }
-                // 查看当前节点是否已经被选择使用
+                // 查看当前结点是否已经被选择使用
                 count = getCountBySerial(entity, null, entity.getId());
                 if(count > 0){
-                    return CheckResultUtil.NG("新增保存出错：您选择的子节点已经在组织架构中，请选择尚未被使用的组织。", count);
+                    return CheckResultUtil.NG("新增保存出错：您选择的子结点已经在组织架构中，请选择尚未被使用的组织。", count);
                 }
                 break;
             default:
@@ -571,7 +571,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     }
 
     /**
-     * 新增模式下，可新增子节点得类型
+     * 新增模式下，可新增子结点得类型
      * @return
      */
     @Override
@@ -640,7 +640,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
     }
 
     /**
-     * 根据code，进行 like 'code%'，匹配当前节点以及子节点
+     * 根据code，进行 like 'code%'，匹配当前结点以及子结点
      * @param entity
      * @return
      */

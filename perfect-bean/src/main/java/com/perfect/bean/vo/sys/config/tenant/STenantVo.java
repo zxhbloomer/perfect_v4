@@ -29,7 +29,7 @@ public class STenantVo extends BaseVo implements Serializable {
     private Long id;
 
     /**
-     * 父节点
+     * 父结点
      */
     private Long parent_id;
     private String parent_name;
@@ -74,7 +74,7 @@ public class STenantVo extends BaseVo implements Serializable {
     private Boolean is_freeze;
 
     /**
-     * 是否叶子节点
+     * 是否叶子结点
      */
     private Boolean is_leaf;
 

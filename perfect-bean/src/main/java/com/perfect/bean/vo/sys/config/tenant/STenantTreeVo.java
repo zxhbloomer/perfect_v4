@@ -44,7 +44,7 @@ public class STenantTreeVo extends TreeNode implements Serializable {
     private Boolean is_freeze;
 
     /**
-     * 是否叶子节点
+     * 是否叶子结点
      */
     private Boolean is_leaf;
 
@@ -54,7 +54,7 @@ public class STenantTreeVo extends TreeNode implements Serializable {
     private String descr;
 
     /**
-     * 树节点名称：按深度显示名称 xx>...>xx
+     * 树结点名称：按深度显示名称 xx>...>xx
      */
     private String depth_name;
 
@@ -65,17 +65,17 @@ public class STenantTreeVo extends TreeNode implements Serializable {
     private String serial_no;
 
     /**
-     * 父亲节点编码
+     * 父亲结点编码
      */
     private String parent_code;
 
     /**
-     * 父亲节点系统编码
+     * 父亲结点系统编码
      */
     private String parent_serial_no;
 
     /**
-     * 级联控件使用，父节点id
+     * 级联控件使用，父结点id
      */
     private Long value;
 

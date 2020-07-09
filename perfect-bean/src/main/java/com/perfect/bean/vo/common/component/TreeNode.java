@@ -27,15 +27,15 @@ public class TreeNode extends BaseVo implements ITreeNode<TreeNode>, Comparable<
     private Long id;
     /** 级联label */
     private String label;
-    /** 节点名称 */
+    /** 结点名称 */
     private String name;
     private Long parent_id;
-    /** 父节点 */
+    /** 父结点 */
 //    private TreeNode parent;
-    /** 子节点 */
+    /** 子结点 */
     private List<TreeNode> children;
     private int level;
-    /** 是否叶子节点（无子节点） */
+    /** 是否叶子结点（无子结点） */
     private boolean leaf = true;
     /** 序号 */
     private int sort;
@@ -48,7 +48,7 @@ public class TreeNode extends BaseVo implements ITreeNode<TreeNode>, Comparable<
     public TreeNode() {}
 
     /**
-     * 构建时无限层递归构建父子节点
+     * 构建时无限层递归构建父子结点
      * 
      * @param entity
      */
@@ -57,7 +57,7 @@ public class TreeNode extends BaseVo implements ITreeNode<TreeNode>, Comparable<
 //    }
 
     /**
-     * 构建时按指定层数递归构建父子节点
+     * 构建时按指定层数递归构建父子结点
      * 
      * @param entity
      */
@@ -74,7 +74,7 @@ public class TreeNode extends BaseVo implements ITreeNode<TreeNode>, Comparable<
 //    }
 
 //    /**
-//     * 递归父节点
+//     * 递归父结点
 //     *
 //     * @param node
 //     * @param entity
@@ -94,7 +94,7 @@ public class TreeNode extends BaseVo implements ITreeNode<TreeNode>, Comparable<
 //    }
 
     /**
-     * 递归子节点
+     * 递归子结点
      * 
      * @param node
      * @param entity

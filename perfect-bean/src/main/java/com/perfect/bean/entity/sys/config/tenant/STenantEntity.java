@@ -75,7 +75,7 @@ public class STenantEntity implements Serializable {
     private Boolean is_freeze;
 
     /**
-     * 是否叶子节点
+     * 是否叶子结点
      */
     @TableField("is_leaf")
     private Boolean is_leaf;

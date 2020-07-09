@@ -28,13 +28,13 @@ public class MOrgEntity implements Serializable {
     private Long id;
 
     /**
-     * 上级组织，null为根节点
+     * 上级组织，null为根结点
      */
     @TableField("parent_id")
     private Long parent_id;
 
     /**
-     * 租户id，根节点
+     * 租户id，根结点
      */
     @TableField("tenant_id")
     private Long tenant_id;

@@ -39,7 +39,7 @@ public class MMenuDataVo extends TreeNode implements Serializable {
     private String name;
 
     /**
-     * 根节点id
+     * 根结点id
      */
     private Long root_id;
 
@@ -99,7 +99,7 @@ public class MMenuDataVo extends TreeNode implements Serializable {
     private String page_info;
 
     /**
-     * 父节点请求地址
+     * 父结点请求地址
      */
     private String parent_path;
 

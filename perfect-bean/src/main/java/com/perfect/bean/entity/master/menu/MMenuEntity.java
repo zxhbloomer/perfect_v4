@@ -40,7 +40,7 @@ public class MMenuEntity implements Serializable {
     private String name;
 
     /**
-     * 根节点id
+     * 根结点id
      */
     @TableField("root_id")
     private Long root_id;
@@ -94,7 +94,7 @@ public class MMenuEntity implements Serializable {
     private String page_code;
 
     /**
-     * 父节点请求地址
+     * 父结点请求地址
      */
     @TableField("parent_path")
     private String parent_path;

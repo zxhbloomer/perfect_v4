@@ -25,7 +25,7 @@ public class SAreasCascaderTreeVo extends TreeNode implements Serializable {
     private static final long serialVersionUID = 8330843713725719097L;
 
     /**
-     * 级联控件使用，父节点id
+     * 级联控件使用，父结点id
      */
     private Long value;
 

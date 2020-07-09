@@ -26,7 +26,7 @@ public class MOrgTreeVo extends TreeNode implements Serializable {
 
 
     /**
-     * 租户id，根节点
+     * 租户id，根结点
      */
     private Long tenant_id;
 

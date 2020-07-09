@@ -28,7 +28,7 @@ public class MOrgRouteVo extends BaseVo implements Serializable {
     private Long org_id;
 
     /**
-     * 父节点id
+     * 父结点id
      */
     private Long parent_id;
 

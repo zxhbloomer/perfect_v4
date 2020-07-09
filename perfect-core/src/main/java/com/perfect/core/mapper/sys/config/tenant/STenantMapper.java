@@ -47,7 +47,7 @@ public interface STenantMapper extends BaseMapper<STenantEntity> {
         + "             )                                                               "
         + "                select t1.id,                              "
         + "                   t1.parent_id,                            "
-        + "                   t1.id as value,                         "  //级联使用，父节点id
+        + "                   t1.id as value,                         "  //级联使用，父结点id
         + "                   t1.level,                               "
         + "                   t1.name,                                "
         + "                   t1.depth_name,                          "
@@ -84,7 +84,7 @@ public interface STenantMapper extends BaseMapper<STenantEntity> {
         + "    		t1.id,                          "
         + "    		t1.parent_id,                    "
         + "         (case                           "
-        + "            when t1.parent_id is null then '根节点'  "
+        + "            when t1.parent_id is null then '根结点'  "
         + "            else t2.name                 "
         + "          end) as parent_name,           "
         + "    		t1.serial_no,                   "

@@ -102,7 +102,7 @@ public interface IMOrgService extends IService<MOrgEntity> {
     MOrgVo selectByid(Long id);
 
     /**
-     * 新增模式下，可新增子节点得类型
+     * 新增模式下，可新增子结点得类型
      * @return
      */
     List<NameAndValueVo> getCorrectTypeByInsertStatus(MOrgVo vo);
@@ -115,7 +115,7 @@ public interface IMOrgService extends IService<MOrgEntity> {
     Boolean deleteById(MOrgEntity entity);
 
     /**
-     * 根据code，进行 like 'code%'，匹配当前节点以及子节点
+     * 根据code，进行 like 'code%'，匹配当前结点以及子结点
      * @param vo
      * @return
      */

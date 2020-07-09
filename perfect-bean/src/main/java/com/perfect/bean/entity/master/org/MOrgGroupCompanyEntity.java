@@ -52,7 +52,7 @@ public class MOrgGroupCompanyEntity implements Serializable {
     private Long parent_id;
 
     /**
-     * 所属父节点类型
+     * 所属父结点类型
      */
     @TableField("parent_type")
     private String parent_type;

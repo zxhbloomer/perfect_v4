@@ -137,7 +137,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     List<MOrgTreeVo> select(@Param("p1") MOrgVo searchCondition);
 
     /**
-     * 查询添加的子节点是否合法
+     * 查询添加的子结点是否合法
      * @return
      */
     @Select("                                                                                                        "
@@ -166,7 +166,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     MOrgVo selectByid(@Param("p1") Long id, @Param("p2") Long tenant_id);
 
     /**
-     * 新增模式下，可新增子节点得类型
+     * 新增模式下，可新增子结点得类型
      * @return
      */
     @Select("  <script>                                                                                              "
@@ -220,7 +220,7 @@ public interface MOrgMapper extends BaseMapper<MOrgEntity> {
     Integer getCountBySerial(@Param("p1") MOrgEntity vo, @Param("p2") Long equal_id, @Param("p3") Long not_equal_id);
 
     /**
-     * 根据code，进行 like 'code%'，匹配当前节点以及子节点
+     * 根据code，进行 like 'code%'，匹配当前结点以及子结点
      * @param vo
      * @return
      */

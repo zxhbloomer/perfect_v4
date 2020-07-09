@@ -83,7 +83,7 @@ public interface ITenantService extends IService<STenantEntity> {
     List<STenantEntity> selectByName(String name);
 
     /**
-     * 根据ID获取子节点数组
+     * 根据ID获取子结点数组
      * 
      * @param id
      * @return

@@ -134,8 +134,8 @@ public class OrgController extends BaseController {
         }
     }
 
-    @SysLogAnnotion("新增模式下，可新增子节点得类型")
-    @ApiOperation("新增模式下，可新增子节点得类型")
+    @SysLogAnnotion("新增模式下，可新增子结点得类型")
+    @ApiOperation("新增模式下，可新增子结点得类型")
     @PostMapping("/get_type")
     @ResponseBody
     public ResponseEntity<JsonResult<List<NameAndValueVo>>> getCorrectTypeByInsertStatus(@RequestBody(required = false) MOrgVo bean) {
@@ -146,8 +146,8 @@ public class OrgController extends BaseController {
         return ResponseEntity.ok().body(ResultUtil.OK(rtn));
     }
 
-    @SysLogAnnotion("新增模式下，可新增子节点得类型")
-    @ApiOperation("新增模式下，可新增子节点得类型")
+    @SysLogAnnotion("新增模式下，可新增子结点得类型")
+    @ApiOperation("新增模式下，可新增子结点得类型")
     @PostMapping("/delete")
     @ResponseBody
     public ResponseEntity<JsonResult<String>> delete(@RequestBody(required = false) MOrgEntity bean) {
