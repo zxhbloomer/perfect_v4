@@ -93,7 +93,7 @@ public class MasterMenuController extends BaseController {
     @RepeatSubmitAnnotion
     public ResponseEntity<JsonResult<MMenuDataVo>> addTopNav(@RequestBody(required = false) MMenuDataVo bean) {
         bean.setTenant_id(super.getUserSessionTenantId());
-        InsertResult<MMenuDataVo> rtn = service.addSubNode(bean);
+        InsertResult<MMenuDataVo> rtn = service.addTopNav(bean);
         if(rtn.isSuccess()){
             return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"新增菜单组成功"));
         } else {

@@ -231,7 +231,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         entity.setSon_count(0);
 
         // 设置name
-        entity.setName(vo.getMeta_title());
+        entity.setMeta_title(vo.getName());
 
         // 设置type
         entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_TOPNAV);
@@ -260,6 +260,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
 
         MMenuEntity entity = (MMenuEntity)BeanUtilsSupport.copyProperties(vo, MMenuEntity.class);
 
+        // 插入逻辑保存
         entity.setVisible(false);
 
         // 获取父亲的entity
@@ -283,8 +284,16 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         String str = String.format("%04d", son_count);
         entity.setCode(parentCode + str);
         entity.setSon_count(0);
+
+        // 插入前check
+        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
+        if (cr.isSuccess() == false) {
+            throw new BusinessException(cr.getMessage());
+        }
+
         // 设置type
         entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_NODE);
+
         // 设置路径
         entity.setParent_path(vo.getParent_path());
         entity.setPath(vo.getPath());
@@ -367,11 +376,18 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public UpdateResult<MMenuDataVo> update(MMenuEntity entity) {
-        // 更新前check
-        CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
-        if (cr.isSuccess() == false) {
-            throw new BusinessException(cr.getMessage());
+        switch (entity.getType()) {
+            case PerfectDictConstant.DICT_SYS_MENU_TYPE_TOPNAV:
+                break;
+            default:
+                // 更新前check
+                CheckResult cr = checkLogic(entity, CheckResult.UPDATE_CHECK_TYPE);
+                if (cr.isSuccess() == false) {
+                    throw new BusinessException(cr.getMessage());
+                }
+                break;
         }
+
         // 更新逻辑保存
         entity.setC_id(null);
         entity.setC_time(null);
