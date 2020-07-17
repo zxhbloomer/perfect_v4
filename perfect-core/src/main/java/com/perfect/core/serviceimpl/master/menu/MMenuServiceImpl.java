@@ -205,11 +205,61 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
+    public InsertResult<MMenuDataVo> addTopNav(MMenuDataVo vo) {
+        MMenuEntity entity = (MMenuEntity)BeanUtilsSupport.copyProperties(vo, MMenuEntity.class);
+        entity.setVisible(false);
+        // 获取父亲的entity
+        MMenuEntity parentEntity = getById(entity.getParent_id());
+        Integer son_count = parentEntity.getSon_count();
+        son_count = (son_count == null ? 0 : son_count)  + 1;
+        parentEntity.setSon_count(son_count);
+        // 保存父亲的儿子的个数
+        parentEntity.setC_id(null);
+        parentEntity.setC_time(null);
+        if(mapper.updateById(parentEntity) == 0){
+            throw new UpdateErrorException("保存失败，请查询后重新再试。");
+        }
+        // 获取父亲的code
+        String parentCode = parentEntity.getCode();
+        // 计算当前编号
+        // 获取当前son_count
+        // 0 代表前面补充0
+        // 4 代表长度为4
+        // d 代表参数为正数型
+        String str = String.format("%04d", son_count);
+        entity.setCode(parentCode + str);
+        entity.setSon_count(0);
+
+        // 设置name
+        entity.setName(vo.getMeta_title());
+
+        // 设置type
+        entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_TOPNAV);
+
+        // 设置路径
+        entity.setParent_path(vo.getParent_path());
+        entity.setPath(vo.getPath());
+        entity.setFull_path(vo.getFull_path());
+
+        // 保存
+        if(mapper.insert(entity) == 0){
+            throw new UpdateErrorException("保存失败，请查询后重新再试。");
+        }
+        // 设置返回值
+        return InsertResultUtil.OK(this.selectByid(entity.getId()));
+    }
+
+    /**
+     * 插入一条记录（选择字段，策略插入）
+     * @param vo
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
     public InsertResult<MMenuDataVo> addSubNode(MMenuDataVo vo) {
 
         MMenuEntity entity = (MMenuEntity)BeanUtilsSupport.copyProperties(vo, MMenuEntity.class);
 
-        // 插入逻辑保存
         entity.setVisible(false);
 
         // 获取父亲的entity
@@ -233,16 +283,8 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         String str = String.format("%04d", son_count);
         entity.setCode(parentCode + str);
         entity.setSon_count(0);
-
-        // 插入前check
-        CheckResult cr = checkLogic(entity, CheckResult.INSERT_CHECK_TYPE);
-        if (cr.isSuccess() == false) {
-            throw new BusinessException(cr.getMessage());
-        }
-
         // 设置type
         entity.setType(PerfectDictConstant.DICT_SYS_MENU_TYPE_NODE);
-
         // 设置路径
         entity.setParent_path(vo.getParent_path());
         entity.setPath(vo.getPath());

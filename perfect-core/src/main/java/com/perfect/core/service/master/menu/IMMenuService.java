@@ -60,6 +60,13 @@ public interface IMMenuService extends IService<MMenuEntity> {
      * @param vo
      * @return
      */
+    InsertResult<MMenuDataVo> addTopNav(MMenuDataVo vo);
+
+    /**
+     * 插入一条记录（选择字段，策略插入）
+     * @param vo
+     * @return
+     */
     InsertResult<MMenuDataVo> addSubNode(MMenuDataVo vo);
 
 

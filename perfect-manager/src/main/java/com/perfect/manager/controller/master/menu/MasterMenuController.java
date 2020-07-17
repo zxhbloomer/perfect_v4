@@ -87,7 +87,22 @@ public class MasterMenuController extends BaseController {
     }
 
     @SysLogAnnotion("系统菜单数据新增菜单组")
-    @ApiOperation("新增菜单组")
+    @ApiOperation("新增顶部导航栏")
+    @PostMapping("/addtopnav")
+    @ResponseBody
+    @RepeatSubmitAnnotion
+    public ResponseEntity<JsonResult<MMenuDataVo>> addTopNav(@RequestBody(required = false) MMenuDataVo bean) {
+        bean.setTenant_id(super.getUserSessionTenantId());
+        InsertResult<MMenuDataVo> rtn = service.addSubNode(bean);
+        if(rtn.isSuccess()){
+            return ResponseEntity.ok().body(ResultUtil.OK(rtn.getData(),"新增菜单组成功"));
+        } else {
+            throw new InsertErrorException("新增保存失败。");
+        }
+    }
+
+    @SysLogAnnotion("系统菜单数据新增菜单组")
+    @ApiOperation("新增子节点")
     @PostMapping("/addsubnode")
     @ResponseBody
     @RepeatSubmitAnnotion
@@ -102,7 +117,7 @@ public class MasterMenuController extends BaseController {
     }
 
     @SysLogAnnotion("系统菜单数据新增菜单组")
-    @ApiOperation("新增菜单组")
+    @ApiOperation("新增子菜单")
     @PostMapping("/addsubmenu")
     @ResponseBody
     @RepeatSubmitAnnotion

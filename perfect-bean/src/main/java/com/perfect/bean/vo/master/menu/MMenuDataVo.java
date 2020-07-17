@@ -29,6 +29,11 @@ public class MMenuDataVo extends TreeNode implements Serializable {
     private Long id;
 
     /**
+     * 为页面上的顶部导航栏服务，取值为id需要转化为string
+     */
+    private String index;
+
+    /**
      * 编码
      */
     private String code;
