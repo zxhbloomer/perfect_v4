@@ -161,6 +161,7 @@ public class PerfectDictConstant {
      */
     public static final String DICT_SYS_MENU_TYPE = "sys_menu_type";
     public static final String DICT_SYS_MENU_TYPE_ROOT = "R";
+    public static final String DICT_SYS_MENU_TYPE_TOPNAV = "T";
     public static final String DICT_SYS_MENU_TYPE_NODE = "N";
     public static final String DICT_SYS_MENU_TYPE_PAGE = "P";
 }
