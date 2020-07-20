@@ -90,4 +90,11 @@ public interface IMMenuService extends IService<MMenuEntity> {
      * @return
      */
     DeleteResult<String> realDeleteByCode(MMenuDataVo searchCondition);
+
+    /**
+     * 拖拽保存
+     * @param bean
+     * @return
+     */
+    Boolean dragsave(List<MMenuDataVo> bean);
 }

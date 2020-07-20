@@ -6,10 +6,7 @@ import com.perfect.bean.vo.master.menu.MMenuDataVo;
 import com.perfect.bean.vo.master.menu.MMenuPageFunctionVo;
 import com.perfect.bean.vo.master.menu.MMenuVo;
 import com.perfect.common.constant.PerfectDictConstant;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -233,4 +230,21 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
         + "      ")
     void realDeleteByCode(@Param("p1") MMenuDataVo searchCondition);
 
+
+    /**
+     * 拖拽的保存
+     * @param entity
+     * @return
+     */
+    @Update("                                                                        "
+        + "    update m_menu t                                                        "
+        + "       set t.parent_id = #{p1.parent_id,jdbcType=BIGINT} ,                "
+        + "           t.code = #{p1.code,jdbcType=VARCHAR} ,                         "
+        + "           t.son_count = #{p1.son_count,jdbcType=INTEGER},                "
+        + "           t.u_id = #{p1.u_id,jdbcType=BIGINT},                           "
+        + "           t.u_time = #{p1.u_time,jdbcType=TIMESTAMP}                     "
+        + "     where t.id = #{p1.id,jdbcType=BIGINT}                                "
+        + "                                                                          "
+    )
+    int updateDragSave(@Param("p1") MMenuEntity entity);
 }

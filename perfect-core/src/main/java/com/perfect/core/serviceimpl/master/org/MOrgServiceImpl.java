@@ -598,6 +598,7 @@ public class MOrgServiceImpl extends BaseServiceImpl<MOrgMapper, MOrgEntity> imp
             id = "#{entity.id}"
         )
     )
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean deleteById(MOrgEntity entity) {

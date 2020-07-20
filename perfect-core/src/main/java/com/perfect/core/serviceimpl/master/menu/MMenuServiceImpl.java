@@ -11,6 +11,7 @@ import com.perfect.bean.result.utils.v1.DeleteResultUtil;
 import com.perfect.bean.result.utils.v1.InsertResultUtil;
 import com.perfect.bean.result.utils.v1.UpdateResultUtil;
 import com.perfect.bean.utils.common.tree.TreeUtil;
+import com.perfect.bean.vo.common.component.TreeNode;
 import com.perfect.bean.vo.master.menu.MMenuDataVo;
 import com.perfect.bean.vo.master.menu.MMenuPageFunctionVo;
 import com.perfect.bean.vo.master.menu.MMenuVo;
@@ -24,10 +25,12 @@ import com.perfect.core.service.base.v1.BaseServiceImpl;
 import com.perfect.core.service.master.menu.IMMenuService;
 import com.perfect.core.serviceimpl.common.autocode.MMenuAutoCodeImpl;
 import com.perfect.core.serviceimpl.common.autocode.MMenuRouteNameAutoCodeImpl;
+import com.perfect.core.utils.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +51,8 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
     private MMenuAutoCodeImpl mMenuAutoCode;
     @Autowired
     private MMenuRouteNameAutoCodeImpl mMenuRouteNameAutoCode;
+    @Autowired
+    private MMenuServiceImpl self;
 
     /**
      * 获取列表，查询所有数据
@@ -459,5 +464,86 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
             .eq(entity.getTenant_id() == null ? false:true,"tenant_id", entity.getTenant_id())
             .ne(CheckResult.UPDATE_CHECK_TYPE.equals(moduleType) ? true:false, "root_id", entity.getRoot_id())
         );
+    }
+
+
+    /**
+     * 拖拽保存
+     * 未使用乐观锁，需要注意
+     * @param beans
+     * @return
+     */
+    @Override
+    public Boolean dragsave(List<MMenuDataVo> beans) {
+        List<MMenuEntity> entities = new ArrayList<>();
+        int code = 0;
+        List<MMenuEntity> beanList = dragData2List(beans, null ,entities, code);
+        /**
+         * 注意调用方法，必须使用外部调用，激活aop，内部调用不能激活aop和注解
+         */
+        return self.dragsave2Db(beanList);
+    }
+
+    /**
+     * 拖拽数据规整
+     * @param beans         ：循环的beans
+     * @param parent_bean   ：父亲bean
+     * @param entities      ：最终返回的list bean
+     * @param code          ：
+     * @return
+     */
+    private List<MMenuEntity> dragData2List(List<? extends TreeNode> beans, MMenuEntity parent_bean, List<MMenuEntity> entities, int code) {
+        for (TreeNode bean : beans) {
+            code = code + 1;
+            MMenuEntity entity = new MMenuEntity();
+            entity.setId(bean.getId());
+            entity.setParent_id(bean.getParent_id());
+            if(parent_bean == null) {
+                entity.setCode(String.format("%04d", code));
+            } else {
+                entity.setCode(parent_bean.getCode() + String.format("%04d", code));
+            }
+            entities.add(entity);
+            if(bean.getChildren().size() !=0){
+                dragData2List(bean.getChildren(), entity, entities, 0);
+            }
+        }
+        return entities;
+    }
+
+    /**
+     * 拖拽保存
+     * @param list
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean dragsave2Db(List<MMenuEntity> list){
+        // 编号重置
+        for (MMenuEntity entity : list) {
+            if(entity.getParent_id() != null){
+                setParentSonCount(list, entity.getParent_id());
+            }
+        }
+        // 更新开始
+        for (MMenuEntity entity : list) {
+            entity.setSon_count(entity.getSon_count() == null ? 0 : entity.getSon_count());
+            entity.setU_id(SecurityUtil.getLoginUser_id());
+            entity.setU_time(LocalDateTime.now());
+            mapper.updateDragSave(entity);
+        }
+        return true;
+    }
+
+    /**
+     * 设置儿子个数
+     * @return
+     */
+    private List<MMenuEntity> setParentSonCount(List<MMenuEntity> entities, Long parent_id) {
+        for(MMenuEntity entity : entities){
+            if(entity.getId().equals(parent_id)){
+                entity.setSon_count(entity.getSon_count() == null ? 1 : entity.getSon_count() + 1);
+            }
+        }
+        return entities;
     }
 }

@@ -7,6 +7,7 @@ import com.perfect.bean.pojo.result.UpdateResult;
 import com.perfect.bean.result.utils.v1.ResultUtil;
 import com.perfect.bean.vo.master.menu.MMenuDataVo;
 import com.perfect.bean.vo.master.menu.MMenuVo;
+import com.perfect.bean.vo.master.org.MOrgTreeVo;
 import com.perfect.common.annotations.RepeatSubmitAnnotion;
 import com.perfect.common.annotations.SysLogAnnotion;
 import com.perfect.common.exception.InsertErrorException;
@@ -143,5 +144,14 @@ public class MasterMenuController extends BaseController {
             service.realDeleteByCode(searchCondition);
             return ResponseEntity.ok().body(ResultUtil.OK("OK"));
         }
+    }
+
+    @SysLogAnnotion("系统菜单数据更新保存，拖拽后，全量更新")
+    @ApiOperation("系统菜单数据更新保存，拖拽后，全量更新")
+    @PostMapping("/dragsave")
+    @ResponseBody
+    public ResponseEntity<JsonResult<String>> dragsave(@RequestBody(required = false) List<MMenuDataVo> beans) {
+        service.dragsave(beans);
+        return ResponseEntity.ok().body(ResultUtil.OK("拖拽更新成功"));
     }
 }
