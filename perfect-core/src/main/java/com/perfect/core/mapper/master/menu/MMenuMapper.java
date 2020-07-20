@@ -137,6 +137,7 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
         + "    AND (t2.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)        "
         + "    and (t1.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
         + "    and (t2.visible =#{p1.visible,jdbcType=VARCHAR} or #{p1.visible,jdbcType=VARCHAR} is null)             "
+        + "  order by t2.code                                                                                         "
         + "      ")
     @Results({
         @Result(property = "module_info", column = "module_info", javaType = List.class, typeHandler = com.perfect.core.config.mybatis.typehandlers.JsonArrayTypeHandler.class),
@@ -149,18 +150,14 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
      * @return
      */
     @Select("    "
-        + "    SELECT DISTINCT t1.code,                                                                               "
-        + "           t1.name,                                                                                        "
-        + "           t2.extra1 as button_group,                                                                      "
-        + "           t2.extra2 as button_group_name,                                                                 "
-        + "           t2.sort                                                                                         "
-        + "      FROM s_module_button t1 ,                                                                            "
-        + "           v_dict_info t2                                                                                  "
-        + "     where t2.`code` = '" + PerfectDictConstant.DICT_BTN_NAME_TYPE + "'                                    "
-        + "       and t2.dict_value = t1.code                                                                           "
-        + "  order by t2.sort                                                                                         "
+        + "    SELECT t1.id,                            "
+        + "           t1.code,                          "
+        + "           t1.name,                          "
+        + "           t1.sort                           "
+        + "      FROM s_function t1                     "
+        + "  order by t1.sort                           "
         + "      ")
-    List<MMenuPageFunctionVo> getAllMenuButton(@Param("p1") MMenuDataVo searchCondition);
+    List<MMenuPageFunctionVo> getAllMenuButton();
 
     /**
      *

@@ -24,6 +24,11 @@ public class MMenuPageFunctionVo implements Serializable {
     private static final long serialVersionUID = -824111524626109766L;
 
     /**
+     * 按钮id
+     */
+    private Long id;
+
+    /**
      * 按钮编号
      */
     private String code;
@@ -32,16 +37,6 @@ public class MMenuPageFunctionVo implements Serializable {
      * 按钮名称
      */
     private String name;
-
-    /**
-     * 按钮分组
-     */
-    private String button_group;
-
-    /**
-     * 按钮分组名
-     */
-    private String button_group_name;
 
     /**
      * 字典排序

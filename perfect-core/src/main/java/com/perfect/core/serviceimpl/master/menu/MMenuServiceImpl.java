@@ -69,7 +69,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         // 设置树bean
         List<MMenuDataVo> rtnList = TreeUtil.getTreeList(list);
         // 获取按钮清单
-        List<MMenuPageFunctionVo> pageFunctionVoList = mapper.getAllMenuButton(searchCondition);
+        List<MMenuPageFunctionVo> pageFunctionVoList = mapper.getAllMenuButton();
 
         MMenuVo.setMenu_data(rtnList);
         MMenuVo.setMenu_buttons(pageFunctionVoList);
