@@ -457,7 +457,7 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         return mapper.selectCount(new QueryWrapper<MMenuEntity>()
             .eq("full_path", entity.getFull_path())
             .eq(entity.getTenant_id() == null ? false:true,"tenant_id", entity.getTenant_id())
-            .ne(CheckResult.UPDATE_CHECK_TYPE.equals(moduleType) ? true:false, "id", entity.getId())
+            .ne(CheckResult.UPDATE_CHECK_TYPE.equals(moduleType) ? true:false, "root_id", entity.getRoot_id())
         );
     }
 }
