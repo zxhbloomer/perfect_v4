@@ -52,12 +52,12 @@ public interface SResourceMapper extends BaseMapper<SResourceEntity> {
         + "   from s_resource t "
         + "  where true "
         + "    and (t.name like CONCAT ('%',#{p1.name,jdbcType=VARCHAR},'%') or #{p1.name,jdbcType=VARCHAR} is null) "
-        + "   <if test='p1.code.length!=0' >"
+        + "   <if test='p1.code.length!=0' > "
         + "    and t.type in "
         + "        <foreach collection='p1.code' item='item' index='index' open='(' separator=',' close=')'>"
         + "         #{item}  "
-        + "        </foreach>"
-        + "   </if>"
+        + "        </foreach> "
+        + "   </if> "
         + "    and (t.is_del =#{p1.is_del,jdbcType=VARCHAR} or #{p1.is_del,jdbcType=VARCHAR} is null) "
         + "  </script>")
     List<SResourceEntity> select(@Param("p1") SResourceVo searchCondition );

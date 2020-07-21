@@ -149,15 +149,24 @@ public interface MMenuMapper extends BaseMapper<MMenuEntity> {
      * @param searchCondition
      * @return
      */
-    @Select("    "
-        + "    SELECT t1.id,                            "
-        + "           t1.code,                          "
-        + "           t1.name,                          "
-        + "           t1.sort                           "
-        + "      FROM s_function t1                     "
-        + "  order by t1.sort                           "
-        + "      ")
-    List<MMenuPageFunctionVo> getAllMenuButton();
+    @Select(" <script>   "
+        + "     SELECT distinct t1.id,                                                                              "
+        + "            t1.code,                                                                                     "
+        + "            t1.name,                                                                                     "
+        + "            t1.sort                                                                                      "
+        + "       FROM s_function t1                                                                                "
+        + " inner join s_pages_function t2 on t1.id = t2.function_id                                                "
+        + " inner join m_menu t3 on t3.page_id = t2.page_id                                                         "
+        + "   <if test='p1.root_ids.length!=0' >                                                                    "
+        + "        and t3.root_id in                                                                                "
+        + "        <foreach collection='p1.root_ids' item='item' index='index' open='(' separator=',' close=')'>    "
+        + "         #{item}                                                                                         "
+        + "        </foreach>                                                                                       "
+        + "   </if>                                                                                                 "
+        + "        and (t3.tenant_id = #{p1.tenant_id,jdbcType=BIGINT} or #{p1.tenant_id,jdbcType=BIGINT} is null)  "
+        + "   order by t1.sort                                                                                      "
+        + "  </script>    ")
+    List<MMenuPageFunctionVo> getAllMenuButton(@Param("p1") MMenuDataVo searchCondition);
 
     /**
      *

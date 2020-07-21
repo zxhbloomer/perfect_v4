@@ -48,6 +48,8 @@ public class MMenuDataVo extends TreeNode implements Serializable {
      */
     private Long root_id;
 
+    private Long [] root_ids;
+
     /**
      * 父菜单ID
      */

@@ -33,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -69,7 +71,14 @@ public class MMenuServiceImpl extends BaseServiceImpl<MMenuMapper, MMenuEntity> 
         // 设置树bean
         List<MMenuDataVo> rtnList = TreeUtil.getTreeList(list);
         // 获取按钮清单
-        List<MMenuPageFunctionVo> pageFunctionVoList = mapper.getAllMenuButton();
+        List<Long> root_ids = new ArrayList<>();
+        rtnList.stream()
+            .collect(Collectors.toMap(MMenuDataVo::getRoot_id, Function.identity(), (oldValue, newValue) -> oldValue))
+            .values()
+            .stream()
+            .forEach(item -> root_ids.add(item.getRoot_id()));
+        searchCondition.setRoot_ids((Long[]) root_ids.toArray(new Long[root_ids.size()]));
+        List<MMenuPageFunctionVo> pageFunctionVoList = mapper.getAllMenuButton(searchCondition);
 
         MMenuVo.setMenu_data(rtnList);
         MMenuVo.setMenu_buttons(pageFunctionVoList);
